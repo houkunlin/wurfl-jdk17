@@ -1,0 +1,72 @@
+<!--
+
+    This file is part of ScientiaMobile WURFL Java API
+    Copyright (c) 2016 ScientiaMobile Inc. http://www.scientiamobile.com
+
+    This software package is the property of ScientiaMobile Inc. and is licensed commercially
+    according to a contract between the Licensee and ScientiaMobile Inc. (Licensor).
+    If you represent the Licensee, please refer to the licensing agreement which has been signed between the two parties.
+    If you do not represent the Licensee, you are not authorized to use this software in any way.
+
+-->
+<wurfl-api-config engine-target="performance"><!-- engine targets: accuracy/performance; default is performance-->
+
+    <!-- ================= NORMALIZERS, NOT YET ACTIVE ========================= -->
+    <normalizers base-package="com.scientiamobile.wurfl.core.request">
+
+        <normalizer id="serialN" class="normalizer.generic.SerialNumberNormalizer"/>
+        <normalizer id="upLinkN" class="normalizer.generic.UPLinkNormalizer"/>
+        <normalizer id="yesWapN" class="normalizer.generic.YesWAPNormalizer"/>
+        <normalizer id="babelFisHN" class="normalizer.generic.BabelFishNormalizer"/>
+        <normalizer id="localeN" class="normalizer.generic.LocaleRemover"/>
+
+
+        <normalizer id="genericNormalizers" class="UserAgentNormalizerChain">
+            <constructor-arg>
+                <array>
+                    <ref refid="serialN" new-instance="true"/>
+                    <ref local="upLinkN" new-instance="true"/>
+                    <ref refid="yesWapN" new-instance="true"/>
+                    <ref refid="babelFisHN" new-instance="true"/>
+                    <ref refid="localeN" new-instance="true"/>
+                </array>
+            </constructor-arg>
+        </normalizer>
+
+
+        <normalizer id="blackberryN"
+                    class="normalizer.generic.BlackBerryNormalizer">
+            <constructor-arg refid="genericNormalizers" new-instance="true"/>
+        </normalizer>
+
+    </normalizers>
+
+    <!-- ================= MATCHERS, NOT YET ACTIVE ========================= -->
+    <matchers base-package="com.scientiamobile.wurfl.core.matchers">
+
+        <matcher id="nokia" class="NokiaMatcher">
+            <constructor-arg refid="genericNormalizers" new-instance="true"/>
+        </matcher>
+
+        <matcher id="nokiaOviMatcher" class="NokiaOviMatcher">
+            <constructor-arg refid="genericNormalizers" new-instance="true"/>
+        </matcher>
+
+        <!-- and so on -->
+
+    </matchers>
+
+    <!-- ================= MATCHER CHAIN, NOT YET ACTIVE ========================= -->
+    <matcher-chain>
+        <ref refid="nokiaOviMatcher"/>
+        <ref refid="nokiaMatcher"/>
+        <ref refid="lguplusMatcher"/>
+
+        <ref refid="sonyericssonMatcher"/>
+
+        <!-- and so on -->
+
+    </matcher-chain>
+
+
+</wurfl-api-config>
