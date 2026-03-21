@@ -4,14 +4,15 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
-import java.util.HashSet;
-import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
-final class B extends AbstractA {
+import java.util.HashSet;
+import java.util.Set;
+
+final class GoogleChrome extends AbstractA {
   private static String b = "google_chrome";
 
-  public B(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
+  public GoogleChrome(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
 

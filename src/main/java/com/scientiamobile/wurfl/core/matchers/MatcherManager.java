@@ -30,33 +30,33 @@ import org.slf4j.LoggerFactory;
 
 public final class MatcherManager {
   private S a;
-  
+
   private final transient Logger b = LoggerFactory.getLogger(getClass());
-  
+
   private UserAgentNormalizer c;
-  
+
   private UserAgentNormalizer d;
-  
+
   private UserAgentNormalizer e;
-  
+
   private UserAgentNormalizer f;
-  
+
   private UserAgentNormalizer g;
-  
+
   private UserAgentNormalizer h;
-  
+
   private UserAgentNormalizer i;
-  
+
   private UserAgentNormalizer j;
-  
+
   private UserAgentNormalizer k;
-  
+
   private UserAgentNormalizer l;
-  
+
   public MatcherManager(WURFLModel paramWURFLModel) {
     this.a = a(paramWURFLModel);
   }
-  
+
   private S a(WURFLModel paramWURFLModel) {
     S s1 = new S();
     this.f = (UserAgentNormalizer)new LGNormalizer();
@@ -149,7 +149,7 @@ public final class MatcherManager {
     s1.a(new DesktopApplicationMatcher(paramWURFLModel));
     s1.a(q);
     s1.a(an);
-    s1.a(new B((UserAgentNormalizer)new ChromeNormalizer(), paramWURFLModel));
+    s1.a(new GoogleChrome((UserAgentNormalizer)new ChromeNormalizer(), paramWURFLModel));
     s1.a(h);
     s1.a(e);
     s1.a(y);
@@ -171,21 +171,21 @@ public final class MatcherManager {
       if (s2.a(wURFLRequest, str2)) {
         b++;
         continue;
-      } 
+      }
       throw new UnsupportedOperationException("no filter found for " + str2 + "; device=" + modelDevice + "; count was " + b);
-    } 
+    }
     s2.b();
     matcherManager.b.info("model devices filtered: " + b);
     return s1;
   }
-  
+
   public final void reloadModel(WURFLModel paramWURFLModel) {
     this.b.info("reloading the model");
     if (paramWURFLModel == null)
-      throw new IllegalArgumentException("no model defined for Matcher Manager"); 
+      throw new IllegalArgumentException("no model defined for Matcher Manager");
     this.a = a(paramWURFLModel);
   }
-  
+
   public final DeviceInfo matchRequest(WURFLRequest paramWURFLRequest) {
     return this.a.match(paramWURFLRequest);
   }
