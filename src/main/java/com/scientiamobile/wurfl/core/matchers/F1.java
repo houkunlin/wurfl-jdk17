@@ -2,13 +2,13 @@ package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
-interface F {
+interface F1 {
   boolean canHandle(WURFLRequest paramWURFLRequest);
-  
+
   boolean a(WURFLRequest paramWURFLRequest, String paramString);
-  
-  G a();
-  
+
+  G1 a();
+
   String getMatcherName();
 }
 

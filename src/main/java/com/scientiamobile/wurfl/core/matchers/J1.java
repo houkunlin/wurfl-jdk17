@@ -7,7 +7,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class J extends AbstractA {
+final class J1 extends AbstractA {
   private static String b = "generic_android_htc_disguised_as_mac";
 
   protected final Set a() {
@@ -16,7 +16,7 @@ final class J extends AbstractA {
     return hashSet;
   }
 
-  public J(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
+  public J1(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
 

@@ -5,13 +5,13 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 interface A {
   boolean canHandle(WURFLRequest paramWURFLRequest);
-  
+
   DeviceInfo match(WURFLRequest paramWURFLRequest);
-  
+
   String normalize(String paramString);
-  
-  F getFilter();
-  
+
+  F1 getFilter();
+
   String getMatcherName();
 }
 

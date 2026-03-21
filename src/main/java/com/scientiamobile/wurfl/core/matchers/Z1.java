@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import org.apache.commons.lang3.StringUtils;
 
-final class Z extends AbstractA {
+final class Z1 extends AbstractA {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringUtils.startsWithIgnoreCase(paramWURFLRequest.getCleanedDeviceUserAgent(), "sagem"));
   }

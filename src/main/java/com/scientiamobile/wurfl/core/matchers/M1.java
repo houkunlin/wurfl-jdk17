@@ -6,10 +6,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class M extends AbstractA {
+final class M1 extends AbstractA {
   private static String b = "opwv_v62_generic";
 
-  public M(WURFLModel paramWURFLModel) {
+  public M1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 

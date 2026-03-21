@@ -5,10 +5,10 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
-final class L extends AbstractA {
+final class L1 extends AbstractA {
   private static String b = "generic_midp_midlet";
 
-  public L(WURFLModel paramWURFLModel) {
+  public L1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 

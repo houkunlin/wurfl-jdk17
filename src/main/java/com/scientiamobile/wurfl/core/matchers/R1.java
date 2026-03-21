@@ -7,14 +7,14 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class R extends AbstractA {
+final class R1 extends AbstractA {
   private static String b = "generic_opera_mobi_maemo";
 
   private static String c = "nokia_generic_maemo_with_firefox";
 
   private static String d = "nokia_generic_maemo";
 
-  public R(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
+  public R1(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
 

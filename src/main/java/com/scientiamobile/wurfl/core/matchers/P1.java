@@ -8,12 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-final class P extends AbstractA {
+final class P1 extends AbstractA {
   private static String b = "generic_lguplus";
 
   private static final Map c;
 
-  public P(WURFLModel paramWURFLModel) {
+  public P1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 

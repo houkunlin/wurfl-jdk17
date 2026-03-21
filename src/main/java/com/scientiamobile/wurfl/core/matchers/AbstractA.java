@@ -18,7 +18,7 @@ abstract class AbstractA implements A {
 
   private static final List b;
 
-  private F c;
+  private F1 c;
 
   private final UserAgentNormalizer d;
 
@@ -66,13 +66,13 @@ abstract class AbstractA implements A {
     AbstractA(paramWURFLModel);
   }
 
-  public final void setFilter(F paramF) {
-    this.c = paramF;
+  public final void setFilter(F1 paramF1) {
+    this.c = paramF1;
   }
 
-  public final F getFilter() {
+  public final F1 getFilter() {
     if (this.c == null)
-      this.c = new C(this);
+      this.c = new C1(this);
     return this.c;
   }
 

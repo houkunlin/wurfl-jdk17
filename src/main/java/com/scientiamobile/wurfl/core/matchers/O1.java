@@ -4,18 +4,19 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
-import java.util.HashSet;
-import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
-final class O extends AbstractA {
+import java.util.HashSet;
+import java.util.Set;
+
+final class O1 extends AbstractA {
   protected final Set a() {
     HashSet<String> hashSet;
     (hashSet = new HashSet<String>()).add("generic");
     return hashSet;
   }
 
-  public O(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
+  public O1(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
 
@@ -30,8 +31,8 @@ final class O extends AbstractA {
 
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str;
-    G g;
-    return ((str = StringMatchUtils.risMatch((g = getFilter().a()).a(), paramWURFLRequest.getNormalizedDeviceUserAgent(), 7)) != null) ? g.a(str) : "generic";
+    G1 g1;
+    return ((str = StringMatchUtils.risMatch((g1 = getFilter().a()).a(), paramWURFLRequest.getNormalizedDeviceUserAgent(), 7)) != null) ? g1.a(str) : "generic";
   }
 
   public final String getMatcherName() {

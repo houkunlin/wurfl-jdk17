@@ -8,10 +8,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class K extends AbstractA {
+final class K1 extends AbstractA {
   private static final Pattern b = Pattern.compile("^.*?HTC.+?[/ ;]");
 
-  public K(WURFLModel paramWURFLModel) {
+  public K1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 

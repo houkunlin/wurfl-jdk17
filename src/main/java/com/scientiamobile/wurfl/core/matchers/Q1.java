@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class Q extends AbstractA {
+final class Q1 extends AbstractA {
   private static final Pattern b = Pattern.compile("^Mozilla/[45]\\.0 \\(compatible; MSIE (\\d+)\\.(\\d+)(?:[\\da-z]+)?;");
 
   private static final Pattern c = Pattern.compile("^Mozilla/5\\.0 \\(.+?Trident.+?; rv:(\\d\\d)\\.(\\d+)\\)");
@@ -21,7 +21,7 @@ final class Q extends AbstractA {
 
   private static final Map f;
 
-  public Q(WURFLModel paramWURFLModel) {
+  public Q1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 

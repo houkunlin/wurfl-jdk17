@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class E extends AbstractA {
+public final class E1 extends AbstractA {
   private static final Pattern b = Pattern.compile("^.+?\\(.+?rv:\\d+(\\.)");
 
   private static String c = "generic_android_ver2_0_fennec";
@@ -17,7 +17,7 @@ public final class E extends AbstractA {
 
   private static String e = "generic_android_ver2_0_fennec_desktop";
 
-  public E(WURFLModel paramWURFLModel) {
+  public E1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 

@@ -6,12 +6,12 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class D extends AbstractA {
+final class D1 extends AbstractA {
   private static String b = "docomo_generic_jap_ver2";
 
   private static String c = "docomo_generic_jap_ver1";
 
-  public D(WURFLModel paramWURFLModel) {
+  public D1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 

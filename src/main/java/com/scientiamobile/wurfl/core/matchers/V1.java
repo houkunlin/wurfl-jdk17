@@ -2,7 +2,7 @@ package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
-final class V extends AbstractA {
+final class V1 extends AbstractA {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && paramWURFLRequest.getCleanedDeviceUserAgent().startsWith("Toshiba"));
   }

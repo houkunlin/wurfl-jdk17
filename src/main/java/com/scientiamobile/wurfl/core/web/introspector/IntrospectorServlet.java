@@ -2,7 +2,7 @@ package com.scientiamobile.wurfl.core.web.introspector;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scientiamobile.wurfl.core.*;
-import com.scientiamobile.wurfl.core.matchers.E;
+import com.scientiamobile.wurfl.core.matchers.E1;
 import com.scientiamobile.wurfl.core.matchers.MatcherManager;
 import com.scientiamobile.wurfl.core.request.DefaultWURFLRequestFactory;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
@@ -223,7 +223,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     e e = new e();
     if (paramHttpServletRequest.getParameter("form") == null) {
       HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-      Enumeration<E> enumeration = paramHttpServletRequest.getHeaderNames();
+      Enumeration<E1> enumeration = paramHttpServletRequest.getHeaderNames();
       while (enumeration.hasMoreElements()) {
         String str = enumeration.nextElement().toString();
         if ("User-Agent".equalsIgnoreCase(str)) {

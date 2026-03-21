@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
-final class I extends AbstractA {
+final class I1 extends AbstractA {
   private static String b = "firefox_os_ver1_3_tablet";
 
   private static String c = "generic_firefox_os";
@@ -26,7 +26,7 @@ final class I extends AbstractA {
 
   private static final List g = new ArrayList();
 
-  public I(WURFLModel paramWURFLModel) {
+  public I1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 
