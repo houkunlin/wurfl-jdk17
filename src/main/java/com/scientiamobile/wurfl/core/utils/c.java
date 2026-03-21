@@ -1,6 +1,6 @@
 package com.scientiamobile.wurfl.core.utils;
 
-import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang.StringUtils;
 
 final class c implements Predicate {

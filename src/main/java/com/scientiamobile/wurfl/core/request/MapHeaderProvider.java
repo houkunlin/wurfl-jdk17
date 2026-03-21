@@ -2,7 +2,7 @@ package com.scientiamobile.wurfl.core.request;
 
 import java.util.Enumeration;
 import java.util.Map;
-import org.apache.commons.collections.iterators.IteratorEnumeration;
+import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
 public class MapHeaderProvider implements WURFLHeaderProvider {
   private final Map a;
