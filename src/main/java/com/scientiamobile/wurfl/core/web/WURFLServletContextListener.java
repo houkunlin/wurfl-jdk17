@@ -14,8 +14,8 @@ import java.net.URL;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 public class WURFLServletContextListener implements WurflWebConstants, ServletContextListener {
   private String a = WURFL_ENGINE_KEY;

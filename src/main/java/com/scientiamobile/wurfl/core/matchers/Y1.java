@@ -1,7 +1,7 @@
 package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 final class Y extends a {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {

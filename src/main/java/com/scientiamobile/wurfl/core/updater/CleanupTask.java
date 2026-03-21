@@ -2,8 +2,8 @@ package com.scientiamobile.wurfl.core.updater;
 
 import java.io.File;
 import java.util.Map;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class CleanupTask implements UpdatePipelineTask {
   public void execute(Map paramMap) {

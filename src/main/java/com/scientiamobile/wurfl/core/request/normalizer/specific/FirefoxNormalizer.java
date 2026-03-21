@@ -1,7 +1,7 @@
 package com.scientiamobile.wurfl.core.request.normalizer.specific;
 
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class FirefoxNormalizer implements UserAgentNormalizer {
   public String normalize(String paramString) {
