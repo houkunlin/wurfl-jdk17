@@ -15,45 +15,45 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class VirtualCapabilityHandler {
   private static final Map a;
-  
+
   private WURFLRequest b;
-  
+
   private VirtualCapabilityHandler() {}
-  
+
   public VirtualCapabilityHandler(WURFLRequest paramWURFLRequest) {
     this();
     this.b = paramWURFLRequest;
   }
-  
+
   public String getVirtualCapability(String paramString, Device paramDevice) {
     VirtualCapabilityEvaluator virtualCapabilityEvaluator;
     if ((virtualCapabilityEvaluator = (VirtualCapabilityEvaluator)a.get(paramString)) == null)
-      throw new VirtualCapabilityNotDefinedException(paramString); 
+      throw new VirtualCapabilityNotDefinedException(paramString);
     synchronized (this) {
       return a(paramString, virtualCapabilityEvaluator.eval(paramDevice, this.b), (InternalDevice)paramDevice);
-    } 
+    }
   }
-  
+
   public int getVirtualCapabilityAsInt(String paramString, Device paramDevice) {
     return Integer.parseInt(getVirtualCapability(paramString, paramDevice));
   }
-  
+
   public boolean getVirtualCapabilityAsBool(String paramString, Device paramDevice) {
     return Boolean.parseBoolean(getVirtualCapability(paramString, paramDevice));
   }
-  
+
   static String a(String paramString1, String paramString2, InternalDevice paramInternalDevice) {
     String str = "controlcap_" + paramString1;
     try {
       String str1;
       if ((str1 = paramInternalDevice.getCapability(str)) != null && !"default".equals(str1))
-        return "force_true".equals(str1) ? "true" : ("force_false".equals(str1) ? "false" : str1); 
+        return "force_true".equals(str1) ? "true" : ("force_false".equals(str1) ? "false" : str1);
     } catch (CapabilityNotDefinedException capabilityNotDefinedException) {
       throw new VirtualCapabilityNotDefinedException(paramString1);
-    } 
+    }
     return (paramString2 == null) ? "" : paramString2;
   }
-  
+
   public Map getAllVirtualCapabilities(Device paramDevice) {
     HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
     HashSet<?> hashSet;
@@ -63,18 +63,18 @@ public class VirtualCapabilityHandler {
       VirtualCapabilityEvaluator virtualCapabilityEvaluator;
       String str = (virtualCapabilityEvaluator = (VirtualCapabilityEvaluator)iterator.next()).getHandledVirtualCapabilityName();
       hashMap.put(str, a(str, virtualCapabilityEvaluator.eval(paramDevice, this.b), (InternalDevice)paramDevice));
-    } 
+    }
     return hashMap;
   }
-  
+
   public static Set getAllVirtualCapabilities() {
     return a.keySet();
   }
-  
+
   public static Set getMandatoryCapabilities() {
     return new HashSet(Arrays.asList((Object[])VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
   }
-  
+
   static {
     (a = new ConcurrentHashMap<Object, Object>()).put("is_android", new IsAndroidOs());
     a.put("is_ios", new IsIOs());
@@ -102,11 +102,9 @@ public class VirtualCapabilityHandler {
     try {
       Class<?> clazz;
       if ((clazz = Class.forName("com.scientiamobile.wurfl.core.vcap.OsManufacturer")) != null && (clazz = (Class<?>)clazz.newInstance()) != null)
-        a.put("os_manufacturer", (VirtualCapabilityEvaluator)clazz); 
-      return;
+        a.put("os_manufacturer", (VirtualCapabilityEvaluator)clazz);
     } catch (Exception exception) {
-      return;
-    } 
+    }
   }
 }
 
