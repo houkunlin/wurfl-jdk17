@@ -1,33 +1,33 @@
 package com.scientiamobile.wurfl.core.cache;
 
 import com.scientiamobile.wurfl.core.InternalDevice;
-import net.sf.jsr107cache.Cache;
+import org.ehcache.Cache;
 
 public class JSR107CacheProvider implements CacheProvider {
   private Cache a;
-  
+
   public JSR107CacheProvider() {}
-  
+
   public JSR107CacheProvider(Cache paramCache) {
     this.a = paramCache;
   }
-  
+
   public void setCache(Cache paramCache) {
     this.a = paramCache;
   }
-  
+
   public InternalDevice getDevice(String paramString) {
     return (InternalDevice)this.a.get(paramString);
   }
-  
+
   public void putDevice(String paramString, InternalDevice paramInternalDevice) {
     this.a.put(paramString, paramInternalDevice);
   }
-  
+
   public void clear() {
     this.a.clear();
   }
-  
+
   public InternalDevice getInternalDeviceFromDeviceId(String paramString) {
     return null;
   }
