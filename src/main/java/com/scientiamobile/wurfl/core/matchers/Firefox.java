@@ -7,10 +7,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class H extends AbstractA {
+final class Firefox extends AbstractA {
   private static String b = "firefox";
 
-  public H(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
+  public Firefox(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
 

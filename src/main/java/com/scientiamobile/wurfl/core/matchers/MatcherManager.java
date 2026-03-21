@@ -85,7 +85,7 @@ public final class MatcherManager {
     Y y = new Y();
     y y1 = new y(paramWURFLModel);
     z z1 = new z();
-    H h = new H(this.h, paramWURFLModel);
+    Firefox firefox = new Firefox(this.h, paramWURFLModel);
     M m = new M(paramWURFLModel);
     Q q = new Q(paramWURFLModel);
     an an = new an(this.l, paramWURFLModel);
@@ -150,7 +150,7 @@ public final class MatcherManager {
     s1.a(q);
     s1.a(an);
     s1.a(new GoogleChrome((UserAgentNormalizer)new ChromeNormalizer(), paramWURFLModel));
-    s1.a(h);
+    s1.a(firefox);
     s1.a(e);
     s1.a(y);
     s1.a(y1);
