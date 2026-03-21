@@ -15,7 +15,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;

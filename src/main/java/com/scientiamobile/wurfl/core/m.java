@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.WURFLRequestFactoryWithPriority;
 import com.scientiamobile.wurfl.core.resource.WURFLResource;
 import com.scientiamobile.wurfl.core.resource.WURFLResources;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 interface m {
   Device a(HttpServletRequest paramHttpServletRequest);

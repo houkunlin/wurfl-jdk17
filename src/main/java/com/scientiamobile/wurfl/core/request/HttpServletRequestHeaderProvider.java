@@ -1,7 +1,7 @@
 package com.scientiamobile.wurfl.core.request;
 
 import java.util.Enumeration;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class HttpServletRequestHeaderProvider implements WURFLHeaderProvider {
   private final HttpServletRequest a;
