@@ -3,19 +3,19 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 
-final class n extends a {
+final class n extends AbstractA {
   public n(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && paramWURFLRequest.getCleanedDeviceUserAgent().startsWith("Vodafone"));
   }
-  
+
   public final String getMatcherName() {
     return "VodafoneMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Vodafone";
   }

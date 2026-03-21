@@ -8,21 +8,21 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class u extends a {
+final class u extends AbstractA {
   private static String b = "generic_android";
-  
+
   private static String c = "generic_android_ver2_2";
-  
+
   private static String d = "generic_android_ver1_5_tablet";
-  
+
   private static final Set e = new HashSet();
-  
+
   private static final Set f = new HashSet();
-  
+
   public u(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(e);
@@ -30,50 +30,50 @@ final class u extends a {
     hashSet.add(b);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!StringMatchUtils.containsAnyOf(paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "like Android", "Symbian" }) && StringMatchUtils.containsAnyOf(paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "Android", "android" }));
   }
-  
+
   protected final String a(String paramString) {
     int j;
     if ((j = paramString.indexOf("---")) >= 0) {
       j += 3;
       return StringMatchUtils.risMatch(getFilter().a().a(), paramString, j);
-    } 
+    }
     if (!StringMatchUtils.startsWithAnyOf(paramString, new String[] { "Mozilla", "Dalvik" }))
-      return null; 
+      return null;
     String str;
     if ((str = UserAgentUtils.getAndroidModel(paramString)) == null || str.length() == 0) {
       int k = paramString.length();
       return StringMatchUtils.risMatch(getFilter().a().a(), paramString, k);
-    } 
+    }
     int i = Math.min(StringMatchUtils.indexOfOrLength(paramString, " Build/"), StringMatchUtils.indexOfOrLength(paramString, " AppleWebKit"));
     return StringMatchUtils.risMatch(getFilter().a().a(), paramString, i);
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str1;
     if ((str1 = paramWURFLRequest.getNormalizedDeviceUserAgent()).contains("Froyo"))
-      return c; 
+      return c;
     String str2 = UserAgentUtils.getAndroidVersion(str1, true).replaceAll("\\.", "_");
     if ((str2 = "generic_android_ver" + str2).endsWith("2_0") || str2.endsWith("4_0"))
-      str2 = str2.substring(0, str2.length() - 2); 
+      str2 = str2.substring(0, str2.length() - 2);
     if (!str2.startsWith("generic_android_ver3_") && !str1.contains("Mobile") && str1.contains("Safari")) {
       str2 = str2.concat("_tablet");
       return f.contains(str2) ? str2 : d;
-    } 
+    }
     return e.contains(str2) ? str2 : b;
   }
-  
+
   public final String getMatcherName() {
     return "AndroidMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Android";
   }
-  
+
   static {
     e.add("generic_android_ver1_5");
     e.add("generic_android_ver1_6");

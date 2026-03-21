@@ -8,35 +8,35 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
-final class B extends a {
+final class B extends AbstractA {
   private static String b = "google_chrome";
-  
+
   public B(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<String> hashSet;
     (hashSet = new HashSet<String>()).add(b);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsMobileBrowser() && StringUtils.contains(paramWURFLRequest.getCleanedDeviceUserAgent(), "Chrome"));
   }
-  
+
   protected final String a(String paramString) {
     return StringMatchUtils.risMatch(getFilter().a().a(), paramString, StringMatchUtils.indexOfOrLength(paramString, "."));
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     return b;
   }
-  
+
   public final String getMatcherName() {
     return "ChromeMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Chrome";
   }

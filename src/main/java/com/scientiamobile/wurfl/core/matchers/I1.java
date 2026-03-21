@@ -13,23 +13,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
-final class I extends a {
+final class I extends AbstractA {
   private static String b = "firefox_os_ver1_3_tablet";
-  
+
   private static String c = "generic_firefox_os";
-  
+
   private static final Pattern d = Pattern.compile("\\brv:\\d+\\.\\d+(.)");
-  
+
   private static final Pattern e = Pattern.compile("\\brv:(\\d+\\.\\d+)");
-  
+
   private static final Map f = new HashMap<Object, Object>();
-  
+
   private static final List g = new ArrayList();
-  
+
   public I(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(g);
@@ -37,17 +37,17 @@ final class I extends a {
     hashSet.add(c);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     String str;
     return (StringUtils.contains(str = paramWURFLRequest.getCleanedDeviceUserAgent(), "Firefox/") && StringMatchUtils.containsAnyOf(str, new String[] { "Mobile", "Tablet" }));
   }
-  
+
   protected final String a(String paramString) {
     Matcher matcher;
     return (matcher = d.matcher(paramString)).find() ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, matcher.end(1)) : null;
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     // Byte code:
     //   0: aload_1
@@ -121,15 +121,15 @@ final class I extends a {
     //   152: getstatic com/scientiamobile/wurfl/core/matchers/I.c : Ljava/lang/String;
     //   155: areturn
   }
-  
+
   public final String getMatcherName() {
     return "FirefoxOSMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "FirefoxOS";
   }
-  
+
   static {
     f.put("18.0", "1.0");
     f.put("18.1", "1.1");

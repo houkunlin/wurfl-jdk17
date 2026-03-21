@@ -6,25 +6,25 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class ap extends a {
+final class ap extends AbstractA {
   private static String b = "generic_opera_mini_android_version5";
-  
+
   private static String[] c = new String[] { "Opera/9.80 (J2ME/MIDP; Opera Mini/5", "Opera/9.80 (Android; Opera Mini/5.0", "Opera/9.80 (Android; Opera Mini/5.1" };
-  
+
   public ap(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<String> hashSet;
     (hashSet = new HashSet<String>()).add(b);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "Android", "Opera Mini" }));
   }
-  
+
   protected final String a(String paramString) {
     int i;
     if ((i = paramString.indexOf(" Build/")) < 0) {
@@ -35,20 +35,20 @@ final class ap extends a {
         if (paramString.startsWith(str)) {
           i = str.length();
           break;
-        } 
-      } 
-    } 
+        }
+      }
+    }
     return (i >= 0) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i) : null;
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     return b;
   }
-  
+
   public final String getMatcherName() {
     return "OperaMiniOnAndroidMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "OperaMiniOnAndroid";
   }

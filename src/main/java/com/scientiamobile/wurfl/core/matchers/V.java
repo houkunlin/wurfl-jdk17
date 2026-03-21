@@ -14,31 +14,31 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
-final class v extends a {
+final class v extends AbstractA {
   private static String b = "apple_iphone_coremedia_ver1";
-  
+
   private static final String c = "apple_iphone_ver".concat("1");
-  
+
   private static final String[] d = new String[] { "iPhone", "iPod", "iPad" };
-  
+
   private static final Pattern e = Pattern.compile(" (\\d+)_\\d+[ _]");
-  
+
   private static final Pattern f = Pattern.compile("(?:iPhone|iPad|iPod) ?(\\d+,\\d+)");
-  
+
   private static final List g = new ArrayList();
-  
+
   private static final Map h = new HashMap<Object, Object>();
-  
+
   private static final Map i = new HashMap<Object, Object>();
-  
+
   private static final Map j = new HashMap<Object, Object>();
-  
+
   private static final List k = new ArrayList();
-  
+
   public v(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(g);
@@ -46,11 +46,11 @@ final class v extends a {
     hashSet.add(b);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(paramWURFLRequest.getCleanedDeviceUserAgent(), d) && !StringMatchUtils.containsAnyOf(paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "Symbian", "Nintendo" }));
   }
-  
+
   protected final String a(WURFLRequest paramWURFLRequest) {
     String str1 = paramWURFLRequest.getNormalizedDeviceUserAgent();
     String str2 = null;
@@ -63,62 +63,62 @@ final class v extends a {
         str2 = (String)i.get(str);
       } else if (str1.contains("iPhone")) {
         str2 = (String)h.get(str);
-      } 
-    } 
+      }
+    }
     int i;
     if ((i = StringMatchUtils.firstChar(str1, '_').intValue()) < 0) {
       if ((i = StringUtils.indexOf(str1, "like Mac OS X;")) >= 0) {
         i += 14;
       } else {
         i = str1.length();
-      } 
+      }
     } else {
       i++;
-    } 
+    }
     if ((str1 = StringMatchUtils.risMatch(getFilter().a().a(), str1, i)) != null) {
       str1 = getFilter().a().a(str1);
       if (str2 != null && str1 != null) {
         str2 = str1 + "_subhw" + str2;
         if (k.contains(str2))
-          return str2; 
-      } 
+          return str2;
+      }
       return str1;
-    } 
+    }
     return null;
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str1 = paramWURFLRequest.getNormalizedDeviceUserAgent();
     Matcher matcher = e.matcher(str1);
     String str2 = "-1";
     if (matcher.find())
-      str2 = matcher.group(1); 
+      str2 = matcher.group(1);
     if (str1.contains("CoreMedia"))
-      return b; 
+      return b;
     if (StringUtils.contains(str1, "iPod")) {
       str1 = "apple_ipod_touch_ver".concat(str2);
       return g.contains(str1) ? str1 : "apple_ipod_touch_ver".concat("1");
-    } 
+    }
     if (StringUtils.contains(str1, "iPad")) {
       if ("3".equals(str2))
-        return "apple_ipad_ver1".concat("_subua32"); 
+        return "apple_ipad_ver1".concat("_subua32");
       if ("4".equals(str2))
-        return "apple_ipad_ver1".concat("_sub42"); 
+        return "apple_ipad_ver1".concat("_sub42");
       str1 = "apple_ipad_ver1".concat("_sub").concat(str2);
       return g.contains(str1) ? str1 : "apple_ipad_ver1";
-    } 
+    }
     str1 = "apple_iphone_ver".concat(str2);
     return g.contains(str1) ? str1 : c;
   }
-  
+
   public final String getMatcherName() {
     return "AppleMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Apple";
   }
-  
+
   static {
     g.add("apple_ipod_touch_ver1");
     g.add("apple_ipod_touch_ver2");

@@ -10,23 +10,23 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-final class p extends a {
+final class p extends AbstractA {
   private static String b = "generic_ms_phone_os7";
-  
+
   private static String c = "generic_ms_phone_os7_desktopmode";
-  
+
   private static String d = "generic_ms_phone_os7_5_desktopmode";
-  
+
   private static String e = "generic_ms_phone_os8_desktopmode";
-  
+
   private static String f = "generic_ms_phone_os10_desktopmode";
-  
+
   private static final Map g;
-  
+
   public p(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(g.values());
@@ -37,43 +37,43 @@ final class p extends a {
     hashSet.add("generic");
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     String str = paramWURFLRequest.getCleanedDeviceUserAgent();
     return (!paramWURFLRequest._internalIsDesktopBrowser() && (StringMatchUtils.containsAnyOf(str, new String[] { "WPDesktop", "ZuneWP7" }) || StringMatchUtils.containsAllOf(str, new String[] { "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/" }) || StringMatchUtils.containsAnyOf(str, new String[] { "Windows Phone", "WindowsPhone", "NativeHost" })));
   }
-  
+
   protected final String a(WURFLRequest paramWURFLRequest) {
     String str;
     boolean bool;
     return ((bool = (str = paramWURFLRequest.getNormalizedDeviceUserAgent()).contains("---")) && (StringMatchUtils.containsAnyOf(str, new String[] { "WPDesktop", "ZuneWP7" }) || StringMatchUtils.containsAllOf(str, new String[] { "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/" }) || UserAgentUtils.isWindowsPhoneAdClient(paramWURFLRequest.getCleanedDeviceUserAgent()))) ? super.a(paramWURFLRequest) : ((!bool && str.contains("NativeHost")) ? b : super.a(paramWURFLRequest));
   }
-  
+
   protected final String a(String paramString) {
     int i;
     return ((i = paramString.indexOf("---")) >= 0) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i + 3) : null;
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str1;
     boolean bool1 = StringMatchUtils.containsAnyOf(str1 = paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "WPDesktop", "ZuneWP7" });
     boolean bool2 = false;
     if (!bool1)
-      bool2 = StringMatchUtils.containsAllOf(str1, new String[] { "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/" }); 
+      bool2 = StringMatchUtils.containsAllOf(str1, new String[] { "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/" });
     if (bool1 || bool2)
-      return bool2 ? f : (str1.contains("WPDesktop") ? e : (str1.contains("Trident/5.0") ? d : c)); 
+      return bool2 ? f : (str1.contains("WPDesktop") ? e : (str1.contains("Trident/5.0") ? d : c));
     String str2 = UserAgentUtils.getWindowsPhoneVersion(str1);
     return ((str2 = (String)g.get(str2)) != null) ? str2 : (UserAgentUtils.isWindowsPhoneAdClient(str1) ? b : "generic");
   }
-  
+
   public final String getMatcherName() {
     return "WindowsPhoneMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "WindowsPhone";
   }
-  
+
   static {
     (g = new HashMap<Object, Object>()).put("10.0", "generic_ms_phone_os10");
     g.put("8.1", "generic_ms_phone_os8_1");

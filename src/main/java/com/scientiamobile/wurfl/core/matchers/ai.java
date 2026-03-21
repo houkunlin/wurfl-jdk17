@@ -4,19 +4,19 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-final class ai extends a {
+final class ai extends AbstractA {
   public ai(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "NEC-", "KGT" }));
   }
-  
+
   public final String getMatcherName() {
     return "NecMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Nec";
   }

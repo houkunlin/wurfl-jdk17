@@ -2,15 +2,15 @@ package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
-final class ab extends a {
+final class ab extends AbstractA {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && paramWURFLRequest.getCleanedDeviceUserAgent().startsWith("Qtek"));
   }
-  
+
   public final String getMatcherName() {
     return "QtekMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Qtek";
   }

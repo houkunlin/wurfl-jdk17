@@ -8,53 +8,53 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-final class N extends a {
+final class N extends AbstractA {
   private static String b = "generic_amazon_kindle";
-  
+
   private static final Map c;
-  
+
   public N(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<String> hashSet;
     (hashSet = new HashSet<String>()).add(b);
     hashSet.addAll(c.values());
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     String str;
     return ((str = paramWURFLRequest.getCleanedDeviceUserAgent()).contains("Android") && StringMatchUtils.containsAnyOf(str, new String[] { "/Kindle", "Silk" })) ? false : StringMatchUtils.containsAnyOf(str, new String[] { "Kindle", "Silk" });
   }
-  
+
   protected final String a(String paramString) {
     int i;
     if ((i = paramString.indexOf("Build/")) != -1)
-      return StringMatchUtils.risMatch(getFilter().a().a(), paramString, i); 
+      return StringMatchUtils.risMatch(getFilter().a().a(), paramString, i);
     i += 7;
     char c;
     return ((i = paramString.indexOf("Kindle/")) >= 0 && (c = paramString.charAt(i)) >= '1' && c <= '3') ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i + 1) : (((i = paramString.indexOf("PlayStation Vita")) >= 0) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i + 16 + 1) : null);
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str = paramWURFLRequest.getNormalizedDeviceUserAgent();
     for (Map.Entry entry : c.entrySet()) {
       if (str.contains((CharSequence)entry.getKey()))
-        return (String)entry.getValue(); 
-    } 
+        return (String)entry.getValue();
+    }
     return b;
   }
-  
+
   public final String getMatcherName() {
     return "KindleMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Kindle";
   }
-  
+
   static {
     (c = new LinkedHashMap<Object, Object>()).put("Kindle/1", "amazon_kindle_ver1");
     c.put("Kindle/2", "amazon_kindle2_ver1");

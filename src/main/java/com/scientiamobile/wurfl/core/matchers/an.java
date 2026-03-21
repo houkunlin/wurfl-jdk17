@@ -13,33 +13,33 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-final class an extends a {
+final class an extends AbstractA {
   private static String b = "opera";
-  
+
   private static final Pattern c = Pattern.compile("Opera[ /]?(\\d+\\.\\d+)");
-  
+
   private static final Map d;
-  
+
   public an(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(d.values());
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "Opera", "OPR/" }));
   }
-  
+
   protected final String a(String paramString) {
     int i = StringMatchUtils.indexOf(paramString, "Opera");
     i = StringMatchUtils.indexOfOrLength(paramString, ".", i);
     return StringMatchUtils.risMatch(getFilter().a().a(), paramString, i);
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String[] arrayOfString;
     Matcher matcher;
@@ -47,15 +47,15 @@ final class an extends a {
     String str1;
     return ((matcher = c.matcher(paramWURFLRequest.getNormalizedDeviceUserAgent())).find() && StringUtils.isNotEmpty(str2 = matcher.group(1)) && ArrayUtils.isNotEmpty((Object[])(arrayOfString = str2.split("\\."))) && StringUtils.isNotEmpty(str1 = (String)d.get(arrayOfString[0]))) ? str1 : b;
   }
-  
+
   public final String getMatcherName() {
     return "OperaMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Opera";
   }
-  
+
   static {
     (d = new HashMap<Object, Object>()).put("", b);
     d.put("7", "opera_7");

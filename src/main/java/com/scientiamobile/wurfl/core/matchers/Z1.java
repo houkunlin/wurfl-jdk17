@@ -3,15 +3,15 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import org.apache.commons.lang3.StringUtils;
 
-final class Z extends a {
+final class Z extends AbstractA {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringUtils.startsWithIgnoreCase(paramWURFLRequest.getCleanedDeviceUserAgent(), "sagem"));
   }
-  
+
   public final String getMatcherName() {
     return "SagemMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Sagem";
   }

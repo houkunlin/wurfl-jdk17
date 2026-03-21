@@ -5,29 +5,29 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Collection;
 import org.apache.commons.lang3.StringUtils;
 
-final class z extends a {
+final class z extends AbstractA {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return true;
   }
-  
+
   protected final String a(String paramString) {
     Collection collection = getFilter().a().a();
     if (StringUtils.startsWith(paramString, "CFNetwork")) {
       int i;
       if ((i = StringMatchUtils.firstSpace(paramString)) != -1)
-        return StringMatchUtils.risMatch(collection, paramString, i); 
+        return StringMatchUtils.risMatch(collection, paramString, i);
     } else {
       int i;
       if ((i = StringMatchUtils.firstSlash(paramString)) != -1)
-        return StringMatchUtils.risMatch(collection, paramString, i); 
-    } 
+        return StringMatchUtils.risMatch(collection, paramString, i);
+    }
     return StringMatchUtils.NULL_STRING;
   }
-  
+
   public final String getMatcherName() {
     return "CatchAllRISMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "CatchAllRis";
   }

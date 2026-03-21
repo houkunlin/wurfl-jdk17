@@ -2,15 +2,15 @@ package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
-final class aa extends a {
+final class aa extends AbstractA {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && paramWURFLRequest.getCleanedDeviceUserAgent().startsWith("Panasonic"));
   }
-  
+
   public final String getMatcherName() {
     return "PanasonicMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Panasonic";
   }

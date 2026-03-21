@@ -7,17 +7,17 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class R extends a {
+final class R extends AbstractA {
   private static String b = "generic_opera_mobi_maemo";
-  
+
   private static String c = "nokia_generic_maemo_with_firefox";
-  
+
   private static String d = "nokia_generic_maemo";
-  
+
   public R(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<String> hashSet;
     (hashSet = new HashSet<String>()).add(b);
@@ -25,25 +25,25 @@ final class R extends a {
     hashSet.add(d);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return paramWURFLRequest.getCleanedDeviceUserAgent().contains("Maemo");
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str;
     return (str = paramWURFLRequest.getNormalizedDeviceUserAgent()).contains("Opera Mobi") ? b : (str.contains("Firefox") ? c : d);
   }
-  
+
   protected final String a(String paramString) {
     int i;
     return ((i = paramString.indexOf("---")) >= 0) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i + 3) : super.a(paramString);
   }
-  
+
   public final String getMatcherName() {
     return "MaemoMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Maemo";
   }

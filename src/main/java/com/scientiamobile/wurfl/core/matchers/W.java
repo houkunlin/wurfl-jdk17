@@ -11,21 +11,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
-final class w extends a {
+final class w extends AbstractA {
   private static String b = "blackberry_generic_ver10";
-  
+
   private static String c = "blackberry_generic_ver10_tablet";
-  
+
   private static String d = "rim_playbook_ver1";
-  
+
   private static final Map e;
-  
+
   private static final Pattern f = Pattern.compile("BlackBerry[^/\\s]+/(\\d\\.\\d)");
-  
+
   public w(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(e.values());
@@ -33,12 +33,12 @@ final class w extends a {
     hashSet.add(d);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     String str = paramWURFLRequest.getCleanedDeviceUserAgent();
     return (!paramWURFLRequest._internalIsDesktopBrowser() && (StringUtils.containsIgnoreCase(str, "blackberry") || StringMatchUtils.containsAnyOf(str, new String[] { "(BB10;", "(PlayBook" })));
   }
-  
+
   protected final String a(String paramString) {
     int i;
     if (paramString.contains("BB10")) {
@@ -51,35 +51,35 @@ final class w extends a {
       i = StringMatchUtils.firstCloseParenthesis(paramString);
     } else {
       i = StringMatchUtils.firstSlash(paramString);
-    } 
+    }
     return (i != -1) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i) : StringMatchUtils.NULL_STRING;
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str1 = paramWURFLRequest.getNormalizedDeviceUserAgent();
     String str3 = str1;
     Matcher matcher;
     String str2 = (matcher = f.matcher(str3)).find() ? matcher.group(1) : null;
     if (str1.contains("BB10"))
-      return str1.contains("Mobile") ? b : c; 
+      return str1.contains("Mobile") ? b : c;
     if (str1.contains("PlayBook"))
-      return d; 
+      return d;
     if (str2 != null)
       for (Map.Entry entry : e.entrySet()) {
         if (str2.contains((CharSequence)entry.getKey()))
-          return (String)entry.getValue(); 
-      }  
+          return (String)entry.getValue();
+      }
     return "generic";
   }
-  
+
   public final String getMatcherName() {
     return "BlackBerryMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "BlackBerry";
   }
-  
+
   static {
     (e = new LinkedHashMap<Object, Object>()).put("2.", "blackberry_generic_ver2");
     e.put("3.2", "blackberry_generic_ver3_sub2");

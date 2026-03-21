@@ -11,42 +11,42 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import org.apache.commons.collections4.CollectionUtils;
 
-final class ao extends a {
+final class ao extends AbstractA {
   private static final SortedMap b;
-  
+
   public ao(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(b.values());
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "Opera Mini", "OperaMini", "Opera Mobi", "OperaMobi" }));
   }
-  
+
   protected final String a(String paramString) {
     int i;
     return ((i = paramString.indexOf("---")) >= 0) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i + 3) : (((i = StringMatchUtils.indexOf(paramString, "Opera Mini")) >= 0 && (i = StringMatchUtils.indexOf(paramString, ".", i)) >= 0) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i + 1) : (((i = StringMatchUtils.firstSlash(paramString)) != -1) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i) : StringMatchUtils.NULL_STRING));
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str1 = paramWURFLRequest.getNormalizedDeviceUserAgent();
     String str2;
     return ((str2 = (String)CollectionUtils.find(b.keySet(), UserAgentUtils.isContainedIn(str1))) != null) ? (String)b.get(str2) : (str1.contains("Opera Mobi") ? "generic_opera_mini_version4" : "generic_opera_mini_version1");
   }
-  
+
   public final String getMatcherName() {
     return "OperaMiniMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "OperaMini";
   }
-  
+
   static {
     (b = new TreeMap<Object, Object>()).put("Opera Mini/1", "generic_opera_mini_version1");
     b.put("Opera Mini/2", "generic_opera_mini_version2");

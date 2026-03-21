@@ -8,46 +8,46 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-final class P extends a {
+final class P extends AbstractA {
   private static String b = "generic_lguplus";
-  
+
   private static final Map c;
-  
+
   public P(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(c.keySet());
     hashSet.add(b);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(paramWURFLRequest.getCleanedDeviceUserAgent(), new String[] { "lgtelecom", "LGUPLUS" }));
   }
-  
+
   protected final String a(WURFLRequest paramWURFLRequest) {
     return null;
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     for (Map.Entry entry : c.entrySet()) {
       if (StringMatchUtils.containsAllOf(paramWURFLRequest.getNormalizedDeviceUserAgent(), (String[])entry.getValue()))
-        return (String)entry.getKey(); 
-    } 
+        return (String)entry.getKey();
+    }
     return b;
   }
-  
+
   public final String getMatcherName() {
     return "LGUPLUSMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "LGUPLUS";
   }
-  
+
   static {
     (c = new LinkedHashMap<Object, Object>()).put("generic_lguplus_rexos_facebook_browser", new String[] { "Windows NT 5", "POLARIS" });
     c.put("generic_lguplus_rexos_webviewer_browser", new String[] { "Windows NT 5" });

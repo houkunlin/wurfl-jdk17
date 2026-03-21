@@ -4,28 +4,28 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-final class j extends a {
+final class j extends AbstractA {
   public j(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && paramWURFLRequest.getCleanedDeviceUserAgent().contains("Sony"));
   }
-  
+
   protected final String a(String paramString) {
     if (paramString.startsWith("SonyEricsson")) {
       int k = StringMatchUtils.firstSlash(paramString);
       return StringMatchUtils.risMatch(getFilter().a().a(), paramString, k - 2);
-    } 
+    }
     int i;
     return ((i = StringMatchUtils.secondSlash(paramString)) != -1) ? StringMatchUtils.risMatch(getFilter().a().a(), paramString, i) : StringMatchUtils.NULL_STRING;
   }
-  
+
   public final String getMatcherName() {
     return "SonyEricssonMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "SonyEricsson";
   }

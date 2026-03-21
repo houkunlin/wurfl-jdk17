@@ -14,57 +14,57 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
-final class m extends a {
+final class m extends AbstractA {
   private static String b = "generic_ms_phone_os8_subuaucweb";
-  
+
   private static String c = "generic_ucweb_android_ver1";
-  
+
   private static String d = "apple_iphone_ver1_subuaucweb";
-  
+
   private static String e = "apple_ipad_ver1_subuaucweb";
-  
+
   private static final Pattern f = Pattern.compile("iPhone OS (\\d+)(?:_\\d+)?.+ like");
-  
+
   private static final Pattern g = Pattern.compile("CPU OS (\\d+)(?:_\\d+)?.+like Mac");
-  
+
   private static List h;
-  
+
   public m(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
-  
+
   protected final Set a() {
     HashSet<?> hashSet;
     (hashSet = new HashSet()).addAll(h);
     return hashSet;
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     String str = paramWURFLRequest.getCleanedDeviceUserAgent();
     return (!paramWURFLRequest._internalIsDesktopBrowser() && str.startsWith("Mozilla") && str.contains("UCBrowser"));
   }
-  
+
   protected final String a(String paramString) {
     if (UserAgentUtils.getUcBrowserVersion(paramString, false) == null)
-      return null; 
+      return null;
     if (paramString.contains("Windows Phone")) {
       String str = UserAgentUtils.getWindowsPhoneVersion(paramString);
       if (UserAgentUtils.getWindowsPhoneModel(paramString) != null && str != null)
-        return StringMatchUtils.risMatch(getFilter().a().a(), paramString, paramString.indexOf("---") + 3); 
+        return StringMatchUtils.risMatch(getFilter().a().a(), paramString, paramString.indexOf("---") + 3);
     } else if (paramString.contains("Android")) {
       String str1 = UserAgentUtils.getAndroidModel(paramString);
       String str2 = UserAgentUtils.getAndroidVersion(paramString, false);
       if (str1 != null && str2 != null)
-        return StringMatchUtils.risMatch(getFilter().a().a(), paramString, paramString.indexOf("---") + 3); 
+        return StringMatchUtils.risMatch(getFilter().a().a(), paramString, paramString.indexOf("---") + 3);
     } else if (paramString.contains("iPhone;")) {
       if (UcwebU3Normalizer.IPHONE.matcher(paramString).find())
-        return StringMatchUtils.risMatch(getFilter().a().a(), paramString, paramString.indexOf("---") + 3); 
+        return StringMatchUtils.risMatch(getFilter().a().a(), paramString, paramString.indexOf("---") + 3);
     } else if (paramString.contains("iPad") && UcwebU3Normalizer.IPAD.matcher(paramString).find()) {
       return StringMatchUtils.risMatch(getFilter().a().a(), paramString, paramString.indexOf("---") + 3);
-    } 
+    }
     return null;
   }
-  
+
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str4 = UserAgentUtils.getWindowsPhoneVersion(str3);
     String str5 = null;
@@ -76,48 +76,48 @@ final class m extends a {
           str5 = "generic_ms_phone_os" + str4 + "_subuaucweb";
         } else {
           str5 = "generic_ms_phone_os" + str4 + "_" + str3 + "_subuaucweb";
-        } 
-      } 
+        }
+      }
     } else {
       a.debug("user agent " + str3 + "has no version information");
-    } 
+    }
     String str1;
     String str3;
     if (StringUtils.isNotEmpty(str3 = !(str3 = str1 = paramWURFLRequest.getNormalizedDeviceUserAgent()).contains("Windows Phone") ? null : (h.contains(str5) ? str5 : b)))
-      return str3; 
+      return str3;
     str4 = UserAgentUtils.getAndroidVersion(str3, false);
     str5 = null;
     String[] arrayOfString;
     if (StringUtils.isNotEmpty(str4) && (arrayOfString = str4.split("\\.")).length > 0)
-      str5 = "generic_ucweb_android_ver" + arrayOfString[0]; 
+      str5 = "generic_ucweb_android_ver" + arrayOfString[0];
     String str2;
     if (StringUtils.isNotEmpty(str2 = !(str3 = str1).contains("Android") ? null : (h.contains(str5) ? str5 : c)))
-      return str2; 
+      return str2;
     Matcher matcher = f.matcher(str2);
     str5 = null;
     if (matcher.find() && matcher.groupCount() > 0) {
       str2 = matcher.group(1);
       str5 = "apple_iphone_ver" + str2 + "_subuaucweb";
-    } 
+    }
     if (StringUtils.isNotEmpty(str2 = !(str2 = str1).contains("iPhone") ? null : (h.contains(str5) ? str5 : d)))
-      return str2; 
+      return str2;
     matcher = g.matcher(str2);
     str5 = null;
     if (matcher.find() && matcher.groupCount() > 0) {
       str2 = matcher.group(1);
       str5 = "apple_ipad_ver1_sub" + str2 + "_subuaucweb";
-    } 
+    }
     return StringUtils.isNotEmpty(str2 = !(str2 = str1).contains("iPad") ? null : (h.contains(str5) ? str5 : e)) ? str2 : "generic_ucweb";
   }
-  
+
   public final String getMatcherName() {
     return "UcwebU3Matcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "UcwebU3";
   }
-  
+
   static {
     (h = new ArrayList<String>()).add("generic_ucweb");
     h.add(c);

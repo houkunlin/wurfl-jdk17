@@ -4,20 +4,20 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-final class b extends a {
+final class b extends AbstractA {
   public b(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     String str = paramWURFLRequest.getCleanedDeviceUserAgent();
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(str, new String[] { "Pantech", "PT-", "PANTECH", "PG-" }));
   }
-  
+
   public final String getMatcherName() {
     return "PantechMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Pantech";
   }

@@ -3,15 +3,15 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import org.apache.commons.lang3.StringUtils;
 
-final class W extends a {
+final class W extends AbstractA {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && StringUtils.startsWithIgnoreCase(paramWURFLRequest.getCleanedDeviceUserAgent(), "grundig"));
   }
-  
+
   public final String getMatcherName() {
     return "GrundigMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Grundig";
   }

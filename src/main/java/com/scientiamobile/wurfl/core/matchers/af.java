@@ -3,15 +3,15 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.util.Locale;
 
-final class af extends a {
+final class af extends AbstractA {
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {
     return (!paramWURFLRequest._internalIsDesktopBrowser() && paramWURFLRequest.getCleanedDeviceUserAgent().toLowerCase(Locale.US).startsWith("alcatel"));
   }
-  
+
   public final String getMatcherName() {
     return "AlcatelMatcher";
   }
-  
+
   public final String getBucketMatcherName() {
     return "Alcatel";
   }

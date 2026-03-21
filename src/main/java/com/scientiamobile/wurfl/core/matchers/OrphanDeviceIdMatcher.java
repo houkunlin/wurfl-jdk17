@@ -5,15 +5,15 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
-public class OrphanDeviceIdMatcher extends a {
+public class OrphanDeviceIdMatcher extends AbstractA {
   public OrphanDeviceIdMatcher(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
-  
+
   public boolean canHandle(WURFLRequest paramWURFLRequest) {
     return false;
   }
-  
+
   protected final Set a() {
     HashSet<String> hashSet;
     (hashSet = new HashSet<String>()).add("opwv_v6_generic");
