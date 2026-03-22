@@ -24,15 +24,15 @@ final class I1 extends AbstractA {
 
   private static final Map f = new HashMap<Object, Object>();
 
-  private static final List g = new ArrayList();
+  private static final List<String> g = new ArrayList<>();
 
   public I1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(g);
+  protected final Set<String> a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(g);
     hashSet.add(b);
     hashSet.add(c);
     return hashSet;

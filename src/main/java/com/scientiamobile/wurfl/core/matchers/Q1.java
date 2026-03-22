@@ -19,15 +19,15 @@ final class Q1 extends AbstractA {
 
   private static final Pattern e = Pattern.compile("( \\.NET CLR [\\d\\.]+;?| Media Center PC [\\d\\.]+;?| OfficeLive[a-zA-Z0-9\\.\\d]+;?| InfoPath[\\.\\d]+;?)");
 
-  private static final Map f;
+  private static final Map<String, String> f = new HashMap<>();
 
   public Q1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(f.values());
+  protected final Set<String> a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(f.values());
     hashSet.add("generic");
     hashSet.add("generic_web_browser");
     hashSet.add("msie_5_5");

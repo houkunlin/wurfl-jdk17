@@ -4,15 +4,11 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 
 final class v extends AbstractA {
   private static String b = "apple_iphone_coremedia_ver1";
@@ -25,7 +21,7 @@ final class v extends AbstractA {
 
   private static final Pattern f = Pattern.compile("(?:iPhone|iPad|iPod) ?(\\d+,\\d+)");
 
-  private static final List g = new ArrayList();
+  private static final List<String >g = new ArrayList<>();
 
   private static final Map h = new HashMap<Object, Object>();
 
@@ -33,15 +29,15 @@ final class v extends AbstractA {
 
   private static final Map j = new HashMap<Object, Object>();
 
-  private static final List k = new ArrayList();
+  private static final List<String >k = new ArrayList<>();
 
   public v(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(g);
+  protected final Set<String >a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(g);
     hashSet.addAll(k);
     hashSet.add(b);
     return hashSet;

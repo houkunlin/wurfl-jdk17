@@ -11,7 +11,7 @@ import java.util.Set;
 final class N1 extends AbstractA {
   private static String b = "generic_amazon_kindle";
 
-  private static final Map c;
+  private static final Map<String, String> c = new LinkedHashMap<>();
 
   public N1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
@@ -19,7 +19,7 @@ final class N1 extends AbstractA {
 
   protected final Set a() {
     HashSet<String> hashSet;
-    (hashSet = new HashSet<String>()).add(b);
+    (hashSet = new HashSet<>()).add(b);
     hashSet.addAll(c.values());
     return hashSet;
   }
@@ -40,9 +40,9 @@ final class N1 extends AbstractA {
 
   protected final String b(WURFLRequest paramWURFLRequest) {
     String str = paramWURFLRequest.getNormalizedDeviceUserAgent();
-    for (Map.Entry entry : c.entrySet()) {
-      if (str.contains((CharSequence)entry.getKey()))
-        return (String)entry.getValue();
+    for (Map.Entry<String, String> entry : c.entrySet()) {
+      if (str.contains(entry.getKey()))
+        return entry.getValue();
     }
     return b;
   }

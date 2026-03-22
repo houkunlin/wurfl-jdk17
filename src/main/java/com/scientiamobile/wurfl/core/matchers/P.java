@@ -21,15 +21,15 @@ final class p extends AbstractA {
 
   private static String f = "generic_ms_phone_os10_desktopmode";
 
-  private static final Map g;
+  private static final Map<String, String[]> g = new HashMap<>();
 
   public p(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(g.values());
+  protected final Set<String> a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(g.values());
     hashSet.add(c);
     hashSet.add(d);
     hashSet.add(e);

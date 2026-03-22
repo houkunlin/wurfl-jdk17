@@ -71,12 +71,12 @@ public class VirtualCapabilityHandler {
     return a.keySet();
   }
 
-  public static Set getMandatoryCapabilities() {
-    return new HashSet(Arrays.asList((Object[])VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
+  public static Set<String> getMandatoryCapabilities() {
+    return new HashSet<>(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
   }
 
   static {
-    (a = new ConcurrentHashMap<Object, Object>()).put("is_android", new IsAndroidOs());
+    (a = new ConcurrentHashMap<>()).put("is_android", new IsAndroidOs());
     a.put("is_ios", new IsIOs());
     a.put("is_windows_phone", new IsWindowsPhone());
     a.put("is_full_desktop", new IsFullDesktop());

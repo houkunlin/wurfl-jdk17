@@ -18,7 +18,7 @@ final class w extends AbstractA {
 
   private static String d = "rim_playbook_ver1";
 
-  private static final Map e;
+  private static final Map<String, String> e = new LinkedHashMap<>();
 
   private static final Pattern f = Pattern.compile("BlackBerry[^/\\s]+/(\\d\\.\\d)");
 
@@ -26,9 +26,9 @@ final class w extends AbstractA {
     super(paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(e.values());
+  protected final Set<String >a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(e.values());
     hashSet.add("generic_mobile");
     hashSet.add(d);
     return hashSet;
@@ -65,9 +65,9 @@ final class w extends AbstractA {
     if (str1.contains("PlayBook"))
       return d;
     if (str2 != null)
-      for (Map.Entry entry : e.entrySet()) {
-        if (str2.contains((CharSequence)entry.getKey()))
-          return (String)entry.getValue();
+      for (Map.Entry<String, String> entry : e.entrySet()) {
+        if (str2.contains(entry.getKey()))
+          return entry.getValue();
       }
     return "generic";
   }

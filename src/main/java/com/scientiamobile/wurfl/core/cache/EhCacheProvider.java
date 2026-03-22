@@ -4,11 +4,11 @@ import com.scientiamobile.wurfl.core.InternalDevice;
 import org.ehcache.Cache;
 
 public class EhCacheProvider implements CacheProvider {
-  private Cache a;
+  private Cache<String, InternalDevice> a;
 
   public EhCacheProvider() {}
 
-  public EhCacheProvider(Cache paramCache) {
+  public EhCacheProvider(Cache<String, InternalDevice> paramCache) {
     this.a = paramCache;
   }
 
@@ -16,17 +16,17 @@ public class EhCacheProvider implements CacheProvider {
     this(paramEhCacheManager.getDefaultCache());
   }
 
-  public Cache getCache() {
+  public Cache<String, InternalDevice> getCache() {
     return this.a;
   }
 
-  public void setCache(Cache paramCache) {
+  public void setCache(Cache<String, InternalDevice> paramCache) {
     this.a = paramCache;
   }
 
   public void clear() {
     // logger.info("Cache size: " + this.a.getSize());
-    this.a.removeAll();
+    this.a.clear();
     // logger.info("Cache erased. size: " + this.a.getSize());
   }
 

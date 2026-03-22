@@ -13,17 +13,17 @@ import java.util.regex.Pattern;
 public class TizenMatcher extends AbstractA {
   private static final Pattern b = Pattern.compile("Tizen (\\d+?\\.\\d+?)");
 
-  private static final List c = new ArrayList();
+  private static final List<String> c = new ArrayList<>();
 
-  private static final List d = new ArrayList();
+  private static final List<String> d = new ArrayList<>();
 
   public TizenMatcher(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(c);
+  protected final Set<String> a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(c);
     hashSet.add("generic_tizen");
     return hashSet;
   }

@@ -11,15 +11,15 @@ import java.util.Set;
 final class P1 extends AbstractA {
   private static String b = "generic_lguplus";
 
-  private static final Map c;
+  private static final Map<String, String[]> c = new LinkedHashMap<>();
 
   public P1(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(c.keySet());
+  protected final Set<String> a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(c.keySet());
     hashSet.add(b);
     return hashSet;
   }

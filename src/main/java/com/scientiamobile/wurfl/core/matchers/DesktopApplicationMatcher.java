@@ -3,16 +3,17 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 
 public final class DesktopApplicationMatcher extends AbstractA {
   private static String b = "ms_office";
 
-  private static final Set c = new HashSet();
+  private static final Set<String> c = new HashSet<>();
 
   private static final Pattern d = Pattern.compile("MSOffice ([0-9]+)");
 
@@ -22,9 +23,9 @@ public final class DesktopApplicationMatcher extends AbstractA {
     super(paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(c);
+  protected final Set<String> a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(c);
     hashSet.add("generic_web_browser");
     return hashSet;
   }

@@ -1,12 +1,13 @@
 package com.scientiamobile.wurfl.core.cache;
 
 
+import com.scientiamobile.wurfl.core.InternalDevice;
 import org.ehcache.Cache;
 
 public interface EhCacheManager {
-  Cache getDefaultCache();
+  Cache<String, InternalDevice> getDefaultCache();
 
-  Cache getCache(String paramString);
+  Cache<String, InternalDevice> getCache(String paramString);
 
   void shutdown();
 }

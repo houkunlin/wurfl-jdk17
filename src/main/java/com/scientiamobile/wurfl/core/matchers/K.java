@@ -12,15 +12,15 @@ import java.util.Set;
 final class k extends AbstractA {
   private static String b = "generic_android_ver2_0_ucweb";
 
-  private static Map c;
+  private static final Map<String, String> c = new HashMap<>();
 
   public k(WURFLModel paramWURFLModel) {
     super(paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(c.values());
+  protected final Set<String> a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(c.values());
     hashSet.add(b);
     return hashSet;
   }

@@ -15,17 +15,17 @@ final class u extends AbstractA {
 
   private static String d = "generic_android_ver1_5_tablet";
 
-  private static final Set e = new HashSet();
+  private static final Set<String> e = new HashSet<>();
 
-  private static final Set f = new HashSet();
+  private static final Set<String >f = new HashSet<>();
 
   public u(UserAgentNormalizer paramUserAgentNormalizer, WURFLModel paramWURFLModel) {
     super(paramUserAgentNormalizer, paramWURFLModel);
   }
 
-  protected final Set a() {
-    HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(e);
+  protected final Set<String> a() {
+    HashSet<String> hashSet;
+    (hashSet = new HashSet<>()).addAll(e);
     hashSet.addAll(f);
     hashSet.add(b);
     return hashSet;
@@ -44,7 +44,7 @@ final class u extends AbstractA {
     if (!StringMatchUtils.startsWithAnyOf(paramString, new String[] { "Mozilla", "Dalvik" }))
       return null;
     String str;
-    if ((str = UserAgentUtils.getAndroidModel(paramString)) == null || str.length() == 0) {
+    if ((str = UserAgentUtils.getAndroidModel(paramString)) == null || str.isEmpty()) {
       int k = paramString.length();
       return StringMatchUtils.risMatch(getFilter().a().a(), paramString, k);
     }
