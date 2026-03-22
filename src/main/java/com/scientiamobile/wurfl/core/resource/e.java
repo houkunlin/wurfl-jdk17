@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 final class e {
   private static final Logger a;
-  
+
   public static ModelDevices a(ModelDevices paramModelDevices1, ModelDevices paramModelDevices2) {
     ModelDevices modelDevices = new ModelDevices(paramModelDevices1);
     for (ModelDevice modelDevice : paramModelDevices2) {
@@ -24,17 +24,17 @@ final class e {
         (hashMap2 = new HashMap<Object, Object>()).putAll(map1);
         hashMap2.putAll(map2);
         if (!modelDevice2.getUserAgent().equals(modelDevice.getUserAgent()))
-          throw new UserAgentOverrideException(modelDevice, modelDevice2.getUserAgent(), modelDevice.getUserAgent()); 
+          throw new UserAgentOverrideException(modelDevice, modelDevice2.getUserAgent(), modelDevice.getUserAgent());
         if ((modelDevice = (ModelDevice)((modelDevice2 == null || modelDevice2.getUserAgent() == null) ? modelDevice : (new ModelDevice$Builder(modelDevice.getID(), modelDevice.getUserAgent(), modelDevice2.getFallBack())).setActualDeviceRoot(modelDevice2.isActualDeviceRoot()).setCapabilitiesByGroup(hashMap2).setCapabilities(hashMap1).build())) != null)
-          modelDevices.remove(modelDevice1); 
-      } 
-      if (!b && modelDevice == null)
-        throw new AssertionError("patchedDevice is null"); 
+          modelDevices.remove(modelDevice1);
+      }
+      if (modelDevice == null)
+        throw new AssertionError("patchedDevice is null");
       modelDevices.add(modelDevice);
-    } 
+    }
     return modelDevices;
   }
-  
+
   static {
     a = LoggerFactory.getLogger(e.class);
   }

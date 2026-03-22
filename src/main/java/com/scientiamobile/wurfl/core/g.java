@@ -8,9 +8,10 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.resource.ModelDeviceWithAncestorId;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityHandler;
-import java.util.Set;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
+
+import java.util.Set;
 
 class g implements DeviceProvider {
   private final MarkupResolver a;
@@ -21,7 +22,7 @@ class g implements DeviceProvider {
 
   public g(WURFLModel paramWURFLModel, CapabilitiesHolderFactory paramCapabilitiesHolderFactory, MarkupResolver paramMarkupResolver) {
     LoggerFactory.getLogger(g.class);
-    if (!d && paramWURFLModel == null)
+    if (paramWURFLModel == null)
       throw new AssertionError();
     this.c = paramWURFLModel;
     Validate.notNull(paramCapabilitiesHolderFactory, "capabilitiesHolderFactory must be not null.");
@@ -46,7 +47,7 @@ class g implements DeviceProvider {
   public InternalDevice getInternalDevice(String paramString) {
     Validate.notNull(paramString, "The deviceId must be not null");
     ModelDeviceWithAncestorId modelDeviceWithAncestorId = a(paramString);
-    if (!d && modelDeviceWithAncestorId.getModelDevice() == null)
+    if (modelDeviceWithAncestorId.getModelDevice() == null)
       throw new AssertionError("modelDevice is null");
     ModelDevice modelDevice = modelDeviceWithAncestorId.getModelDevice();
     a a = this.b.create(modelDevice);
@@ -62,7 +63,7 @@ class g implements DeviceProvider {
     String str;
     Validate.notEmpty(str = paramInternalDevice.getId(), "The id must be not null String");
     ModelDeviceWithAncestorId modelDeviceWithAncestorId = a(str);
-    if (!d && modelDeviceWithAncestorId.getModelDevice() == null)
+    if (modelDeviceWithAncestorId.getModelDevice() == null)
       throw new AssertionError("modelDevice is null");
     return new DefaultDevice(paramInternalDevice, this.a, paramMatchType, paramString1, paramString2, paramWURFLRequest.getNormalizedDeviceUserAgent(), new VirtualCapabilityHandler(paramWURFLRequest));
   }

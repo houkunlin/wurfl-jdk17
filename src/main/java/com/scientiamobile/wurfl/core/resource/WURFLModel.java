@@ -5,47 +5,47 @@ import java.util.Set;
 
 public interface WURFLModel {
   String getVersion();
-  
+
   ModelDevice getDeviceById(String paramString);
-  
+
   boolean isDeviceDefined(String paramString);
-  
+
   Set getAllDevices();
-  
+
   List getAllDevicesAsList();
-  
+
   Set getAllDevicesId();
-  
-  Set getDevices(Set paramSet);
-  
+
+  Set<ModelDevice> getDevices(Set<String> paramSet);
+
   List getDeviceHierarchy(ModelDevice paramModelDevice);
-  
+
   ModelDevice getDeviceFallback(ModelDevice paramModelDevice);
-  
+
   ModelDevice getDeviceAncestor(ModelDevice paramModelDevice);
-  
+
   int size();
-  
+
   Integer getCapabilityCount();
-  
+
   void reload(WURFLResource paramWURFLResource, WURFLResources paramWURFLResources, String... paramVarArgs);
-  
+
   void applyPatches(WURFLResources paramWURFLResources, String... paramVarArgs);
-  
+
   Set getAllCapabilities();
-  
+
   boolean isCapabilityDefined(String paramString);
-  
+
   String getGroupByCapability(String paramString);
-  
+
   ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice paramModelDevice, String paramString);
-  
+
   Set getAllGroups();
-  
+
   boolean isGroupDefined(String paramString);
-  
+
   Set getCapabilitiesForGroup(String paramString);
-  
+
   Set getRootDevicesIds();
 }
 
