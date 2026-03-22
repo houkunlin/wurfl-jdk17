@@ -7,200 +7,192 @@ import com.scientiamobile.wurfl.core.matchers.MatchType;
 import com.scientiamobile.wurfl.core.matchers.MatcherManager;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.WURFLRequestFactoryWithPriority;
-import com.scientiamobile.wurfl.core.resource.ModelDevice;
-import com.scientiamobile.wurfl.core.resource.WURFLModel;
-import com.scientiamobile.wurfl.core.resource.WURFLResource;
-import com.scientiamobile.wurfl.core.resource.WURFLResources;
-import com.scientiamobile.wurfl.core.resource.XmlFileLoader;
-import java.io.IOException;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import com.scientiamobile.wurfl.core.resource.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 class j implements m {
   private final Logger a = LoggerFactory.getLogger(getClass());
 
-  private WURFLModel b;
+  private WURFLModel wurflModel;
 
-  private ReentrantReadWriteLock c;
+  private ReentrantReadWriteLock reentrantReadWriteLock;
 
-  private CacheProvider d;
+  private volatile CacheProvider cacheProvider;
 
-  private MatcherManager e;
+  private MatcherManager matcherManager;
 
-  private DeviceProvider f;
+  private DeviceProvider deviceProvider;
 
-  private WURFLRequestFactoryWithPriority g;
+  private WURFLRequestFactoryWithPriority wurflRequestFactoryWithPriority;
 
-  private EngineTarget h;
+  private EngineTarget engineTarget;
 
-  private final XmlFileLoader i = new XmlFileLoader("classpath:/META-INF/wurfl-config.xml", new k(this, (byte)0));
+  private final XmlFileLoader xmlFileLoader = new XmlFileLoader("classpath:/META-INF/wurfl-config.xml", new k(this, (byte) 0));
 
-  private boolean j = false;
+  private boolean init = false;
 
   public j(WURFLModel paramWURFLModel, MatcherManager paramMatcherManager, DeviceProvider paramDeviceProvider, WURFLRequestFactoryWithPriority paramWURFLRequestFactoryWithPriority, EngineTarget paramEngineTarget) {
-    this.b = paramWURFLModel;
-    this.e = paramMatcherManager;
-    this.f = paramDeviceProvider;
-    this.g = paramWURFLRequestFactoryWithPriority;
+    this.wurflModel = paramWURFLModel;
+    this.matcherManager = paramMatcherManager;
+    this.deviceProvider = paramDeviceProvider;
+    this.wurflRequestFactoryWithPriority = paramWURFLRequestFactoryWithPriority;
     if (paramEngineTarget == null) {
       try {
-        if (!this.j) {
-          this.i.parseFile();
-          this.j = true;
+        if (!this.init) {
+          this.xmlFileLoader.parseFile();
+          this.init = true;
         }
       } catch (IOException iOException) {
         this.a.error(iOException.getMessage(), iOException);
         throw new WURFLRuntimeException(iOException);
       }
     } else {
-      this.h = paramEngineTarget;
+      this.engineTarget = paramEngineTarget;
     }
-    this.c = new ReentrantReadWriteLock();
-    this.a.info(getClass().getSimpleName() + " created");
+    this.reentrantReadWriteLock = new ReentrantReadWriteLock();
+    this.a.info("{} created", getClass().getSimpleName());
   }
 
   public j(WURFLModel paramWURFLModel, MatcherManager paramMatcherManager, DeviceProvider paramDeviceProvider, WURFLRequestFactoryWithPriority paramWURFLRequestFactoryWithPriority) {
     this(paramWURFLModel, paramMatcherManager, paramDeviceProvider, paramWURFLRequestFactoryWithPriority, null);
   }
 
-  public final void a(CacheProvider paramCacheProvider) {
-    this.a.info("feeding " + paramCacheProvider);
-    this.d = paramCacheProvider;
+  public final void getDeviceForRequest(CacheProvider paramCacheProvider) {
+    this.a.info("feeding {}", paramCacheProvider);
+    this.cacheProvider = paramCacheProvider;
   }
 
-  public final Device a(WURFLRequest paramWURFLRequest) {
-    this.c.readLock().lock();
+  public final Device getDeviceForRequest(WURFLRequest paramWURFLRequest) {
+    this.reentrantReadWriteLock.readLock().lock();
     try {
       DeviceInfo deviceInfo;
       Validate.notNull(paramWURFLRequest, "The request is null");
       c();
       InternalDevice internalDevice;
-      if ((internalDevice = this.d.getDevice(paramWURFLRequest.getOriginalUserAgent())) != null) {
+      if ((internalDevice = this.cacheProvider.getDevice(paramWURFLRequest.getOriginalUserAgent())) != null) {
         deviceInfo = new DeviceInfo(internalDevice.getId(), MatchType.cached, "Cache", "Cache", paramWURFLRequest.getOriginalUserAgent(), "");
       } else {
         paramWURFLRequest.performGenericNormalization();
         if (EngineTarget.fastDesktopBrowserMatch.equals(paramWURFLRequest.getEngineTarget()) && paramWURFLRequest._internalIsDesktopBrowserHeavyDutyAnalysis()) {
-          internalDevice = this.f.getInternalDevice("generic_web_browser");
-          this.d.putDevice(paramWURFLRequest.getOriginalUserAgent(), internalDevice);
-          device = this.f.buildDevice(internalDevice, paramWURFLRequest, MatchType.fastDesktopBrowser, "", "");
-          return device;
+          internalDevice = this.deviceProvider.getInternalDevice("generic_web_browser");
+          this.cacheProvider.putDevice(paramWURFLRequest.getOriginalUserAgent(), internalDevice);
+          return this.deviceProvider.buildDevice(internalDevice, paramWURFLRequest, MatchType.fastDesktopBrowser, "", "");
         }
-        deviceInfo = this.e.matchRequest((WURFLRequest)device);
-        if ((internalDevice = this.d.getInternalDeviceFromDeviceId(deviceInfo.getId())) == null)
-          internalDevice = this.f.getInternalDevice(deviceInfo.getId());
-        this.d.putDevice(device.getOriginalUserAgent(), internalDevice);
+        deviceInfo = this.matcherManager.matchRequest(paramWURFLRequest);
+        if ((internalDevice = this.cacheProvider.getInternalDeviceFromDeviceId(deviceInfo.getId())) == null)
+          internalDevice = this.deviceProvider.getInternalDevice(deviceInfo.getId());
+        this.cacheProvider.putDevice(paramWURFLRequest.getOriginalUserAgent(), internalDevice);
       }
       if (internalDevice == null)
         throw new AssertionError();
-      Device device = this.f.buildDevice(internalDevice, (WURFLRequest)device, deviceInfo.getMatchType(), deviceInfo.a(), deviceInfo.b());
-      return device;
+      return this.deviceProvider.buildDevice(internalDevice, paramWURFLRequest, deviceInfo.getMatchType(), deviceInfo.a(), deviceInfo.b());
     } finally {
-      this.c.readLock().unlock();
+      this.reentrantReadWriteLock.readLock().unlock();
     }
   }
 
-  public final Device a(HttpServletRequest paramHttpServletRequest) {
+  public final Device getDeviceForRequest(HttpServletRequest paramHttpServletRequest) {
     Validate.notNull(paramHttpServletRequest, "The request must be not null");
-    WURFLRequest wURFLRequest = this.g.createRequest(paramHttpServletRequest, this.h);
-    return a(wURFLRequest);
+    WURFLRequest wURFLRequest = this.wurflRequestFactoryWithPriority.createRequest(paramHttpServletRequest, this.engineTarget);
+    return getDeviceForRequest(wURFLRequest);
   }
 
-  public final Device a(String paramString) {
+  public final Device getDeviceForRequest(String paramString) {
     Validate.notNull(paramString, "The userAgent must be not null");
-    WURFLRequest wURFLRequest = this.g.createRequest(paramString, this.h);
-    return a(wURFLRequest);
+    WURFLRequest wURFLRequest = this.wurflRequestFactoryWithPriority.createRequest(paramString, this.engineTarget);
+    return getDeviceForRequest(wURFLRequest);
   }
 
   private void c() {
-    if (this.d == null)
+    if (this.cacheProvider == null)
       synchronized (this) {
-        if (this.d == null) {
+        if (this.cacheProvider == null) {
           this.a.info("no Cache Provider, using default (DoubleLRUMapCacheProvider)");
-          this.d = (CacheProvider)new DoubleLRUMapCacheProvider();
+          this.cacheProvider = new DoubleLRUMapCacheProvider();
         }
-        return;
       }
   }
 
-  public final EngineTarget a() {
-    return this.h;
+  public final EngineTarget getDeviceForRequest() {
+    return this.engineTarget;
   }
 
-  public final void a(EngineTarget paramEngineTarget) {
+  public final void getDeviceForRequest(EngineTarget paramEngineTarget) {
     if (paramEngineTarget != EngineTarget.fastDesktopBrowserMatch) {
-      this.h = EngineTarget.defaultTarget;
+      this.engineTarget = EngineTarget.defaultTarget;
       return;
     }
-    this.h = paramEngineTarget;
+    this.engineTarget = paramEngineTarget;
   }
 
   public final UserAgentPriority b() {
-    return this.g.getUserAgentPriority();
+    return this.wurflRequestFactoryWithPriority.getUserAgentPriority();
   }
 
-  public final void a(UserAgentPriority paramUserAgentPriority) {
-    this.g.setUserAgentPriority(paramUserAgentPriority);
+  public final void getDeviceForRequest(UserAgentPriority paramUserAgentPriority) {
+    this.wurflRequestFactoryWithPriority.setUserAgentPriority(paramUserAgentPriority);
   }
 
   public final Device b(String paramString) {
-    InternalDevice internalDevice = this.f.getInternalDevice(paramString);
+    InternalDevice internalDevice = this.deviceProvider.getInternalDevice(paramString);
     ModelDevice modelDevice;
     for (modelDevice = ((h)internalDevice).a(); modelDevice != null && modelDevice.getUserAgent().contains("DO_NOT_MATCH"); modelDevice = modelDevice.getAncestor());
     String str;
-    WURFLRequest wURFLRequest = this.g.createRequest(!(str = (internalDevice = internalDevice).getWURFLUserAgent()).startsWith("DO_NOT_MATCH") ? str : ((modelDevice != null && modelDevice.getUserAgent() != null) ? modelDevice.getUserAgent() : ""), this.h);
-    return a(paramString, wURFLRequest);
+    WURFLRequest wURFLRequest = this.wurflRequestFactoryWithPriority.createRequest(!(str = internalDevice.getWURFLUserAgent()).startsWith("DO_NOT_MATCH") ? str : ((modelDevice != null && modelDevice.getUserAgent() != null) ? modelDevice.getUserAgent() : ""), this.engineTarget);
+    return getDeviceForRequest(paramString, wURFLRequest);
   }
 
-  public final Device a(String paramString, HttpServletRequest paramHttpServletRequest) {
+  public final Device getDeviceForRequest(String paramString, HttpServletRequest paramHttpServletRequest) {
     Validate.notNull(paramHttpServletRequest, "The request must be not null");
-    WURFLRequest wURFLRequest = this.g.createRequest(paramHttpServletRequest, this.h);
-    return a(paramString, wURFLRequest);
+    WURFLRequest wURFLRequest = this.wurflRequestFactoryWithPriority.createRequest(paramHttpServletRequest, this.engineTarget);
+    return getDeviceForRequest(paramString, wURFLRequest);
   }
 
-  public final Device a(String paramString, WURFLRequest paramWURFLRequest) {
+  public final Device getDeviceForRequest(String paramString, WURFLRequest paramWURFLRequest) {
     Validate.notNull(paramWURFLRequest, "The request must be not null");
     paramWURFLRequest.performGenericNormalization();
-    return this.f.buildDevice(this.f.getInternalDevice(paramString), paramWURFLRequest, MatchType.none, "Utils", "Utils");
+    return this.deviceProvider.buildDevice(this.deviceProvider.getInternalDevice(paramString), paramWURFLRequest, MatchType.none, "Utils", "Utils");
   }
 
-  public final void a(WURFLResource paramWURFLResource, WURFLResources paramWURFLResources, String... paramVarArgs) {
-    this.c.writeLock().lock();
+  public final void getDeviceForRequest(WURFLResource paramWURFLResource, WURFLResources paramWURFLResources, String... paramVarArgs) {
+    this.reentrantReadWriteLock.writeLock().lock();
     this.a.info("reloading service");
     try {
-      this.b.reload(paramWURFLResource, paramWURFLResources, paramVarArgs);
-      this.e.reloadModel(this.b);
+      this.wurflModel.reload(paramWURFLResource, paramWURFLResources, paramVarArgs);
+      this.matcherManager.reloadModel(this.wurflModel);
       d();
-      return;
     } finally {
-      this.c.writeLock().unlock();
+      this.reentrantReadWriteLock.writeLock().unlock();
     }
   }
 
   private void d() {
     this.a.info("about to clear cache provider");
     c();
-    this.d.clear();
+    this.cacheProvider.clear();
   }
 
-  public final void a(WURFLResources paramWURFLResources, String... paramVarArgs) {
-    this.a.info("before applying patches " + paramWURFLResources);
-    this.c.writeLock().lock();
+  public final void getDeviceForRequest(WURFLResources paramWURFLResources, String... paramVarArgs) {
+      this.a.info("before applying patches {}", paramWURFLResources);
+    this.reentrantReadWriteLock.writeLock().lock();
     try {
-      this.b.applyPatches(paramWURFLResources, paramVarArgs);
-      this.e.reloadModel(this.b);
+      this.wurflModel.applyPatches(paramWURFLResources, paramVarArgs);
+      this.matcherManager.reloadModel(this.wurflModel);
       d();
-      this.a.info("finished applying patches " + paramWURFLResources);
-      return;
+        this.a.info("finished applying patches {}", paramWURFLResources);
     } finally {
-      this.c.writeLock().unlock();
+      this.reentrantReadWriteLock.writeLock().unlock();
     }
   }
 
-  public final void a(WURFLRequestFactoryWithPriority paramWURFLRequestFactoryWithPriority) {
-    this.g = paramWURFLRequestFactoryWithPriority;
+  public final void getDeviceForRequest(WURFLRequestFactoryWithPriority paramWURFLRequestFactoryWithPriority) {
+    this.wurflRequestFactoryWithPriority = paramWURFLRequestFactoryWithPriority;
   }
 }
 

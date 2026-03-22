@@ -8,33 +8,33 @@ import com.scientiamobile.wurfl.core.resource.WURFLResources;
 import jakarta.servlet.http.HttpServletRequest;
 
 interface m {
-  Device a(HttpServletRequest paramHttpServletRequest);
-  
-  Device a(WURFLRequest paramWURFLRequest);
-  
-  Device a(String paramString);
-  
-  EngineTarget a();
-  
-  void a(EngineTarget paramEngineTarget);
-  
+  Device getDeviceForRequest(HttpServletRequest paramHttpServletRequest);
+
+  Device getDeviceForRequest(WURFLRequest paramWURFLRequest);
+
+  Device getDeviceForRequest(String paramString);
+
+  EngineTarget getDeviceForRequest();
+
+  void getDeviceForRequest(EngineTarget paramEngineTarget);
+
   UserAgentPriority b();
-  
-  void a(UserAgentPriority paramUserAgentPriority);
-  
-  void a(CacheProvider paramCacheProvider);
-  
-  void a(WURFLResource paramWURFLResource, WURFLResources paramWURFLResources, String... paramVarArgs);
-  
-  void a(WURFLResources paramWURFLResources, String... paramVarArgs);
-  
-  void a(WURFLRequestFactoryWithPriority paramWURFLRequestFactoryWithPriority);
-  
+
+  void getDeviceForRequest(UserAgentPriority paramUserAgentPriority);
+
+  void getDeviceForRequest(CacheProvider paramCacheProvider);
+
+  void getDeviceForRequest(WURFLResource paramWURFLResource, WURFLResources paramWURFLResources, String... paramVarArgs);
+
+  void getDeviceForRequest(WURFLResources paramWURFLResources, String... paramVarArgs);
+
+  void getDeviceForRequest(WURFLRequestFactoryWithPriority paramWURFLRequestFactoryWithPriority);
+
   Device b(String paramString);
-  
-  Device a(String paramString, HttpServletRequest paramHttpServletRequest);
-  
-  Device a(String paramString, WURFLRequest paramWURFLRequest);
+
+  Device getDeviceForRequest(String paramString, HttpServletRequest paramHttpServletRequest);
+
+  Device getDeviceForRequest(String paramString, WURFLRequest paramWURFLRequest);
 }
 
 

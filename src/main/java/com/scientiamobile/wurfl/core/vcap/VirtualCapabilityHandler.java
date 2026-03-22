@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VirtualCapabilityHandler {
-  private static final Map a;
+  private static final Map<String, VirtualCapabilityEvaluator> a = new ConcurrentHashMap<>();
 
   private WURFLRequest b;
 
@@ -67,7 +67,7 @@ public class VirtualCapabilityHandler {
     return hashMap;
   }
 
-  public static Set getAllVirtualCapabilities() {
+  public static Set<String> getAllVirtualCapabilities() {
     return a.keySet();
   }
 

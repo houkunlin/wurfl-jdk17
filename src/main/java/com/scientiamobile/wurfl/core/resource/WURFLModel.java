@@ -32,7 +32,7 @@ public interface WURFLModel {
 
   void applyPatches(WURFLResources paramWURFLResources, String... paramVarArgs);
 
-  Set getAllCapabilities();
+  Set<String> getAllCapabilities();
 
   boolean isCapabilityDefined(String paramString);
 

@@ -16,7 +16,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class CheckConnection extends Observable {
   private final transient Logger a = LoggerFactory.getLogger(getClass());
 
-  private final List b = new ArrayList<>();
+  private final List<Observer> b = new ArrayList<>();
 
   private String c;
 
@@ -80,7 +80,6 @@ public class CheckConnection extends Observable {
     ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     try {
       scheduledExecutorService.execute(new ConnectivityChecker(this));
-      return;
     } finally {
       scheduledExecutorService.shutdown();
     }
@@ -91,11 +90,10 @@ public class CheckConnection extends Observable {
   }
 
   public void notifyObservers(Object paramObject) {
-    Iterator<Observer> iterator = this.b.iterator();
-    while (iterator.hasNext()) {
-      ((Observer)iterator.next()).update(this, paramObject);
-      this.a.info("observer notified");
-    }
+      for (Observer observer : this.b) {
+          observer.update(this, paramObject);
+          this.a.info("observer notified");
+      }
   }
 
   public String getApiName() {

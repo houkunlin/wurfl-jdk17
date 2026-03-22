@@ -6,10 +6,10 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.Set;
 
-class e implements CapabilitiesHolderFactory {
+class CapabilitiesHolderFactoryImpl implements CapabilitiesHolderFactory {
   private WURFLModel a;
 
-  public e(WURFLModel paramWURFLModel) {
+  public CapabilitiesHolderFactoryImpl(WURFLModel paramWURFLModel) {
     if (paramWURFLModel == null)
       throw new AssertionError();
     this.a = paramWURFLModel;

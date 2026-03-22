@@ -29,7 +29,7 @@ final class ConnectivityChecker implements Runnable {
             connection.setReadTimeout(120000);
 
             // Prepare request body
-            byte[] requestBody = CheckConnection.a(checkConnection).getBytes("UTF-8");
+            byte[] requestBody = checkConnection.a(checkConnection).getBytes("UTF-8");
             connection.setRequestProperty("charset", "UTF-8");
             connection.setRequestProperty("Content-Length", String.valueOf(requestBody.length));
             connection.setRequestProperty("Content-Type", "application/json");

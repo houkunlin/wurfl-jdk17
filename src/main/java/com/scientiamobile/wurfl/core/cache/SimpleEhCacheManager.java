@@ -3,6 +3,7 @@ package com.scientiamobile.wurfl.core.cache;
 import com.scientiamobile.wurfl.core.InternalDevice;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
+import org.ehcache.core.EhcacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +12,7 @@ public class SimpleEhCacheManager implements EhCacheManager {
 
   private final Logger a = LoggerFactory.getLogger(getClass());
 
-  private final CacheManager b = new CacheManager();
+  private final CacheManager b = new EhcacheManager();
 
   public Cache<String, InternalDevice> getDefaultCache() {
     return getCache("com.scientiamobile.wurfl.core.InternalDevice");

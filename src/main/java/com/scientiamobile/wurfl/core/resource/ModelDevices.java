@@ -29,13 +29,13 @@ public class ModelDevices implements Serializable {
     this.b = (LinkedList)paramModelDevices.getDeviceIdsByInsertionOrder();
   }
 
-  public ModelDevices(Map paramMap) {
+  public ModelDevices(Map<String, ModelDevice> paramMap) {
     Validate.notNull(paramMap);
     Validate.noNullElements(paramMap.values());
     this.a.putAll(paramMap);
   }
 
-  public ModelDevices(Collection paramCollection) {
+  public ModelDevices(Collection<ModelDevice> paramCollection) {
     Validate.notNull(paramCollection);
     Validate.noNullElements(paramCollection);
     for (ModelDevice modelDevice : paramCollection)

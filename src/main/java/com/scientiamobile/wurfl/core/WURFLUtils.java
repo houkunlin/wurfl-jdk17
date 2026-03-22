@@ -108,11 +108,11 @@ public class WURFLUtils {
   }
 
   public Device getDeviceById(String paramString, WURFLRequest paramWURFLRequest) {
-    return this.c.a(paramString, paramWURFLRequest);
+    return this.c.getDeviceForRequest(paramString, paramWURFLRequest);
   }
 
   public Device getDeviceById(String paramString, HttpServletRequest paramHttpServletRequest) {
-    return this.c.a(paramString, paramHttpServletRequest);
+    return this.c.getDeviceForRequest(paramString, paramHttpServletRequest);
   }
 
   public Set<Device> getAllDevices() {

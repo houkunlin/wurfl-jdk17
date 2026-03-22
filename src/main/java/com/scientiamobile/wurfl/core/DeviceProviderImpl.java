@@ -13,15 +13,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
-class g implements DeviceProvider {
+class DeviceProviderImpl implements DeviceProvider {
   private final MarkupResolver a;
 
   private final CapabilitiesHolderFactory b;
 
   private final WURFLModel c;
 
-  public g(WURFLModel paramWURFLModel, CapabilitiesHolderFactory paramCapabilitiesHolderFactory, MarkupResolver paramMarkupResolver) {
-    LoggerFactory.getLogger(g.class);
+  public DeviceProviderImpl(WURFLModel paramWURFLModel, CapabilitiesHolderFactory paramCapabilitiesHolderFactory, MarkupResolver paramMarkupResolver) {
+    LoggerFactory.getLogger(DeviceProviderImpl.class);
     if (paramWURFLModel == null)
       throw new AssertionError();
     this.c = paramWURFLModel;
@@ -40,7 +40,7 @@ class g implements DeviceProvider {
       throw new MandatoryCapabilityMissing(stringBuilder.substring(0, stringBuilder.length() - 2));
   }
 
-  public g(WURFLModel paramWURFLModel, CapabilitiesHolderFactory paramCapabilitiesHolderFactory) {
+  public DeviceProviderImpl(WURFLModel paramWURFLModel, CapabilitiesHolderFactory paramCapabilitiesHolderFactory) {
     this(paramWURFLModel, paramCapabilitiesHolderFactory, new i());
   }
 

@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 abstract class AbstractA implements A {
   protected static final Logger a;
 
-  private static final List b;
+  private static final List<t> b;
 
   private F1 c;
 
@@ -277,7 +277,7 @@ abstract class AbstractA implements A {
 
   static {
     a = LoggerFactory.getLogger(AbstractA.class);
-    (b = new ArrayList<t>()).add(new t("CoreMedia", "apple_iphone_coremedia_ver1"));
+    (b = new ArrayList<>()).add(new t("CoreMedia", "apple_iphone_coremedia_ver1"));
     b.add(new t("Windows CE", "generic_ms_mobile"));
     b.add(new t("UP.Browser/7.2", "opwv_v72_generic"));
     b.add(new t("UP.Browser/7", "opwv_v7_generic"));
