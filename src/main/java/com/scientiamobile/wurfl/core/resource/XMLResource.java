@@ -42,14 +42,14 @@ public class XMLResource implements WURFLResource {
     String[] arrayOfString = paramVarArgs;
     XMLResource xMLResource = this;
     if (arrayOfString != null) {
-      xMLResource.c = new HashSet(arrayOfString.length);
+      xMLResource.c = new HashSet<>(arrayOfString.length);
       int i = (arrayOfString = arrayOfString).length;
       for (byte b1 = 0; b1 < i; b1++) {
         String str = arrayOfString[b1];
         xMLResource.c.add(str);
       } 
     } else {
-      xMLResource.c = new HashSet(0);
+      xMLResource.c = new HashSet<>(0);
     } 
     c c = a(this.a.c());
     this.a.d();

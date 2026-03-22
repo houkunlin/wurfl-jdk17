@@ -30,7 +30,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
   private final Map c = CollectionFactory.createConcurrentHashMap();
 
-  private final Set d = new HashSet();
+  private final Set d = new HashSet<>();
 
   private ModelDevice e;
 
@@ -152,7 +152,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
   public Set getAllDevicesId() {
     HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(this.a.keySet());
+    (hashSet = new HashSet<>()).addAll(this.a.keySet());
     return hashSet;
   }
 
@@ -234,7 +234,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
   public Set getAllCapabilities() {
     ModelDevice modelDevice = a();
-    return new HashSet(modelDevice.getCapabilities().keySet());
+    return new HashSet<>(modelDevice.getCapabilities().keySet());
   }
 
   public Integer getCapabilityCount() {
@@ -272,7 +272,7 @@ public class DefaultWURFLModel implements WURFLModel {
   }
 
   public Set getRootDevicesIds() {
-    HashSet<String> hashSet = new HashSet();
+    HashSet<String> hashSet = new HashSet<>();
     Iterator<ModelDevice> iterator = this.a.values().iterator();
     while (iterator.hasNext()) {
       ModelDevice modelDevice;

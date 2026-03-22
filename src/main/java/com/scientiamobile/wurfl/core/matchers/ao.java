@@ -20,7 +20,7 @@ final class ao extends AbstractA {
 
   protected final Set a() {
     HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(b.values());
+    (hashSet = new HashSet<>()).addAll(b.values());
     return hashSet;
   }
 

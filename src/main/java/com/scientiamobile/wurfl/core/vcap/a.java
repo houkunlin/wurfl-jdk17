@@ -26,11 +26,11 @@ abstract class a implements VirtualCapabilityEvaluator, Serializable {
   
   protected static final Pattern f = Pattern.compile("Android [1234]\\.[123]");
   
-  static final Set g = new HashSet();
+  static final Set g = new HashSet<>();
   
-  private static Set a = new HashSet();
+  private static Set a = new HashSet<>();
   
-  static final Set h = new HashSet();
+  static final Set h = new HashSet<>();
   
   protected static final List i = new ArrayList();
   

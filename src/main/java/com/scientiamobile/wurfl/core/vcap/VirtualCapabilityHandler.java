@@ -57,7 +57,7 @@ public class VirtualCapabilityHandler {
   public Map getAllVirtualCapabilities(Device paramDevice) {
     HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
     HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(a.values());
+    (hashSet = new HashSet<>()).addAll(a.values());
     Iterator<?> iterator = hashSet.iterator();
     while (iterator.hasNext()) {
       VirtualCapabilityEvaluator virtualCapabilityEvaluator;

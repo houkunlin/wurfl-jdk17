@@ -27,7 +27,7 @@ abstract class AbstractA implements A {
   }
 
   protected Set a() {
-    return new HashSet();
+    return new HashSet<>();
   }
 
   private void a(WURFLModel paramWURFLModel) {

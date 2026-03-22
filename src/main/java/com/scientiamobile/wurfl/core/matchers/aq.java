@@ -20,7 +20,7 @@ final class aq extends AbstractA {
   }
 
   protected final Set a() {
-    return new HashSet(d);
+    return new HashSet<>(d);
   }
 
   public final boolean canHandle(WURFLRequest paramWURFLRequest) {

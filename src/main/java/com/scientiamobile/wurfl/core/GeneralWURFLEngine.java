@@ -241,7 +241,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
   
   public Set getAllVirtualCapabilities() {
     a();
-    return new HashSet(VirtualCapabilityHandler.getAllVirtualCapabilities());
+    return new HashSet<>(VirtualCapabilityHandler.getAllVirtualCapabilities());
   }
   
   private void a() {
@@ -427,12 +427,12 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
   
   public Set getAllMandatoryCapabilities() {
     a();
-    return new HashSet(Arrays.asList((Object[])VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
+    return new HashSet<>(Arrays.asList((Object[])VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
   }
   
   public Set getAllCapabilities() {
     a();
-    HashSet<String> hashSet = new HashSet();
+    HashSet<String> hashSet = new HashSet<>();
     Iterator<String> iterator = this.o.getAllCapabilities().iterator();
     while (iterator.hasNext()) {
       String str;

@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 final class d {
   public static void a(ModelDevices paramModelDevices) {
     HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
-    HashSet<String> hashSet = new HashSet();
+    HashSet<String> hashSet = new HashSet<>();
     ModelDevices modelDevices = paramModelDevices;
     if (modelDevices == null)
       throw new AssertionError("devices is null");

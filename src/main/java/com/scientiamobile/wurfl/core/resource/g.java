@@ -55,8 +55,8 @@ final class g extends DefaultHandler {
   
   public final void startDocument() {
     super.startDocument();
-    this.i = new HashSet();
-    this.j = new HashSet();
+    this.i = new HashSet<>();
+    this.j = new HashSet<>();
     this.m = new ModelDevices();
   }
   

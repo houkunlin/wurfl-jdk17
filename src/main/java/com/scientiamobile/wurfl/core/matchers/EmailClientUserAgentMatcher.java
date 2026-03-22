@@ -55,7 +55,7 @@ public class EmailClientUserAgentMatcher extends AbstractA {
 
   protected final Set a() {
     HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(g);
+    (hashSet = new HashSet<>()).addAll(g);
     return hashSet;
   }
 

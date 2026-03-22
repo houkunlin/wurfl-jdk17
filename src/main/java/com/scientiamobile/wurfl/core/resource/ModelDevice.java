@@ -1,16 +1,12 @@
 package com.scientiamobile.wurfl.core.resource;
 
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.io.Serializable;
+import java.util.*;
 
 public class ModelDevice implements Serializable {
   private static final long serialVersionUID = 10L;
@@ -23,9 +19,9 @@ public class ModelDevice implements Serializable {
 
   private boolean d;
 
-  private Map e;
+  private Map<String, String> e;
 
-  private Map f;
+  private Map<String, String> f;
 
   private ModelDevice g;
 
@@ -64,11 +60,11 @@ public class ModelDevice implements Serializable {
     return this.d;
   }
 
-  public Map getCapabilities() {
+  public Map<String, String> getCapabilities() {
     return this.e;
   }
 
-  public Map getGroupsByCapability() {
+  public Map<String, String> getGroupsByCapability() {
     return this.f;
   }
 
@@ -79,38 +75,37 @@ public class ModelDevice implements Serializable {
   public String getCapability(String paramString) {
     if (!defineCapability(paramString))
       throw new AssertionError(this.b + " do not define " + paramString);
-    return (String)this.e.get(paramString);
+    return this.e.get(paramString);
   }
 
   public boolean defineGroup(String paramString) {
     return this.f.containsValue(paramString);
   }
 
-  public Set getGroups() {
-    return new HashSet(this.f.values());
+  public Set<String> getGroups() {
+    return new HashSet<>(this.f.values());
   }
 
   public String getGroupForCapability(String paramString) {
     if (!defineCapability(paramString))
       throw new AssertionError();
-    return (String)this.f.get(paramString);
+    return this.f.get(paramString);
   }
 
-  public Set getCapabilitiesNamesForGroup(String paramString) {
+  public Set<String> getCapabilitiesNamesForGroup(String paramString) {
     if (!defineGroup(paramString))
       throw new AssertionError();
-    HashSet hashSet = new HashSet();
-    Iterator<Map.Entry> iterator = this.f.entrySet().iterator();
-    while (iterator.hasNext()) {
-      Map.Entry<?, String> entry;
-      if (((String)(entry = iterator.next()).getValue()).equals(paramString))
-        hashSet.add(entry.getKey());
-    }
+    HashSet<String> hashSet = new HashSet<>();
+      for (Map.Entry<String, String> stringStringEntry : this.f.entrySet()) {
+          Map.Entry<String, String> entry;
+          if (((entry = stringStringEntry).getValue()).equals(paramString))
+              hashSet.add(entry.getKey());
+      }
     return hashSet;
   }
 
-  public Map getCapabilitiesForGroup(String paramString) {
-    HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+  public Map<String, String> getCapabilitiesForGroup(String paramString) {
+    HashMap<String, String> hashMap = new HashMap<>();
     for (String str : getCapabilitiesNamesForGroup(paramString))
       hashMap.put(str, this.e.get(str));
     return hashMap;
