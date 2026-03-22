@@ -143,7 +143,7 @@ public class DefaultWURFLModel implements WURFLModel {
   }
 
   public List getAllDevicesAsList() {
-    ArrayList arrayList = new ArrayList(this.b.size());
+    ArrayList arrayList = new ArrayList<>(this.b.size());
     Iterator iterator = this.b.iterator();
     while (iterator.hasNext())
       arrayList.add(this.a.get(iterator.next()));

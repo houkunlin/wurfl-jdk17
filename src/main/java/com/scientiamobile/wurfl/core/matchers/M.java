@@ -35,7 +35,7 @@ final class m extends AbstractA {
 
   protected final Set a() {
     HashSet<?> hashSet;
-    (hashSet = new HashSet()).addAll(h);
+    (hashSet = new HashSet<>()).addAll(h);
     return hashSet;
   }
 

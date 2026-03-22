@@ -79,7 +79,7 @@ public class WURFLUpdater {
   }
   
   public List getLastPeriodicUpdateResults() {
-    return (this.e != null) ? this.e.getLastResults() : new ArrayList(0);
+    return (this.e != null) ? this.e.getLastResults() : new ArrayList<>(0);
   }
   
   public void setConnectionTimeout(Integer paramInteger) {

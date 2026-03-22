@@ -34,7 +34,7 @@ public class UpdatePipeline {
     this.c = paramString2;
     this.d = a(paramString1);
     Validator.checkFileExtensions(paramString1, paramString2);
-    this.a = new ArrayList();
+    this.a = new ArrayList<>();
     this.a.add(new CheckForNewWurflFileTask());
     this.a.add(new WurflBackupTask());
     this.a.add(new NewWurflFileDownloadTask());
@@ -47,7 +47,7 @@ public class UpdatePipeline {
     Validator.checkFileExtensions(paramString1, paramString2);
     String[] arrayOfString = paramArrayOfString;
     UpdatePipeline updatePipeline;
-    (updatePipeline = this).a = new ArrayList();
+    (updatePipeline = this).a = new ArrayList<>();
     updatePipeline.a.add(new CheckForNewWurflFileTask());
     updatePipeline.a.add(new WurflBackupTask());
     updatePipeline.a.add(new NewWurflFileDownloadTask());
@@ -58,7 +58,7 @@ public class UpdatePipeline {
     this.c = paramString2;
     this.d = a(paramString1);
     Validator.checkFileExtensions(paramString1, paramString2);
-    this.a = new ArrayList();
+    this.a = new ArrayList<>();
     this.a.add(new CheckForNewWurflFileTask(paramProxySettings));
     this.a.add(new WurflBackupTask());
     this.a.add(new NewWurflFileDownloadTask(paramProxySettings));
@@ -72,7 +72,7 @@ public class UpdatePipeline {
     ProxySettings proxySettings = paramProxySettings;
     String[] arrayOfString = paramArrayOfString;
     UpdatePipeline updatePipeline;
-    (updatePipeline = this).a = new ArrayList();
+    (updatePipeline = this).a = new ArrayList<>();
     updatePipeline.a.add(new CheckForNewWurflFileTask(proxySettings));
     updatePipeline.a.add(new WurflBackupTask());
     updatePipeline.a.add(new NewWurflFileDownloadTask(proxySettings));

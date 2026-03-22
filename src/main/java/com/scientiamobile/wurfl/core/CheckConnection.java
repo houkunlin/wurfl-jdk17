@@ -16,7 +16,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class CheckConnection extends Observable {
   private final transient Logger a = LoggerFactory.getLogger(getClass());
 
-  private final List b = new ArrayList();
+  private final List b = new ArrayList<>();
 
   private String c;
 

@@ -15,7 +15,7 @@ final class G1 {
   public G1(F1 paramF1) {
     LoggerFactory.getLogger(getClass());
     this.a = new TreeMap<Object, Object>();
-    this.b = new ArrayList();
+    this.b = new ArrayList<>();
     this.c = paramF1;
   }
 

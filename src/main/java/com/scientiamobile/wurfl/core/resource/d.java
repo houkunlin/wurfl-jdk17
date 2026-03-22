@@ -54,7 +54,7 @@ final class d {
       throw new AssertionError("devices is null");
     if (paramModelDevice.getID().equals("my_dev_id"))
       System.out.println("VERIFYING device with ID: " + paramModelDevice.getID());
-    ArrayList<ModelDevice> arrayList = new ArrayList(10);
+    ArrayList<ModelDevice> arrayList = new ArrayList<>(10);
     String str = paramModelDevice.getID();
     if (StringUtils.isEmpty(str))
       throw new AssertionError();

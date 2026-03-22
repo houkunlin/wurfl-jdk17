@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class UserAgentNormalizerChain implements UserAgentNormalizer {
   private final transient Logger a = LoggerFactory.getLogger(getClass());
   
-  private final List b = new ArrayList();
+  private final List b = new ArrayList<>();
   
   public UserAgentNormalizerChain() {}
   

@@ -17,7 +17,7 @@ final class a {
   private int[][] d;
   
   public a(List paramList) {
-    ArrayList<b> arrayList = new ArrayList();
+    ArrayList<b> arrayList = new ArrayList<>();
     b b = new b();
     Iterator<String> iterator = paramList.iterator();
     while (iterator.hasNext()) {

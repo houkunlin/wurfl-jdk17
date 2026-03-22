@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppName implements VirtualCapabilityEvaluator, Serializable {
-  private static final List a = new ArrayList();
+  private static final List a = new ArrayList<>();
   
-  private static final List b = new ArrayList();
+  private static final List b = new ArrayList<>();
   
   private static final long serialVersionUID = 7704959740704532442L;
   

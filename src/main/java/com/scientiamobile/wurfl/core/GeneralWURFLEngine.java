@@ -390,7 +390,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
   }
   
   public final void setCapabilityFilter(String... paramVarArgs) {
-    ArrayList<String> arrayList = new ArrayList(Arrays.asList((Object[])paramVarArgs));
+    ArrayList<String> arrayList = new ArrayList<>(Arrays.asList((Object[])paramVarArgs));
     for (String str : b) {
       if (!arrayList.contains(str))
         arrayList.add(str); 
@@ -400,7 +400,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
   
   public final void setCapabilityFilter(Collection<?> paramCollection) {
     if (paramCollection != null) {
-      paramCollection = new ArrayList(paramCollection);
+      paramCollection = new ArrayList<>(paramCollection);
       for (String str : b) {
         if (!paramCollection.contains(str))
           paramCollection.add(str); 

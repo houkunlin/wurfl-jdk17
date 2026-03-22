@@ -32,9 +32,9 @@ abstract class a implements VirtualCapabilityEvaluator, Serializable {
   
   static final Set h = new HashSet<>();
   
-  protected static final List i = new ArrayList();
+  protected static final List i = new ArrayList<>();
   
-  private static List b = new ArrayList(3);
+  private static List b = new ArrayList<>(3);
   
   private static final Pattern j = Pattern.compile("^(\\d+(?:\\.\\d+)?).*");
   

@@ -89,13 +89,13 @@ public final class UserAgentUtils {
   
   private static final Pattern E = Pattern.compile("(Microsoft; RM-.+?)_.*");
   
-  private static final List F = new ArrayList();
+  private static final List F = new ArrayList<>();
   
-  private static final List G = new ArrayList();
+  private static final List G = new ArrayList<>();
   
-  private static final List H = new ArrayList();
+  private static final List H = new ArrayList<>();
   
-  private static final List I = new ArrayList();
+  private static final List I = new ArrayList<>();
   
   private static final a J = new a(F);
   

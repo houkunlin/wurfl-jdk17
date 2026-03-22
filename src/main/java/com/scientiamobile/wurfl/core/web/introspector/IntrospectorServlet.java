@@ -156,7 +156,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         field4.setAccessible(true);
         MatcherManager matcherManager = (MatcherManager)field4.get(object);
         Set set = wURFLModel.getAllDevices();
-        ArrayList<String> arrayList2 = new ArrayList(set.size());
+        ArrayList<String> arrayList2 = new ArrayList<>(set.size());
         Iterator<ModelDevice> iterator = set.iterator();
         while (iterator.hasNext()) {
           ModelDevice modelDevice;
@@ -164,8 +164,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             arrayList2.add(modelDevice.getUserAgent());
         }
         field3.set(object, EngineTarget.accuracy);
-        arrayList = new ArrayList(arrayList2.size());
-        ArrayList<b> arrayList1 = new ArrayList(arrayList2.size());
+        arrayList = new ArrayList<>(arrayList2.size());
+        ArrayList<b> arrayList1 = new ArrayList<>(arrayList2.size());
         DefaultWURFLRequestFactory defaultWURFLRequestFactory = new DefaultWURFLRequestFactory();
         d.info("BUCKETS (1/3): start matching...");
         long l = System.currentTimeMillis();
