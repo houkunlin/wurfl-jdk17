@@ -1,0 +1,37 @@
+* text=auto eol=lf
+/gradlew text eol=lf
+*.bat text eol=crlf
+*.htm text
+*.html text
+*.css text
+*.js text
+*.ts text
+*.txt text
+*.md text
+*.xml text
+*.json text
+*.sql text
+*.yml text
+*.yaml text
+*.properties text
+*.php text
+*.java text
+*.kt text
+*.gradle text
+# 二进制文件
+*.jar binary
+*.zip binary
+*.rar binary
+*.7z binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.git binary
+*.ttf binary
+*.doc binary
+*.docx binary
+*.xls binary
+*.xlsx binary
+*.pdf binary
+*.ppt binary
+*.wps binary
