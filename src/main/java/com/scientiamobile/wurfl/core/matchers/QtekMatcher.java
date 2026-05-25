@@ -1,18 +1,18 @@
 package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
-import org.apache.commons.lang.StringUtils;
 
-final class W extends a {
+final class QtekMatcher extends a {
    public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && StringUtils.startsWithIgnoreCase(var1.getCleanedDeviceUserAgent(), "grundig");
+      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().startsWith("Qtek");
    }
 
    public final String getMatcherName() {
-      return "GrundigMatcher";
+      return "QtekMatcher";
    }
 
    public final String getBucketMatcherName() {
-      return "Grundig";
+      return "Qtek";
    }
 }
+

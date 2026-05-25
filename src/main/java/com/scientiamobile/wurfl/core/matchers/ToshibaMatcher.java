@@ -1,18 +1,18 @@
 package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
-import org.apache.commons.lang.StringUtils;
 
-final class Y extends a {
+final class ToshibaMatcher extends a {
    public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsMobileBrowser() && StringUtils.contains(var1.getCleanedDeviceUserAgent(), "Konqueror");
+      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().startsWith("Toshiba");
    }
 
    public final String getMatcherName() {
-      return "KonquerorMatcher";
+      return "ToshibaMatcher";
    }
 
    public final String getBucketMatcherName() {
-      return "Konqueror";
+      return "Toshiba";
    }
 }
+
