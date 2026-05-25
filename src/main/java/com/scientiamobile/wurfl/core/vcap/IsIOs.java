@@ -1,0 +1,22 @@
+package com.scientiamobile.wurfl.core.vcap;
+
+import com.scientiamobile.wurfl.core.Device;
+import com.scientiamobile.wurfl.core.request.WURFLRequest;
+import java.io.Serializable;
+import java.util.HashSet;
+
+public class IsIOs implements VirtualCapabilityEvaluator, Serializable {
+   private static final long serialVersionUID = 5384820129703085119L;
+
+   public String eval(Device var1, WURFLRequest var2) {
+      return Boolean.toString("iOS".equals(var1.getCapability("device_os")) || "iPhoneOS".equals(var1.getCapability("device_os")));
+   }
+
+   public String getHandledVirtualCapabilityName() {
+      return "is_ios";
+   }
+
+   static {
+      (new HashSet()).add("device_os");
+   }
+}
