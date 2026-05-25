@@ -8,71 +8,71 @@ import java.util.Map;
 import java.util.Set;
 
 final class AhoCorasickKeywordMatcher {
-   private int[] failureLinks;
-   private boolean[] terminal;
-   private char[][] transitionChars;
-   private int[][] transitionTargets;
+   private int[] failStateByState;
+   private boolean[] terminalByState;
+   private char[][] transitionCharsByState;
+   private int[][] transitionTargetsByState;
 
    public AhoCorasickKeywordMatcher(List keywords) {
       ArrayList nodes = new ArrayList();
-      TrieNode root = new TrieNode();
+      AcTrieNode root = new AcTrieNode();
       Iterator it = keywords.iterator();
 
       while(it.hasNext()) {
          String keyword;
          if ((keyword = (String)it.next()) != null && keyword.length() != 0) {
-            root.addKeyword(keyword);
+            root.addPattern(keyword);
          }
       }
 
       LinkedList queue = new LinkedList();
-      root.setFailureLink(root);
+      root.setFail(root);
       nodes.add(root);
 
-      for(int i = 0; i < root.getTransitionCount(); ++i) {
-         TrieNode child;
-         (child = root.getTransitionAt(i)).setFailureLink(root);
+      for(int i = 0; i < root.getOutgoingCount(); ++i) {
+         AcTrieNode child;
+         (child = root.getOutgoingAt(i)).setFail(root);
          queue.add(child);
       }
 
       while(!queue.isEmpty()) {
-         TrieNode current = (TrieNode)queue.poll();
+         AcTrieNode current = (AcTrieNode)queue.poll();
          nodes.add(current);
 
-         for(Character c : current.getTransitionChars()) {
-            TrieNode next = current.getTransition(c);
+         for(Character c : current.getNextChars()) {
+            AcTrieNode next = current.getNext(c);
             queue.add(next);
 
-            TrieNode failure;
-            for(failure = current.getFailureLink(); failure.getTransition(c) == null && failure != root; failure = failure.getFailureLink()) {
+            AcTrieNode failure;
+            for(failure = current.getFail(); failure.getNext(c) == null && failure != root; failure = failure.getFail()) {
             }
 
-            if ((failure = failure.getTransition(c)) != null) {
-               next.setFailureLink(failure);
+            if ((failure = failure.getNext(c)) != null) {
+               next.setFail(failure);
             } else {
-               next.setFailureLink(root);
+               next.setFail(root);
             }
          }
       }
 
-      this.failureLinks = new int[nodes.size()];
-      this.terminal = new boolean[nodes.size()];
-      this.transitionChars = new char[nodes.size()][];
-      this.transitionTargets = new int[nodes.size()][];
+      this.failStateByState = new int[nodes.size()];
+      this.terminalByState = new boolean[nodes.size()];
+      this.transitionCharsByState = new char[nodes.size()][];
+      this.transitionTargetsByState = new int[nodes.size()][];
 
       for(int i = 0; i < nodes.size(); ++i) {
-         TrieNode node = (TrieNode)nodes.get(i);
-         this.failureLinks[i] = nodes.indexOf(node.getFailureLink());
-         this.terminal[i] = node.isTerminal();
-         Set entrySet = node.getTransitions().entrySet();
-         this.transitionChars[i] = new char[entrySet.size()];
-         this.transitionTargets[i] = new int[entrySet.size()];
+         AcTrieNode node = (AcTrieNode)nodes.get(i);
+         this.failStateByState[i] = nodes.indexOf(node.getFail());
+         this.terminalByState[i] = node.isKeywordEnd();
+         Set entrySet = node.getOutgoingMap().entrySet();
+         this.transitionCharsByState[i] = new char[entrySet.size()];
+         this.transitionTargetsByState[i] = new int[entrySet.size()];
          int j = 0;
 
          for(Object entryObj : entrySet) {
             Map.Entry entry = (Map.Entry)entryObj;
-            this.transitionChars[i][j] = (Character)entry.getKey();
-            this.transitionTargets[i][j] = nodes.indexOf(entry.getValue());
+            this.transitionCharsByState[i][j] = (Character)entry.getKey();
+            this.transitionTargetsByState[i][j] = nodes.indexOf(entry.getValue());
             ++j;
          }
       }
@@ -86,12 +86,12 @@ final class AhoCorasickKeywordMatcher {
       label34:
       for(char c : chars) {
          while(true) {
-            char[] availableChars = this.transitionChars[state];
+            char[] availableChars = this.transitionCharsByState[state];
 
             for(int i = 0; i < availableChars.length; ++i) {
                if (availableChars[i] == c) {
-                  state = this.transitionTargets[state][i];
-                  if (this.terminal[state]) {
+                  state = this.transitionTargetsByState[state][i];
+                  if (this.terminalByState[state]) {
                      return true;
                   }
                   continue label34;
@@ -102,11 +102,10 @@ final class AhoCorasickKeywordMatcher {
                break;
             }
 
-            state = this.failureLinks[state];
+            state = this.failStateByState[state];
          }
       }
 
       return false;
    }
 }
-
