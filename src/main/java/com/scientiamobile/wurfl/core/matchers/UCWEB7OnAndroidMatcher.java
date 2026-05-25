@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-final class UCWEB7OnAndroidMatcher extends a {
+final class UCWEB7OnAndroidMatcher extends MatcherBase {
    private static final String GENERIC_ANDROID_VER2_0_UCWEB = "generic_android_ver2_0_ucweb";
    private static final Map ANDROID_VERSION_TO_DEVICE_ID;
 

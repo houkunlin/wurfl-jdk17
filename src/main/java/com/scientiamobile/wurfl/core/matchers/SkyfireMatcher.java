@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class SkyfireMatcher extends a {
+final class SkyfireMatcher extends MatcherBase {
    private static String GENERIC_SKYFIRE_VERSION2 = "generic_skyfire_version2";
    private static String GENERIC_SKYFIRE_VERSION1 = "generic_skyfire_version1";
 
@@ -42,4 +42,3 @@ final class SkyfireMatcher extends a {
       return "Skyfire";
    }
 }
-

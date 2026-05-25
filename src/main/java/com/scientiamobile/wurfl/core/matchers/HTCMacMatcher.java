@@ -7,7 +7,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class HTCMacMatcher extends a {
+final class HTCMacMatcher extends MatcherBase {
    private static String GENERIC_HTC_ANDROID_DISGUISED_AS_MAC = "generic_android_htc_disguised_as_mac";
 
    protected final Set getRequiredDeviceIds() {
@@ -42,4 +42,3 @@ final class HTCMacMatcher extends a {
       return "HTCMac";
    }
 }
-

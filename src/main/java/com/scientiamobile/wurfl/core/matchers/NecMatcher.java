@@ -4,7 +4,7 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-final class NecMatcher extends a {
+final class NecMatcher extends MatcherBase {
    public NecMatcher(WURFLModel var1) {
       super(var1);
    }

@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
-public final class DesktopApplicationMatcher extends a {
+public final class DesktopApplicationMatcher extends MatcherBase {
    private static String b = "ms_office";
    private static final Set c = new HashSet();
    private static final Pattern d = Pattern.compile("MSOffice ([0-9]+)");

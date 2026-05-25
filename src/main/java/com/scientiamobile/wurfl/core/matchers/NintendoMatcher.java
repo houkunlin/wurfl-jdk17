@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class NintendoMatcher extends a {
+final class NintendoMatcher extends MatcherBase {
    public NintendoMatcher(WURFLModel var1) {
       super(var1);
    }

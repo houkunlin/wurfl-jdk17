@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-final class LGUPLUSMatcher extends a {
+final class LGUPLUSMatcher extends MatcherBase {
    private static String GENERIC_LGUPLUS = "generic_lguplus";
    private static final Map DEVICE_BY_TOKENS;
 
@@ -56,4 +56,3 @@ final class LGUPLUSMatcher extends a {
       DEVICE_BY_TOKENS.put("generic_lguplus_android_webkit_browser", new String[]{"Android", "AppleWebKit"});
    }
 }
-

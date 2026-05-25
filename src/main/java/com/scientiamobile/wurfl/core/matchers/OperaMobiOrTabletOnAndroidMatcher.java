@@ -8,7 +8,7 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class OperaMobiOrTabletOnAndroidMatcher extends a {
+final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
    private static final String GENERIC_ANDROID_VER2_0_OPERA_MOBI = "generic_android_ver2_0_opera_mobi";
    private static final String GENERIC_ANDROID_VER2_1_OPERA_TABLET = "generic_android_ver2_1_opera_tablet";
    private static final Set SUPPORTED_ANDROID_OPERA_DEVICE_IDS;

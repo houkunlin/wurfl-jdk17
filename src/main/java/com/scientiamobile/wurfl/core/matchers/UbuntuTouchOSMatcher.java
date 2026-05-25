@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UbuntuTouchOSMatcher extends a {
+public class UbuntuTouchOSMatcher extends MatcherBase {
    private static String b = "generic_ubuntu_touch_os";
    private static String c = "generic_ubuntu_touch_os_tablet";
 

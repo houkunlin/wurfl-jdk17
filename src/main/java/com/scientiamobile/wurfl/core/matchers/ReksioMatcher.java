@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class ReksioMatcher extends a {
+final class ReksioMatcher extends MatcherBase {
    private static String REKSIO_DEVICE_ID = "generic_reksio";
 
    public ReksioMatcher(WURFLModel var1) {
@@ -35,4 +35,3 @@ final class ReksioMatcher extends a {
       return "Reksio";
    }
 }
-

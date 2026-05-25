@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class EmailClientUserAgentMatcher extends a {
+public class EmailClientUserAgentMatcher extends MatcherBase {
    private static String b = "mozilla_thunderbird";
    private static String c = "ms_outlook";
    private static final Pattern d = Pattern.compile("Microsoft Outlook ([0-9]+).");

@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
-final class JavaMidletMatcher extends a {
+final class JavaMidletMatcher extends MatcherBase {
    private static String GENERIC_MIDP_MIDLET = "generic_midp_midlet";
 
    public JavaMidletMatcher(WURFLModel var1) {
@@ -34,4 +34,3 @@ final class JavaMidletMatcher extends a {
       return "JavaMidlet";
    }
 }
-

@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class DoCoMoMatcher extends a {
+final class DoCoMoMatcher extends MatcherBase {
    private static String DOCOMO_VER2 = "docomo_generic_jap_ver2";
    private static String DOCOMO_VER1 = "docomo_generic_jap_ver1";
 
@@ -46,4 +46,3 @@ final class DoCoMoMatcher extends a {
       return "DoCoMo";
    }
 }
-

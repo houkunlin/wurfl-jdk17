@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class MSIEMatcher extends a {
+final class MSIEMatcher extends MatcherBase {
    private static final Pattern MSIE = Pattern.compile("^Mozilla/[45]\\.0 \\(compatible; MSIE (\\d+)\\.(\\d+)(?:[\\da-z]+)?;");
    private static final Pattern TRIDENT_RV = Pattern.compile("^Mozilla/5\\.0 \\(.+?Trident.+?; rv:(\\d\\d)\\.(\\d+)\\)");
    private static final Pattern EDGE = Pattern.compile("^Mozilla/5\\.0 \\(Windows NT.+? Edge/(\\d+)\\.(\\d+)");
@@ -112,4 +112,3 @@ final class MSIEMatcher extends a {
       DEVICE_BY_MAJOR_VERSION.put("17", "edge_17");
    }
 }
-

@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
-final class SmartTvMatcher extends a {
+final class SmartTvMatcher extends MatcherBase {
    private static String GOOGLE_TV_BROWSER = "generic_smarttv_googletv_browser";
    private static String APPLE_TV_BROWSER = "generic_smarttv_appletv_browser";
    private static String BOXEEBOX_BROWSER = "generic_smarttv_boxeebox_browser";
@@ -64,4 +64,3 @@ final class SmartTvMatcher extends a {
       return "SmartTV";
    }
 }
-

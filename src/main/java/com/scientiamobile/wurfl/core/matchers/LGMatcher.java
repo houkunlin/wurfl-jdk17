@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class LGMatcher extends a {
+final class LGMatcher extends MatcherBase {
    protected final Set getRequiredDeviceIds() {
       HashSet var1;
       (var1 = new HashSet()).add("generic");
@@ -42,4 +42,3 @@ final class LGMatcher extends a {
       return "LG";
    }
 }
-

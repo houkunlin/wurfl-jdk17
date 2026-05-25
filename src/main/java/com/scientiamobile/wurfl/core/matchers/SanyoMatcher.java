@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Locale;
 
-final class SanyoMatcher extends a {
+final class SanyoMatcher extends MatcherBase {
    public SanyoMatcher(WURFLModel var1) {
       super(var1);
    }
@@ -32,4 +32,3 @@ final class SanyoMatcher extends a {
       return "Sanyo";
    }
 }
-

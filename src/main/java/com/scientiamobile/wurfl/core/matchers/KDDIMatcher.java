@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class KDDIMatcher extends a {
+final class KDDIMatcher extends MatcherBase {
    private static String OPWV_V62_GENERIC = "opwv_v62_generic";
 
    public KDDIMatcher(WURFLModel var1) {
@@ -40,4 +40,3 @@ final class KDDIMatcher extends a {
       return "Kddi";
    }
 }
-

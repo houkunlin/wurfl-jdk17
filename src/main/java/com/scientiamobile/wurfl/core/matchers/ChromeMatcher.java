@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class ChromeMatcher extends a {
+final class ChromeMatcher extends MatcherBase {
    private static String CHROME_DEVICE_ID = "google_chrome";
 
    public ChromeMatcher(UserAgentNormalizer var1, WURFLModel var2) {
@@ -41,4 +41,3 @@ final class ChromeMatcher extends a {
       return "Chrome";
    }
 }
-

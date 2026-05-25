@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class NokiaOviBrowserMatcher extends a {
+final class NokiaOviBrowserMatcher extends MatcherBase {
    private static final String NOKIA_GENERIC_SERIES30PLUS = "nokia_generic_series30plus";
    private static final String NOKIA_GENERIC_SERIES40_OVIBROSR = "nokia_generic_series40_ovibrosr";
 

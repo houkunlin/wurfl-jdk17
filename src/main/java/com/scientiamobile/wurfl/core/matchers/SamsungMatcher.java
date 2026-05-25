@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class SamsungMatcher extends a {
+final class SamsungMatcher extends MatcherBase {
    private static final String[] b = new String[]{"SEC-", "SAMSUNG-", "SCH"};
    private static final String[] c = new String[]{"Samsung", "SPH", "SGH"};
    private static final String[] d = new String[]{"SEC-", "SPH", "SGH", "SCH"};
@@ -52,4 +52,3 @@ final class SamsungMatcher extends a {
       return "Samsung";
    }
 }
-

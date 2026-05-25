@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 
-final class VodafoneMatcher extends a {
+final class VodafoneMatcher extends MatcherBase {
    public VodafoneMatcher(WURFLModel var1) {
       super(var1);
    }

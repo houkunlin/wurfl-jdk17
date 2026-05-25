@@ -9,7 +9,7 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class UcwebU2Matcher extends a {
+final class UcwebU2Matcher extends MatcherBase {
    protected final Set getRequiredDeviceIds() {
       HashSet var1;
       (var1 = new HashSet()).add("generic_ucweb");

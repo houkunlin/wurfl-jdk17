@@ -11,7 +11,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import org.apache.commons.collections.CollectionUtils;
 
-final class OperaMiniMatcher extends a {
+final class OperaMiniMatcher extends MatcherBase {
    private static final SortedMap OPERA_MINI_VERSION_TO_DEVICE_ID;
 
    public OperaMiniMatcher(UserAgentNormalizer var1, WURFLModel var2) {

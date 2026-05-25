@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-final class KindleMatcher extends a {
+final class KindleMatcher extends MatcherBase {
    private static String GENERIC_AMAZON_KINDLE = "generic_amazon_kindle";
    private static final Map DEVICE_BY_TOKEN;
 
@@ -73,4 +73,3 @@ final class KindleMatcher extends a {
       DEVICE_BY_TOKEN.put("Silk", "amazon_kindle_fire_ver1");
    }
 }
-

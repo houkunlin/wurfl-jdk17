@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class SafariMatcher extends a {
+final class SafariMatcher extends MatcherBase {
    public SafariMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
@@ -43,4 +43,3 @@ final class SafariMatcher extends a {
       return "Safari";
    }
 }
-

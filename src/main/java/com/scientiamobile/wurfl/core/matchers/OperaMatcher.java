@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
-final class OperaMatcher extends a {
+final class OperaMatcher extends MatcherBase {
    private static final String OPERA_GENERIC = "opera";
    private static final Pattern OPERA_VERSION = Pattern.compile("Opera[ /]?(\\d+\\.\\d+)");
    private static final Map MAJOR_VERSION_TO_DEVICE_ID;

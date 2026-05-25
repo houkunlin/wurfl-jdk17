@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
-public class OrphanDeviceIdMatcher extends a {
+public class OrphanDeviceIdMatcher extends MatcherBase {
    public OrphanDeviceIdMatcher(WURFLModel var1) {
       super(var1);
    }

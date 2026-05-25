@@ -7,7 +7,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class MaemoMatcher extends a {
+final class MaemoMatcher extends MatcherBase {
    private static String GENERIC_OPERA_MOBI_MAEMO = "generic_opera_mobi_maemo";
    private static String NOKIA_GENERIC_MAEMO_WITH_FIREFOX = "nokia_generic_maemo_with_firefox";
    private static String NOKIA_GENERIC_MAEMO = "nokia_generic_maemo";
@@ -50,4 +50,3 @@ final class MaemoMatcher extends a {
       return "Maemo";
    }
 }
-

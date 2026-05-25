@@ -2,7 +2,7 @@ package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
-final class PanasonicMatcher extends a {
+final class PanasonicMatcher extends MatcherBase {
    public final boolean canHandle(WURFLRequest var1) {
       return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().startsWith("Panasonic");
    }
@@ -15,4 +15,3 @@ final class PanasonicMatcher extends a {
       return "Panasonic";
    }
 }
-

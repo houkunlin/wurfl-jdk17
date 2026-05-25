@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-final class NetFrontOnAndroidMatcher extends a {
+final class NetFrontOnAndroidMatcher extends MatcherBase {
    private static final String GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER = "generic_android_ver2_0_netfrontlifebrowser";
    private static final Map ANDROID_VERSION_TO_DEVICE_ID;
 

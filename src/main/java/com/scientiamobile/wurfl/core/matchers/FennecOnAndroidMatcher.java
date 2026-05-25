@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.ArrayUtils;
 
-final class FennecOnAndroidMatcher extends a {
+final class FennecOnAndroidMatcher extends MatcherBase {
    private static final Pattern VERSION_PREFIX = Pattern.compile("^.+?\\(.+?rv:\\d+(\\.)");
    private static String GENERIC_ANDROID_FENNEC_2 = "generic_android_ver2_0_fennec";
    private static String GENERIC_ANDROID_FENNEC_2_TABLET = "generic_android_ver2_0_fennec_tablet";
@@ -93,4 +93,3 @@ final class FennecOnAndroidMatcher extends a {
       return "FennecOnAndroid";
    }
 }
-

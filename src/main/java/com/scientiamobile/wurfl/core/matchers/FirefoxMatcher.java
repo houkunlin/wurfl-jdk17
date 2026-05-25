@@ -7,7 +7,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class FirefoxMatcher extends a {
+final class FirefoxMatcher extends MatcherBase {
    private static String FIREFOX_DEVICE_ID = "firefox";
 
    public FirefoxMatcher(UserAgentNormalizer var1, WURFLModel var2) {
@@ -43,4 +43,3 @@ final class FirefoxMatcher extends a {
       return "Firefox";
    }
 }
-

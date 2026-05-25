@@ -4,7 +4,7 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-final class PantechMatcher extends a {
+final class PantechMatcher extends MatcherBase {
    public PantechMatcher(WURFLModel var1) {
       super(var1);
    }
@@ -22,4 +22,3 @@ final class PantechMatcher extends a {
       return "Pantech";
    }
 }
-

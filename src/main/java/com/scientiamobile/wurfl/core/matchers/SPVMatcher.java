@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import org.apache.commons.lang.StringUtils;
 
-final class SPVMatcher extends a {
+final class SPVMatcher extends MatcherBase {
    public SPVMatcher(WURFLModel var1) {
       super(var1);
    }
@@ -27,4 +27,3 @@ final class SPVMatcher extends a {
       return "SPV";
    }
 }
-

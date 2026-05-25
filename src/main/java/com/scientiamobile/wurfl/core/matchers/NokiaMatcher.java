@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class NokiaMatcher extends a {
+final class NokiaMatcher extends MatcherBase {
    private static final String NOKIA_GENERIC_SERIES60 = "nokia_generic_series60";
    private static final String NOKIA_GENERIC_SERIES80 = "nokia_generic_series80";
    private static final String NOKIA_GENERIC_MEEGO = "nokia_generic_meego";

@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class MotorolaMatcher extends a {
+final class MotorolaMatcher extends MatcherBase {
    private static final String MOT_MIB22_GENERIC = "mot_mib22_generic";
 
    public MotorolaMatcher(WURFLModel var1) {

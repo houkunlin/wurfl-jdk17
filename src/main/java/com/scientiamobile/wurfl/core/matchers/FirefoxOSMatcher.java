@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
-final class FirefoxOSMatcher extends a {
+final class FirefoxOSMatcher extends MatcherBase {
    private static String FALLBACK_TABLET = "firefox_os_ver1_3_tablet";
    private static String FALLBACK_GENERIC = "generic_firefox_os";
    private static final Pattern VERSION_RV_PREFIX = Pattern.compile("\\brv:\\d+\\.\\d+(.)");
@@ -104,4 +104,3 @@ final class FirefoxOSMatcher extends a {
       SUPPORTED_DEVICES.add("firefox_os_ver2_5_tablet");
    }
 }
-

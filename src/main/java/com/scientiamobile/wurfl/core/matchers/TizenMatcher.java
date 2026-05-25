@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TizenMatcher extends a {
+public class TizenMatcher extends MatcherBase {
    private static final Pattern b = Pattern.compile("Tizen (\\d+?\\.\\d+?)");
    private static final List c = new ArrayList();
    private static final List d = new ArrayList();

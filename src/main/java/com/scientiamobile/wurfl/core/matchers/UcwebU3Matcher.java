@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
-final class UcwebU3Matcher extends a {
+final class UcwebU3Matcher extends MatcherBase {
    private static final String GENERIC_MS_PHONE_OS8_SUBUAWCWEB = "generic_ms_phone_os8_subuaucweb";
    private static final String GENERIC_UCWEB_ANDROID_VER1 = "generic_ucweb_android_ver1";
    private static final String APPLE_IPHONE_VER1_SUBUAWCWEB = "apple_iphone_ver1_subuaucweb";

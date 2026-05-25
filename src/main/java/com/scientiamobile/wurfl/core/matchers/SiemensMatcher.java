@@ -2,7 +2,7 @@ package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
-final class SiemensMatcher extends a {
+final class SiemensMatcher extends MatcherBase {
    public final boolean canHandle(WURFLRequest var1) {
       return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().startsWith("SIE-");
    }
@@ -15,4 +15,3 @@ final class SiemensMatcher extends a {
       return "Siemens";
    }
 }
-
