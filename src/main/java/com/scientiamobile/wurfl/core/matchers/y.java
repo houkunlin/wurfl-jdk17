@@ -6,8 +6,8 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class y extends a {
-   public y(WURFLModel var1) {
+final class CatchAllMozillaMatcher extends AbstractMatcher {
+   public CatchAllMozillaMatcher(WURFLModel var1) {
       super(var1);
    }
 

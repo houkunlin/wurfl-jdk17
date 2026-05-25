@@ -11,14 +11,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
-final class w extends a {
+final class BlackBerryMatcher extends AbstractMatcher {
    private static String b = "blackberry_generic_ver10";
    private static String c = "blackberry_generic_ver10_tablet";
    private static String d = "rim_playbook_ver1";
    private static final Map e;
    private static final Pattern f;
 
-   public w(WURFLModel var1) {
+   public BlackBerryMatcher(WURFLModel var1) {
       super(var1);
    }
 

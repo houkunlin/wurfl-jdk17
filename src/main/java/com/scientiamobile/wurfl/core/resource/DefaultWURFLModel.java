@@ -54,7 +54,7 @@ public class DefaultWURFLModel implements WURFLModel {
       this.c.clear();
       this.e = null;
       this.h = null;
-      c var5 = var1.getData(var3);
+      ModelDevicesSnapshot var5 = var1.getData(var3);
       this.f = var5.a();
       this.g = var5.c();
       ModelDevices var6 = var5.b();
@@ -74,7 +74,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
       for(int var6 = 0; var1 != null && var6 < var1.size(); ++var6) {
          ModelDevices var7;
-         c var8;
+         ModelDevicesSnapshot var8;
          com.scientiamobile.wurfl.core.resource.d.a(var7 = (var8 = var1.get(var6).getData(var3)).b(), var2);
          StrBuilder var9;
          (var9 = new StrBuilder()).append(StringUtils.defaultString(this.f)).append("; ").append(var8.a());
@@ -157,7 +157,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public Set getAllDevices() {
       TreeSet var1;
-      (var1 = new TreeSet(com.scientiamobile.wurfl.core.resource.a.a)).addAll(this.a.values());
+      (var1 = new TreeSet(com.scientiamobile.wurfl.core.resource.ModelDeviceUserAgentComparator.a)).addAll(this.a.values());
       return var1;
    }
 

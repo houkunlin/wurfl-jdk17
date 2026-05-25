@@ -6,10 +6,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class x extends a {
+final class BotMatcher extends AbstractMatcher {
    private static String b = "google_image_proxy";
 
-   public x(WURFLModel var1) {
+   public BotMatcher(WURFLModel var1) {
       super(var1);
    }
 

@@ -14,14 +14,14 @@ import org.apache.commons.lang.text.StrBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final class b {
-   private static final Logger a = LoggerFactory.getLogger(b.class);
+final class ResourceInput {
+   private static final Logger a = LoggerFactory.getLogger(ResourceInput.class);
    private URI b;
    private InputStream c;
    // $FF: synthetic field
-   private static boolean d = !b.class.desiredAssertionStatus();
+   private static boolean d = !ResourceInput.class.desiredAssertionStatus();
 
-   public b(String var1) {
+   public ResourceInput(String var1) {
       Validate.notEmpty(var1, "The path must be not empty");
 
       try {
@@ -31,17 +31,17 @@ final class b {
       }
    }
 
-   public b(File var1) {
+   public ResourceInput(File var1) {
       Validate.notNull(var1, "The file must be not null");
       this.b = var1.toURI();
    }
 
-   public b(URI var1) {
+   public ResourceInput(URI var1) {
       Validate.notNull(var1, "The URI must be not null");
       this.b = var1;
    }
 
-   public b(InputStream var1, String var2) {
+   public ResourceInput(InputStream var1, String var2) {
       Validate.notNull(var1, "The stream must be not null");
       Validate.notNull(var2, "The fileName must be not null");
       if (!(var1 instanceof ZipInputStream) && !(var1 instanceof GZIPInputStream)) {

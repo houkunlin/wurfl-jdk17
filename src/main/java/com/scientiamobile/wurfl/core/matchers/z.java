@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 
-final class z extends a {
+final class CatchAllRISMatcher extends AbstractMatcher {
    public final boolean canHandle(WURFLRequest var1) {
       return true;
    }

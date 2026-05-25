@@ -8,14 +8,14 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class u extends a {
+final class AndroidMatcher extends AbstractMatcher {
    private static String b = "generic_android";
    private static String c = "generic_android_ver2_2";
    private static String d = "generic_android_ver1_5_tablet";
    private static final Set e = new HashSet();
    private static final Set f = new HashSet();
 
-   public u(UserAgentNormalizer var1, WURFLModel var2) {
+   public AndroidMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 

@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-final class p extends a {
+final class WindowsPhoneMatcher extends AbstractMatcher {
    private static String b = "generic_ms_phone_os7";
    private static String c = "generic_ms_phone_os7_desktopmode";
    private static String d = "generic_ms_phone_os7_5_desktopmode";
@@ -18,7 +18,7 @@ final class p extends a {
    private static String f = "generic_ms_phone_os10_desktopmode";
    private static final Map g;
 
-   public p(UserAgentNormalizer var1, WURFLModel var2) {
+   public WindowsPhoneMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 

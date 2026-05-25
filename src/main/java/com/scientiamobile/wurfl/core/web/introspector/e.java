@@ -13,8 +13,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-final class e implements HttpServletRequest {
-   private Map a = new HashMap();
+final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
+   private Map headers = new HashMap();
 
    public final Object getAttribute(String var1) {
       return null;
@@ -142,16 +142,16 @@ final class e implements HttpServletRequest {
    }
 
    public final String getHeader(String var1) {
-      return (String)this.a.get(var1);
+      return (String)this.headers.get(var1);
    }
 
-   public final void a(String var1, String var2) {
-      this.a.put(var1, var2);
+   public final void addHeader(String headerName, String headerValue) {
+      this.headers.put(headerName, headerValue);
    }
 
-   public final void a(Map var1) {
-      for(Map.Entry var2 : var1.entrySet()) {
-         this.a((String)var2.getKey(), (String)var2.getValue());
+   public final void addHeaders(Map headers) {
+      for(Map.Entry var2 : headers.entrySet()) {
+         this.addHeader((String)var2.getKey(), (String)var2.getValue());
       }
 
    }
@@ -163,7 +163,7 @@ final class e implements HttpServletRequest {
    public final Enumeration getHeaderNames() {
       Vector var1 = new Vector();
 
-      for(String var3 : this.a.keySet()) {
+      for(String var3 : this.headers.keySet()) {
          var1.add(var3);
       }
 

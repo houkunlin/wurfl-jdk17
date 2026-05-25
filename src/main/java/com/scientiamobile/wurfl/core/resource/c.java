@@ -8,7 +8,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.text.StrBuilder;
 
-final class c implements Serializable, Comparable {
+final class ModelDevicesSnapshot implements Serializable, Comparable {
    private static final long serialVersionUID = 1L;
    private String a;
    private String b;
@@ -17,7 +17,7 @@ final class c implements Serializable, Comparable {
    private transient String e;
    private String f;
 
-   public c(String var1, String var2, boolean var3, ModelDevices var4, String var5) {
+   public ModelDevicesSnapshot(String var1, String var2, boolean var3, ModelDevices var4, String var5) {
       this.a = var1;
       this.b = var2;
       this.c = var3;
@@ -72,7 +72,7 @@ final class c implements Serializable, Comparable {
 
    // $FF: synthetic method
    public final int compareTo(Object var1) {
-      c var2 = (c)var1;
+      ModelDevicesSnapshot var2 = (ModelDevicesSnapshot)var1;
       CompareToBuilder var3;
       (var3 = new CompareToBuilder()).append(this.a, var2.a).append(this.b, var2.b);
       return var3.toComparison();

@@ -93,11 +93,17 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             b(var7);
             var10000 = true;
          } else {
-            a.getWURFLUtils().getVersion();
-            new a();
             EngineTarget var4 = a.getEngineTarget();
-            (new StringBuilder("high-")).append(var4.name());
-            c var8 = new c();
+            IntrospectorInfoResponse var8 = new IntrospectorInfoResponse();
+            var8.apiVersion = e;
+            var8.wurflVersion = a.getWURFLUtils().getVersion();
+            var8.engineTarget = var4.name();
+            var8.userAgentPriority = a.getUserAgentPriority().name();
+            var8.serverInfo = this.getServletContext().getServerInfo();
+            var8.osName = System.getProperty("os.name");
+            var8.osVersion = System.getProperty("os.version");
+            var8.javaVendor = System.getProperty("java.vendor");
+            var8.javaVersion = System.getProperty("java.version");
             String var6 = this.b.defaultPrettyPrintingWriter().writeValueAsString(var8);
             var7.println(var6);
             var10000 = true;
@@ -167,7 +173,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                   String var20 = a((String)"matcherName", (Object)var31);
                   String var21 = a((String)"normalizedUserAgent", (Object)var31);
                   String var22 = a((String)"originalUserAgent", (Object)var31);
-                  var26.add(new b(var20, var31.getId(), var21, var22, (byte)0));
+                  var26.add(new MatchResultRow(var20, var31.getId(), var21, var22, (byte)0));
                }
 
                d.info("BUCKETS (1/3): finished matching. Took " + (System.currentTimeMillis() - var33) + " ms");
@@ -178,7 +184,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                d.info("BUCKETS (3/3): start building strings...");
                var33 = System.currentTimeMillis();
 
-               for(b var32 : var26) {
+               for(MatchResultRow var32 : var26) {
                   var8.add(var32.toString());
                }
 
@@ -226,7 +232,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             var3 = var1.getHeader("X-Wap-Profile");
          }
 
-         e var5 = new e();
+         HeaderOnlyHttpServletRequest var5 = new HeaderOnlyHttpServletRequest();
          if (var1.getParameter("form") == null) {
             HashMap var4 = new HashMap();
             Enumeration var6 = var1.getHeaderNames();
@@ -240,7 +246,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                }
             }
 
-            var5.a(var4);
+            var5.addHeaders(var4);
             UserAgentUtils.getUserAgent(var1);
          } else {
             String var11;
@@ -249,7 +255,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             }
 
             if (var11 != null) {
-               var5.a("User-Agent", var11);
+               var5.addHeader("User-Agent", var11);
             }
 
             String var16;
@@ -261,14 +267,14 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                   String var9;
                   if ((var9 = ((Object[])var11)[var8]).indexOf(":") >= 0) {
                      String[] var10 = var9.split(":");
-                     var5.a(var10[0].trim(), var10[1].trim());
+                     var5.addHeader(var10[0].trim(), var10[1].trim());
                   }
                }
             }
          }
 
          if (var3 != null) {
-            var5.a("X-Wap-Profile", var3);
+            var5.addHeader("X-Wap-Profile", var3);
          }
 
          String var13 = var1.getParameter("capabilities");
@@ -278,10 +284,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             var18 = c.matcher(var13).replaceAll("|").split("\\|");
          }
 
-         d var19 = new d();
+         IntrospectorRequestResponse var19 = new IntrospectorRequestResponse();
          Device var15;
-         (var15 = a.getDeviceForRequest((HttpServletRequest)var5)).getId();
-         var15.toString();
+         var15 = a.getDeviceForRequest((HttpServletRequest)var5);
+         var19.deviceId = var15.getId();
+         var19.userAgent = var5.getHeader("User-Agent");
+         var19.requestType = var1.getParameter("form") == null ? "request" : "form";
          if (var18 != null && var18.length > 0) {
             HashMap var20 = new HashMap();
 
@@ -289,6 +297,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                String var23 = var18[var22].trim();
                var20.put(var23, var15.getCapability(var23));
             }
+            var19.capabilities = var20;
          }
 
          String var21 = this.b.defaultPrettyPrintingWriter().writeValueAsString(var19);

@@ -5,12 +5,12 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
-final class r extends a {
+final class XBoxMatcher extends AbstractMatcher {
    private static String b = "microsoft_xboxone_ver1";
    private static String c = "microsoft_xbox360_ver1_subie10";
    private static String d = "microsoft_xbox360_ver1";
 
-   public r(WURFLModel var1) {
+   public XBoxMatcher(WURFLModel var1) {
       super(var1);
    }
 

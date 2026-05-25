@@ -10,7 +10,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.slf4j.LoggerFactory;
 
 public class XMLResource implements WURFLResource {
-   private final b a;
+   private final ResourceInput a;
    private String b;
    private Set c;
    private String d;
@@ -18,23 +18,23 @@ public class XMLResource implements WURFLResource {
 
    public XMLResource(String var1) {
       this.d = var1;
-      this.a = new b(var1);
+      this.a = new ResourceInput(var1);
    }
 
    public XMLResource(File var1) {
       this.d = var1.getAbsolutePath();
-      this.a = new b(var1);
+      this.a = new ResourceInput(var1);
    }
 
    public XMLResource(URI var1) {
-      this.a = new b(var1);
+      this.a = new ResourceInput(var1);
    }
 
    public XMLResource(InputStream var1, String var2) {
-      this.a = new b(var1, var2);
+      this.a = new ResourceInput(var1, var2);
    }
 
-   public c getData(String... var1) {
+   public ModelDevicesSnapshot getData(String... var1) {
       XMLResource var6 = this;
       if (var1 != null) {
          this.c = new HashSet(var1.length);
@@ -47,7 +47,7 @@ public class XMLResource implements WURFLResource {
          this.c = new HashSet(0);
       }
 
-      c var7 = this.a(this.a.c());
+      ModelDevicesSnapshot var7 = this.a(this.a.c());
       this.a.d();
       return var7;
    }
@@ -68,8 +68,8 @@ public class XMLResource implements WURFLResource {
       this.a.b();
    }
 
-   private c a(InputStream var1) {
-      g var2 = new g(this.c, (byte)0);
+   private ModelDevicesSnapshot a(InputStream var1) {
+      WurflXmlHandler var2 = new WurflXmlHandler(this.c, (byte)0);
 
       try {
          e.newSAXParser().parse(var1, var2);
@@ -78,13 +78,13 @@ public class XMLResource implements WURFLResource {
       }
 
       String var3 = this.getInfo();
-      String var7 = g.a(var2);
-      String var4 = g.b(var2);
-      String var5 = g.c(var2);
+      String var7 = WurflXmlHandler.a(var2);
+      String var4 = WurflXmlHandler.b(var2);
+      String var5 = WurflXmlHandler.c(var2);
       this.b = var7 != null && var7.length() != 0 ? var7 : (var4 != null && var4.length() != 0 ? var4 : "(no version info)");
-      boolean var8 = g.d(var2);
-      ModelDevices var9 = g.e(var2);
-      return new c(var3, this.b, var8, var9, var5);
+      boolean var8 = WurflXmlHandler.d(var2);
+      ModelDevices var9 = WurflXmlHandler.e(var2);
+      return new ModelDevicesSnapshot(var3, this.b, var8, var9, var5);
    }
 
    static {

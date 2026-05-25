@@ -5,11 +5,11 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class XmlFileLoader {
-   private final b a;
+   private final ResourceInput a;
    private DefaultHandler b;
 
    public XmlFileLoader(String var1, DefaultHandler var2) {
-      this.a = new b(var1);
+      this.a = new ResourceInput(var1);
       this.b = var2;
    }
 

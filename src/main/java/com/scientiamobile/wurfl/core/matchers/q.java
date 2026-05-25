@@ -6,11 +6,11 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class q extends a {
+final class WindowsRTMatcher extends AbstractMatcher {
    private static String b = "windows_8_rt_ver1_subos81";
    private static String c = "generic_windows_8_rt";
 
-   public q(WURFLModel var1) {
+   public WindowsRTMatcher(WURFLModel var1) {
       super(var1);
    }
 

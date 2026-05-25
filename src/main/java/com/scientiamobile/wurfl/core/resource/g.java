@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-final class g extends DefaultHandler {
+final class WurflXmlHandler extends DefaultHandler {
    private int a;
    private String b;
    private String c;
@@ -30,11 +30,11 @@ final class g extends DefaultHandler {
    private boolean r;
    private Set s;
 
-   private g(Set var1) {
+   private WurflXmlHandler(Set var1) {
       this.n = new HashMap();
       this.r = false;
       this.s = var1;
-      this.a = com.scientiamobile.wurfl.core.resource.h.a;
+      this.a = WurflXmlParseState.a;
    }
 
    public final void startDocument() {
@@ -48,48 +48,48 @@ final class g extends DefaultHandler {
    }
 
    public final void startElement(String var1, String var2, String var3, Attributes var4) {
-      if (var3.equals("capability") && this.a != com.scientiamobile.wurfl.core.resource.h.i) {
+      if (var3.equals("capability") && this.a != WurflXmlParseState.i) {
          var3 = var4.getValue("name");
          throw new WURFLParsingException("Capability '" + var3 + "'  does not belong to any group");
       } else {
-         switch (com.scientiamobile.wurfl.core.resource.f.a[this.a - 1]) {
+         switch (WurflXmlParseStateSwitch.a[this.a - 1]) {
             case 1:
                this.r = "wurfl_patch".equals(var3);
                if ("wurfl".equals(var3) || this.r) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.b;
+                  this.a = WurflXmlParseState.b;
                   return;
                }
                break;
             case 2:
                if ("version".equals(var3)) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.c;
+                  this.a = WurflXmlParseState.c;
                   return;
                }
 
                if ("devices".equals(var3)) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.g;
+                  this.a = WurflXmlParseState.g;
                   return;
                }
                break;
             case 3:
                if ("ver".equals(var3)) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.d;
+                  this.a = WurflXmlParseState.d;
                   return;
                }
 
                if ("last_updated".equals(var3)) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.e;
+                  this.a = WurflXmlParseState.e;
                   return;
                }
 
                if ("smid".equals(var3)) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.f;
+                  this.a = WurflXmlParseState.f;
                   return;
                }
                break;
             case 4:
                if ("device".equals(var3)) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.h;
+                  this.a = WurflXmlParseState.h;
                   this.b = var4.getValue("user_agent");
                   this.c = var4.getValue("id");
                   this.d = var4.getValue("fall_back");
@@ -121,14 +121,14 @@ final class g extends DefaultHandler {
                break;
             case 5:
                if ("group".equals(var3)) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.i;
+                  this.a = WurflXmlParseState.i;
                   this.f = var4.getValue("id").intern();
                   return;
                }
                break;
             case 6:
                if ("capability".equals(var3)) {
-                  this.a = com.scientiamobile.wurfl.core.resource.h.j;
+                  this.a = WurflXmlParseState.j;
                   if (!"virtual_capabilities".equals(this.f)) {
                      this.g = var4.getValue("name");
                      if (this.s.isEmpty() || this.s.contains(this.g) || this.g.startsWith("controlcap_")) {
@@ -161,22 +161,22 @@ final class g extends DefaultHandler {
    }
 
    public final void endElement(String var1, String var2, String var3) {
-      switch (com.scientiamobile.wurfl.core.resource.f.a[this.a - 1]) {
+      switch (WurflXmlParseStateSwitch.a[this.a - 1]) {
          case 2:
             if ("wurfl".equals(var3) || "wurfl_patch".equals(var3)) {
-               this.a = com.scientiamobile.wurfl.core.resource.h.k;
+               this.a = WurflXmlParseState.k;
                return;
             }
             break;
          case 3:
             if ("version".equals(var3)) {
-               this.a = com.scientiamobile.wurfl.core.resource.h.b;
+               this.a = WurflXmlParseState.b;
                return;
             }
             break;
          case 4:
             if ("devices".equals(var3)) {
-               this.a = com.scientiamobile.wurfl.core.resource.h.b;
+               this.a = WurflXmlParseState.b;
                return;
             }
             break;
@@ -188,44 +188,44 @@ final class g extends DefaultHandler {
                   this.n.put(this.c, var4);
                }
 
-               this.a = com.scientiamobile.wurfl.core.resource.h.g;
+               this.a = WurflXmlParseState.g;
                return;
             }
             break;
          case 6:
             if ("group".equals(var3)) {
-               this.a = com.scientiamobile.wurfl.core.resource.h.h;
+               this.a = WurflXmlParseState.h;
                return;
             }
             break;
          case 7:
             if ("ver".equals(var3)) {
-               this.a = com.scientiamobile.wurfl.core.resource.h.c;
+               this.a = WurflXmlParseState.c;
                return;
             }
             break;
          case 8:
             if ("last_updated".equals(var3)) {
-               this.a = com.scientiamobile.wurfl.core.resource.h.c;
+               this.a = WurflXmlParseState.c;
                return;
             }
             break;
          case 9:
             if ("smid".equals(var3)) {
-               this.a = com.scientiamobile.wurfl.core.resource.h.c;
+               this.a = WurflXmlParseState.c;
                return;
             }
             break;
          case 10:
             if ("capability".equals(var3)) {
-               this.a = com.scientiamobile.wurfl.core.resource.h.i;
+               this.a = WurflXmlParseState.i;
             }
       }
 
    }
 
    public final void characters(char[] var1, int var2, int var3) {
-      switch (com.scientiamobile.wurfl.core.resource.f.a[this.a - 1]) {
+      switch (WurflXmlParseStateSwitch.a[this.a - 1]) {
          case 7:
             this.o = (new StringBuilder()).append(var1, var2, var3).toString();
             return;
@@ -239,32 +239,32 @@ final class g extends DefaultHandler {
    }
 
    // $FF: synthetic method
-   g(Set var1, byte var2) {
+   WurflXmlHandler(Set var1, byte var2) {
       this(var1);
    }
 
    // $FF: synthetic method
-   static String a(g var0) {
+   static String a(WurflXmlHandler var0) {
       return var0.o;
    }
 
    // $FF: synthetic method
-   static String b(g var0) {
+   static String b(WurflXmlHandler var0) {
       return var0.p;
    }
 
    // $FF: synthetic method
-   static String c(g var0) {
+   static String c(WurflXmlHandler var0) {
       return var0.q;
    }
 
    // $FF: synthetic method
-   static boolean d(g var0) {
+   static boolean d(WurflXmlHandler var0) {
       return var0.r;
    }
 
    // $FF: synthetic method
-   static ModelDevices e(g var0) {
+   static ModelDevices e(WurflXmlHandler var0) {
       return var0.m;
    }
 }

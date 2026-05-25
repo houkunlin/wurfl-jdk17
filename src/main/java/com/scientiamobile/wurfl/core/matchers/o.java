@@ -7,11 +7,11 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class o extends a {
+final class WebOSMatcher extends AbstractMatcher {
    private static String b = "hp_tablet_webos_generic";
    private static String c = "hp_webos_generic";
 
-   public o(UserAgentNormalizer var1, WURFLModel var2) {
+   public WebOSMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 

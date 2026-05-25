@@ -3,11 +3,11 @@ package com.scientiamobile.wurfl.core.resource;
 import java.io.Serializable;
 import java.util.Comparator;
 
-final class a implements Serializable, Comparator {
+final class ModelDeviceUserAgentComparator implements Serializable, Comparator {
    private static final long serialVersionUID = 101L;
-   public static final a a = new a();
+   public static final ModelDeviceUserAgentComparator a = new ModelDeviceUserAgentComparator();
 
-   private a() {
+   private ModelDeviceUserAgentComparator() {
    }
 
    // $FF: synthetic method

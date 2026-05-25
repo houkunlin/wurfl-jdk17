@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
-final class v extends a {
+final class AppleMatcher extends AbstractMatcher {
    private static String b = "apple_iphone_coremedia_ver1";
    private static final String c = "apple_iphone_ver".concat("1");
    private static final String[] d = new String[]{"iPhone", "iPod", "iPad"};
@@ -26,7 +26,7 @@ final class v extends a {
    private static final Map j = new HashMap();
    private static final List k = new ArrayList();
 
-   public v(UserAgentNormalizer var1, WURFLModel var2) {
+   public AppleMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
