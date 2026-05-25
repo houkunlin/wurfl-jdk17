@@ -7,17 +7,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class WindowsRTMatcher extends AbstractMatcher {
-   private static String b = "windows_8_rt_ver1_subos81";
-   private static String c = "generic_windows_8_rt";
+   private static final String WINDOWS_8_RT_VER1_SUBOS81 = "windows_8_rt_ver1_subos81";
+   private static final String GENERIC_WINDOWS_8_RT = "generic_windows_8_rt";
 
    public WindowsRTMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(c);
-      var1.add(b);
+      (var1 = new HashSet()).add(GENERIC_WINDOWS_8_RT);
+      var1.add(WINDOWS_8_RT_VER1_SUBOS81);
       return var1;
    }
 
@@ -25,24 +25,24 @@ final class WindowsRTMatcher extends AbstractMatcher {
       return StringMatchUtils.containsAllOf(var1.getCleanedDeviceUserAgent(), "Windows NT ", " ARM;", "Trident/");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       if (var1.contains("like Gecko")) {
          int var2;
          if ((var2 = var1.indexOf(" Gecko")) >= 0) {
-            return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2 + 6);
+            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 6);
          }
       } else {
          int var3;
          if ((var3 = var1.indexOf(" ARM;")) >= 0) {
-            return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var3 + 5);
+            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var3 + 5);
          }
       }
 
       return null;
    }
 
-   protected final String b(WURFLRequest var1) {
-      return var1.getNormalizedDeviceUserAgent().contains("like Gecko") ? b : c;
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
+      return var1.getNormalizedDeviceUserAgent().contains("like Gecko") ? WINDOWS_8_RT_VER1_SUBOS81 : GENERIC_WINDOWS_8_RT;
    }
 
    public final String getMatcherName() {

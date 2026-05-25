@@ -11,7 +11,7 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
       (var1 = new HashSet()).add("generic");
       return var1;
@@ -21,13 +21,13 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
       return StringMatchUtils.startsWithAnyOf(var1.getCleanedDeviceUserAgent(), "Mozilla/3", "Mozilla/4", "Mozilla/5");
    }
 
-   protected final String a(WURFLRequest var1) {
+   protected final String applyConclusiveMatch(WURFLRequest var1) {
       String var4 = var1.getNormalizedDeviceUserAgent();
       int var3;
-      var4 = (var3 = StringMatchUtils.firstCloseParenthesis(var4)) != -1 ? StringMatchUtils.risMatch(this.getFilter().a().a(), var4, var3) : StringMatchUtils.NULL_STRING;
+      var4 = (var3 = StringMatchUtils.firstCloseParenthesis(var4)) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var4, var3) : StringMatchUtils.NULL_STRING;
       String var2 = "generic";
       if (var4 != null) {
-         var2 = this.getFilter().a().a(var4);
+         var2 = this.getFilter().getIndex().getDeviceIdByUserAgent(var4);
       }
 
       if (var2 == null) {

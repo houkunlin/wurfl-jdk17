@@ -30,7 +30,7 @@ final class AppleMatcher extends AbstractMatcher {
       super(var1, var2);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
       (var1 = new HashSet()).addAll(g);
       var1.addAll(k);
@@ -42,7 +42,7 @@ final class AppleMatcher extends AbstractMatcher {
       return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), d) && !StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Symbian", "Nintendo");
    }
 
-   protected final String a(WURFLRequest var1) {
+   protected final String applyConclusiveMatch(WURFLRequest var1) {
       String var4 = var1.getNormalizedDeviceUserAgent();
       String var2 = null;
       Matcher var3;
@@ -68,8 +68,8 @@ final class AppleMatcher extends AbstractMatcher {
          ++var9;
       }
 
-      if ((var4 = StringMatchUtils.risMatch(this.getFilter().a().a(), var4, var9)) != null) {
-         var4 = this.getFilter().a().a(var4);
+      if ((var4 = StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var4, var9)) != null) {
+         var4 = this.getFilter().getIndex().getDeviceIdByUserAgent(var4);
          if (var2 != null && var4 != null) {
             var2 = var4 + "_subhw" + var2;
             if (k.contains(var2)) {
@@ -83,7 +83,7 @@ final class AppleMatcher extends AbstractMatcher {
       }
    }
 
-   protected final String b(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var4 = var1.getNormalizedDeviceUserAgent();
       Matcher var2 = e.matcher(var4);
       String var3 = "-1";

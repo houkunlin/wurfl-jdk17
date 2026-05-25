@@ -8,17 +8,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class WebOSMatcher extends AbstractMatcher {
-   private static String b = "hp_tablet_webos_generic";
-   private static String c = "hp_webos_generic";
+   private static final String HP_TABLET_WEBOS_GENERIC = "hp_tablet_webos_generic";
+   private static final String HP_WEBOS_GENERIC = "hp_webos_generic";
 
    public WebOSMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(b);
-      var1.add(c);
+      (var1 = new HashSet()).add(HP_TABLET_WEBOS_GENERIC);
+      var1.add(HP_WEBOS_GENERIC);
       return var1;
    }
 
@@ -26,13 +26,13 @@ final class WebOSMatcher extends AbstractMatcher {
       return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "webOS", "hpwOS");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       int var2 = StringMatchUtils.indexOfOrLength(var1, "---");
-      return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
    }
 
-   protected final String b(WURFLRequest var1) {
-      return var1.getNormalizedDeviceUserAgent().contains("hpwOS/3") ? b : c;
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
+      return var1.getNormalizedDeviceUserAgent().contains("hpwOS/3") ? HP_TABLET_WEBOS_GENERIC : HP_WEBOS_GENERIC;
    }
 
    public final String getMatcherName() {
