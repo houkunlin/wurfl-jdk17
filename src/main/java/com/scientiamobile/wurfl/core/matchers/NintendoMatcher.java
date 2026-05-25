@@ -6,12 +6,12 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class ak extends a {
-   public ak(WURFLModel var1) {
+final class NintendoMatcher extends a {
+   public NintendoMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
       (var1 = new HashSet()).add("nintendo_wii_u_ver1");
       var1.add("nintendo_wii_ver1");
@@ -34,7 +34,7 @@ final class ak extends a {
       }
    }
 
-   protected final String a(WURFLRequest var1) {
+   protected final String applyConclusiveMatch(WURFLRequest var1) {
       String var2;
       if ((var2 = var1.getNormalizedDeviceUserAgent()).contains("New Nintendo 3DS")) {
          return "nintendo_new3ds_ver1";

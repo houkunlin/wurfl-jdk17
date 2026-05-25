@@ -6,17 +6,17 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class ah extends a {
-   private static String b = "mot_mib22_generic";
+final class MotorolaMatcher extends a {
+   private static final String MOT_MIB22_GENERIC = "mot_mib22_generic";
 
-   public ah(WURFLModel var1) {
+   public MotorolaMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
       (var1 = new HashSet()).add("generic");
-      var1.add(b);
+      var1.add(MOT_MIB22_GENERIC);
       return var1;
    }
 
@@ -25,8 +25,8 @@ final class ah extends a {
       return !var1._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(var2, "Mot-", "MOT-", "MOTO", "moto") || var2.contains("Motorola");
    }
 
-   protected final String b(WURFLRequest var1) {
-      return StringMatchUtils.containsAnyOf(var1.getNormalizedDeviceUserAgent(), "MIB/2.2", "MIB/BER2.2") ? b : "generic";
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
+      return StringMatchUtils.containsAnyOf(var1.getNormalizedDeviceUserAgent(), "MIB/2.2", "MIB/BER2.2") ? MOT_MIB22_GENERIC : "generic";
    }
 
    public final String getMatcherName() {

@@ -4,8 +4,8 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-final class ai extends a {
-   public ai(WURFLModel var1) {
+final class NecMatcher extends a {
+   public NecMatcher(WURFLModel var1) {
       super(var1);
    }
 
