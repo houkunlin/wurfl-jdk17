@@ -8,18 +8,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-final class N extends a {
-   private static String b = "generic_amazon_kindle";
-   private static final Map c;
+final class KindleMatcher extends a {
+   private static String GENERIC_AMAZON_KINDLE = "generic_amazon_kindle";
+   private static final Map DEVICE_BY_TOKEN;
 
-   public N(WURFLModel var1) {
+   public KindleMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(b);
-      var1.addAll(c.values());
+      (var1 = new HashSet()).add(GENERIC_AMAZON_KINDLE);
+      var1.addAll(DEVICE_BY_TOKEN.values());
       return var1;
    }
 
@@ -28,33 +28,33 @@ final class N extends a {
       return (var2 = var1.getCleanedDeviceUserAgent()).contains("Android") && StringMatchUtils.containsAnyOf(var2, "/Kindle", "Silk") ? false : StringMatchUtils.containsAnyOf(var2, "Kindle", "Silk");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       int var2;
       if ((var2 = var1.indexOf("Build/")) != -1) {
-         return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
       } else {
          if ((var2 = var1.indexOf("Kindle/")) >= 0) {
             var2 += 7;
             char var3;
             if ((var3 = var1.charAt(var2)) >= '1' && var3 <= '3') {
-               return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2 + 1);
+               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 1);
             }
          }
 
-         return (var2 = var1.indexOf("PlayStation Vita")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2 + 16 + 1) : null;
+         return (var2 = var1.indexOf("PlayStation Vita")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 16 + 1) : null;
       }
    }
 
-   protected final String b(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var4 = var1.getNormalizedDeviceUserAgent();
 
-      for(Map.Entry var3 : c.entrySet()) {
+      for(Map.Entry var3 : DEVICE_BY_TOKEN.entrySet()) {
          if (var4.contains((CharSequence)var3.getKey())) {
             return (String)var3.getValue();
          }
       }
 
-      return b;
+      return GENERIC_AMAZON_KINDLE;
    }
 
    public final String getMatcherName() {
@@ -66,10 +66,11 @@ final class N extends a {
    }
 
    static {
-      (c = new LinkedHashMap()).put("Kindle/1", "amazon_kindle_ver1");
-      c.put("Kindle/2", "amazon_kindle2_ver1");
-      c.put("Kindle/3", "amazon_kindle3_ver1");
-      c.put("Kindle Fire", "amazon_kindle_fire_ver1");
-      c.put("Silk", "amazon_kindle_fire_ver1");
+      (DEVICE_BY_TOKEN = new LinkedHashMap()).put("Kindle/1", "amazon_kindle_ver1");
+      DEVICE_BY_TOKEN.put("Kindle/2", "amazon_kindle2_ver1");
+      DEVICE_BY_TOKEN.put("Kindle/3", "amazon_kindle3_ver1");
+      DEVICE_BY_TOKEN.put("Kindle Fire", "amazon_kindle_fire_ver1");
+      DEVICE_BY_TOKEN.put("Silk", "amazon_kindle_fire_ver1");
    }
 }
+

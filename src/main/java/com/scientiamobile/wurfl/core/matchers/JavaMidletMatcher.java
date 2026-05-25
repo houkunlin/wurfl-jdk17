@@ -5,16 +5,16 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
-final class L extends a {
-   private static String b = "generic_midp_midlet";
+final class JavaMidletMatcher extends a {
+   private static String GENERIC_MIDP_MIDLET = "generic_midp_midlet";
 
-   public L(WURFLModel var1) {
+   public JavaMidletMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(b);
+      (var1 = new HashSet()).add(GENERIC_MIDP_MIDLET);
       return var1;
    }
 
@@ -22,8 +22,8 @@ final class L extends a {
       return var1.getCleanedDeviceUserAgent().contains("UNTRUSTED/1.0");
    }
 
-   protected final String a(WURFLRequest var1) {
-      return b;
+   protected final String applyConclusiveMatch(WURFLRequest var1) {
+      return GENERIC_MIDP_MIDLET;
    }
 
    public final String getMatcherName() {
@@ -34,3 +34,4 @@ final class L extends a {
       return "JavaMidlet";
    }
 }
+

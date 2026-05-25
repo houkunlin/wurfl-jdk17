@@ -6,16 +6,16 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class M extends a {
-   private static String b = "opwv_v62_generic";
+final class KDDIMatcher extends a {
+   private static String OPWV_V62_GENERIC = "opwv_v62_generic";
 
-   public M(WURFLModel var1) {
+   public KDDIMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(b);
+      (var1 = new HashSet()).add(OPWV_V62_GENERIC);
       return var1;
    }
 
@@ -23,13 +23,13 @@ final class M extends a {
       return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().contains("KDDI-");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       int var2;
-      return (var2 = var1.startsWith("KDDI/") ? StringMatchUtils.secondSlash(var1) : StringMatchUtils.firstSlash(var1)) == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+      return (var2 = var1.startsWith("KDDI/") ? StringMatchUtils.secondSlash(var1) : StringMatchUtils.firstSlash(var1)) == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
    }
 
-   protected final String b(WURFLRequest var1) {
-      return b;
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
+      return OPWV_V62_GENERIC;
    }
 
    public final String getMatcherName() {
@@ -40,3 +40,4 @@ final class M extends a {
       return "Kddi";
    }
 }
+

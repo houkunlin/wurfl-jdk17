@@ -7,16 +7,16 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class J extends a {
-   private static String b = "generic_android_htc_disguised_as_mac";
+final class HTCMacMatcher extends a {
+   private static String GENERIC_HTC_ANDROID_DISGUISED_AS_MAC = "generic_android_htc_disguised_as_mac";
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(b);
+      (var1 = new HashSet()).add(GENERIC_HTC_ANDROID_DISGUISED_AS_MAC);
       return var1;
    }
 
-   public J(UserAgentNormalizer var1, WURFLModel var2) {
+   public HTCMacMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
@@ -25,13 +25,13 @@ final class J extends a {
       return (var2 = var1.getCleanedDeviceUserAgent()).startsWith("Mozilla/5.0 (Macintosh") && var2.contains("HTC");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       int var2 = StringMatchUtils.indexOfOrLength(var1, "---");
-      return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
    }
 
-   protected final String b(WURFLRequest var1) {
-      return b;
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
+      return GENERIC_HTC_ANDROID_DISGUISED_AS_MAC;
    }
 
    public final String getMatcherName() {
@@ -42,3 +42,4 @@ final class J extends a {
       return "HTCMac";
    }
 }
+
