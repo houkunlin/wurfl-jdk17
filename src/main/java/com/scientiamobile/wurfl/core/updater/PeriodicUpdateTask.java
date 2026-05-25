@@ -1,4 +1,4 @@
-﻿package com.scientiamobile.wurfl.core.updater;
+package com.scientiamobile.wurfl.core.updater;
 
 import com.scientiamobile.wurfl.core.WURFLEngine;
 import java.util.Calendar;

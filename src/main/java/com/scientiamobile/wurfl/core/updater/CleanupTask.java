@@ -1,4 +1,4 @@
-﻿package com.scientiamobile.wurfl.core.updater;
+package com.scientiamobile.wurfl.core.updater;
 
 import java.io.File;
 import java.util.Map;
