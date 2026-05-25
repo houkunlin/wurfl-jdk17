@@ -12,9 +12,9 @@ import com.scientiamobile.wurfl.core.request.normalizer.generic.TransferEncoding
 import com.scientiamobile.wurfl.core.request.normalizer.generic.UCWebNormalizer;
 import com.scientiamobile.wurfl.core.request.normalizer.generic.UPLinkNormalizer;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
 
 public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriority {

@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 final class SPVMatcher extends MatcherBase {
    public SPVMatcher(WURFLModel var1) {

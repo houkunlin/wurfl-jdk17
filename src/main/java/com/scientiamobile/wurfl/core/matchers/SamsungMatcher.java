@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 final class SamsungMatcher extends MatcherBase {
    private static final String[] b = new String[]{"SEC-", "SAMSUNG-", "SCH"};

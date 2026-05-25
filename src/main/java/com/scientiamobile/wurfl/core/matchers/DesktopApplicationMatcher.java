@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public final class DesktopApplicationMatcher extends MatcherBase {
    private static String b = "ms_office";

@@ -2,7 +2,7 @@ package com.scientiamobile.wurfl.core.resource.exc;
 
 import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.resource.WURFLResource;
-import org.apache.commons.lang.text.StrBuilder;
+import org.apache.commons.lang3.text.StrBuilder;
 
 public class WURFLResourceException extends WURFLRuntimeException {
    private static final long serialVersionUID = 10L;

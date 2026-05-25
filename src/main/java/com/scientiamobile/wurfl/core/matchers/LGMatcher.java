@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 final class LGMatcher extends MatcherBase {
    protected final Set getRequiredDeviceIds() {

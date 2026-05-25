@@ -1,4 +1,4 @@
-package com.scientiamobile.wurfl.core.updater;
+﻿package com.scientiamobile.wurfl.core.updater;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -9,9 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.text.StrBuilder;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrBuilder;
 
 public class UpdatePipeline {
    public static final String ENV_SCIENTIA_URL = "WURFL_UPDATE_URL";

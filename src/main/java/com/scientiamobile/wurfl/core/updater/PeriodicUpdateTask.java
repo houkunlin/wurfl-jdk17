@@ -1,11 +1,11 @@
-package com.scientiamobile.wurfl.core.updater;
+﻿package com.scientiamobile.wurfl.core.updater;
 
 import com.scientiamobile.wurfl.core.WURFLEngine;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

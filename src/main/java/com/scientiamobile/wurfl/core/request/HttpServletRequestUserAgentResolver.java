@@ -1,8 +1,8 @@
 package com.scientiamobile.wurfl.core.request;
 
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang.Validate;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.Validate;
 
 final class HttpServletRequestUserAgentResolver implements UserAgentResolver {
    public final String resolve(HttpServletRequest request) {

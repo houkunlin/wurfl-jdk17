@@ -3,8 +3,8 @@ package com.scientiamobile.wurfl.core.cache;
 import com.scientiamobile.wurfl.core.InternalDevice;
 import com.scientiamobile.wurfl.core.utils.CollectionFactory;
 import java.util.Map;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

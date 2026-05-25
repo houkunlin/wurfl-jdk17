@@ -2,7 +2,7 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class AndroidNormalizer implements UserAgentNormalizer {
    public String normalize(String var1) {

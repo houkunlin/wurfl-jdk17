@@ -7,10 +7,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.text.StrBuilder;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.text.StrBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

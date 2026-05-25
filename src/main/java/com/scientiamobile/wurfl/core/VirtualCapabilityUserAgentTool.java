@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public final class VirtualCapabilityUserAgentTool {
    private static final Pattern a = Pattern.compile("^Mozilla/[0-9]\\.0 \\(Macintosh;(?: U;)?([a-zA-Z_ \\.0-9]+)(?:;)?.+? DesktopApp ([A-Za-z0-9]+)/([\\d\\.]+)\\.?");

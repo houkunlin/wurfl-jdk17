@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 final class NokiaMatcher extends MatcherBase {
    private static final String NOKIA_GENERIC_SERIES60 = "nokia_generic_series60";

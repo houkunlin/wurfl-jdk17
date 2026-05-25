@@ -25,7 +25,7 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

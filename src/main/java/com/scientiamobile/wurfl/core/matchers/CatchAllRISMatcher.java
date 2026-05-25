@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Collection;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 final class CatchAllRISMatcher extends AbstractMatcher {
    public final boolean canHandle(WURFLRequest var1) {

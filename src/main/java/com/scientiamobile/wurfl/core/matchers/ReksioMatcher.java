@@ -4,7 +4,7 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 final class ReksioMatcher extends MatcherBase {
    private static String REKSIO_DEVICE_ID = "generic_reksio";

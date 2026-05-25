@@ -2,8 +2,8 @@ package com.scientiamobile.wurfl.core.cache;
 
 import com.scientiamobile.wurfl.core.InternalDevice;
 import java.util.Map;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.collections.map.LRUMap;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.collections4.map.LRUMap;
 
 public class LRUMapCacheProvider implements CacheProvider {
    private Map a;

@@ -1,7 +1,7 @@
 package com.scientiamobile.wurfl.core.resource.exc;
 
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
-import org.apache.commons.lang.text.StrBuilder;
+import org.apache.commons.lang3.text.StrBuilder;
 
 public abstract class CapabilityConsistencyException extends DeviceConsistencyException {
    private static final long serialVersionUID = 10L;

@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.Set;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 class DefaultCapabilitiesHolderFactory implements CapabilitiesHolderFactory {
    private WURFLModel wurflModel;

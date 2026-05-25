@@ -1,7 +1,7 @@
 package com.scientiamobile.wurfl.core.utils;
 
 import java.math.BigInteger;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ExceptionUtils {
    public static String getFirstAvailableMessage(Throwable var0) {

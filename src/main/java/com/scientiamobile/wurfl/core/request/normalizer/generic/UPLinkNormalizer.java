@@ -1,7 +1,7 @@
-package com.scientiamobile.wurfl.core.request.normalizer.generic;
+﻿package com.scientiamobile.wurfl.core.request.normalizer.generic;
 
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 public class UPLinkNormalizer implements UserAgentNormalizer {
    public String normalize(String var1) {

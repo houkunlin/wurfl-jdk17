@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class OperaNormalizer implements UserAgentNormalizer {
    private static final Pattern a = Pattern.compile("Version/(\\d+\\.\\d+)");

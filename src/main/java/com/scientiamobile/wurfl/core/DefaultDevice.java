@@ -6,7 +6,7 @@ import com.scientiamobile.wurfl.core.matchers.MatchType;
 import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityHandler;
 import java.io.Serializable;
 import java.util.Map;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
 
 public class DefaultDevice implements EnrichedDevice, Serializable {

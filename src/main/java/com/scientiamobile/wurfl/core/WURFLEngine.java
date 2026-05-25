@@ -8,7 +8,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLResource;
 import com.scientiamobile.wurfl.core.resource.WURFLResources;
 import java.util.Collection;
 import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface WURFLEngine {
    String API_VERSION = "1.9.1.0";

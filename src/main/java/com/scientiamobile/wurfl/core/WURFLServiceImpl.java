@@ -14,8 +14,8 @@ import com.scientiamobile.wurfl.core.resource.WURFLResources;
 import com.scientiamobile.wurfl.core.resource.XmlFileLoader;
 import java.io.IOException;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang.Validate;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

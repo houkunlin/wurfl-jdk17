@@ -1,7 +1,7 @@
 package com.scientiamobile.wurfl.core.request;
 
 import com.scientiamobile.wurfl.core.EngineTarget;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface WURFLRequestFactory {
    WURFLRequest createRequest(HttpServletRequest var1, EngineTarget var2);
