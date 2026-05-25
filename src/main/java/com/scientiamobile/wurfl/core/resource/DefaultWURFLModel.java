@@ -55,12 +55,12 @@ public class DefaultWURFLModel implements WURFLModel {
       this.e = null;
       this.h = null;
       ModelDevicesSnapshot var5 = var1.getData(var3);
-      this.f = var5.a();
-      this.g = var5.c();
-      ModelDevices var6 = var5.b();
+      this.f = var5.getSnapshotKey();
+      this.g = var5.getSmid();
+      ModelDevices var6 = var5.copyDevices();
       ModelDevices var4 = new ModelDevices(var6);
       this.b = var6.getDeviceIdsByInsertionOrder();
-      com.scientiamobile.wurfl.core.resource.d.a(var4);
+      ModelDevicesConsistencyVerifier.verifyModelDevices(var4);
       this.a(var2, var4, var3);
       if (var2.size() == 0) {
          a(var4);
@@ -75,16 +75,16 @@ public class DefaultWURFLModel implements WURFLModel {
       for(int var6 = 0; var1 != null && var6 < var1.size(); ++var6) {
          ModelDevices var7;
          ModelDevicesSnapshot var8;
-         com.scientiamobile.wurfl.core.resource.d.a(var7 = (var8 = var1.get(var6).getData(var3)).b(), var2);
+         ModelDevicesConsistencyVerifier.verifyNoRedefinedDevices(var7 = (var8 = var1.get(var6).getData(var3)).copyDevices(), var2);
          StrBuilder var9;
-         (var9 = new StrBuilder()).append(StringUtils.defaultString(this.f)).append("; ").append(var8.a());
-         var2 = com.scientiamobile.wurfl.core.resource.e.a(var2, var7);
+         (var9 = new StrBuilder()).append(StringUtils.defaultString(this.f)).append("; ").append(var8.getSnapshotKey());
+         var2 = ModelDevicesPatchMerger.merge(var2, var7);
          this.b = var2.getDeviceIdsByInsertionOrder();
-         com.scientiamobile.wurfl.core.resource.d.a(var2);
+         ModelDevicesConsistencyVerifier.verifyModelDevices(var2);
          this.f = var9.toString();
       }
 
-      com.scientiamobile.wurfl.core.resource.d.a(var2);
+      ModelDevicesConsistencyVerifier.verifyModelDevices(var2);
       this.a = CollectionFactory.createConcurrentHashMap();
       this.a.putAll(var2.getDevicesById());
       a(var2);
@@ -157,7 +157,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public Set getAllDevices() {
       TreeSet var1;
-      (var1 = new TreeSet(com.scientiamobile.wurfl.core.resource.ModelDeviceUserAgentComparator.a)).addAll(this.a.values());
+      (var1 = new TreeSet(ModelDeviceUserAgentComparator.INSTANCE)).addAll(this.a.values());
       return var1;
    }
 

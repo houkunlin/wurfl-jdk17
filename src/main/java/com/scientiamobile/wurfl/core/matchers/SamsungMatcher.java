@@ -7,16 +7,16 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class f extends a {
+final class SamsungMatcher extends a {
    private static final String[] b = new String[]{"SEC-", "SAMSUNG-", "SCH"};
    private static final String[] c = new String[]{"Samsung", "SPH", "SGH"};
    private static final String[] d = new String[]{"SEC-", "SPH", "SGH", "SCH"};
 
-   public f(WURFLModel var1) {
+   public SamsungMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
       (var1 = new HashSet()).add("generic");
       return var1;
@@ -31,17 +31,17 @@ final class f extends a {
       }
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       int var2;
-      return (var2 = StringMatchUtils.startsWithAnyOf(var1, b) ? StringMatchUtils.firstSlash(var1) : (StringMatchUtils.startsWithAnyOf(var1, c) ? StringMatchUtils.firstSpace(var1) : StringMatchUtils.secondSlash(var1))) == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+      return (var2 = StringMatchUtils.startsWithAnyOf(var1, b) ? StringMatchUtils.firstSlash(var1) : (StringMatchUtils.startsWithAnyOf(var1, c) ? StringMatchUtils.firstSpace(var1) : StringMatchUtils.secondSlash(var1))) == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
    }
 
-   protected final String b(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var3;
       int var2 = StringMatchUtils.indexOf(var3 = var1.getNormalizedDeviceUserAgent(), "Samsung");
       var2 = StringMatchUtils.indexOfOrLength(var3, "/", var2);
       String var4;
-      return !StringUtils.isBlank(var4 = StringMatchUtils.risMatch(this.getFilter().a().a(), var3, var2)) ? this.getFilter().a().a(var4) : "generic";
+      return !StringUtils.isBlank(var4 = StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var3, var2)) ? this.getFilter().getIndex().getDeviceIdByUserAgent(var4) : "generic";
    }
 
    public final String getMatcherName() {
@@ -52,3 +52,4 @@ final class f extends a {
       return "Samsung";
    }
 }
+

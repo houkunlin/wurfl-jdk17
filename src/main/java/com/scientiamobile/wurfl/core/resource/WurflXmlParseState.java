@@ -19,3 +19,4 @@ final class WurflXmlParseState {
       return (int[])l.clone();
    }
 }
+

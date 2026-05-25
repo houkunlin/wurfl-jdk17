@@ -8,3 +8,4 @@ final class IntrospectorRequestResponse {
    String requestType;
    Map capabilities;
 }
+

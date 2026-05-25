@@ -14,7 +14,7 @@ public class XmlFileLoader {
    }
 
    public final boolean parseFile() {
-      InputStream var1 = this.a.c();
+      InputStream var1 = this.a.openInputStream();
 
       try {
          SAXParserFactory.newInstance().newSAXParser().parse(var1, this.b);

@@ -10,26 +10,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.ArrayUtils;
 
-final class E extends a {
-   private static final Pattern b = Pattern.compile("^.+?\\(.+?rv:\\d+(\\.)");
-   private static String c = "generic_android_ver2_0_fennec";
-   private static String d = "generic_android_ver2_0_fennec_tablet";
-   private static String e = "generic_android_ver2_0_fennec_desktop";
-   private Set f = this.a();
+final class FennecOnAndroidMatcher extends a {
+   private static final Pattern VERSION_PREFIX = Pattern.compile("^.+?\\(.+?rv:\\d+(\\.)");
+   private static String GENERIC_ANDROID_FENNEC_2 = "generic_android_ver2_0_fennec";
+   private static String GENERIC_ANDROID_FENNEC_2_TABLET = "generic_android_ver2_0_fennec_tablet";
+   private static String GENERIC_ANDROID_FENNEC_2_DESKTOP = "generic_android_ver2_0_fennec_desktop";
+   private Set requiredDeviceIds = this.getRequiredDeviceIds();
 
-   public E(WURFLModel var1) {
+   public FennecOnAndroidMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
-      if (this.f != null) {
-         return this.f;
+   protected final Set getRequiredDeviceIds() {
+      if (this.requiredDeviceIds != null) {
+         return this.requiredDeviceIds;
       } else {
          HashSet var1;
          (var1 = new HashSet()).add("generic");
-         var1.add(c);
-         var1.add(d);
-         var1.add(e);
+         var1.add(GENERIC_ANDROID_FENNEC_2);
+         var1.add(GENERIC_ANDROID_FENNEC_2_TABLET);
+         var1.add(GENERIC_ANDROID_FENNEC_2_DESKTOP);
          var1.add("generic_android_ver4_fennec");
          var1.add("generic_android_ver4_fennec_tablet");
          var1.add("generic_android_ver4_fennec_desktop");
@@ -56,13 +56,13 @@ final class E extends a {
       return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().contains("Android") && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Fennec", "Firefox");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       Matcher var2;
       int var3;
-      return (var2 = b.matcher(var1)).find() && (var3 = var2.end()) < var1.length() ? StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var3) : null;
+      return (var2 = VERSION_PREFIX.matcher(var1)).find() && (var3 = var2.end()) < var1.length() ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var3) : null;
    }
 
-   protected final String b(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var2 = null;
       int var3 = 0;
       String var4;
@@ -82,7 +82,7 @@ final class E extends a {
          var2 = var2 + "_desktop";
       }
 
-      return this.f.contains(var2) ? var2 : "generic_android_ver4_fennec";
+      return this.requiredDeviceIds.contains(var2) ? var2 : "generic_android_ver4_fennec";
    }
 
    public final String getMatcherName() {
@@ -93,3 +93,4 @@ final class E extends a {
       return "FennecOnAndroid";
    }
 }
+

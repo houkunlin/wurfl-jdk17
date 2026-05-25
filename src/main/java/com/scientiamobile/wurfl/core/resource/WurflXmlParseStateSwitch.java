@@ -1,7 +1,6 @@
 package com.scientiamobile.wurfl.core.resource;
 
 final class WurflXmlParseStateSwitch {
-   // $FF: synthetic field
    static final int[] a;
 
    static {
@@ -69,3 +68,4 @@ final class WurflXmlParseStateSwitch {
       }
    }
 }
+

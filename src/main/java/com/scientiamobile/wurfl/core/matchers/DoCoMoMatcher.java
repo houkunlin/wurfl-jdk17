@@ -6,18 +6,18 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class D extends a {
-   private static String b = "docomo_generic_jap_ver2";
-   private static String c = "docomo_generic_jap_ver1";
+final class DoCoMoMatcher extends a {
+   private static String DOCOMO_VER2 = "docomo_generic_jap_ver2";
+   private static String DOCOMO_VER1 = "docomo_generic_jap_ver1";
 
-   public D(WURFLModel var1) {
+   public DoCoMoMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(c);
-      var1.add(b);
+      (var1 = new HashSet()).add(DOCOMO_VER1);
+      var1.add(DOCOMO_VER2);
       return var1;
    }
 
@@ -25,17 +25,17 @@ final class D extends a {
       return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().startsWith("DoCoMo");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       int var2;
       if ((var2 = StringMatchUtils.secondSlash(var1)) == -1) {
          var2 = StringMatchUtils.firstOpenParenthesis(var1);
       }
 
-      return var2 != -1 ? StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2) : StringMatchUtils.NULL_STRING;
+      return var2 != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2) : StringMatchUtils.NULL_STRING;
    }
 
-   protected final String b(WURFLRequest var1) {
-      return var1.getNormalizedDeviceUserAgent().startsWith("DoCoMo/2") ? b : c;
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
+      return var1.getNormalizedDeviceUserAgent().startsWith("DoCoMo/2") ? DOCOMO_VER2 : DOCOMO_VER1;
    }
 
    public final String getMatcherName() {
@@ -46,3 +46,4 @@ final class D extends a {
       return "DoCoMo";
    }
 }
+

@@ -11,3 +11,4 @@ final class IntrospectorInfoResponse {
    String javaVendor;
    String javaVersion;
 }
+

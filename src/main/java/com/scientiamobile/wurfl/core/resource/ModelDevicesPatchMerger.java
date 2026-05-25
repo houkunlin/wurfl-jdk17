@@ -6,21 +6,20 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final class e {
-   private static final Logger a = LoggerFactory.getLogger(e.class);
-   // $FF: synthetic field
-   private static boolean b = !e.class.desiredAssertionStatus();
+final class ModelDevicesPatchMerger {
+   private static final Logger LOG = LoggerFactory.getLogger(ModelDevicesPatchMerger.class);
+   private static boolean ASSERTIONS_DISABLED = !ModelDevicesPatchMerger.class.desiredAssertionStatus();
 
-   private e() {
+   private ModelDevicesPatchMerger() {
    }
 
-   public static ModelDevices a(ModelDevices var0, ModelDevices var1) {
-      ModelDevices var2 = new ModelDevices(var0);
+   public static ModelDevices merge(ModelDevices baseDevices, ModelDevices patchDevices) {
+      ModelDevices var2 = new ModelDevices(baseDevices);
 
-      for(ModelDevice var3 : var1) {
-         if (var0.containsId(var3.getID())) {
+      for(ModelDevice var3 : patchDevices) {
+         if (baseDevices.containsId(var3.getID())) {
             ModelDevice var4;
-            ModelDevice var10000 = var4 = var0.getById(var3.getID());
+            ModelDevice var10000 = var4 = baseDevices.getById(var3.getID());
             ModelDevice var5 = var3;
             var3 = var10000;
             if (var5 != null && var5.getUserAgent() != null) {
@@ -37,7 +36,7 @@ final class e {
 
                var10000 = (new ModelDevice$Builder(var3.getID(), var3.getUserAgent(), var5.getFallBack())).setActualDeviceRoot(var5.isActualDeviceRoot()).setCapabilitiesByGroup(var9).setCapabilities(var6).build();
             } else {
-               a.error("invalid patching device, not patched");
+               LOG.error("invalid patching device, not patched");
                var10000 = var3;
             }
 
@@ -47,7 +46,7 @@ final class e {
             }
          }
 
-         if (!b && var3 == null) {
+         if (!ASSERTIONS_DISABLED && var3 == null) {
             throw new AssertionError("patchedDevice is null");
          }
 
@@ -57,3 +56,4 @@ final class e {
       return var2;
    }
 }
+

@@ -8,16 +8,16 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class B extends a {
-   private static String b = "google_chrome";
+final class ChromeMatcher extends a {
+   private static String CHROME_DEVICE_ID = "google_chrome";
 
-   public B(UserAgentNormalizer var1, WURFLModel var2) {
+   public ChromeMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(b);
+      (var1 = new HashSet()).add(CHROME_DEVICE_ID);
       return var1;
    }
 
@@ -25,12 +25,12 @@ final class B extends a {
       return !var1._internalIsMobileBrowser() && StringUtils.contains(var1.getCleanedDeviceUserAgent(), "Chrome");
    }
 
-   protected final String a(String var1) {
-      return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, StringMatchUtils.indexOfOrLength(var1, "."));
+   protected final String risMatch(String var1) {
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, StringMatchUtils.indexOfOrLength(var1, "."));
    }
 
-   protected final String b(WURFLRequest var1) {
-      return b;
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
+      return CHROME_DEVICE_ID;
    }
 
    public final String getMatcherName() {
@@ -41,3 +41,4 @@ final class B extends a {
       return "Chrome";
    }
 }
+

@@ -5,8 +5,8 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import org.apache.commons.lang.StringUtils;
 
-final class d extends a {
-   public d(WURFLModel var1) {
+final class SPVMatcher extends a {
+   public SPVMatcher(WURFLModel var1) {
       super(var1);
    }
 
@@ -14,9 +14,9 @@ final class d extends a {
       return !var1._internalIsDesktopBrowser() && StringUtils.contains(var1.getCleanedDeviceUserAgent(), "SPV");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       int var2 = StringMatchUtils.indexOfOrLength(var1, ";", StringMatchUtils.indexOfOrLength(var1, "SPV"));
-      return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
    }
 
    public final String getMatcherName() {
@@ -27,3 +27,4 @@ final class d extends a {
       return "SPV";
    }
 }
+

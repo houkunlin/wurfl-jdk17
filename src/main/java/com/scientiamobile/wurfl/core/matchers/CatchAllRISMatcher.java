@@ -10,8 +10,8 @@ final class CatchAllRISMatcher extends AbstractMatcher {
       return true;
    }
 
-   protected final String a(String var1) {
-      Collection var2 = this.getFilter().a().a();
+   protected final String risMatch(String var1) {
+      Collection var2 = this.getFilter().getIndex().getUserAgents();
       if (StringUtils.startsWith(var1, "CFNetwork")) {
          int var3;
          if ((var3 = StringMatchUtils.firstSpace(var1)) != -1) {
@@ -35,3 +35,4 @@ final class CatchAllRISMatcher extends AbstractMatcher {
       return "CatchAllRis";
    }
 }
+

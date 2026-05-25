@@ -6,16 +6,16 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
-final class c extends a {
-   private static String b = "generic_reksio";
+final class ReksioMatcher extends a {
+   private static String REKSIO_DEVICE_ID = "generic_reksio";
 
-   public c(WURFLModel var1) {
+   public ReksioMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
-      (var1 = new HashSet()).add(b);
+      (var1 = new HashSet()).add(REKSIO_DEVICE_ID);
       return var1;
    }
 
@@ -23,8 +23,8 @@ final class c extends a {
       return !var1._internalIsDesktopBrowser() && StringUtils.startsWith(var1.getCleanedDeviceUserAgent(), "Reksio");
    }
 
-   protected final String a(WURFLRequest var1) {
-      return b;
+   protected final String applyConclusiveMatch(WURFLRequest var1) {
+      return REKSIO_DEVICE_ID;
    }
 
    public final String getMatcherName() {
@@ -35,3 +35,4 @@ final class c extends a {
       return "Reksio";
    }
 }
+

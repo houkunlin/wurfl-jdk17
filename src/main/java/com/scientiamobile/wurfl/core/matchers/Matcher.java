@@ -10,8 +10,7 @@ interface Matcher {
 
    String normalize(String userAgent);
 
-   F getFilter();
+   MatcherFilter getFilter();
 
    String getMatcherName();
 }
-

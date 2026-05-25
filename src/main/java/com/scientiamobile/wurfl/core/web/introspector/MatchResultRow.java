@@ -1,12 +1,12 @@
 package com.scientiamobile.wurfl.core.web.introspector;
 
 final class MatchResultRow implements Comparable {
-   private String matcherName;
-   private String deviceId;
-   private String normalizedUserAgent;
-   private String originalUserAgent;
+   private final String matcherName;
+   private final String deviceId;
+   private final String normalizedUserAgent;
+   private final String originalUserAgent;
 
-   private MatchResultRow(String matcherName, String deviceId, String normalizedUserAgent, String originalUserAgent) {
+   MatchResultRow(String matcherName, String deviceId, String normalizedUserAgent, String originalUserAgent) {
       this.matcherName = matcherName;
       this.deviceId = deviceId;
       this.normalizedUserAgent = normalizedUserAgent;
@@ -21,11 +21,6 @@ final class MatchResultRow implements Comparable {
       }
 
       return var1 + "\t" + this.deviceId + "\t" + this.normalizedUserAgent + "\t" + this.originalUserAgent;
-   }
-
-   // $FF: synthetic method
-   MatchResultRow(String var1, String var2, String var3, String var4, byte var5) {
-      this(var1, var2, var3, var4);
    }
 
    public final int compareTo(Object other) {
@@ -48,3 +43,4 @@ final class MatchResultRow implements Comparable {
       return this.originalUserAgent.compareTo(o.originalUserAgent);
    }
 }
+

@@ -18,27 +18,26 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
 
-final class d {
-   // $FF: synthetic field
-   private static boolean a = !d.class.desiredAssertionStatus();
+final class ModelDevicesConsistencyVerifier {
+   private static boolean ASSERTIONS_DISABLED = !ModelDevicesConsistencyVerifier.class.desiredAssertionStatus();
 
-   private d() {
+   private ModelDevicesConsistencyVerifier() {
    }
 
-   public static void a(ModelDevices var0) {
+   public static void verifyModelDevices(ModelDevices devices) {
       HashMap var1 = new HashMap();
       HashSet var2 = new HashSet();
-      if (!a && var0 == null) {
+      if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
-      } else if (!var0.containsId("generic")) {
+      } else if (!devices.containsId("generic")) {
          throw new GenericNotDefinedException();
       } else {
-         Iterator var3 = var0.iterator();
+         Iterator var3 = devices.iterator();
 
          while(var3.hasNext()) {
             ModelDevice var4;
             ModelDevice var5 = var4 = (ModelDevice)var3.next();
-            if (!a && var5 == null) {
+            if (!ASSERTIONS_DISABLED && var5 == null) {
                throw new AssertionError("device is null");
             }
 
@@ -48,106 +47,102 @@ final class d {
             }
 
             var1.put(var4.getUserAgent(), var4);
-            a(var4, var0, var2);
+            verifyHierarchy(var4, devices, var2);
             var2.add(var4.getID());
-            a(var4, var0);
-            b(var4, var0);
+            verifyGroups(var4, devices);
+            verifyCapabilities(var4, devices);
          }
 
       }
    }
 
-   private static void a(ModelDevice var0, ModelDevices var1, Set var2) {
-      if (!a && var0 == null) {
+   private static void verifyHierarchy(ModelDevice device, ModelDevices devices, Set visited) {
+      if (!ASSERTIONS_DISABLED && device == null) {
          throw new AssertionError("device is null");
-      } else if (!a && var1 == null) {
+      } else if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
       } else {
-         if (var0.getID().equals("my_dev_id")) {
-            System.out.println("VERIFYING device with ID: " + var0.getID());
-         }
-
          ArrayList var3 = new ArrayList(10);
-         String var5 = var0.getID();
-         if (!a && StringUtils.isEmpty(var5)) {
+         String var5 = device.getID();
+         if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(var5)) {
             throw new AssertionError();
          } else {
-            var3.add(var1.getById(var5));
+            var3.add(devices.getById(var5));
 
             while(!"generic".equals(var5)) {
-               var5 = var1.getById(var5).getFallBack();
-               if (!a && StringUtils.isEmpty(var5)) {
+               var5 = devices.getById(var5).getFallBack();
+               if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(var5)) {
                   throw new AssertionError();
                }
 
-               if (var2.contains(var5)) {
+               if (visited.contains(var5)) {
                   return;
                }
 
-               if (!var1.containsId(var5)) {
+               if (!devices.containsId(var5)) {
                   throw new OrphanHierarchyException(var3);
                }
 
                int var4;
-               if ((var4 = var3.indexOf(var1.getById(var5))) != -1) {
+               if ((var4 = var3.indexOf(devices.getById(var5))) != -1) {
                   LinkedList var6 = new LinkedList(var3.subList(var4, var3.size()));
                   throw new CircularHierarchyException(var6);
                }
 
-               var3.add(var1.getById(var5));
+               var3.add(devices.getById(var5));
             }
 
          }
       }
    }
 
-   private static void a(ModelDevice var0, ModelDevices var1) {
-      if (!a && var0 == null) {
+   private static void verifyGroups(ModelDevice device, ModelDevices devices) {
+      if (!ASSERTIONS_DISABLED && device == null) {
          throw new AssertionError("device is null");
-      } else if (!a && var1 == null) {
+      } else if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
       } else {
-         ModelDevice var4 = var1.getById("generic");
-         Set var2 = var0.getGroups();
+         ModelDevice var4 = devices.getById("generic");
+         Set var2 = device.getGroups();
          Set var5 = var4.getGroups();
 
          for(String var3 : var2) {
             if (!var5.contains(var3)) {
-               throw new InexistentGroupException(var0, var3);
+               throw new InexistentGroupException(device, var3);
             }
          }
 
       }
    }
 
-   private static void b(ModelDevice var0, ModelDevices var1) {
-      if (!a && var0 == null) {
+   private static void verifyCapabilities(ModelDevice device, ModelDevices devices) {
+      if (!ASSERTIONS_DISABLED && device == null) {
          throw new AssertionError("device is null");
-      } else if (!a && var1 == null) {
+      } else if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
-      } else if (!a && !var1.containsId("generic")) {
+      } else if (!ASSERTIONS_DISABLED && !devices.containsId("generic")) {
          throw new AssertionError("device do not containing generic");
       } else {
          ModelDevice var7;
-         Map var2 = (var7 = var1.getById("generic")).getCapabilities();
+         Map var2 = (var7 = devices.getById("generic")).getCapabilities();
 
-         for(String var4 : var0.getCapabilities().keySet()) {
+         for(String var4 : device.getCapabilities().keySet()) {
             if (!var2.containsKey(var4)) {
-               throw new InexistentCapabilityException(var0, var4);
+               throw new InexistentCapabilityException(device, var4);
             }
 
-            String var5 = var0.getGroupForCapability(var4);
+            String var5 = device.getGroupForCapability(var4);
             String var6 = var7.getGroupForCapability(var4);
             if (!var5.equals(var6)) {
-               throw new BadCapabilityGroupException(var0, var4, var5, var6);
+               throw new BadCapabilityGroupException(device, var4, var5, var6);
             }
          }
 
       }
    }
 
-   public static void a(ModelDevices var0, ModelDevices var1) {
-      Iterator var7 = var0.getDevices().iterator();
+   public static void verifyNoRedefinedDevices(ModelDevices patchDevices, ModelDevices baseDevices) {
+      Iterator var7 = patchDevices.getDevices().iterator();
 
       while(var7.hasNext()) {
          ModelDevice var2;
@@ -155,7 +150,7 @@ final class d {
          String var4 = var2.getID();
          String var5 = var2.getFallBack();
          ModelDevice var6;
-         if ((var6 = var1.getById(var4)) == null) {
+         if ((var6 = baseDevices.getById(var4)) == null) {
             return;
          }
 
@@ -175,6 +170,7 @@ final class d {
    }
 
    static {
-      LoggerFactory.getLogger(d.class);
+      LoggerFactory.getLogger(ModelDevicesConsistencyVerifier.class);
    }
 }
+

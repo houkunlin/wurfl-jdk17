@@ -47,8 +47,8 @@ public class XMLResource implements WURFLResource {
          this.c = new HashSet(0);
       }
 
-      ModelDevicesSnapshot var7 = this.a(this.a.c());
-      this.a.d();
+      ModelDevicesSnapshot var7 = this.a(this.a.openInputStream());
+      this.a.reset();
       return var7;
    }
 
@@ -57,7 +57,7 @@ public class XMLResource implements WURFLResource {
    }
 
    public String getInfo() {
-      return this.a.a();
+      return this.a.getResourceName();
    }
 
    public String getVersion() {
@@ -65,11 +65,11 @@ public class XMLResource implements WURFLResource {
    }
 
    public void release() {
-      this.a.b();
+      this.a.close();
    }
 
    private ModelDevicesSnapshot a(InputStream var1) {
-      WurflXmlHandler var2 = new WurflXmlHandler(this.c, (byte)0);
+      WurflXmlHandler var2 = new WurflXmlHandler(this.c);
 
       try {
          e.newSAXParser().parse(var1, var2);
@@ -78,12 +78,12 @@ public class XMLResource implements WURFLResource {
       }
 
       String var3 = this.getInfo();
-      String var7 = WurflXmlHandler.a(var2);
-      String var4 = WurflXmlHandler.b(var2);
-      String var5 = WurflXmlHandler.c(var2);
+      String var7 = var2.getWurflVersion();
+      String var4 = var2.getWurflLastUpdated();
+      String var5 = var2.getWurflSmid();
       this.b = var7 != null && var7.length() != 0 ? var7 : (var4 != null && var4.length() != 0 ? var4 : "(no version info)");
-      boolean var8 = WurflXmlHandler.d(var2);
-      ModelDevices var9 = WurflXmlHandler.e(var2);
+      boolean var8 = var2.isPatch();
+      ModelDevices var9 = var2.getDevices();
       return new ModelDevicesSnapshot(var3, this.b, var8, var9, var5);
    }
 

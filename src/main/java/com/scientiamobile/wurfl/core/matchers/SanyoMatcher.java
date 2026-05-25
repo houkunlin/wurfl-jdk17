@@ -5,8 +5,8 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Locale;
 
-final class g extends a {
-   public g(WURFLModel var1) {
+final class SanyoMatcher extends a {
+   public SanyoMatcher(WURFLModel var1) {
       super(var1);
    }
 
@@ -15,12 +15,12 @@ final class g extends a {
       return !var1._internalIsDesktopBrowser() && (var2.toLowerCase(Locale.US).startsWith("sanyo") || var2.contains("MobilePhone"));
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       if (var1.contains("MobilePhone")) {
          int var2 = StringMatchUtils.indexOfOrLength(var1, "/", StringMatchUtils.indexOf(var1, "MobilePhone"));
-         return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
       } else {
-         return super.a(var1);
+         return super.risMatch(var1);
       }
    }
 
@@ -32,3 +32,4 @@ final class g extends a {
       return "Sanyo";
    }
 }
+

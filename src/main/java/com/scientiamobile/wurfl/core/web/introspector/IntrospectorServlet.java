@@ -173,7 +173,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                   String var20 = a((String)"matcherName", (Object)var31);
                   String var21 = a((String)"normalizedUserAgent", (Object)var31);
                   String var22 = a((String)"originalUserAgent", (Object)var31);
-                  var26.add(new MatchResultRow(var20, var31.getId(), var21, var22, (byte)0));
+                  var26.add(new MatchResultRow(var20, var31.getId(), var21, var22));
                }
 
                d.info("BUCKETS (1/3): finished matching. Took " + (System.currentTimeMillis() - var33) + " ms");
