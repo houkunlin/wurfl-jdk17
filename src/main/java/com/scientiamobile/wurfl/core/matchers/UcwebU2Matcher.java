@@ -9,14 +9,14 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-final class l extends a {
-   protected final Set a() {
+final class UcwebU2Matcher extends a {
+   protected final Set getRequiredDeviceIds() {
       HashSet var1;
       (var1 = new HashSet()).add("generic_ucweb");
       return var1;
    }
 
-   public l(UserAgentNormalizer var1, WURFLModel var2) {
+   public UcwebU2Matcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
@@ -25,7 +25,7 @@ final class l extends a {
       return !var1._internalIsDesktopBrowser() && var2.startsWith("UCWEB") && var2.contains("UCBrowser");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       if (UserAgentUtils.getUcBrowserVersion(var1, true) == null) {
          return null;
       } else {
@@ -37,22 +37,22 @@ final class l extends a {
                var3 = UserAgentUtils.getUcAndroidModel(var1, false);
                String var4 = UserAgentUtils.getUcAndroidVersion(var1, false);
                if (var3 != null && var4 != null) {
-                  return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
                }
             } else if (var1.contains("iPh OS")) {
                if (UcwebU2Normalizer.IPHONE.matcher(var3).find()) {
-                  return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
                }
             } else if (var1.contains("wds")) {
                if (UcwebU2Normalizer.WINDOWS_PHONE.matcher(var3).find()) {
-                  return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
                }
             } else if (var1.contains("Symbian")) {
                if (UcwebU2Normalizer.SYMBIAN.matcher(var3).find()) {
-                  return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
                }
             } else if (var1.contains("Java") && UcwebU2Normalizer.JAVA.matcher(var3).find()) {
-               return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2);
+               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
             }
          }
 
@@ -60,7 +60,7 @@ final class l extends a {
       }
    }
 
-   protected final String b(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
       return "generic_ucweb";
    }
 

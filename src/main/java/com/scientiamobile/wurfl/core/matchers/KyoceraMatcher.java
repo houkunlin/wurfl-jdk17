@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-final class ae extends a {
+final class KyoceraMatcher extends a {
    public final boolean canHandle(WURFLRequest var1) {
       return !var1._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(var1.getCleanedDeviceUserAgent(), "kyocera", "KWC-", "QC-");
    }
@@ -16,3 +16,4 @@ final class ae extends a {
       return "Kyocera";
    }
 }
+

@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import org.apache.commons.lang.StringUtils;
 
-final class ag extends a {
+final class SharpMatcher extends a {
    public final boolean canHandle(WURFLRequest var1) {
       return !var1._internalIsDesktopBrowser() && StringUtils.startsWithIgnoreCase(var1.getCleanedDeviceUserAgent(), "sharp");
    }
@@ -16,3 +16,4 @@ final class ag extends a {
       return "Sharp";
    }
 }
+

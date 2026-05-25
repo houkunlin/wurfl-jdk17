@@ -3,8 +3,8 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 
-final class n extends a {
-   public n(WURFLModel var1) {
+final class VodafoneMatcher extends a {
+   public VodafoneMatcher(WURFLModel var1) {
       super(var1);
    }
 

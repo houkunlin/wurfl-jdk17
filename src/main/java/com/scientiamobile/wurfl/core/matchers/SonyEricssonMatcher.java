@@ -4,8 +4,8 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-final class j extends a {
-   public j(WURFLModel var1) {
+final class SonyEricssonMatcher extends a {
+   public SonyEricssonMatcher(WURFLModel var1) {
       super(var1);
    }
 
@@ -13,13 +13,13 @@ final class j extends a {
       return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().contains("Sony");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       if (var1.startsWith("SonyEricsson")) {
          int var3 = StringMatchUtils.firstSlash(var1);
-         return StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var3 - 2);
+         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var3 - 2);
       } else {
          int var2;
-         return (var2 = StringMatchUtils.secondSlash(var1)) != -1 ? StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2) : StringMatchUtils.NULL_STRING;
+         return (var2 = StringMatchUtils.secondSlash(var1)) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2) : StringMatchUtils.NULL_STRING;
       }
    }
 

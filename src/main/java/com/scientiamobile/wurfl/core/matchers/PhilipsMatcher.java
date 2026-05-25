@@ -1,18 +1,19 @@
 package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
-import java.util.Locale;
+import org.apache.commons.lang.StringUtils;
 
-final class af extends a {
+final class PhilipsMatcher extends a {
    public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().toLowerCase(Locale.US).startsWith("alcatel");
+      return !var1._internalIsDesktopBrowser() && StringUtils.startsWithIgnoreCase(var1.getCleanedDeviceUserAgent(), "philips");
    }
 
    public final String getMatcherName() {
-      return "AlcatelMatcher";
+      return "PhilipsMatcher";
    }
 
    public final String getBucketMatcherName() {
-      return "Alcatel";
+      return "Philips";
    }
 }
+
