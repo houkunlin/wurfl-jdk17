@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
-abstract class a implements VirtualCapabilityEvaluator, Serializable {
+abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 8192401578396133213L;
    protected static final Pattern c = Pattern.compile("Mozilla/5.0 \\(Linux;( U;)? Android.*AppleWebKit.*\\(KHTML, like Gecko\\)");
    protected static final Pattern d;
@@ -188,3 +188,4 @@ abstract class a implements VirtualCapabilityEvaluator, Serializable {
       h.add("Firefox");
    }
 }
+

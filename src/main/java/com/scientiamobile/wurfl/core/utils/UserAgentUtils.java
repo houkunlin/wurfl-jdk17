@@ -68,10 +68,10 @@ public final class UserAgentUtils {
    private static final List O;
    private static final List P;
    private static final List Q;
-   private static final a R;
-   private static final a S;
-   private static final a T;
-   private static final a U;
+   private static final AhoCorasickKeywordMatcher R;
+   private static final AhoCorasickKeywordMatcher S;
+   private static final AhoCorasickKeywordMatcher T;
+   private static final AhoCorasickKeywordMatcher U;
    private static final Pattern V;
    private static final Pattern W;
    private static final Pattern X;
@@ -129,7 +129,7 @@ public final class UserAgentUtils {
    }
 
    public static Predicate isContainedIn(String var0) {
-      return new c(var0);
+      return new ContainsIgnoreCasePredicate(var0);
    }
 
    public static Pattern createLocalePattern() {
@@ -364,7 +364,7 @@ public final class UserAgentUtils {
    }
 
    public static boolean mobileKeywordsDetected(String var0) {
-      return R.a(var0);
+      return R.matchesAny(var0);
    }
 
    public static boolean screenSizeDetected(String var0) {
@@ -372,15 +372,15 @@ public final class UserAgentUtils {
    }
 
    public static boolean isDesktopBrowser(String var0) {
-      return S.a(var0);
+      return S.matchesAny(var0);
    }
 
    public static boolean isSmartTvBrowser(String var0) {
-      return T.a(var0);
+      return T.matchesAny(var0);
    }
 
    public static boolean isBot(String var0) {
-      return U.a(var0);
+      return U.matchesAny(var0);
    }
 
    public static boolean isDesktopPattern(String var0) {
@@ -640,10 +640,10 @@ public final class UserAgentUtils {
       Q.add("ltx71");
       Q.add("searchsecure");
       Q.add("iopus-i-m");
-      R = new a(N);
-      S = new a(O);
-      T = new a(P);
-      U = new a(Q);
+      R = new AhoCorasickKeywordMatcher(N);
+      S = new AhoCorasickKeywordMatcher(O);
+      T = new AhoCorasickKeywordMatcher(P);
+      U = new AhoCorasickKeywordMatcher(Q);
       V = Pattern.compile("^Mozilla/5\\.0 \\((?:Macintosh|Windows)[^\\)]+\\) AppleWebKit/[\\d\\.]+ \\(KHTML, like Gecko\\) Version/[\\d\\.]+ Safari/[\\d\\.]+$");
       W = Pattern.compile("^Mozilla\\/5\\.0 \\(Windows NT.+?Trident.+?; rv:\\d\\d\\.\\d+\\)");
       X = Pattern.compile("^Mozilla\\/5\\.0 \\(compatible; MSIE (9|10)\\.0; Windows NT \\d\\.\\d");

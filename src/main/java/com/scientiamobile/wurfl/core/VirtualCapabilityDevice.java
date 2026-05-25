@@ -22,8 +22,8 @@ public class VirtualCapabilityDevice implements Serializable {
    private static final Pattern f = Pattern.compile("Intel Mac OS X ([0-9\\._]+)");
    private static final Pattern g = Pattern.compile("MacOS X ([0-9\\._]+)");
    private static final Pattern h = Pattern.compile("\\.");
-   private final l i;
-   private final l j;
+   private final NameVersionPair i;
+   private final NameVersionPair j;
    private static Map k = new HashMap();
    private static Map l = new HashMap();
    private static Map m = new HashMap();
@@ -44,27 +44,27 @@ public class VirtualCapabilityDevice implements Serializable {
       return this.q;
    }
 
-   public l getBrowserPair() {
+   public NameVersionPair getBrowserPair() {
       return this.i;
    }
 
    public String getOsPairName() {
-      return this.j.a();
+      return this.j.getName();
    }
 
    public String getBrowserPairName() {
-      return this.i.a();
+      return this.i.getName();
    }
 
    public String getBrowserPairVersion() {
-      return this.i.b();
+      return this.i.getVersion();
    }
 
    public String getOsPairVersion() {
-      return this.j.b();
+      return this.j.getVersion();
    }
 
-   public l getOsPair() {
+   public NameVersionPair getOsPair() {
       return this.j;
    }
 
@@ -79,8 +79,8 @@ public class VirtualCapabilityDevice implements Serializable {
          this.q = var1.getCleanedDeviceUserAgent();
       }
 
-      this.i = new l();
-      this.j = new l();
+      this.i = new NameVersionPair();
+      this.j = new NameVersionPair();
    }
 
    public VirtualCapabilityDevice(String var1, String var2, String var3, String var4) {
@@ -94,60 +94,60 @@ public class VirtualCapabilityDevice implements Serializable {
          this.q = var3;
       }
 
-      this.i = new l();
-      this.j = new l();
+      this.i = new NameVersionPair();
+      this.j = new NameVersionPair();
    }
 
    public void normalizeOS() {
-      if (this.j.a() != null && StringMatchUtils.indexOf(this.o, "Windows") >= 0) {
+      if (this.j.getName() != null && StringMatchUtils.indexOf(this.o, "Windows") >= 0) {
          Matcher var1;
-         if ((var1 = a.matcher(this.j.a())).find()) {
-            this.j.a("Windows");
-            this.j.b(k.containsKey(var1.group(1)) ? (String)k.get(var1.group(1)) : var1.group());
+         if ((var1 = a.matcher(this.j.getName())).find()) {
+            this.j.setName("Windows");
+            this.j.setVersion(k.containsKey(var1.group(1)) ? (String)k.get(var1.group(1)) : var1.group());
             return;
          }
 
-         if (b.matcher(this.j.a()).find()) {
+         if (b.matcher(this.j.getName()).find()) {
             return;
          }
       }
 
-      if (StringMatchUtils.indexOf(this.j.a(), "Windows Phone") >= 0 && this.j.b() != null && m.containsKey(this.j.b())) {
-         this.getOsPair().b((String)m.get(this.j.b()));
+      if (StringMatchUtils.indexOf(this.j.getName(), "Windows Phone") >= 0 && this.j.getVersion() != null && m.containsKey(this.j.getVersion())) {
+         this.getOsPair().setVersion((String)m.get(this.j.getVersion()));
       }
 
-      if (this.j.a(this.o, c, "Mac OS X", 1)) {
-         this.j.b(this.j.b().replaceAll("_", "."));
-      } else if (this.j.a(this.o, g, "Mac OS X", 1)) {
-         this.j.b(this.j.b().replaceAll("_", "."));
-      } else if (!this.j.a(this.o, d, "Mac OS X", (String)null)) {
-         if (this.j.a(this.o, f, "Mac OS X", 1)) {
-            if (this.j.b() != null) {
-               this.j.b(this.j.b().replaceAll("_", "."));
+      if (this.j.matchAndSetGroup(c, this.o, "Mac OS X", 1)) {
+         this.j.setVersion(this.j.getVersion().replaceAll("_", "."));
+      } else if (this.j.matchAndSetGroup(g, this.o, "Mac OS X", 1)) {
+         this.j.setVersion(this.j.getVersion().replaceAll("_", "."));
+      } else if (!this.j.matchAndSet(d, this.o, "Mac OS X", (String)null)) {
+         if (this.j.matchAndSetGroup(f, this.o, "Mac OS X", 1)) {
+            if (this.j.getVersion() != null) {
+               this.j.setVersion(this.j.getVersion().replaceAll("_", "."));
                String[] var4;
-               if (StringUtils.isNotEmpty(this.j.b()) && (var4 = h.split(this.j.b())) != null && var4.length > 1 && StringUtils.isNumeric(var4[0]) && StringUtils.isNumeric(var4[1]) && Integer.parseInt(var4[0]) >= 10 && Integer.parseInt(var4[1]) >= 12) {
-                  this.j.a("macOS");
+               if (StringUtils.isNotEmpty(this.j.getVersion()) && (var4 = h.split(this.j.getVersion())) != null && var4.length > 1 && StringUtils.isNumeric(var4[0]) && StringUtils.isNumeric(var4[1]) && Integer.parseInt(var4[0]) >= 10 && Integer.parseInt(var4[1]) >= 12) {
+                  this.j.setName("macOS");
                   return;
                }
             }
 
-         } else if (!this.j.a(this.o, "Mac_PowerPC", "Mac OS X")) {
-            if (!this.j.a(this.o, "CrOS", "Chrome OS")) {
-               if (this.j.a() != null && (this.j.a().contains("Linux") || this.j.a().contains("X11"))) {
-                  this.j.a("Linux");
+         } else if (!this.j.containsAndSetName(this.o, "Mac_PowerPC", "Mac OS X")) {
+            if (!this.j.containsAndSetName(this.o, "CrOS", "Chrome OS")) {
+               if (this.j.getName() != null && (this.j.getName().contains("Linux") || this.j.getName().contains("X11"))) {
+                  this.j.setName("Linux");
                }
 
-               if (StringUtils.isNotEmpty(this.j.a())) {
+               if (StringUtils.isNotEmpty(this.j.getName())) {
                   for(String var2 : n) {
-                     if (this.j.a().contains(var2)) {
+                     if (this.j.getName().contains(var2)) {
                         return;
                      }
                   }
 
-                  this.j.a("");
-                  this.j.b("");
+                  this.j.setName("");
+                  this.j.setVersion("");
                   if (StringMatchUtils.indexOf(this.o, "Linux") >= 0 || StringMatchUtils.indexOf(this.o, "X11") >= 0) {
-                     this.j.a("Linux");
+                     this.j.setName("Linux");
                      return;
                   }
                }
@@ -159,10 +159,10 @@ public class VirtualCapabilityDevice implements Serializable {
 
    public void normalizeBrowser() {
       Matcher var1 = e.matcher(this.o);
-      if ("IE".equals(this.i.a()) && var1.find()) {
+      if ("IE".equals(this.i.getName()) && var1.find()) {
          String var2 = var1.group(1);
-         if (l.containsKey(var2) && !(var2 = (String)l.get(var2)).equals(this.i.b())) {
-            this.i.b(var2 + "(Compatibility View)");
+         if (l.containsKey(var2) && !(var2 = (String)l.get(var2)).equals(this.i.getVersion())) {
+            this.i.setVersion(var2 + "(Compatibility View)");
          }
       }
 

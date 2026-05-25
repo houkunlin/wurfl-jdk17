@@ -4,10 +4,10 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import org.slf4j.LoggerFactory;
 
 final class C implements F {
-   private A a;
+   private Matcher a;
    private G b;
 
-   public C(A var1) {
+   public C(Matcher var1) {
       LoggerFactory.getLogger(this.getClass());
       this.a = var1;
       this.b = new G(this);

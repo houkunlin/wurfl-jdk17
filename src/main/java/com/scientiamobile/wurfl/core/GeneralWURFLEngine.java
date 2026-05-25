@@ -45,7 +45,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    private CapabilitiesHolderFactory i;
    private DeviceProvider j;
    private CacheProvider k;
-   private m l;
+   private WURFLService l;
    private UserAgentResolver m;
    private WURFLUtils n;
    private WURFLModel o;
@@ -131,7 +131,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
          try {
             this.a();
-            this.l.a(var1, this.c);
+            this.l.applyPatches(var1, this.c);
          } finally {
             this.d.writeLock().unlock();
          }
@@ -159,7 +159,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       this.d.writeLock().lock();
 
       try {
-         this.l.a(var1, var2, this.c);
+         this.l.reload(var1, var2, this.c);
       } finally {
          this.d.writeLock().unlock();
       }
@@ -209,7 +209,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
             this.q = (WURFLRequestFactoryWithPriority)var1;
             this.s = this.q.getUserAgentPriority();
             if (this.l != null) {
-               this.l.a(this.q);
+               this.l.setRequestFactory(this.q);
             }
 
          }
@@ -246,7 +246,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
    public Device getDeviceById(String var1, HttpServletRequest var2) {
       this.a();
-      return this.getWURFLUtils().getDeviceById(var1, (new DefaultWURFLRequestFactory(this.m, this.l.b())).createRequest(var2, this.l.a()));
+      return this.getWURFLUtils().getDeviceById(var1, (new DefaultWURFLRequestFactory(this.m, this.l.getUserAgentPriority())).createRequest(var2, this.l.getEngineTarget()));
    }
 
    public Set getAllVirtualCapabilities() {
@@ -299,9 +299,9 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                         }
 
                         if (var2.r != null) {
-                           var2.l = new j(var2.o, var3, var2.j, var2.q, var2.r);
+                           var2.l = new WURFLServiceImpl(var2.o, var3, var2.j, var2.q, var2.r);
                         } else {
-                           var2.l = new j(var2.o, var3, var2.j, var2.q);
+                           var2.l = new WURFLServiceImpl(var2.o, var3, var2.j, var2.q);
                         }
                      } else if (var2.a.isInfoEnabled()) {
                         var2.a.info("wurflService is fed: " + var2.l.getClass().getName());
@@ -313,7 +313,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                            var2.a.info("cacheProvider is fed: " + var2.k.getClass().getName());
                         }
 
-                        var2.l.a(var2.k);
+                        var2.l.setCacheProvider(var2.k);
                      }
 
                      if (var2.n == null) {
@@ -351,14 +351,14 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
    private void b() {
       if (this.i == null) {
-         this.i = new e(this.o);
+         this.i = new DefaultCapabilitiesHolderFactory(this.o);
       }
 
       if (this.j == null) {
          if (this.h != null) {
-            this.j = new g(this.o, this.i, this.h);
+            this.j = new DefaultDeviceProvider(this.o, this.i, this.h);
          } else {
-            this.j = new g(this.o, this.i);
+            this.j = new DefaultDeviceProvider(this.o, this.i);
          }
       } else {
          if (this.a.isInfoEnabled()) {
@@ -370,17 +370,17 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
    public Device getDeviceForRequest(HttpServletRequest var1) {
       this.a();
-      return this.l.a(var1);
+      return this.l.getDevice(var1);
    }
 
    public Device getDeviceForRequest(WURFLRequest var1) {
       this.a();
-      return this.l.a(var1);
+      return this.l.getDevice(var1);
    }
 
    public Device getDeviceForRequest(String var1) {
       this.a();
-      return this.l.a(var1);
+      return this.l.getDevice(var1);
    }
 
    public void load() {
@@ -390,7 +390,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    public EngineTarget getEngineTarget() {
       synchronized(this.p) {
          if (this.l != null) {
-            this.r = this.l.a();
+            this.r = this.l.getEngineTarget();
          }
 
          return this.r;
@@ -401,7 +401,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       synchronized(this.p) {
          this.r = var1;
          if (this.l != null) {
-            this.l.a(var1);
+            this.l.setEngineTarget(var1);
          }
 
       }
@@ -410,7 +410,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    public UserAgentPriority getUserAgentPriority() {
       synchronized(this.p) {
          if (this.l != null) {
-            this.s = this.l.b();
+            this.s = this.l.getUserAgentPriority();
          } else if (this.q != null) {
             this.s = this.q.getUserAgentPriority();
          }
@@ -423,7 +423,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       synchronized(this.p) {
          this.s = var1;
          if (this.l != null) {
-            this.l.a(var1);
+            this.l.setUserAgentPriority(var1);
          } else if (this.q != null) {
             this.q.setUserAgentPriority(var1);
          }

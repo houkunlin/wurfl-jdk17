@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.vcap;
 import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
-public class FormFactor extends a {
+public class FormFactor extends AbstractVirtualCapabilityEvaluator {
    private static final long serialVersionUID = -3936563826288495198L;
 
    public String eval(Device var1, WURFLRequest var2) {

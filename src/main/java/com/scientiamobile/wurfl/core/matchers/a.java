@@ -14,13 +14,13 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class a implements A {
-   protected static final Logger a = LoggerFactory.getLogger(a.class);
+abstract class AbstractMatcher implements A {
+   protected static final Logger a = LoggerFactory.getLogger(AbstractMatcher.class);
    private static final List b;
    private F c;
    private final UserAgentNormalizer d;
    // $FF: synthetic field
-   private static boolean e = !a.class.desiredAssertionStatus();
+   private static boolean e = !AbstractMatcher.class.desiredAssertionStatus();
 
    public String toString() {
       return this.getClass().getSimpleName();
@@ -43,26 +43,26 @@ abstract class a implements A {
 
    }
 
-   public a() {
+   public AbstractMatcher() {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.d = null;
    }
 
-   public a(WURFLModel var1) {
+   public AbstractMatcher(WURFLModel var1) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.d = null;
       this.a(var1);
    }
 
-   public a(UserAgentNormalizer var1) {
+   public AbstractMatcher(UserAgentNormalizer var1) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.d = var1;
    }
 
-   public a(UserAgentNormalizer var1, WURFLModel var2) {
+   public AbstractMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.d = var1;
@@ -201,5 +201,23 @@ abstract class a implements A {
       b.add(new t("NetFront/3.4", "generic_netfront_ver3_4"));
       b.add(new t("NetFront/3.5", "generic_netfront_ver3_5"));
       b.add(new t("NetFront/4.0", "generic_netfront_ver4_0"));
+   }
+}
+
+abstract class a extends AbstractMatcher {
+   public a() {
+      super();
+   }
+
+   public a(WURFLModel var1) {
+      super(var1);
+   }
+
+   public a(UserAgentNormalizer var1) {
+      super(var1);
+   }
+
+   public a(UserAgentNormalizer var1, WURFLModel var2) {
+      super(var1, var2);
    }
 }

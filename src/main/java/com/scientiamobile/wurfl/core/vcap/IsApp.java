@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IsApp extends a {
+public class IsApp extends AbstractVirtualCapabilityEvaluator {
    private static final long serialVersionUID = -2020126634302389944L;
    private static final Map j = new HashMap(2);
    private static final Pattern k = Pattern.compile("iP(hone|od|ad)[\\d],[\\d]");

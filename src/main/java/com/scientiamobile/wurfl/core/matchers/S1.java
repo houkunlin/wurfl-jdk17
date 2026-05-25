@@ -8,12 +8,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class S implements A, F {
+class S implements Matcher, F {
    private List a = new LinkedList();
    private final Logger b = LoggerFactory.getLogger(S.class);
    private List c = new LinkedList();
 
-   public final void a(A var1) {
+   public final void a(Matcher var1) {
       this.a.add(var1);
       this.c.add(var1.getFilter());
    }
@@ -22,8 +22,8 @@ class S implements A, F {
       Iterator var2 = this.a.iterator();
 
       while(var2.hasNext()) {
-         A var3;
-         (var3 = (A)var2.next()).getMatcherName();
+         Matcher var3;
+         (var3 = (Matcher)var2.next()).getMatcherName();
          if (var3.canHandle(var1)) {
             return var3.match(var1);
          }

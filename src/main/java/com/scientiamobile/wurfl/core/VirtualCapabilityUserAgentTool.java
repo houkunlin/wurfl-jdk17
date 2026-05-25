@@ -120,247 +120,247 @@ public final class VirtualCapabilityUserAgentTool {
       VirtualCapabilityDevice var10000 = var5 = new VirtualCapabilityDevice(var1);
       InternalDevice var3 = var2;
       VirtualCapabilityDevice var6 = var10000;
-      if (var10000.getOsPair().a(var6.getDeviceUserAgent(), "Windows CE", "Windows Mobile")) {
-         var6.getBrowserPair().a("IE Mobile");
-      } else if (!StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "Windows Phone", "; wds") || !var6.getOsPair().a(var6.getDeviceUserAgent(), I, "Windows Phone", 1) && !var6.getOsPair().a(var6.getDeviceUserAgent(), J, "Windows Phone", 1) && !var6.getOsPair().a(var6.getDeviceUserAgent(), K, "Windows Phone", 1)) {
+      if (var10000.getOsPair().containsAndSetName(var6.getDeviceUserAgent(), "Windows CE", "Windows Mobile")) {
+         var6.getBrowserPair().setName("IE Mobile");
+      } else if (!StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "Windows Phone", "; wds") || !var6.getOsPair().matchAndSetGroup(I, var6.getDeviceUserAgent(), "Windows Phone", 1) && !var6.getOsPair().matchAndSetGroup(J, var6.getDeviceUserAgent(), "Windows Phone", 1) && !var6.getOsPair().matchAndSetGroup(K, var6.getDeviceUserAgent(), "Windows Phone", 1)) {
          label422: {
             if (var6.getDeviceUserAgent().contains("Nintendo")) {
-               var6.getOsPair().a("Nintendo");
-               if (var6.getBrowserPair().a(var6.getBrowserUserAgent(), aH, "Netfront NX", 1) || var6.getBrowserPair().a(var6.getBrowserUserAgent(), aI, "Netfront NX", 1) || var6.getBrowserPair().a(var6.getBrowserUserAgent(), aJ, "Nintendo Browser", 1)) {
+               var6.getOsPair().setName("Nintendo");
+               if (var6.getBrowserPair().matchAndSetGroup(aH, var6.getBrowserUserAgent(), "Netfront NX", 1) || var6.getBrowserPair().matchAndSetGroup(aI, var6.getBrowserUserAgent(), "Netfront NX", 1) || var6.getBrowserPair().matchAndSetGroup(aJ, var6.getBrowserUserAgent(), "Nintendo Browser", 1)) {
                   break label422;
                }
 
-               var6.getBrowserPair().a("Nintendo Browser");
+               var6.getBrowserPair().setName("Nintendo Browser");
             }
 
             if (StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "Android", "android", " Adr ")) {
                label403: {
-                  var6.getOsPair().a("Android");
-                  var6.getOsPair().a(var6.getDeviceUserAgent(), c, "Android", 1);
-                  var6.getOsPair().a(var6.getDeviceUserAgent(), aD, "Android", 1);
-                  var6.getOsPair().a(var6.getDeviceUserAgent(), d, "Android", 1);
+                  var6.getOsPair().setName("Android");
+                  var6.getOsPair().matchAndSetGroup(c, var6.getDeviceUserAgent(), "Android", 1);
+                  var6.getOsPair().matchAndSetGroup(aD, var6.getDeviceUserAgent(), "Android", 1);
+                  var6.getOsPair().matchAndSetGroup(d, var6.getDeviceUserAgent(), "Android", 1);
                   String var4;
                   if ((var4 = var3.getCapability("device_os")).equals("Fire OS")) {
                      String var7 = var3.getCapability("device_os_version");
-                     var6.getOsPair().a(var4);
-                     var6.getOsPair().b(var7);
+                     var6.getOsPair().setName(var4);
+                     var6.getOsPair().setVersion(var7);
                   }
 
                   if (StringMatchUtils.indexOf(var6.getBrowserUserAgent(), "Dalvik") >= 0) {
-                     var6.getBrowserPair().a("Android App");
-                     if (var6.getBrowserPair().a(var6.getBrowserUserAgent(), e, (String)null, 1)) {
+                     var6.getBrowserPair().setName("Android App");
+                     if (var6.getBrowserPair().matchAndSetGroup(e, var6.getBrowserUserAgent(), (String)null, 1)) {
                         break label403;
                      }
                   }
 
-                  if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), f, "Facebook on Android", var6.getOsPair().b()) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), aE, "Amazon Shopping App", 1)) {
-                     if (var6.getBrowserPair().b(var6.getBrowserUserAgent(), aB, 2)) {
-                        var6.getBrowserPair().a(var6.getBrowserPair().a() + " Mobile Application");
-                     } else if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), g, "Opera", 1)) {
+                  if (!var6.getBrowserPair().matchAndSet(f, var6.getBrowserUserAgent(), "Facebook on Android", var6.getOsPair().getVersion()) && !var6.getBrowserPair().matchAndSetGroup(aE, var6.getBrowserUserAgent(), "Amazon Shopping App", 1)) {
+                     if (var6.getBrowserPair().matchAndSetNameAndGroup(aB, var6.getBrowserUserAgent(), 2)) {
+                        var6.getBrowserPair().setName(var6.getBrowserPair().getName() + " Mobile Application");
+                     } else if (!var6.getBrowserPair().matchAndSetGroup(g, var6.getBrowserUserAgent(), "Opera", 1)) {
                         if (StringMatchUtils.containsAnyOf(var6.getBrowserUserAgent(), "Aphone Browser", "360browser")) {
-                           var6.getBrowserPair().a("360 Browser");
-                        } else if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), l, "Firefox Mobile", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), aO, "Firefox Focus", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), m, "Opera Mobile", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), n, "Opera Mini", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), o, "Opera Tablet", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), p, "UC Browser", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), q, "UC Browser", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), r, "Amazon Silk Browser", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), s, "Baidu Browser", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), t, "Samsung Browser", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), aM, "Edge", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), i, "Chromium", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), k, "Chrome Mobile", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), j, "Android Webkit", var6.getOsPair().b())) {
-                           var6.getBrowserPair().a("Android");
-                           var6.getBrowserPair().b(var6.getOsPair().b());
+                           var6.getBrowserPair().setName("360 Browser");
+                        } else if (!var6.getBrowserPair().matchAndSetGroup(l, var6.getBrowserUserAgent(), "Firefox Mobile", 1) && !var6.getBrowserPair().matchAndSetGroup(aO, var6.getBrowserUserAgent(), "Firefox Focus", 1) && !var6.getBrowserPair().matchAndSetGroup(m, var6.getBrowserUserAgent(), "Opera Mobile", 1) && !var6.getBrowserPair().matchAndSetGroup(n, var6.getBrowserUserAgent(), "Opera Mini", 1) && !var6.getBrowserPair().matchAndSetGroup(o, var6.getBrowserUserAgent(), "Opera Tablet", 1) && !var6.getBrowserPair().matchAndSetGroup(p, var6.getBrowserUserAgent(), "UC Browser", 1) && !var6.getBrowserPair().matchAndSetGroup(q, var6.getBrowserUserAgent(), "UC Browser", 1) && !var6.getBrowserPair().matchAndSetGroup(r, var6.getBrowserUserAgent(), "Amazon Silk Browser", 1) && !var6.getBrowserPair().matchAndSetGroup(s, var6.getBrowserUserAgent(), "Baidu Browser", 1) && !var6.getBrowserPair().matchAndSetGroup(t, var6.getBrowserUserAgent(), "Samsung Browser", 1) && !var6.getBrowserPair().matchAndSetGroup(aM, var6.getBrowserUserAgent(), "Edge", 1) && !var6.getBrowserPair().matchAndSetGroup(i, var6.getBrowserUserAgent(), "Chromium", 1) && !var6.getBrowserPair().matchAndSetGroup(k, var6.getBrowserUserAgent(), "Chrome Mobile", 1) && !var6.getBrowserPair().matchAndSet(j, var6.getBrowserUserAgent(), "Android Webkit", var6.getOsPair().getVersion())) {
+                           var6.getBrowserPair().setName("Android");
+                           var6.getBrowserPair().setVersion(var6.getOsPair().getVersion());
                         }
                      }
                   }
                }
-            } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Silk") >= 0 && var6.getBrowserPair().a(var6.getBrowserUserAgent(), r, "Amazon Silk Browser", 1)) {
-               var6.getOsPair().a("Android");
-               var6.getOsPair().b("");
+            } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Silk") >= 0 && var6.getBrowserPair().matchAndSetGroup(r, var6.getBrowserUserAgent(), "Amazon Silk Browser", 1)) {
+               var6.getOsPair().setName("Android");
+               var6.getOsPair().setVersion("");
             } else if (StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "iPhone", "iPad", "iPod", "iPod touch", "(iOS;")) {
-               var6.getOsPair().a("iOS");
-               if (var6.getOsPair().a(var6.getDeviceUserAgent(), w, "iOS", 2) || var6.getOsPair().a(var6.getDeviceUserAgent(), x, "iOS", 1) || var6.getOsPair().a(var6.getDeviceUserAgent(), y, "iOS", 1) || var6.getOsPair().a(var6.getDeviceUserAgent(), z, "iOS", 1) || var6.getOsPair().a(var6.getDeviceUserAgent(), A, "iOS", 1)) {
-                  var6.getOsPair().b(var6.getOsPair().b().replaceAll("_", "."));
+               var6.getOsPair().setName("iOS");
+               if (var6.getOsPair().matchAndSetGroup(w, var6.getDeviceUserAgent(), "iOS", 2) || var6.getOsPair().matchAndSetGroup(x, var6.getDeviceUserAgent(), "iOS", 1) || var6.getOsPair().matchAndSetGroup(y, var6.getDeviceUserAgent(), "iOS", 1) || var6.getOsPair().matchAndSetGroup(z, var6.getDeviceUserAgent(), "iOS", 1) || var6.getOsPair().matchAndSetGroup(A, var6.getDeviceUserAgent(), "iOS", 1)) {
+                  var6.getOsPair().setVersion(var6.getOsPair().getVersion().replaceAll("_", "."));
                }
 
-               if (var6.getOsPair().a(var6.getDeviceUserAgent(), E, "iOS", 1)) {
-                  var6.getOsPair().b(var6.getOsPair().b().replaceAll("_", "."));
+               if (var6.getOsPair().matchAndSetGroup(E, var6.getDeviceUserAgent(), "iOS", 1)) {
+                  var6.getOsPair().setVersion(var6.getOsPair().getVersion().replaceAll("_", "."));
                }
 
-               if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), B, "Chrome Mobile on iOS", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), aP, "Firefox Focus", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), C, "Firefox on iOS", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), ag, "Opera Mini on iOS", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), D, "UC Web Browser on iOS", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), F, "UC Web Browser on iOS", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), G, "Facebook on iOS", var6.getOsPair().b())) {
-                  if (var6.getBrowserPair().b(var6.getBrowserUserAgent(), aC, 2)) {
-                     var6.getBrowserPair().a(var6.getBrowserPair().a() + " Mobile Application");
-                  } else if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), aG, "Google Search Application", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), aN, "Edge", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), H, "Mobile Safari", 1)) {
-                     var6.getBrowserPair().a("Mobile Safari");
-                     var6.getBrowserPair().b(var6.getOsPair().b());
+               if (!var6.getBrowserPair().matchAndSetGroup(B, var6.getBrowserUserAgent(), "Chrome Mobile on iOS", 1) && !var6.getBrowserPair().matchAndSetGroup(aP, var6.getBrowserUserAgent(), "Firefox Focus", 1) && !var6.getBrowserPair().matchAndSetGroup(C, var6.getBrowserUserAgent(), "Firefox on iOS", 1) && !var6.getBrowserPair().matchAndSetGroup(ag, var6.getBrowserUserAgent(), "Opera Mini on iOS", 1) && !var6.getBrowserPair().matchAndSetGroup(D, var6.getBrowserUserAgent(), "UC Web Browser on iOS", 1) && !var6.getBrowserPair().matchAndSetGroup(F, var6.getBrowserUserAgent(), "UC Web Browser on iOS", 1) && !var6.getBrowserPair().matchAndSet(G, var6.getBrowserUserAgent(), "Facebook on iOS", var6.getOsPair().getVersion())) {
+                  if (var6.getBrowserPair().matchAndSetNameAndGroup(aC, var6.getBrowserUserAgent(), 2)) {
+                     var6.getBrowserPair().setName(var6.getBrowserPair().getName() + " Mobile Application");
+                  } else if (!var6.getBrowserPair().matchAndSetGroup(aG, var6.getBrowserUserAgent(), "Google Search Application", 1) && !var6.getBrowserPair().matchAndSetGroup(aN, var6.getBrowserUserAgent(), "Edge", 1) && !var6.getBrowserPair().matchAndSetGroup(H, var6.getBrowserUserAgent(), "Mobile Safari", 1)) {
+                     var6.getBrowserPair().setName("Mobile Safari");
+                     var6.getBrowserPair().setVersion(var6.getOsPair().getVersion());
                   }
                }
             } else if (var6.getDeviceUserAgent().contains("Tizen")) {
-               var6.getOsPair().a(var6.getDeviceUserAgent(), aL, "Tizen", 1);
-               if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), u, "Samsung Browser", 1)) {
-                  var6.getBrowserPair().a("Tizen Browser");
-                  var6.getBrowserPair().b(var6.getOsPair().b());
+               var6.getOsPair().matchAndSetGroup(aL, var6.getDeviceUserAgent(), "Tizen", 1);
+               if (!var6.getBrowserPair().matchAndSetGroup(u, var6.getBrowserUserAgent(), "Samsung Browser", 1)) {
+                  var6.getBrowserPair().setName("Tizen Browser");
+                  var6.getBrowserPair().setVersion(var6.getOsPair().getVersion());
                }
-            } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "OviBrowser") >= 0 && var6.getBrowserPair().a(var6.getBrowserUserAgent(), L, "S40 Ovi Browser", 1)) {
-               var6.getOsPair().a("Nokia Series 40");
-            } else if (!var6.getOsPair().a(var6.getDeviceUserAgent(), M, "Symbian S60", 1) && !var6.getOsPair().a(var6.getDeviceUserAgent(), N, "Symbian S60", 1)) {
+            } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "OviBrowser") >= 0 && var6.getBrowserPair().matchAndSetGroup(L, var6.getBrowserUserAgent(), "S40 Ovi Browser", 1)) {
+               var6.getOsPair().setName("Nokia Series 40");
+            } else if (!var6.getOsPair().matchAndSetGroup(M, var6.getDeviceUserAgent(), "Symbian S60", 1) && !var6.getOsPair().matchAndSetGroup(N, var6.getDeviceUserAgent(), "Symbian S60", 1)) {
                if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "BlackBerry") < 0 && StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "(BB10; ") < 0) {
-                  if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "RIM Tablet OS") >= 0 && var6.getOsPair().a(var6.getDeviceUserAgent(), Y, "RIM Tablet OS", 1)) {
-                     var6.getBrowserPair().a("RIM OS Browser");
-                     var6.getBrowserPair().b(var6.getOsPair().a(2));
-                  } else if ((StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "NetFront") < 0 || !var6.getBrowserPair().a(var6.getBrowserUserAgent(), Z, "NetFront", 1)) && (!var6.getBrowserPair().a(var6.getDeviceUserAgent(), "Obigo", "Teleca Obigo") || !var6.getBrowserPair().a(var6.getBrowserUserAgent(), aa, (String)null, 1))) {
-                     if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Dolfin") >= 0 && var6.getOsPair().a(var6.getDeviceUserAgent(), ab, "Bada", 1)) {
-                        var6.getBrowserPair().a("Dolfin Browser");
-                        var6.getBrowserPair().b(var6.getOsPair().a(2));
-                     } else if (!var6.getBrowserPair().a(var6.getDeviceUserAgent(), "MAUI", "MAUI Browser") && (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Dolfin") < 0 || !var6.getBrowserPair().a(var6.getBrowserUserAgent(), ac, "Openwave Browser", 1))) {
-                        if (var6.getOsPair().a(var6.getDeviceUserAgent(), ad, "webOS", 1)) {
-                           var6.getBrowserPair().a("webOS Browser");
-                           var6.getBrowserPair().b(var6.getOsPair().b());
+                  if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "RIM Tablet OS") >= 0 && var6.getOsPair().matchAndSetGroup(Y, var6.getDeviceUserAgent(), "RIM Tablet OS", 1)) {
+                     var6.getBrowserPair().setName("RIM OS Browser");
+                     var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
+                  } else if ((StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "NetFront") < 0 || !var6.getBrowserPair().matchAndSetGroup(Z, var6.getBrowserUserAgent(), "NetFront", 1)) && (!var6.getBrowserPair().containsAndSetName(var6.getDeviceUserAgent(), "Obigo", "Teleca Obigo") || !var6.getBrowserPair().matchAndSetGroup(aa, var6.getBrowserUserAgent(), (String)null, 1))) {
+                     if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Dolfin") >= 0 && var6.getOsPair().matchAndSetGroup(ab, var6.getDeviceUserAgent(), "Bada", 1)) {
+                        var6.getBrowserPair().setName("Dolfin Browser");
+                        var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
+                     } else if (!var6.getBrowserPair().containsAndSetName(var6.getDeviceUserAgent(), "MAUI", "MAUI Browser") && (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Dolfin") < 0 || !var6.getBrowserPair().matchAndSetGroup(ac, var6.getBrowserUserAgent(), "Openwave Browser", 1))) {
+                        if (var6.getOsPair().matchAndSetGroup(ad, var6.getDeviceUserAgent(), "webOS", 1)) {
+                           var6.getBrowserPair().setName("webOS Browser");
+                           var6.getBrowserPair().setVersion(var6.getOsPair().getVersion());
                         } else {
                            label407: {
                               if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Opera") >= 0) {
-                                 if (var6.getBrowserPair().a(var6.getDeviceUserAgent(), "Opera Mobi", "Opera Mobile")) {
-                                    var6.getBrowserPair().a(var6.getDeviceUserAgent(), Q, (String)null, 1);
+                                 if (var6.getBrowserPair().containsAndSetName(var6.getDeviceUserAgent(), "Opera Mobi", "Opera Mobile")) {
+                                    var6.getBrowserPair().matchAndSetGroup(Q, var6.getDeviceUserAgent(), (String)null, 1);
                                     break label407;
                                  }
 
-                                 if (var6.getBrowserPair().a(var6.getDeviceUserAgent(), ae, "Opera Mini", 1) || var6.getBrowserPair().a(var6.getDeviceUserAgent(), af, "Opera Link Sync", 1)) {
+                                 if (var6.getBrowserPair().matchAndSetGroup(ae, var6.getDeviceUserAgent(), "Opera Mini", 1) || var6.getBrowserPair().matchAndSetGroup(af, var6.getDeviceUserAgent(), "Opera Link Sync", 1)) {
                                     break label407;
                                  }
                               }
 
                               if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Maemo") >= 0) {
-                                 var6.getOsPair().a("Maemo");
-                                 if (var6.getBrowserPair().a(var6.getBrowserUserAgent(), ah, "Firefox", 1)) {
+                                 var6.getOsPair().setName("Maemo");
+                                 if (var6.getBrowserPair().matchAndSetGroup(ah, var6.getBrowserUserAgent(), "Firefox", 1)) {
                                     break label407;
                                  }
                               }
 
-                              if ((!StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "Java", "UCBrowser/") || !var6.getBrowserPair().a(var6.getBrowserUserAgent(), ax, "UCBrowser Java Applet", 1)) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), ai, "Java Applet", (String)null)) {
+                              if ((!StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "Java", "UCBrowser/") || !var6.getBrowserPair().matchAndSetGroup(ax, var6.getBrowserUserAgent(), "UCBrowser Java Applet", 1)) && !var6.getBrowserPair().matchAndSet(ai, var6.getBrowserUserAgent(), "Java Applet", (String)null)) {
                                  label315: {
                                     if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "DesktopApp") != -1) {
-                                       if (var6.getOsPair().a(var6.getDeviceUserAgent(), a, 1)) {
-                                          var6.getBrowserPair().a(var6.getOsPair().a(2) + " Desktop Application");
-                                          var6.getBrowserPair().b(var6.getOsPair().a(3));
+                                       if (var6.getOsPair().matchAndSetNameFromGroup(a, var6.getDeviceUserAgent(), 1)) {
+                                          var6.getBrowserPair().setName(var6.getOsPair().getGroup(2) + " Desktop Application");
+                                          var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(3));
                                           break label315;
                                        }
 
-                                       if (var6.getOsPair().a(var6.getDeviceUserAgent(), b, 1)) {
-                                          var6.getBrowserPair().a(var6.getOsPair().a(2) + " Desktop Application");
-                                          var6.getBrowserPair().b(var6.getOsPair().a(3));
+                                       if (var6.getOsPair().matchAndSetNameFromGroup(b, var6.getDeviceUserAgent(), 1)) {
+                                          var6.getBrowserPair().setName(var6.getOsPair().getGroup(2) + " Desktop Application");
+                                          var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(3));
                                           break label315;
                                        }
                                     }
 
-                                    if (var6.getOsPair().a(var6.getDeviceUserAgent(), v, 1)) {
-                                       var6.getBrowserPair().a("Baidu Browser");
-                                       var6.getBrowserPair().b(var6.getOsPair().a(2));
-                                    } else if (StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "360Browser", "360SE") && var6.getOsPair().a(var6.getDeviceUserAgent(), h, 1)) {
-                                       var6.getBrowserPair().a("360 Browser");
-                                    } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "MSIE") >= 0 && var6.getOsPair().a(var6.getDeviceUserAgent(), aj, 2)) {
-                                       var6.getBrowserPair().a("IE");
-                                       var6.getBrowserPair().b(var6.getOsPair().a(1));
+                                    if (var6.getOsPair().matchAndSetNameFromGroup(v, var6.getDeviceUserAgent(), 1)) {
+                                       var6.getBrowserPair().setName("Baidu Browser");
+                                       var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
+                                    } else if (StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "360Browser", "360SE") && var6.getOsPair().matchAndSetNameFromGroup(h, var6.getDeviceUserAgent(), 1)) {
+                                       var6.getBrowserPair().setName("360 Browser");
+                                    } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "MSIE") >= 0 && var6.getOsPair().matchAndSetNameFromGroup(aj, var6.getDeviceUserAgent(), 2)) {
+                                       var6.getBrowserPair().setName("IE");
+                                       var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(1));
                                     } else {
                                        label416: {
                                           if (StringMatchUtils.containsAnyOf(var6.getDeviceUserAgent(), "Trident", " Edge/")) {
-                                             if (var6.getOsPair().a(var6.getDeviceUserAgent(), al, 1)) {
-                                                var6.getBrowserPair().a("IE");
-                                                var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                             if (var6.getOsPair().matchAndSetNameFromGroup(al, var6.getDeviceUserAgent(), 1)) {
+                                                var6.getBrowserPair().setName("IE");
+                                                var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                 break label416;
                                              }
 
-                                             if (var6.getOsPair().a(var6.getDeviceUserAgent(), ak, 1)) {
-                                                var6.getBrowserPair().a("Edge");
-                                                var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                             if (var6.getOsPair().matchAndSetNameFromGroup(ak, var6.getDeviceUserAgent(), 1)) {
+                                                var6.getBrowserPair().setName("Edge");
+                                                var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                 break label416;
                                              }
                                           }
 
-                                          if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "YaBrowser") >= 0 && var6.getOsPair().a(var6.getDeviceUserAgent(), am, 1)) {
-                                             var6.getBrowserPair().a("Yandex browser");
-                                             var6.getBrowserPair().b(var6.getOsPair().a(2));
-                                          } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "OPR") >= 0 && var6.getOsPair().a(var6.getDeviceUserAgent(), as, 1)) {
-                                             var6.getBrowserPair().a("Opera");
-                                             var6.getBrowserPair().b(var6.getOsPair().a(2));
-                                          } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Opera") >= 0 && var6.getOsPair().a(var6.getDeviceUserAgent(), at, 2)) {
-                                             var6.getBrowserPair().a("Opera");
-                                             var6.getBrowserPair().b(var6.getOsPair().a(1));
-                                             var6.getBrowserPair().a(var6.getBrowserUserAgent(), au, (String)null, 1);
+                                          if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "YaBrowser") >= 0 && var6.getOsPair().matchAndSetNameFromGroup(am, var6.getDeviceUserAgent(), 1)) {
+                                             var6.getBrowserPair().setName("Yandex browser");
+                                             var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
+                                          } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "OPR") >= 0 && var6.getOsPair().matchAndSetNameFromGroup(as, var6.getDeviceUserAgent(), 1)) {
+                                             var6.getBrowserPair().setName("Opera");
+                                             var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
+                                          } else if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Opera") >= 0 && var6.getOsPair().matchAndSetNameFromGroup(at, var6.getDeviceUserAgent(), 2)) {
+                                             var6.getBrowserPair().setName("Opera");
+                                             var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(1));
+                                             var6.getBrowserPair().matchAndSetGroup(au, var6.getBrowserUserAgent(), (String)null, 1);
                                           } else {
                                              label419: {
                                                 if (var6.getDeviceUserAgent().contains("Linux x86_64") && var6.getDeviceUserAgent().contains("SamsungBrowser/")) {
-                                                   var6.getOsPair().a("Linux");
-                                                   if (var6.getBrowserPair().a(var6.getDeviceUserAgent(), u, "DeX Samsung Browser", 1)) {
+                                                   var6.getOsPair().setName("Linux");
+                                                   if (var6.getBrowserPair().matchAndSetGroup(u, var6.getDeviceUserAgent(), "DeX Samsung Browser", 1)) {
                                                       break label419;
                                                    }
                                                 }
 
                                                 if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Chrome") >= 0) {
-                                                   if (var6.getOsPair().a(var6.getDeviceUserAgent(), an, 1)) {
-                                                      var6.getBrowserPair().a("Chrome");
-                                                      var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                                   if (var6.getOsPair().matchAndSetNameFromGroup(an, var6.getDeviceUserAgent(), 1)) {
+                                                      var6.getBrowserPair().setName("Chrome");
+                                                      var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                       break label419;
                                                    }
 
-                                                   if (var6.getOsPair().a(var6.getDeviceUserAgent(), ao, 1)) {
-                                                      var6.getBrowserPair().a("Chrome");
-                                                      var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                                   if (var6.getOsPair().matchAndSetNameFromGroup(ao, var6.getDeviceUserAgent(), 1)) {
+                                                      var6.getBrowserPair().setName("Chrome");
+                                                      var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                       break label419;
                                                    }
                                                 }
 
                                                 if (var6.getDeviceUserAgent().contains("Epiphany/")) {
-                                                   var6.getOsPair().a("Linux");
-                                                   if (var6.getBrowserPair().a(var6.getDeviceUserAgent(), aK, "Epiphany", 1)) {
+                                                   var6.getOsPair().setName("Linux");
+                                                   if (var6.getBrowserPair().matchAndSetGroup(aK, var6.getDeviceUserAgent(), "Epiphany", 1)) {
                                                       break label419;
                                                    }
                                                 }
 
-                                                if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Safari") >= 0 && var6.getOsPair().a(var6.getCleanedDeviceUserAgent(), ap, 1)) {
+                                                if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Safari") >= 0 && var6.getOsPair().matchAndSetNameFromGroup(ap, var6.getCleanedDeviceUserAgent(), 1)) {
                                                    if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "CFNetwork") >= 0) {
-                                                      var6.getBrowserPair().a("OSX App");
-                                                      var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                                      var6.getBrowserPair().setName("OSX App");
+                                                      var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                    } else {
-                                                      var6.getBrowserPair().a("Safari");
-                                                      var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                                      var6.getBrowserPair().setName("Safari");
+                                                      var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                    }
                                                 } else {
                                                    label420: {
                                                       if (StringUtils.indexOf(var6.getDeviceUserAgent(), "PaleMoon") != -1) {
-                                                         if (var6.getOsPair().b(var6.getDeviceUserAgent(), ay, 1)) {
-                                                            var6.getBrowserPair().a("PaleMoon");
-                                                            var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                                         if (var6.getOsPair().matchAndSetNameFromGroup(ay, var6.getDeviceUserAgent(), 1)) {
+                                                            var6.getBrowserPair().setName("PaleMoon");
+                                                            var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                             break label420;
                                                          }
 
-                                                         if (var6.getOsPair().b(var6.getDeviceUserAgent(), az, 1)) {
-                                                            var6.getBrowserPair().a("PaleMoon");
-                                                            var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                                         if (var6.getOsPair().matchAndSetNameFromGroup(az, var6.getDeviceUserAgent(), 1)) {
+                                                            var6.getBrowserPair().setName("PaleMoon");
+                                                            var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                             break label420;
                                                          }
                                                       }
 
                                                       if (StringMatchUtils.indexOf(var6.getDeviceUserAgent(), "Firefox") >= 0) {
-                                                         if (var6.getOsPair().a(var6.getDeviceUserAgent(), aq, 1)) {
-                                                            var6.getBrowserPair().a("Firefox");
-                                                            var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                                         if (var6.getOsPair().matchAndSetNameFromGroup(aq, var6.getDeviceUserAgent(), 1)) {
+                                                            var6.getBrowserPair().setName("Firefox");
+                                                            var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                             break label420;
                                                          }
 
-                                                         if (var6.getOsPair().a(var6.getDeviceUserAgent(), ar, 1)) {
-                                                            var6.getBrowserPair().a("Firefox");
-                                                            var6.getBrowserPair().b(var6.getOsPair().a(2));
+                                                         if (var6.getOsPair().matchAndSetNameFromGroup(ar, var6.getDeviceUserAgent(), 1)) {
+                                                            var6.getBrowserPair().setName("Firefox");
+                                                            var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
                                                             break label420;
                                                          }
 
                                                          if (var6.getBrowserUserAgent().contains("(X11; ")) {
-                                                            var6.getOsPair().a("Linux");
-                                                            var6.getBrowserPair().a(var6.getDeviceUserAgent(), aF, "Firefox", 1);
+                                                            var6.getOsPair().setName("Linux");
+                                                            var6.getBrowserPair().matchAndSetGroup(aF, var6.getDeviceUserAgent(), "Firefox", 1);
                                                             break label420;
                                                          }
                                                       }
 
                                                       if (StringMatchUtils.indexOf(var6.getBrowserUserAgent(), "CFNetwork") >= 0) {
-                                                         var6.getOsPair().a(var3.getCapability("device_os"));
-                                                         var6.getOsPair().b(var3.getCapability("device_os_version"));
-                                                         var6.getBrowserPair().a("CFNetwork App");
-                                                         var6.getBrowserPair().b(var3.getCapability("mobile_browser_version"));
+                                                         var6.getOsPair().setName(var3.getCapability("device_os"));
+                                                         var6.getOsPair().setVersion(var3.getCapability("device_os_version"));
+                                                         var6.getBrowserPair().setName("CFNetwork App");
+                                                         var6.getBrowserPair().setVersion(var3.getCapability("mobile_browser_version"));
                                                       } else {
                                                          String var8;
-                                                         if (!var6.getOsPair().a(var6.getDeviceUserAgent(), aQ, 1) && !var6.getOsPair().a(var6.getDeviceUserAgent(), aR, 1) && (var8 = var6.getBrowserUserAgent()) != null && (var8.contains("(X11; ") || var8.contains("Linux x86_64"))) {
-                                                            var6.getOsPair().a("Linux");
+                                                         if (!var6.getOsPair().matchAndSetNameFromGroup(aQ, var6.getDeviceUserAgent(), 1) && !var6.getOsPair().matchAndSetNameFromGroup(aR, var6.getDeviceUserAgent(), 1) && (var8 = var6.getBrowserUserAgent()) != null && (var8.contains("(X11; ") || var8.contains("Linux x86_64"))) {
+                                                            var6.getOsPair().setName("Linux");
                                                          }
                                                       }
                                                    }
@@ -376,37 +376,37 @@ public final class VirtualCapabilityUserAgentTool {
                      }
                   }
                } else {
-                  var6.getOsPair().a(var6.getDeviceUserAgent(), S, "BlackBerry", (String)null);
-                  var6.getOsPair().a(var6.getDeviceUserAgent(), V, (String)null, 1);
-                  if (var6.getOsPair().a(var6.getDeviceUserAgent(), T, (String)null, 1)) {
-                     var6.getBrowserPair().a("UC Web");
-                     var6.getBrowserPair().b(var6.getOsPair().a(2));
-                  } else if (var6.getOsPair().a(var6.getDeviceUserAgent(), U, (String)null, 1)) {
-                     var6.getBrowserPair().a("UC Web");
-                     var6.getBrowserPair().b(var6.getOsPair().a(2));
-                  } else if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), ae, "Opera Mini", 1)) {
-                     if (var6.getOsPair().a(var6.getDeviceUserAgent(), W, (String)null, 1)) {
-                        var6.getBrowserPair().a("BlackBerry Browser");
-                        var6.getBrowserPair().b(var6.getOsPair().b());
-                     } else if (var6.getOsPair().a(var6.getDeviceUserAgent(), X, (String)null, 1)) {
-                        var6.getBrowserPair().a("BlackBerry Webkit Browser");
-                        var6.getBrowserPair().b(var6.getOsPair().b());
+                  var6.getOsPair().matchAndSet(S, var6.getDeviceUserAgent(), "BlackBerry", (String)null);
+                  var6.getOsPair().matchAndSetGroup(V, var6.getDeviceUserAgent(), (String)null, 1);
+                  if (var6.getOsPair().matchAndSetGroup(T, var6.getDeviceUserAgent(), (String)null, 1)) {
+                     var6.getBrowserPair().setName("UC Web");
+                     var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
+                  } else if (var6.getOsPair().matchAndSetGroup(U, var6.getDeviceUserAgent(), (String)null, 1)) {
+                     var6.getBrowserPair().setName("UC Web");
+                     var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));
+                  } else if (!var6.getBrowserPair().matchAndSetGroup(ae, var6.getBrowserUserAgent(), "Opera Mini", 1)) {
+                     if (var6.getOsPair().matchAndSetGroup(W, var6.getDeviceUserAgent(), (String)null, 1)) {
+                        var6.getBrowserPair().setName("BlackBerry Browser");
+                        var6.getBrowserPair().setVersion(var6.getOsPair().getVersion());
+                     } else if (var6.getOsPair().matchAndSetGroup(X, var6.getDeviceUserAgent(), (String)null, 1)) {
+                        var6.getBrowserPair().setName("BlackBerry Webkit Browser");
+                        var6.getBrowserPair().setVersion(var6.getOsPair().getVersion());
                      } else {
-                        var6.getBrowserPair().a("BlackBerry Browser");
-                        var6.getBrowserPair().b(var6.getOsPair().b());
+                        var6.getBrowserPair().setName("BlackBerry Browser");
+                        var6.getBrowserPair().setVersion(var6.getOsPair().getVersion());
                      }
                   }
                }
             } else {
-               var6.getOsPair().a(var6.getDeviceUserAgent(), O, "Symbian", "^3");
-               if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), P, "Symbian S60 Browser", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), Q, "Opera Mobi", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), R, "UC Web Browser on Symbian", 1)) {
-                  var6.getBrowserPair().a("Symbian S60 Browser");
+               var6.getOsPair().matchAndSet(O, var6.getDeviceUserAgent(), "Symbian", "^3");
+               if (!var6.getBrowserPair().matchAndSetGroup(P, var6.getBrowserUserAgent(), "Symbian S60 Browser", 1) && !var6.getBrowserPair().matchAndSetGroup(Q, var6.getBrowserUserAgent(), "Opera Mobi", 1) && !var6.getBrowserPair().matchAndSetGroup(R, var6.getBrowserUserAgent(), "UC Web Browser on Symbian", 1)) {
+                  var6.getBrowserPair().setName("Symbian S60 Browser");
                }
             }
          }
-      } else if (var6.getBrowserPair().b(var6.getBrowserUserAgent(), aA, 2)) {
-         var6.getBrowserPair().a(var6.getBrowserPair().a() + " Mobile Application");
-      } else if (!var6.getBrowserPair().a(var6.getBrowserUserAgent(), p, "UC Browser", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), av, "IE Mobile", 1) && !var6.getBrowserPair().a(var6.getBrowserUserAgent(), aw, "Edge Mobile", 1)) {
+      } else if (var6.getBrowserPair().matchAndSetNameAndGroup(aA, var6.getBrowserUserAgent(), 2)) {
+         var6.getBrowserPair().setName(var6.getBrowserPair().getName() + " Mobile Application");
+      } else if (!var6.getBrowserPair().matchAndSetGroup(p, var6.getBrowserUserAgent(), "UC Browser", 1) && !var6.getBrowserPair().matchAndSetGroup(av, var6.getBrowserUserAgent(), "IE Mobile", 1) && !var6.getBrowserPair().matchAndSetGroup(aw, var6.getBrowserUserAgent(), "Edge Mobile", 1)) {
       }
 
       var5.normalizeOS();

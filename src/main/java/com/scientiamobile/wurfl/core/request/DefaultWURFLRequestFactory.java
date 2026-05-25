@@ -35,7 +35,7 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
    }
 
    public DefaultWURFLRequestFactory(UserAgentNormalizer var1) {
-      this((UserAgentResolver)(new a()), (UserAgentNormalizer)var1);
+      this((UserAgentResolver)(new HttpServletRequestUserAgentResolver()), (UserAgentNormalizer)var1);
    }
 
    public DefaultWURFLRequestFactory(UserAgentResolver var1, UserAgentNormalizer var2) {
@@ -51,7 +51,7 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
    }
 
    public DefaultWURFLRequestFactory(UserAgentNormalizer var1, UserAgentPriority var2) {
-      this(new a(), var1, var2);
+      this(new HttpServletRequestUserAgentResolver(), var1, var2);
    }
 
    public DefaultWURFLRequestFactory(UserAgentResolver var1, UserAgentNormalizer var2, UserAgentPriority var3) {

@@ -79,7 +79,7 @@ public class CheckConnection extends Observable {
          ScheduledExecutorService var1 = Executors.newSingleThreadScheduledExecutor();
 
          try {
-            var1.execute(new c(this));
+            var1.execute(new ConnectivityCheckerTask(this));
          } finally {
             var1.shutdown();
          }

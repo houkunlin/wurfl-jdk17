@@ -12,9 +12,9 @@ import org.apache.commons.lang.Validate;
 public class WURFLUtils {
    private final WURFLModel a;
    private final DeviceProvider b;
-   private final m c;
+   private final WURFLService c;
 
-   WURFLUtils(WURFLModel var1, DeviceProvider var2, m var3) {
+   WURFLUtils(WURFLModel var1, DeviceProvider var2, WURFLService var3) {
       this.a = var1;
       this.b = var2;
       this.c = var3;
@@ -103,15 +103,15 @@ public class WURFLUtils {
    }
 
    public Device getDeviceById(String var1) {
-      return this.c.b(var1);
+      return this.c.getDeviceById(var1);
    }
 
    public Device getDeviceById(String var1, WURFLRequest var2) {
-      return this.c.a(var1, var2);
+      return this.c.getDeviceById(var1, var2);
    }
 
    public Device getDeviceById(String var1, HttpServletRequest var2) {
-      return this.c.a(var1, var2);
+      return this.c.getDeviceById(var1, var2);
    }
 
    public Set getAllDevices() {

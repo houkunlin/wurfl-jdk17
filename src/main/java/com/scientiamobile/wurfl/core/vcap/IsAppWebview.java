@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 
-public class IsAppWebview extends a implements VirtualCapabilityEvaluator, Serializable {
+public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 165298984131843694L;
 
    public String eval(Device var1, WURFLRequest var2) {
