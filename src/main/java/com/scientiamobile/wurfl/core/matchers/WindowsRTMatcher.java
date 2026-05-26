@@ -10,39 +10,39 @@ final class WindowsRTMatcher extends AbstractMatcher {
    private static final String WINDOWS_8_RT_VER1_SUBOS81 = "windows_8_rt_ver1_subos81";
    private static final String GENERIC_WINDOWS_8_RT = "generic_windows_8_rt";
 
-   public WindowsRTMatcher(WURFLModel var1) {
-      super(var1);
+   public WindowsRTMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(GENERIC_WINDOWS_8_RT);
-      var1.add(WINDOWS_8_RT_VER1_SUBOS81);
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add(GENERIC_WINDOWS_8_RT);
+      requiredDeviceIds.add(WINDOWS_8_RT_VER1_SUBOS81);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return StringMatchUtils.containsAllOf(var1.getCleanedDeviceUserAgent(), "Windows NT ", " ARM;", "Trident/");
+   public final boolean canHandle(WURFLRequest request) {
+      return StringMatchUtils.containsAllOf(request.getCleanedDeviceUserAgent(), "Windows NT ", " ARM;", "Trident/");
    }
 
-   protected final String risMatch(String var1) {
-      if (var1.contains("like Gecko")) {
-         int var2;
-         if ((var2 = var1.indexOf(" Gecko")) >= 0) {
-            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 6);
+   protected final String risMatch(String userAgent) {
+      if (userAgent.contains("like Gecko")) {
+         int geckoIndex;
+         if ((geckoIndex = userAgent.indexOf(" Gecko")) >= 0) {
+            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, geckoIndex + 6);
          }
       } else {
-         int var3;
-         if ((var3 = var1.indexOf(" ARM;")) >= 0) {
-            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var3 + 5);
+         int armIndex;
+         if ((armIndex = userAgent.indexOf(" ARM;")) >= 0) {
+            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, armIndex + 5);
          }
       }
 
       return null;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      return var1.getNormalizedDeviceUserAgent().contains("like Gecko") ? WINDOWS_8_RT_VER1_SUBOS81 : GENERIC_WINDOWS_8_RT;
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      return request.getNormalizedDeviceUserAgent().contains("like Gecko") ? WINDOWS_8_RT_VER1_SUBOS81 : GENERIC_WINDOWS_8_RT;
    }
 
    public final String getMatcherName() {

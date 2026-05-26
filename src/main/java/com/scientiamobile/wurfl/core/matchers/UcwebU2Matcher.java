@@ -11,48 +11,48 @@ import java.util.Set;
 
 final class UcwebU2Matcher extends MatcherBase {
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add("generic_ucweb");
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add("generic_ucweb");
+      return requiredDeviceIds;
    }
 
-   public UcwebU2Matcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public UcwebU2Matcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
+      super(userAgentNormalizer, wurflModel);
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsDesktopBrowser() && var2.startsWith("UCWEB") && var2.contains("UCBrowser");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.startsWith("UCWEB") && cleanedDeviceUserAgent.contains("UCBrowser");
    }
 
-   protected final String risMatch(String var1) {
-      if (UserAgentUtils.getUcBrowserVersion(var1, true) == null) {
+   protected final String risMatch(String userAgent) {
+      if (UserAgentUtils.getUcBrowserVersion(userAgent, true) == null) {
          return null;
       } else {
-         int var2;
-         if ((var2 = var1.indexOf("---")) > 0) {
-            var2 += 3;
-            String var3 = var1.substring(var2);
-            if (var1.contains("Adr")) {
-               var3 = UserAgentUtils.getUcAndroidModel(var1, false);
-               String var4 = UserAgentUtils.getUcAndroidVersion(var1, false);
-               if (var3 != null && var4 != null) {
-                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+         int matchLength;
+         if ((matchLength = userAgent.indexOf("---")) > 0) {
+            matchLength += 3;
+            String subUserAgent = userAgent.substring(matchLength);
+            if (userAgent.contains("Adr")) {
+               String androidModel = UserAgentUtils.getUcAndroidModel(userAgent, false);
+               String androidVersion = UserAgentUtils.getUcAndroidVersion(userAgent, false);
+               if (androidModel != null && androidVersion != null) {
+                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
                }
-            } else if (var1.contains("iPh OS")) {
-               if (UcwebU2Normalizer.IPHONE.matcher(var3).find()) {
-                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+            } else if (userAgent.contains("iPh OS")) {
+               if (UcwebU2Normalizer.IPHONE.matcher(subUserAgent).find()) {
+                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
                }
-            } else if (var1.contains("wds")) {
-               if (UcwebU2Normalizer.WINDOWS_PHONE.matcher(var3).find()) {
-                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+            } else if (userAgent.contains("wds")) {
+               if (UcwebU2Normalizer.WINDOWS_PHONE.matcher(subUserAgent).find()) {
+                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
                }
-            } else if (var1.contains("Symbian")) {
-               if (UcwebU2Normalizer.SYMBIAN.matcher(var3).find()) {
-                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+            } else if (userAgent.contains("Symbian")) {
+               if (UcwebU2Normalizer.SYMBIAN.matcher(subUserAgent).find()) {
+                  return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
                }
-            } else if (var1.contains("Java") && UcwebU2Normalizer.JAVA.matcher(var3).find()) {
-               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+            } else if (userAgent.contains("Java") && UcwebU2Normalizer.JAVA.matcher(subUserAgent).find()) {
+               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
             }
          }
 
@@ -60,7 +60,7 @@ final class UcwebU2Matcher extends MatcherBase {
       }
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
       return "generic_ucweb";
    }
 

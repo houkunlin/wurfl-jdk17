@@ -13,30 +13,30 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
    private static final String GENERIC_ANDROID_VER2_0_UCWEB = "generic_android_ver2_0_ucweb";
    private static final Map<String, String> ANDROID_VERSION_TO_DEVICE_ID;
 
-   public UCWEB7OnAndroidMatcher(WURFLModel var1) {
-      super(var1);
+   public UCWEB7OnAndroidMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(ANDROID_VERSION_TO_DEVICE_ID.values());
-      var1.add(GENERIC_ANDROID_VER2_0_UCWEB);
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.addAll(ANDROID_VERSION_TO_DEVICE_ID.values());
+      requiredDeviceIds.add(GENERIC_ANDROID_VER2_0_UCWEB);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(var2, "Android", "UCWEB7");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Android", "UCWEB7");
    }
 
-   protected final String risMatch(String var1) {
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, StringMatchUtils.indexOfOrLength(var1, "UCWEB7"));
+   protected final String risMatch(String userAgent) {
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, StringMatchUtils.indexOfOrLength(userAgent, "UCWEB7"));
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var2 = UserAgentUtils.getAndroidVersion(var1.getNormalizedDeviceUserAgent(), true);
-      String var3;
-      return (var3 = ANDROID_VERSION_TO_DEVICE_ID.get(var2)) != null ? var3 : GENERIC_ANDROID_VER2_0_UCWEB;
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String androidVersion = UserAgentUtils.getAndroidVersion(request.getNormalizedDeviceUserAgent(), true);
+      String deviceId = ANDROID_VERSION_TO_DEVICE_ID.get(androidVersion);
+      return deviceId != null ? deviceId : GENERIC_ANDROID_VER2_0_UCWEB;
    }
 
    public final String getMatcherName() {

@@ -6,23 +6,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class ReksioMatcher extends MatcherBase {
-   private static String REKSIO_DEVICE_ID = "generic_reksio";
+   private static final String REKSIO_DEVICE_ID = "generic_reksio";
 
-   public ReksioMatcher(WURFLModel var1) {
-      super(var1);
+   public ReksioMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(REKSIO_DEVICE_ID);
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add(REKSIO_DEVICE_ID);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().startsWith("Reksio");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("Reksio");
    }
 
-   protected final String applyConclusiveMatch(WURFLRequest var1) {
+   protected final String applyConclusiveMatch(WURFLRequest request) {
       return REKSIO_DEVICE_ID;
    }
 

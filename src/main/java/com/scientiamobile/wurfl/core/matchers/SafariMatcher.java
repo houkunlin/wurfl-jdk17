@@ -8,30 +8,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class SafariMatcher extends MatcherBase {
-   public SafariMatcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public SafariMatcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
+      super(userAgentNormalizer, wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add("generic_web_browser");
-      var1.add("generic_xhtml");
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add("generic_web_browser");
+      requiredDeviceIds.add("generic_xhtml");
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(var2, "Safari") && StringMatchUtils.startsWithAnyOf(var2, "Mozilla/5.0 (Macintosh", "Mozilla/5.0 (Windows");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Safari") && StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Macintosh", "Mozilla/5.0 (Windows");
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      return (var2 = var1.indexOf("---")) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 3) : null;
+   protected final String risMatch(String userAgent) {
+      int matchLength;
+      return (matchLength = userAgent.indexOf("---")) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 3) : null;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var2;
-      return !(var2 = var1.getNormalizedDeviceUserAgent()).contains("Macintosh") && !var2.contains("Windows") ? "generic_xhtml" : "generic_web_browser";
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+      return !normalizedUserAgent.contains("Macintosh") && !normalizedUserAgent.contains("Windows") ? "generic_xhtml" : "generic_web_browser";
    }
 
    public final String getMatcherName() {
