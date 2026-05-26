@@ -105,7 +105,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             var8.osVersion = System.getProperty("os.version");
             var8.javaVendor = System.getProperty("java.vendor");
             var8.javaVersion = System.getProperty("java.version");
-            String var6 = this.b.defaultPrettyPrintingWriter().writeValueAsString(var8);
+            String var6 = this.b.writerWithDefaultPrettyPrinter().writeValueAsString(var8);
             var7.println(var6);
             var10000 = true;
          }
@@ -134,25 +134,25 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          try {
             var1.println("WURFL Java API " + e);
             Field var2;
-            boolean var3 = (var2 = GeneralWURFLEngine.class.getDeclaredField("o")).isAccessible();
+            boolean var3 = (var2 = GeneralWURFLEngine.class.getDeclaredField("o")).canAccess(a);
             var2.setAccessible(true);
             WURFLModel var4 = (WURFLModel)var2.get(a);
             Field var5;
-            boolean var6 = (var5 = GeneralWURFLEngine.class.getDeclaredField("l")).isAccessible();
+            boolean var6 = (var5 = GeneralWURFLEngine.class.getDeclaredField("l")).canAccess(a);
             var5.setAccessible(true);
             Object var7 = var5.get(a);
-            ArrayList var8 = null;
+            ArrayList<String> var8 = null;
             if (var4 != null && var7 != null) {
                Field var9;
-               boolean var10 = (var9 = var7.getClass().getDeclaredField("engineTarget")).isAccessible();
+               boolean var10 = (var9 = var7.getClass().getDeclaredField("engineTarget")).canAccess(var7);
                var9.setAccessible(true);
                EngineTarget var11 = (EngineTarget)var9.get(var7);
                Field var12;
-               boolean var13 = (var12 = var7.getClass().getDeclaredField("matcherManager")).isAccessible();
+               boolean var13 = (var12 = var7.getClass().getDeclaredField("matcherManager")).canAccess(var7);
                var12.setAccessible(true);
                MatcherManager var14 = (MatcherManager)var12.get(var7);
                Set var24 = var4.getAllDevices();
-               ArrayList var15 = new ArrayList(var24.size());
+               ArrayList<String> var15 = new ArrayList<>(var24.size());
                Iterator var25 = var24.iterator();
 
                while(var25.hasNext()) {
@@ -163,14 +163,13 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                }
 
                var9.set(var7, EngineTarget.accuracy);
-               var8 = new ArrayList(var15.size());
-               ArrayList var26 = new ArrayList(var15.size());
+               var8 = new ArrayList<>(var15.size());
+               ArrayList<MatchResultRow> var26 = new ArrayList<>(var15.size());
                DefaultWURFLRequestFactory var16 = new DefaultWURFLRequestFactory();
                d.info("BUCKETS (1/3): start matching...");
                long var33 = System.currentTimeMillis();
 
-               for(Object userAgentObj : var15) {
-                  String var17 = (String)userAgentObj;
+               for(String var17 : var15) {
                   DeviceInfo var31 = var14.matchRequest(var16.createRequest(var17, EngineTarget.accuracy));
                   String var20 = a((String)"matcherName", (Object)var31);
                   String var21 = a((String)"normalizedUserAgent", (Object)var31);
@@ -186,8 +185,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                d.info("BUCKETS (3/3): start building strings...");
                var33 = System.currentTimeMillis();
 
-               for(Object rowObj : var26) {
-                  MatchResultRow var32 = (MatchResultRow)rowObj;
+               for(MatchResultRow var32 : var26) {
                   var8.add(var32.toString());
                }
 
@@ -215,7 +213,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
    private static String a(String var0, Object var1) {
       try {
          Field var3;
-         boolean var2 = (var3 = var1.getClass().getDeclaredField(var0)).isAccessible();
+         boolean var2 = (var3 = var1.getClass().getDeclaredField(var0)).canAccess(var1);
          var3.setAccessible(true);
          String var4 = (String)var3.get(var1);
          var3.setAccessible(var2);
@@ -241,8 +239,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
          HeaderOnlyHttpServletRequest var5 = new HeaderOnlyHttpServletRequest();
          if (var1.getParameter("form") == null) {
-            HashMap var4 = new HashMap();
-            Enumeration var6 = var1.getHeaderNames();
+            HashMap<String, String> var4 = new HashMap<>();
+            Enumeration<String> var6 = var1.getHeaderNames();
 
             while(var6.hasMoreElements()) {
                String var7 = var6.nextElement().toString();
@@ -298,7 +296,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          var19.userAgent = var5.getHeader("User-Agent");
          var19.requestType = var1.getParameter("form") == null ? "request" : "form";
          if (var18 != null && var18.length > 0) {
-            HashMap var20 = new HashMap();
+            HashMap<String, String> var20 = new HashMap<>();
 
             for(int var22 = 0; var22 < var18.length; ++var22) {
                String var23 = var18[var22].trim();
@@ -307,7 +305,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             var19.capabilities = var20;
          }
 
-         String var21 = this.b.defaultPrettyPrintingWriter().writeValueAsString(var19);
+         String var21 = this.b.writerWithDefaultPrettyPrinter().writeValueAsString(var19);
          var2.println(var21);
          return true;
       }

@@ -2,14 +2,13 @@ package com.scientiamobile.wurfl.core.resource.exc;
 
 import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
-import org.apache.commons.lang3.text.StrBuilder;
 
 public class DeviceNotInModelException extends WURFLRuntimeException {
    private static final long serialVersionUID = 10L;
    private ModelDevice a;
 
    public DeviceNotInModelException(ModelDevice var1) {
-      super((new StrBuilder("Device: ")).append(var1.getID()).append(" is not managed by model").toString());
+      super((new StringBuilder("Device: ")).append(var1.getID()).append(" is not managed by model").toString());
       this.a = var1;
    }
 

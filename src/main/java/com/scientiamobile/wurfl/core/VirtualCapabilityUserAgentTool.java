@@ -318,7 +318,7 @@ public final class VirtualCapabilityUserAgentTool {
                                                    }
                                                 } else {
                                                    label420: {
-                                                      if (StringUtils.indexOf(var6.getDeviceUserAgent(), "PaleMoon") != -1) {
+                                                      if (var6.getDeviceUserAgent().contains("PaleMoon")) {
                                                          if (var6.getOsPair().matchAndSetNameFromGroup(ay, var6.getDeviceUserAgent(), 1)) {
                                                             var6.getBrowserPair().setName("PaleMoon");
                                                             var6.getBrowserPair().setVersion(var6.getOsPair().getGroup(2));

@@ -8,6 +8,7 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import org.apache.commons.io.FileUtils;
 
@@ -50,8 +51,8 @@ public class Validator {
    static void a(String var0, WURFLEngine var1, ProxySettings var2) {
       URL var6;
       try {
-         var6 = new URL(var0);
-      } catch (MalformedURLException var3) {
+         var6 = URI.create(var0).toURL();
+      } catch (IllegalArgumentException | MalformedURLException var3) {
          throw new WURFLRuntimeException("An error occurred validating URL for WURFL file update, the URL is invalid", var3);
       }
 

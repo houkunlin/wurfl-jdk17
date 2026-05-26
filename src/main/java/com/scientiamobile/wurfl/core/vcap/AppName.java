@@ -9,8 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppName implements VirtualCapabilityEvaluator, Serializable {
-   private static final List a = new ArrayList();
-   private static final List b = new ArrayList();
+   private static final List<String> a = new ArrayList<>();
+   private static final List<String> b = new ArrayList<>();
    private static final long serialVersionUID = 7704959740704532442L;
    private static final Pattern c = Pattern.compile("WebViewApp ([^/]+)/");
    private static final Pattern d = Pattern.compile("^([^/]+)/.+? Dalvik/");
@@ -38,8 +38,8 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
             return var4.group(1);
          } else {
             for(int var7 = 0; var7 < a.size(); ++var7) {
-               if (var3.contains((CharSequence)a.get(var7))) {
-                  return (String)b.get(var7);
+               if (var3.contains(a.get(var7))) {
+                  return b.get(var7);
                }
             }
 

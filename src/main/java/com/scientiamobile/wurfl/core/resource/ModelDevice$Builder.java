@@ -16,12 +16,12 @@ public final class ModelDevice$Builder {
       return this;
    }
 
-   public final ModelDevice$Builder setCapabilities(Map var1) {
+   public final ModelDevice$Builder setCapabilities(Map<String, String> var1) {
       ModelDevice.a(this.a, var1);
       return this;
    }
 
-   public final ModelDevice$Builder setCapabilitiesByGroup(Map var1) {
+   public final ModelDevice$Builder setCapabilitiesByGroup(Map<String, String> var1) {
       ModelDevice.b(this.a, var1);
       return this;
    }

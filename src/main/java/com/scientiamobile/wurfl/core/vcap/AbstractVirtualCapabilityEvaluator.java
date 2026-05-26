@@ -20,11 +20,11 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
    protected static final Pattern d;
    protected static final Pattern e;
    protected static final Pattern f;
-   static final Set g;
-   private static Set a;
-   static final Set h;
-   protected static final List i;
-   private static List b;
+   static final Set<String> g;
+   private static Set<String> a;
+   static final Set<String> h;
+   protected static final List<String> i;
+   private static List<String> b;
    private static final Pattern j;
 
    protected static boolean a(String var0, String var1) {
@@ -51,8 +51,7 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
       if (var1.containsKey("Accept-Encoding") && var2.contains("Trident/") && (var4 = (String)var1.get("Accept-Encoding")) != null && !var4.contains("deflate")) {
          return true;
       } else {
-         for(Object keywordObj : b) {
-            String keyword = (String)keywordObj;
+         for(String keyword : b) {
             if (var2.contains(keyword)) {
                return false;
             }
@@ -119,11 +118,11 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
       d = Pattern.compile("^Mozilla/5.0 \\(Linux;( U;)? Android [1234]\\.[\\d\\.]+(-update1)?; [a-zA-Z]+-[a-zA-Z]+; .+ Build/.+\\) AppleWebKit/[\\d\\.+]+ \\(KHTML, like Gecko\\) Version/[\\d\\.]+ (Mobile )?Safari/[\\d\\.+]+$");
       e = Pattern.compile("Chrome/(\\d+)\\.");
       f = Pattern.compile("Android [1234]\\.[123]");
-      g = new HashSet();
-      a = new HashSet();
-      h = new HashSet();
-      i = new ArrayList();
-      b = new ArrayList(3);
+      g = new HashSet<>();
+      a = new HashSet<>();
+      h = new HashSet<>();
+      i = new ArrayList<>();
+      b = new ArrayList<>(3);
       j = Pattern.compile("^(\\d+(?:\\.\\d+)?).*");
       b.add("CUBOT");
       b.add("Cubot");

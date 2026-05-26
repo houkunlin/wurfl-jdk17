@@ -2,6 +2,7 @@ package com.scientiamobile.wurfl.core.updater;
 
 import com.scientiamobile.wurfl.core.utils.ExceptionUtils;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
@@ -20,11 +21,11 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
       this.b = var1;
    }
 
-   public void execute(Map var1) {
+   public void execute(Map<String, Object> var1) {
       try {
          String var2 = (String)var1.get("original_wurfl_path") + ".wtmp";
          Integer var3 = UpdatePipeline.safeGetConnectionTimeout(var1);
-         URL var10001 = new URL((String)var1.get("new_wurfl_url"));
+         URL var10001 = URI.create((String)var1.get("new_wurfl_url")).toURL();
          int var5 = var3;
          URL var4 = var10001;
          HttpsURLConnection var7;

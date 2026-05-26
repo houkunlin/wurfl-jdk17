@@ -17,7 +17,7 @@ final class AcTrieNode {
    private AcTrieNode(boolean keywordEnd) {
       this.keywordEnd = keywordEnd;
       this.fail = null;
-      this.transitions = new TreeMap();
+      this.transitions = new TreeMap<>();
    }
 
    public final void addPattern(String pattern) {

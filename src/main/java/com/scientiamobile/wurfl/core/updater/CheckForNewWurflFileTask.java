@@ -2,6 +2,7 @@ package com.scientiamobile.wurfl.core.updater;
 
 import com.scientiamobile.wurfl.core.utils.ExceptionUtils;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
       this.c = var1;
    }
 
-   public void execute(Map var1) {
+   public void execute(Map<String, Object> var1) {
       String var2 = (String)var1.get("original_wurfl_path");
       File var11;
       String var10000;
@@ -37,7 +38,7 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
 
       try {
          try {
-            URL var3 = new URL((String)var1.get("new_wurfl_url"));
+            URL var3 = URI.create((String)var1.get("new_wurfl_url")).toURL();
             Integer var4 = UpdatePipeline.safeGetConnectionTimeout(var1);
             int var14;
             if ((var14 = UpdatePipeline.a(var3, var13, var4, (String)var1.get("API_USER_AGENT"), this.c)) == 200) {

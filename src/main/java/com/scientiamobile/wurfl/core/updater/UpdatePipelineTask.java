@@ -3,5 +3,5 @@ package com.scientiamobile.wurfl.core.updater;
 import java.util.Map;
 
 public interface UpdatePipelineTask {
-   void execute(Map var1);
+   void execute(Map<String, Object> var1);
 }

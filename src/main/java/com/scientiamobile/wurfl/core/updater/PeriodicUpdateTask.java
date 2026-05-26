@@ -4,7 +4,6 @@ import com.scientiamobile.wurfl.core.WURFLEngine;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,7 @@ public class PeriodicUpdateTask implements Runnable {
    private final Logger a = LoggerFactory.getLogger(this.getClass());
    private UpdatePipeline b;
    private Calendar c;
-   private Queue d = new LinkedList();
+   private final LinkedList<UpdateResult> d = new LinkedList<>();
    private WURFLEngine e;
    private String f;
    private String[] g;
@@ -63,7 +62,7 @@ public class PeriodicUpdateTask implements Runnable {
       }
    }
 
-   public List getLastResults() {
-      return (List)this.d;
+   public List<UpdateResult> getLastResults() {
+      return this.d;
    }
 }

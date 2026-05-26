@@ -13,19 +13,19 @@ final class AhoCorasickKeywordMatcher {
    private char[][] transitionCharsByState;
    private int[][] transitionTargetsByState;
 
-   public AhoCorasickKeywordMatcher(List keywords) {
-      ArrayList nodes = new ArrayList();
+   public AhoCorasickKeywordMatcher(List<String> keywords) {
+      ArrayList<AcTrieNode> nodes = new ArrayList<>();
       AcTrieNode root = new AcTrieNode();
-      Iterator it = keywords.iterator();
+      Iterator<String> it = keywords.iterator();
 
       while(it.hasNext()) {
          String keyword;
-         if ((keyword = (String)it.next()) != null && keyword.length() != 0) {
+         if ((keyword = it.next()) != null && keyword.length() != 0) {
             root.addPattern(keyword);
          }
       }
 
-      LinkedList queue = new LinkedList();
+      LinkedList<AcTrieNode> queue = new LinkedList<>();
       root.setFail(root);
       nodes.add(root);
 
@@ -36,7 +36,7 @@ final class AhoCorasickKeywordMatcher {
       }
 
       while(!queue.isEmpty()) {
-         AcTrieNode current = (AcTrieNode)queue.poll();
+         AcTrieNode current = queue.poll();
          nodes.add(current);
 
          for(Character c : current.getNextChars()) {
@@ -61,17 +61,16 @@ final class AhoCorasickKeywordMatcher {
       this.transitionTargetsByState = new int[nodes.size()][];
 
       for(int i = 0; i < nodes.size(); ++i) {
-         AcTrieNode node = (AcTrieNode)nodes.get(i);
+         AcTrieNode node = nodes.get(i);
          this.failStateByState[i] = nodes.indexOf(node.getFail());
          this.terminalByState[i] = node.isKeywordEnd();
-         Set entrySet = node.getOutgoingMap().entrySet();
+         Set<Map.Entry<Character, AcTrieNode>> entrySet = node.getOutgoingMap().entrySet();
          this.transitionCharsByState[i] = new char[entrySet.size()];
          this.transitionTargetsByState[i] = new int[entrySet.size()];
          int j = 0;
 
-         for(Object entryObj : entrySet) {
-            Map.Entry entry = (Map.Entry)entryObj;
-            this.transitionCharsByState[i][j] = (Character)entry.getKey();
+         for(Map.Entry<Character, AcTrieNode> entry : entrySet) {
+            this.transitionCharsByState[i][j] = entry.getKey();
             this.transitionTargetsByState[i][j] = nodes.indexOf(entry.getValue());
             ++j;
          }

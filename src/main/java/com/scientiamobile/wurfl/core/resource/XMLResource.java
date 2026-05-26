@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 public class XMLResource implements WURFLResource {
    private final ResourceInput a;
    private String b;
-   private Set c;
+   private Set<String> c;
    private String d;
    private static final SAXParserFactory e;
 
@@ -37,14 +37,14 @@ public class XMLResource implements WURFLResource {
    public ModelDevicesSnapshot getData(String... var1) {
       XMLResource var6 = this;
       if (var1 != null) {
-         this.c = new HashSet(var1.length);
+         this.c = new HashSet<>(var1.length);
 
          String[] var8;
          for(String var5 : var8 = var1) {
             var6.c.add(var5);
          }
       } else {
-         this.c = new HashSet(0);
+         this.c = new HashSet<>(0);
       }
 
       ModelDevicesSnapshot var7 = this.a(this.a.openInputStream());

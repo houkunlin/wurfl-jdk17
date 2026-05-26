@@ -24,12 +24,12 @@ final class ModelDevicesPatchMerger {
             ModelDevice var5 = var3;
             var3 = var10000;
             if (var5 != null && var5.getUserAgent() != null) {
-               HashMap var6;
-               (var6 = new HashMap(var3.getCapabilities())).putAll(var5.getCapabilities());
-               Map var7 = var3.getGroupsByCapability();
-               Map var8 = var5.getGroupsByCapability();
-               HashMap var9;
-               (var9 = new HashMap()).putAll(var7);
+               HashMap<String, String> var6;
+               (var6 = new HashMap<>(var3.getCapabilities())).putAll(var5.getCapabilities());
+               Map<String, String> var7 = var3.getGroupsByCapability();
+               Map<String, String> var8 = var5.getGroupsByCapability();
+               HashMap<String, String> var9;
+               (var9 = new HashMap<>()).putAll(var7);
                var9.putAll(var8);
                if (!var5.getUserAgent().equals(var3.getUserAgent())) {
                   throw new UserAgentOverrideException(var3, var5.getUserAgent(), var3.getUserAgent());

@@ -6,7 +6,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class CleanupTask implements UpdatePipelineTask {
-   public void execute(Map var1) {
+   public void execute(Map<String, Object> var1) {
       String[] var2;
       if (ArrayUtils.isNotEmpty(var2 = new String[]{(String)var1.get("backup_wurfl_path"), (String)var1.get("new_wurfl_temp_path")})) {
          for(int var3 = 0; var3 < 2; ++var3) {

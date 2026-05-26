@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class IsApp extends AbstractVirtualCapabilityEvaluator {
    private static final long serialVersionUID = -2020126634302389944L;
-   private static final Map j = new HashMap(2);
+   private static final Map<String, Pattern> j = new HashMap<>(3);
    private static final Pattern k = Pattern.compile("iP(hone|od|ad)[\\d],[\\d]");
    private static final Pattern l = Pattern.compile("com(?:\\.[a-z]+){2,}");
    private static final Pattern m = Pattern.compile("net(?:\\.[a-z]+){2,}");
@@ -20,7 +20,7 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
 
    public String eval(Device var1, WURFLRequest var2) {
       String var3;
-      if (StringMatchUtils.containsAnyOf(var3 = var2.isUrlEncoded() ? var2.getCleanedDeviceUserAgent() : var2.getOriginalUserAgent(), (String[])h.toArray(new String[h.size()]))) {
+      if (StringMatchUtils.containsAnyOf(var3 = var2.isUrlEncoded() ? var2.getCleanedDeviceUserAgent() : var2.getOriginalUserAgent(), h.toArray(new String[0]))) {
          return "false";
       } else {
          String var4;
@@ -40,12 +40,12 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
                   }
                }
 
-               Iterator var8 = i.iterator();
+               Iterator<String> var8 = i.iterator();
 
                while(var8.hasNext()) {
                   String var10;
-                  if ((var10 = (String)var8.next()).startsWith("#")) {
-                     if (((Pattern)j.get(var10)).matcher(var3).find()) {
+                  if ((var10 = var8.next()).startsWith("#")) {
+                     if (j.get(var10).matcher(var3).find()) {
                         return "true";
                      }
                   } else {

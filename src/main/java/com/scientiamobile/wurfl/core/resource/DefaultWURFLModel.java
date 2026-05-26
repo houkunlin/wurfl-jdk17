@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import org.apache.commons.collections4.iterators.ReverseListIterator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -172,13 +171,13 @@ public class DefaultWURFLModel implements WURFLModel {
       return var1;
    }
 
-   public Set getAllDevicesId() {
+   public Set<String> getAllDevicesId() {
       HashSet<String> var1;
       (var1 = new HashSet<>()).addAll(this.a.keySet());
       return var1;
    }
 
-   public List getDeviceHierarchy(ModelDevice var1) {
+   public List<ModelDevice> getDeviceHierarchy(ModelDevice var1) {
       Validate.notNull(var1, "The device must be not null");
 
       LinkedList<ModelDevice> var2;
@@ -210,9 +209,9 @@ public class DefaultWURFLModel implements WURFLModel {
       } else {
          ModelDevice var4 = var1;
          ModelDevice var7 = this.a();
-         List var5 = this.getDeviceHierarchy(var1);
-
-         for(ReverseListIterator var6 = new ReverseListIterator(var5); var6.hasNext() && !var4.isActualDeviceRoot() && !var7.equals(var4); var4 = (ModelDevice)var6.next()) {
+         List<ModelDevice> var5 = this.getDeviceHierarchy(var1);
+         for(int var6 = var5.size() - 1; var6 >= 0 && !var4.isActualDeviceRoot() && !var7.equals(var4); --var6) {
+            var4 = var5.get(var6);
          }
 
          if (!var4.isActualDeviceRoot() && !var7.equals(var4)) {

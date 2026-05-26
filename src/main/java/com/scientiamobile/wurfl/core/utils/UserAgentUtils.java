@@ -20,10 +20,9 @@ import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.text.StrBuilder;
 
 public final class UserAgentUtils {
-   private static final SortedSet a;
+   private static final SortedSet<String> a;
    public static final Pattern STRIP_QUOTE_PATTERN;
    public static final Pattern NAMESPACE_NUMBER_PATTERN;
    private static final Pattern b;
@@ -64,10 +63,10 @@ public final class UserAgentUtils {
    private static final Pattern K;
    private static final Pattern L;
    private static final Pattern M;
-   private static final List N;
-   private static final List O;
-   private static final List P;
-   private static final List Q;
+   private static final List<String> N;
+   private static final List<String> O;
+   private static final List<String> P;
+   private static final List<String> Q;
    private static final AhoCorasickKeywordMatcher R;
    private static final AhoCorasickKeywordMatcher S;
    private static final AhoCorasickKeywordMatcher T;
@@ -128,13 +127,13 @@ public final class UserAgentUtils {
       return (var1 = var0.getHeader("accept")) != null && (var1.indexOf("application/vnd.wap.xhtml+xml") != -1 || var1.indexOf("application/xhtml+xml") != -1 || var1.indexOf("application/text+html") != -1);
    }
 
-   public static Predicate isContainedIn(String var0) {
+   public static Predicate<String> isContainedIn(String var0) {
       return new ContainsIgnoreCasePredicate(var0);
    }
 
    public static Pattern createLocalePattern() {
-      StrBuilder var0;
-      (var0 = new StrBuilder()).append("; (");
+      StringBuilder var0;
+      (var0 = new StringBuilder()).append("; (");
       String[] var1 = Locale.getISOLanguages();
 
       for(int var2 = 0; var2 < var1.length; ++var2) {
@@ -411,7 +410,7 @@ public final class UserAgentUtils {
       return var10000.append(var10001).append(" Java/").append(System.getProperty("java.version")).append(" ").append(System.getProperty("os.name")).append("/").append(System.getProperty("os.version")).toString();
    }
 
-   public static List getMobileBrowsers() {
+   public static List<String> getMobileBrowsers() {
       return Collections.unmodifiableList(N);
    }
 
@@ -465,7 +464,7 @@ public final class UserAgentUtils {
    }
 
    static {
-      (a = new TreeSet()).add("1.0");
+      (a = new TreeSet<>()).add("1.0");
       a.add("1.5");
       a.add("1.6");
       a.add("2.0");
@@ -536,10 +535,10 @@ public final class UserAgentUtils {
       K = Pattern.compile(";(?! )");
       L = Pattern.compile("(NOKIA; RM-.+?)_.*");
       M = Pattern.compile("(Microsoft; RM-.+?)_.*");
-      N = new ArrayList();
-      O = new ArrayList();
-      P = new ArrayList();
-      Q = new ArrayList();
+      N = new ArrayList<>();
+      O = new ArrayList<>();
+      P = new ArrayList<>();
+      Q = new ArrayList<>();
       N.add("midp");
       N.add("mobile");
       N.add("android");

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 
 public class WurflBackupTask implements UpdatePipelineTask {
-   public void execute(Map var1) {
+   public void execute(Map<String, Object> var1) {
       String var2 = (String)var1.get("original_wurfl_path");
       String var3 = var2 + ".old";
 

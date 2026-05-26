@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public class RollbackTask implements UpdatePipelineTask {
    private final Logger a = LoggerFactory.getLogger(this.getClass());
 
-   public void execute(Map var1) {
+   public void execute(Map<String, Object> var1) {
       this.a.warn("Starting WURFL update rollback task");
       String var2 = (String)var1.get("original_wurfl_overwritten");
       if ("true".equals(var2)) {

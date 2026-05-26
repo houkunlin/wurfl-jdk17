@@ -25,13 +25,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
-   private Map headers = new HashMap();
+   private final Map<String, String> headers = new HashMap<>();
 
    public final Object getAttribute(String var1) {
       return null;
    }
 
-   public final Enumeration getAttributeNames() {
+   public final Enumeration<String> getAttributeNames() {
       return null;
    }
 
@@ -62,7 +62,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final Enumeration getParameterNames() {
+   public final Enumeration<String> getParameterNames() {
       return null;
    }
 
@@ -70,7 +70,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final Map getParameterMap() {
+   public final Map<String, String[]> getParameterMap() {
       return null;
    }
 
@@ -116,7 +116,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final Enumeration getLocales() {
+   public final Enumeration<Locale> getLocales() {
       return null;
    }
 
@@ -200,22 +200,21 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       this.headers.put(headerName, headerValue);
    }
 
-   public final void addHeaders(Map headers) {
-      for(Object entryObj : headers.entrySet()) {
-         Map.Entry entry = (Map.Entry)entryObj;
-         this.addHeader((String)entry.getKey(), (String)entry.getValue());
+   public final void addHeaders(Map<String, String> headers) {
+      for(Map.Entry<String, String> entry : headers.entrySet()) {
+         this.addHeader(entry.getKey(), entry.getValue());
       }
 
    }
 
-   public final Enumeration getHeaders(String var1) {
+   public final Enumeration<String> getHeaders(String var1) {
       return null;
    }
 
-   public final Enumeration getHeaderNames() {
-      Vector var1 = new Vector();
+   public final Enumeration<String> getHeaderNames() {
+      Vector<String> var1 = new Vector<>();
 
-      for(Object headerName : this.headers.keySet()) {
+      for(String headerName : this.headers.keySet()) {
          var1.add(headerName);
       }
 

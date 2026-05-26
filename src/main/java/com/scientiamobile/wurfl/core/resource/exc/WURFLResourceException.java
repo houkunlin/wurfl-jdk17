@@ -2,14 +2,13 @@ package com.scientiamobile.wurfl.core.resource.exc;
 
 import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.resource.WURFLResource;
-import org.apache.commons.lang3.text.StrBuilder;
 
 public class WURFLResourceException extends WURFLRuntimeException {
    private static final long serialVersionUID = 10L;
    private WURFLResource a;
 
    public WURFLResourceException(WURFLResource var1) {
-      super((new StrBuilder("WURFL resource exception in: ")).append(var1.getInfo()).toString());
+      super((new StringBuilder("WURFL resource exception in: ")).append(var1.getInfo()).toString());
       this.a = var1;
    }
 

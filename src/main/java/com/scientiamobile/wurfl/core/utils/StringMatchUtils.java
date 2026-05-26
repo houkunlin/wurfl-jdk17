@@ -102,11 +102,11 @@ public final class StringMatchUtils {
    }
 
    public static int indexOf(String var0, String var1) {
-      return StringUtils.indexOf(var0, var1);
+      return var0 != null && var1 != null ? var0.indexOf(var1) : -1;
    }
 
    public static int indexOf(String var0, String var1, int var2) {
-      return StringUtils.indexOf(var0, var1, var2);
+      return var0 != null && var1 != null ? var0.indexOf(var1, var2) : -1;
    }
 
    public static String removeSubstringBefore(String var0, String var1) {

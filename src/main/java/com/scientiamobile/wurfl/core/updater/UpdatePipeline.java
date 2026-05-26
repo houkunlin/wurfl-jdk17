@@ -27,7 +27,7 @@ public class UpdatePipeline {
       this.c = var2;
       this.d = a(var1);
       Validator.checkFileExtensions(var1, var2);
-      this.a = new ArrayList();
+      this.a = new ArrayList<>();
       this.a.add(new CheckForNewWurflFileTask());
       this.a.add(new WurflBackupTask());
       this.a.add(new NewWurflFileDownloadTask());
@@ -38,7 +38,7 @@ public class UpdatePipeline {
       this.c = var2;
       this.d = a(var1);
       Validator.checkFileExtensions(var1, var2);
-      this.a = new ArrayList();
+      this.a = new ArrayList<>();
       this.a.add(new CheckForNewWurflFileTask());
       this.a.add(new WurflBackupTask());
       this.a.add(new NewWurflFileDownloadTask());
@@ -49,7 +49,7 @@ public class UpdatePipeline {
       this.c = var2;
       this.d = a(var1);
       Validator.checkFileExtensions(var1, var2);
-      this.a = new ArrayList();
+      this.a = new ArrayList<>();
       this.a.add(new CheckForNewWurflFileTask(var3));
       this.a.add(new WurflBackupTask());
       this.a.add(new NewWurflFileDownloadTask(var3));
@@ -60,7 +60,7 @@ public class UpdatePipeline {
       this.c = var2;
       this.d = a(var1);
       Validator.checkFileExtensions(var1, var2);
-      this.a = new ArrayList();
+      this.a = new ArrayList<>();
       this.a.add(new CheckForNewWurflFileTask(var4));
       this.a.add(new WurflBackupTask());
       this.a.add(new NewWurflFileDownloadTask(var4));
@@ -124,7 +124,7 @@ public class UpdatePipeline {
       return var7;
    }
 
-   public static Integer safeGetConnectionTimeout(Map var0) {
+   public static Integer safeGetConnectionTimeout(Map<String, Object> var0) {
       String var1;
       return !StringUtils.isEmpty(var1 = (String)var0.get("CONN_TIMEOUT")) && StringUtils.isNumeric(var1) ? Integer.parseInt(var1) : 10000;
    }

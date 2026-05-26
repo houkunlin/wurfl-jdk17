@@ -3,7 +3,6 @@ package com.scientiamobile.wurfl.core.vcap;
 import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.io.Serializable;
-import java.util.HashSet;
 
 public class IsIOs implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 5384820129703085119L;
@@ -14,9 +13,5 @@ public class IsIOs implements VirtualCapabilityEvaluator, Serializable {
 
    public String getHandledVirtualCapabilityName() {
       return "is_ios";
-   }
-
-   static {
-      (new HashSet()).add("device_os");
    }
 }

@@ -24,10 +24,10 @@ public class VirtualCapabilityDevice implements Serializable {
    private static final Pattern h = Pattern.compile("\\.");
    private final NameVersionPair i;
    private final NameVersionPair j;
-   private static Map k = new HashMap();
-   private static Map l = new HashMap();
-   private static Map m = new HashMap();
-   private static Set n = new HashSet(16);
+   private static Map<String, String> k = new HashMap<>();
+   private static Map<String, String> l = new HashMap<>();
+   private static Map<String, String> m = new HashMap<>();
+   private static Set<String> n = new HashSet<>(16);
    private String o;
    private String p;
    private String q;
@@ -138,8 +138,7 @@ public class VirtualCapabilityDevice implements Serializable {
                }
 
                if (StringUtils.isNotEmpty(this.j.getName())) {
-                  for(Object osNameObj : n) {
-                     String osName = (String)osNameObj;
+                  for(String osName : n) {
                      if (this.j.getName().contains(osName)) {
                         return;
                      }

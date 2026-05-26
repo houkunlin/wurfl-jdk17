@@ -21,7 +21,7 @@ public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
       this.b = var1;
    }
 
-   public void execute(Map var1) {
+   public void execute(Map<String, Object> var1) {
       String var2;
       Validate.notEmpty(var2 = (String)var1.get("new_wurfl_temp_path"));
       String var3 = (String)var1.get("original_wurfl_path");

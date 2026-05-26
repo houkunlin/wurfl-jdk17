@@ -25,8 +25,8 @@ final class ModelDevicesConsistencyVerifier {
    }
 
    public static void verifyModelDevices(ModelDevices devices) {
-      HashMap var1 = new HashMap();
-      HashSet var2 = new HashSet();
+      HashMap<String, ModelDevice> var1 = new HashMap<>();
+      HashSet<String> var2 = new HashSet<>();
       if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
       } else if (!devices.containsId("generic")) {
@@ -42,7 +42,7 @@ final class ModelDevicesConsistencyVerifier {
             }
 
             if (var1.containsKey(var5.getUserAgent())) {
-               ModelDevice var7 = (ModelDevice)var1.get(var5.getUserAgent());
+               ModelDevice var7 = var1.get(var5.getUserAgent());
                throw new UserAgentNotUniqueException(var5, var5.getUserAgent(), var7);
             }
 
@@ -56,13 +56,13 @@ final class ModelDevicesConsistencyVerifier {
       }
    }
 
-   private static void verifyHierarchy(ModelDevice device, ModelDevices devices, Set visited) {
+   private static void verifyHierarchy(ModelDevice device, ModelDevices devices, Set<String> visited) {
       if (!ASSERTIONS_DISABLED && device == null) {
          throw new AssertionError("device is null");
       } else if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
       } else {
-         ArrayList var3 = new ArrayList(10);
+         ArrayList<ModelDevice> var3 = new ArrayList<>(10);
          String var5 = device.getID();
          if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(var5)) {
             throw new AssertionError();
@@ -85,7 +85,7 @@ final class ModelDevicesConsistencyVerifier {
 
                int var4;
                if ((var4 = var3.indexOf(devices.getById(var5))) != -1) {
-                  LinkedList var6 = new LinkedList(var3.subList(var4, var3.size()));
+                  LinkedList<ModelDevice> var6 = new LinkedList<>(var3.subList(var4, var3.size()));
                   throw new CircularHierarchyException(var6);
                }
 
@@ -103,8 +103,8 @@ final class ModelDevicesConsistencyVerifier {
          throw new AssertionError("devices is null");
       } else {
          ModelDevice var4 = devices.getById("generic");
-         Set var2 = device.getGroups();
-         Set var5 = var4.getGroups();
+         Set<String> var2 = device.getGroups();
+         Set<String> var5 = var4.getGroups();
 
          for(Object groupObj : var2) {
             String group = (String)groupObj;
@@ -125,7 +125,7 @@ final class ModelDevicesConsistencyVerifier {
          throw new AssertionError("device do not containing generic");
       } else {
          ModelDevice var7;
-         Map var2 = (var7 = devices.getById("generic")).getCapabilities();
+         Map<String, String> var2 = (var7 = devices.getById("generic")).getCapabilities();
 
          for(Object capabilityNameObj : device.getCapabilities().keySet()) {
             String capabilityName = (String)capabilityNameObj;

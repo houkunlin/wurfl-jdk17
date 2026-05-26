@@ -18,28 +18,28 @@ final class WurflXmlHandler extends DefaultHandler {
    private String currentGroupId;
    private String currentCapabilityName;
    private String currentCapabilityValue;
-   private Set seenUserAgents;
-   private Set seenDeviceIds;
-   private Map currentCapabilities;
-   private Map currentCapabilitiesByGroup;
+   private Set<String> seenUserAgents;
+   private Set<String> seenDeviceIds;
+   private Map<String, String> currentCapabilities;
+   private Map<String, String> currentCapabilitiesByGroup;
    private ModelDevices devices;
-   private final Map actualDeviceRootsById;
+   private final Map<String, ModelDevice> actualDeviceRootsById;
    private String wurflVersion;
    private String wurflLastUpdated;
    private String wurflSmid;
    private boolean patch;
-   private Set includedCapabilities;
+   private Set<String> includedCapabilities;
 
-   WurflXmlHandler(Set includedCapabilities) {
-      this.actualDeviceRootsById = new HashMap();
+   WurflXmlHandler(Set<String> includedCapabilities) {
+      this.actualDeviceRootsById = new HashMap<>();
       this.patch = false;
       this.includedCapabilities = includedCapabilities;
       this.parseState = WurflXmlParseState.a;
    }
 
    public final void startDocument() {
-      this.seenUserAgents = new HashSet();
-      this.seenDeviceIds = new HashSet();
+      this.seenUserAgents = new HashSet<>();
+      this.seenDeviceIds = new HashSet<>();
       this.devices = new ModelDevices();
    }
 
@@ -113,8 +113,8 @@ final class WurflXmlHandler extends DefaultHandler {
 
                   this.seenUserAgents.add(this.currentUserAgent);
                   this.seenDeviceIds.add(this.currentDeviceId);
-                  this.currentCapabilities = new HashMap();
-                  this.currentCapabilitiesByGroup = new HashMap();
+                  this.currentCapabilities = new HashMap<>();
+                  this.currentCapabilitiesByGroup = new HashMap<>();
                   return;
                }
                break;
