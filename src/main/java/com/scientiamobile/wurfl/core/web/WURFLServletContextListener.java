@@ -17,95 +17,96 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 public class WURFLServletContextListener implements WurflWebConstants, ServletContextListener {
-   private String a;
+   private String engineKeyAttributeName;
 
    public WURFLServletContextListener() {
-      this.a = WURFL_ENGINE_KEY;
+      this.engineKeyAttributeName = WURFL_ENGINE_KEY;
    }
 
-   public void contextInitialized(ServletContextEvent var1) {
-      ServletContext var2 = var1.getServletContext();
-      String var10;
-      if (!StringUtils.isEmpty(var10 = var1.getServletContext().getInitParameter("wurflEngineKey"))) {
-         this.a = var10;
+   public void contextInitialized(ServletContextEvent servletContextEvent) {
+      ServletContext servletContext = servletContextEvent.getServletContext();
+      String wurflEngineKey;
+      if (!StringUtils.isEmpty(wurflEngineKey = servletContextEvent.getServletContext().getInitParameter("wurflEngineKey"))) {
+         this.engineKeyAttributeName = wurflEngineKey;
       }
 
-      Validate.notEmpty(var10 = var2.getInitParameter("wurfl"), "Please Specify a Valid Location for wurfl context parameter");
-      String[] var3 = StringUtils.split(StringUtils.defaultString(var2.getInitParameter("wurflPatch")), " ,");
-      URI var4;
-      XMLResource var12;
-      if ((var4 = a(var2, var10)) != null) {
-         var12 = new XMLResource(var4);
+      String wurflPath = servletContext.getInitParameter("wurfl");
+      Validate.notEmpty(wurflPath, "Please Specify a Valid Location for wurfl context parameter");
+      String[] wurflPatchPaths = StringUtils.split(StringUtils.defaultString(servletContext.getInitParameter("wurflPatch")), " ,");
+      URI wurflResourceUri;
+      XMLResource wurflResource;
+      if ((wurflResourceUri = resolveResourceUri(servletContext, wurflPath)) != null) {
+         wurflResource = new XMLResource(wurflResourceUri);
       } else {
-         var12 = new XMLResource(var10);
+         wurflResource = new XMLResource(wurflPath);
       }
 
-      WURFLResources var14 = new WURFLResources();
+      WURFLResources patchResources = new WURFLResources();
 
-      for(int var5 = 0; var5 < var3.length; ++var5) {
-         URI var6;
-         XMLResource var7;
-         if ((var6 = a(var2, var3[var5])) != null) {
-            var7 = new XMLResource(var6);
+      for(int i = 0; i < wurflPatchPaths.length; ++i) {
+         URI patchUri;
+         XMLResource patchResource;
+         if ((patchUri = resolveResourceUri(servletContext, wurflPatchPaths[i])) != null) {
+            patchResource = new XMLResource(patchUri);
          } else {
-            var7 = new XMLResource(var3[var5]);
+            patchResource = new XMLResource(wurflPatchPaths[i]);
          }
 
-         var14.add(var7);
+         patchResources.add(patchResource);
       }
 
-      GeneralWURFLEngine var13 = new GeneralWURFLEngine(var12, var14);
-      String var15;
-      if ((var15 = var2.getInitParameter("capability-filter")) != null) {
-         String[] var16 = var15.toString().split("\n");
+      GeneralWURFLEngine wurflEngine = new GeneralWURFLEngine(wurflResource, patchResources);
+      String capabilityFilterValue;
+      if ((capabilityFilterValue = servletContext.getInitParameter("capability-filter")) != null) {
+         String[] capabilityFilter = capabilityFilterValue.split("\n");
 
-         for(int var18 = 0; var18 < var16.length; ++var18) {
-            if (var16[var18] != null) {
-               var16[var18] = var16[var18].trim();
+         for(int i = 0; i < capabilityFilter.length; ++i) {
+            if (capabilityFilter[i] != null) {
+               capabilityFilter[i] = capabilityFilter[i].trim();
             }
          }
 
-         var13.setCapabilityFilter(var16);
+         wurflEngine.setCapabilityFilter(capabilityFilter);
       }
 
-      String var17;
-      if ((var17 = var2.getInitParameter("wurflEngineTarget")) != null) {
+      String engineTargetValue;
+      if ((engineTargetValue = servletContext.getInitParameter("wurflEngineTarget")) != null) {
          try {
-            var13.setEngineTarget(EngineTarget.valueOf(var17));
-         } catch (IllegalArgumentException var9) {
-            throw new WURFLRuntimeException("Invalid value for wurflEngineTarget; accepted values are: " + EngineTarget.performance.toString() + " (default) and " + EngineTarget.accuracy.toString(), var9);
+            wurflEngine.setEngineTarget(EngineTarget.valueOf(engineTargetValue));
+         } catch (IllegalArgumentException e) {
+            throw new WURFLRuntimeException("Invalid value for wurflEngineTarget; accepted values are: " + EngineTarget.performance.toString() + " (default) and " + EngineTarget.accuracy.toString(), e);
          }
       }
 
-      String var19;
-      if ((var19 = var2.getInitParameter("wurflUserAgentPriority")) != null) {
+      String userAgentPriorityValue;
+      if ((userAgentPriorityValue = servletContext.getInitParameter("wurflUserAgentPriority")) != null) {
          try {
-            var13.setUserAgentPriority(UserAgentPriority.valueOf(var19));
-         } catch (IllegalArgumentException var8) {
-            throw new WURFLRuntimeException("Invalid value for wurflUserAgentPriority; accepted values are: " + UserAgentPriority.OverrideSideloadedBrowserUserAgent.toString() + " (default) and " + UserAgentPriority.UsePlainUserAgent.toString(), var8);
+            wurflEngine.setUserAgentPriority(UserAgentPriority.valueOf(userAgentPriorityValue));
+         } catch (IllegalArgumentException e) {
+            throw new WURFLRuntimeException("Invalid value for wurflUserAgentPriority; accepted values are: " + UserAgentPriority.OverrideSideloadedBrowserUserAgent.toString() + " (default) and " + UserAgentPriority.UsePlainUserAgent.toString(), e);
          }
       }
 
-      var2.setAttribute(this.a, var13);
+      servletContext.setAttribute(this.engineKeyAttributeName, wurflEngine);
    }
 
-   private static URI a(ServletContext var0, String var1) {
+   private static URI resolveResourceUri(ServletContext servletContext, String resourcePath) {
       try {
-         URL var4;
-         if ((var4 = var0.getResource(var1)) == null) {
+         URL resourceUrl;
+         if ((resourceUrl = servletContext.getResource(resourcePath)) == null) {
             return null;
          } else {
-            URI var5 = var4.toURI();
-            return var5;
+            URI resourceUri = resourceUrl.toURI();
+            return resourceUri;
          }
-      } catch (URISyntaxException var2) {
-         throw new RuntimeException(var2);
-      } catch (MalformedURLException var3) {
-         throw new RuntimeException(var3);
+      } catch (URISyntaxException e) {
+         throw new RuntimeException(e);
+      } catch (MalformedURLException e) {
+         throw new RuntimeException(e);
       }
    }
 
-   public void contextDestroyed(ServletContextEvent var1) {
-      var1.getServletContext().removeAttribute(this.a);
+   public void contextDestroyed(ServletContextEvent servletContextEvent) {
+      servletContextEvent.getServletContext().removeAttribute(this.engineKeyAttributeName);
    }
 }

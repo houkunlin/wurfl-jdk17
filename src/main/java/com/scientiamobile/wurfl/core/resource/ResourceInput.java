@@ -45,8 +45,8 @@ final class ResourceInput {
             } else {
                this.stream = stream;
             }
-         } catch (IOException var3) {
-            LOG.error(var3.toString());
+         } catch (IOException e) {
+            LOG.error(e.toString());
          }
       } else {
          this.stream = stream;
@@ -54,75 +54,72 @@ final class ResourceInput {
    }
 
    public final String getResourceName() {
-      String var1;
       if (this.uri != null) {
-         var1 = this.uri.toString();
+         return this.uri.toString();
       } else {
-         var1 = "Stream resource";
+         return "Stream resource";
       }
-
-      return var1;
    }
 
    private static URI parseUri(String path) {
       if (!ASSERTIONS_DISABLED && !StringUtils.isNotBlank(path)) {
          throw new AssertionError("The path must be not blank");
       } else {
-         File var1;
-         URI var2;
-         if ((var1 = new File(path)).exists() && var1.isFile() && var1.canRead()) {
-            var2 = var1.toURI();
+         File file;
+         URI uri;
+         if ((file = new File(path)).exists() && file.isFile() && file.canRead()) {
+            uri = file.toURI();
          } else {
-            String var3 = path.replace(" ", "%20");
+            String uriString = path.replace(" ", "%20");
             if (SystemUtils.IS_OS_WINDOWS && path.contains("\\")) {
-               var3 = var3.replace("\\", "/");
+               uriString = uriString.replace("\\", "/");
             }
 
-            if (!var3.contains(":")) {
-               while(var3.startsWith("/")) {
-                  var3 = var3.substring(1);
+            if (!uriString.contains(":")) {
+               while(uriString.startsWith("/")) {
+                  uriString = uriString.substring(1);
                }
 
-               var3 = "file:///" + var3;
+               uriString = "file:///" + uriString;
             }
 
-            var2 = URI.create(var3);
+            uri = URI.create(uriString);
          }
 
-         return var2;
+         return uri;
       }
    }
 
    private InputStream openStream(URI uri) {
       try {
-         Object var4;
+         InputStream inputStream;
          if (uri.getScheme().equals("classpath")) {
-            String var2 = uri.toString().replaceFirst("classpath:", "");
-            var4 = this.getClass().getResourceAsStream(var2);
+            String resourcePath = uri.toString().replaceFirst("classpath:", "");
+            inputStream = this.getClass().getResourceAsStream(resourcePath);
          } else {
-            var4 = uri.toURL().openConnection().getInputStream();
+            inputStream = uri.toURL().openConnection().getInputStream();
          }
 
          if (uri.getPath().toLowerCase().endsWith(".zip")) {
-            var4 = unwrapZip((InputStream)var4);
+            inputStream = unwrapZip(inputStream);
          } else if (uri.getPath().toLowerCase().endsWith(".gz")) {
-            var4 = new GZIPInputStream((InputStream)var4);
+            inputStream = new GZIPInputStream(inputStream);
          }
 
-         return (InputStream)var4;
-      } catch (IOException var3) {
+         return inputStream;
+      } catch (IOException e) {
          LOG.error("Error opening stream URI:" + uri.toString());
-         throw new RuntimeException(var3);
+         throw new RuntimeException(e);
       }
    }
 
    private static InputStream unwrapZip(InputStream stream) {
       try {
-         ZipInputStream var1;
-         (var1 = new ZipInputStream(stream)).getNextEntry();
-         return var1;
-      } catch (IOException var2) {
-         throw new RuntimeException(var2);
+         ZipInputStream zipInputStream;
+         (zipInputStream = new ZipInputStream(stream)).getNextEntry();
+         return zipInputStream;
+      } catch (IOException e) {
+         throw new RuntimeException(e);
       }
    }
 
@@ -130,7 +127,7 @@ final class ResourceInput {
       try {
          LOG.info("closing input stream: " + this.stream.getClass().getSimpleName());
          this.stream.close();
-      } catch (IOException var1) {
+      } catch (IOException e) {
          LOG.warn("Error closing stream");
       }
 
@@ -162,7 +159,7 @@ final class ResourceInput {
          try {
             this.stream.reset();
             return;
-         } catch (IOException var1) {
+         } catch (IOException e) {
          }
       }
 

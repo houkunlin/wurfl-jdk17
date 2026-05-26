@@ -11,141 +11,141 @@ import org.slf4j.LoggerFactory;
 
 public class DefaultDevice implements EnrichedDevice, Serializable {
    private static final long serialVersionUID = 11L;
-   private InternalDevice a;
-   private final MatchType b;
-   private final String c;
-   private final String d;
-   private final String e;
-   private final MarkupResolver f;
-   private transient MarkUp g;
-   private VirtualCapabilityHandler h;
+   private InternalDevice internalDevice;
+   private final MatchType matchType;
+   private final String bucketMatcherName;
+   private final String matcherName;
+   private final String normalizedUserAgent;
+   private final MarkupResolver markupResolver;
+   private transient MarkUp markUp;
+   private VirtualCapabilityHandler virtualCapabilityHandler;
 
-   public DefaultDevice(InternalDevice var1, VirtualCapabilityHandler var2, MarkupResolver var3, MatchType var4, String var5, String var6, String var7) {
-      Validate.notNull(this.h, "The capabilitiesHandler must be not null");
-      Validate.notNull(var3, "The markupResolver must be not null");
-      this.a = var1;
-      this.f = var3;
-      this.b = var4;
-      this.d = var5;
-      this.c = var6;
-      this.e = var7;
-      this.h = var2;
+   public DefaultDevice(InternalDevice internalDevice, VirtualCapabilityHandler virtualCapabilityHandler, MarkupResolver markupResolver, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent) {
+      Validate.notNull(virtualCapabilityHandler, "The capabilitiesHandler must be not null");
+      Validate.notNull(markupResolver, "The markupResolver must be not null");
+      this.internalDevice = internalDevice;
+      this.markupResolver = markupResolver;
+      this.matchType = matchType;
+      this.matcherName = matcherName;
+      this.bucketMatcherName = bucketMatcherName;
+      this.normalizedUserAgent = normalizedUserAgent;
+      this.virtualCapabilityHandler = virtualCapabilityHandler;
    }
 
-   public DefaultDevice(InternalDevice var1, MarkupResolver var2, MatchType var3, String var4, String var5, String var6, VirtualCapabilityHandler var7) {
-      Validate.notNull(var7, "The capabilitiesHandler must be not null");
-      Validate.notNull(var2, "The markupResolver must be not null");
-      this.a = var1;
-      this.f = var2;
-      this.b = var3;
-      this.d = var4;
-      this.c = var5;
-      this.e = var6;
-      this.h = var7;
+   public DefaultDevice(InternalDevice internalDevice, MarkupResolver markupResolver, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent, VirtualCapabilityHandler virtualCapabilityHandler) {
+      Validate.notNull(virtualCapabilityHandler, "The capabilitiesHandler must be not null");
+      Validate.notNull(markupResolver, "The markupResolver must be not null");
+      this.internalDevice = internalDevice;
+      this.markupResolver = markupResolver;
+      this.matchType = matchType;
+      this.matcherName = matcherName;
+      this.bucketMatcherName = bucketMatcherName;
+      this.normalizedUserAgent = normalizedUserAgent;
+      this.virtualCapabilityHandler = virtualCapabilityHandler;
    }
 
    public Map getVirtualCapabilities() {
-      return this.h.getAllVirtualCapabilities(this);
+      return this.virtualCapabilityHandler.getAllVirtualCapabilities(this);
    }
 
-   public String getVirtualCapability(String var1) {
-      return this.h.getVirtualCapability(var1, this);
+   public String getVirtualCapability(String virtualCapabilityName) {
+      return this.virtualCapabilityHandler.getVirtualCapability(virtualCapabilityName, this);
    }
 
-   public int getVirtualCapabilityAsInt(String var1) {
-      return this.h.getVirtualCapabilityAsInt(var1, this);
+   public int getVirtualCapabilityAsInt(String virtualCapabilityName) {
+      return this.virtualCapabilityHandler.getVirtualCapabilityAsInt(virtualCapabilityName, this);
    }
 
-   public boolean getVirtualCapabilityAsBool(String var1) {
-      return this.h.getVirtualCapabilityAsBool(var1, this);
+   public boolean getVirtualCapabilityAsBool(String virtualCapabilityName) {
+      return this.virtualCapabilityHandler.getVirtualCapabilityAsBool(virtualCapabilityName, this);
    }
 
    public MatchType getMatchType() {
-      return this.b;
+      return this.matchType;
    }
 
    public String getBucketMatcherName() {
-      return this.c;
+      return this.bucketMatcherName;
    }
 
    public String getMatcherName() {
-      return this.d;
+      return this.matcherName;
    }
 
    public MarkUp getMarkUp() {
-      if (this.g == null) {
-         this.g = this.f.getMarkupForDevice(this);
+      if (this.markUp == null) {
+         this.markUp = this.markupResolver.getMarkupForDevice(this);
       }
 
-      return this.g;
+      return this.markUp;
    }
 
    public String toString() {
       return "[" + this.getId() + ", match=" + this.getMatchType() + ']';
    }
 
-   public String getCapability(String var1) {
+   public String getCapability(String capabilityName) {
       try {
-         return this.a.getCapability(var1);
-      } catch (CapabilityNotDefinedException var4) {
+         return this.internalDevice.getCapability(capabilityName);
+      } catch (CapabilityNotDefinedException capabilityNotDefinedException) {
          try {
-            return this.getVirtualCapability(var1);
-         } catch (VirtualCapabilityNotDefinedException var3) {
-            throw var4;
+            return this.getVirtualCapability(capabilityName);
+         } catch (VirtualCapabilityNotDefinedException virtualCapabilityNotDefinedException) {
+            throw capabilityNotDefinedException;
          }
       }
    }
 
    public String getId() {
-      return this.a.getId();
+      return this.internalDevice.getId();
    }
 
    public String getWURFLUserAgent() {
-      return this.a.getWURFLUserAgent();
+      return this.internalDevice.getWURFLUserAgent();
    }
 
-   public int getCapabilityAsInt(String var1) {
+   public int getCapabilityAsInt(String capabilityName) {
       try {
-         return this.a.getCapabilityAsInt(var1);
-      } catch (CapabilityNotDefinedException var4) {
+         return this.internalDevice.getCapabilityAsInt(capabilityName);
+      } catch (CapabilityNotDefinedException capabilityNotDefinedException) {
          try {
-            return this.getVirtualCapabilityAsInt(var1);
-         } catch (VirtualCapabilityNotDefinedException var3) {
-            throw var4;
+            return this.getVirtualCapabilityAsInt(capabilityName);
+         } catch (VirtualCapabilityNotDefinedException virtualCapabilityNotDefinedException) {
+            throw capabilityNotDefinedException;
          }
       }
    }
 
-   public boolean getCapabilityAsBool(String var1) {
+   public boolean getCapabilityAsBool(String capabilityName) {
       try {
-         return this.a.getCapabilityAsBool(var1);
-      } catch (CapabilityNotDefinedException var4) {
+         return this.internalDevice.getCapabilityAsBool(capabilityName);
+      } catch (CapabilityNotDefinedException capabilityNotDefinedException) {
          try {
-            return this.getVirtualCapabilityAsBool(var1);
-         } catch (VirtualCapabilityNotDefinedException var3) {
-            throw var4;
+            return this.getVirtualCapabilityAsBool(capabilityName);
+         } catch (VirtualCapabilityNotDefinedException virtualCapabilityNotDefinedException) {
+            throw capabilityNotDefinedException;
          }
       }
    }
 
    public Map getCapabilities() {
-      return this.a.getCapabilities();
+      return this.internalDevice.getCapabilities();
    }
 
    public boolean isActualDeviceRoot() {
-      return this.a.isActualDeviceRoot();
+      return this.internalDevice.isActualDeviceRoot();
    }
 
    public String getDeviceRootId() {
-      return this.a.getDeviceRootId();
+      return this.internalDevice.getDeviceRootId();
    }
 
    public InternalDevice getInternalDevice() {
-      return this.a;
+      return this.internalDevice;
    }
 
    public String getNormalizedUserAgent() {
-      return this.e;
+      return this.normalizedUserAgent;
    }
 
    static {

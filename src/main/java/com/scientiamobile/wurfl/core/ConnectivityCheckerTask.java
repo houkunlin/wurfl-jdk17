@@ -22,7 +22,7 @@ final class ConnectivityCheckerTask implements Runnable {
          connection.setDoOutput(true);
          connection.setConnectTimeout(10000);
          connection.setReadTimeout(120000);
-         byte[] payloadBytes = CheckConnection.a(this.checkConnection).getBytes("UTF-8");
+         byte[] payloadBytes = this.checkConnection.getPayloadJson().getBytes("UTF-8");
          connection.setRequestProperty("charset", "UTF-8");
          connection.setRequestProperty("Content-Length", String.valueOf(payloadBytes.length));
          connection.setRequestProperty("Content-Type", "application/json");

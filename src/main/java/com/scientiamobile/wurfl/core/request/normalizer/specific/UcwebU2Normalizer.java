@@ -10,54 +10,53 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
    public static final Pattern WINDOWS_PHONE = Pattern.compile("^UCWEB.+; wds (\\d+)\\.([\\d]+);.+; ([ A-Za-z0-9_-]+); ([ A-Za-z0-9_-]+)\\) U2");
    public static final Pattern SYMBIAN = Pattern.compile("^UCWEB.+; S60 V(\\d); .+; (.+)\\) U2");
    public static final Pattern JAVA = Pattern.compile("^UCWEB[^\\(]+\\(Java; .+; (.+)\\) U2");
-   private static final Pattern a = Pattern.compile(";(?! )");
-   private static final Pattern b = Pattern.compile("(NOKIA.RM-.+?)_.*");
+   private static final Pattern SEMICOLON_WITHOUT_SPACE_PATTERN = Pattern.compile(";(?! )");
+   private static final Pattern NOKIA_RM_MODEL_PATTERN = Pattern.compile("(NOKIA.RM-.+?)_.*");
 
-   public String normalize(String var1) {
-      String var2;
-      if ((var2 = UserAgentUtils.getUcBrowserVersion(var1, true)) == null) {
-         return var1;
+   public String normalize(String userAgent) {
+      String ucBrowserVersion;
+      if ((ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, true)) == null) {
+         return userAgent;
       } else {
-         String var3 = null;
-         if (var1.contains("Adr")) {
-            String var4 = UserAgentUtils.getUcAndroidModel(var1, false);
-            String var5 = UserAgentUtils.getUcAndroidVersion(var1, false);
-            if (var4 != null && var5 != null) {
-               var3 = var5 + " U2Android " + var2 + " " + var4 + "---";
+         String normalizedPrefix = null;
+         if (userAgent.contains("Adr")) {
+            String model = UserAgentUtils.getUcAndroidModel(userAgent, false);
+            String androidVersion = UserAgentUtils.getUcAndroidVersion(userAgent, false);
+            if (model != null && androidVersion != null) {
+               normalizedPrefix = androidVersion + " U2Android " + ucBrowserVersion + " " + model + "---";
             }
-         } else if (var1.contains("iPh OS")) {
-            Matcher var10;
-            if ((var10 = IPHONE.matcher(var1)).find()) {
-               String var16 = var10.group(1) + "." + var10.group(2);
-               var3 = var10.group(3) + "." + var10.group(4);
-               var3 = var16 + " U2iPhone " + var2 + " " + var3 + "---";
+         } else if (userAgent.contains("iPh OS")) {
+            Matcher matcher;
+            if ((matcher = IPHONE.matcher(userAgent)).find()) {
+               String iosVersion = matcher.group(1) + "." + matcher.group(2);
+               String iphoneDeviceVersion = matcher.group(3) + "." + matcher.group(4);
+               normalizedPrefix = iosVersion + " U2iPhone " + ucBrowserVersion + " " + iphoneDeviceVersion + "---";
             }
-         } else if (var1.contains("wds")) {
-            String var11 = a.matcher(var1).replaceAll("; ");
-            Matcher var17;
-            if ((var17 = WINDOWS_PHONE.matcher(var11)).find()) {
-               var3 = var17.group(1) + "." + var17.group(2);
-               var11 = (var17.group(3) + "." + var17.group(4)).replace("_blocked", "");
-               var11 = b.matcher(var11).replaceFirst("$1");
-               var3 = var3 + " U2WindowsPhone " + var2 + " " + var11 + "---";
+         } else if (userAgent.contains("wds")) {
+            String fixedUserAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
+            Matcher matcher;
+            if ((matcher = WINDOWS_PHONE.matcher(fixedUserAgent)).find()) {
+               String windowsPhoneVersion = matcher.group(1) + "." + matcher.group(2);
+               String modelName = (matcher.group(3) + "." + matcher.group(4)).replace("_blocked", "");
+               modelName = NOKIA_RM_MODEL_PATTERN.matcher(modelName).replaceFirst("$1");
+               normalizedPrefix = windowsPhoneVersion + " U2WindowsPhone " + ucBrowserVersion + " " + modelName + "---";
             }
-         } else if (var1.contains("Symbian")) {
-            Matcher var14;
-            if ((var14 = SYMBIAN.matcher(var1)).find()) {
-               String var18 = "S60 V" + var14.group(1);
-               var3 = var14.group(2);
-               var3 = var18 + " U2Symbian " + var2 + " " + var3 + "---";
+         } else if (userAgent.contains("Symbian")) {
+            Matcher matcher;
+            if ((matcher = SYMBIAN.matcher(userAgent)).find()) {
+               String symbianVersion = "S60 V" + matcher.group(1);
+               String modelName = matcher.group(2);
+               normalizedPrefix = symbianVersion + " U2Symbian " + ucBrowserVersion + " " + modelName + "---";
             }
          } else {
-            Matcher var15;
-            if (var1.contains("Java") && (var15 = JAVA.matcher(var1)).find()) {
-               String var19 = "Java";
-               var3 = var15.group(1);
-               var3 = var19 + " U2JavaApp " + var2 + " " + var3 + "---";
+            Matcher matcher;
+            if (userAgent.contains("Java") && (matcher = JAVA.matcher(userAgent)).find()) {
+               String modelName = matcher.group(1);
+               normalizedPrefix = "Java U2JavaApp " + ucBrowserVersion + " " + modelName + "---";
             }
          }
 
-         return var3 == null ? var1 : var3 + var1;
+         return normalizedPrefix == null ? userAgent : normalizedPrefix + userAgent;
       }
    }
 }

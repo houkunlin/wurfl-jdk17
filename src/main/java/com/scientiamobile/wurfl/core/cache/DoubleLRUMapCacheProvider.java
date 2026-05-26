@@ -6,17 +6,17 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.map.LRUMap;
 
 public class DoubleLRUMapCacheProvider implements CacheProvider {
-   private Map<String, String> a;
-   private Map<String, InternalDevice> b;
+   private Map<String, String> deviceIdByUserAgent;
+   private Map<String, InternalDevice> deviceById;
 
-   public DoubleLRUMapCacheProvider(int var1, int var2, boolean var3) {
-      this.a = MapUtils.synchronizedMap(new LRUMap<>(var1, var3));
-      this.b = MapUtils.synchronizedMap(new LRUMap<>(var2, var3));
+   public DoubleLRUMapCacheProvider(int userAgentCacheSize, int deviceCacheSize, boolean scanUntilRemovable) {
+      this.deviceIdByUserAgent = MapUtils.synchronizedMap(new LRUMap<>(userAgentCacheSize, scanUntilRemovable));
+      this.deviceById = MapUtils.synchronizedMap(new LRUMap<>(deviceCacheSize, scanUntilRemovable));
    }
 
-   public DoubleLRUMapCacheProvider(int var1, int var2) {
-      this.a = MapUtils.synchronizedMap(new LRUMap<>(var1));
-      this.b = MapUtils.synchronizedMap(new LRUMap<>(var2));
+   public DoubleLRUMapCacheProvider(int userAgentCacheSize, int deviceCacheSize) {
+      this.deviceIdByUserAgent = MapUtils.synchronizedMap(new LRUMap<>(userAgentCacheSize));
+      this.deviceById = MapUtils.synchronizedMap(new LRUMap<>(deviceCacheSize));
    }
 
    public DoubleLRUMapCacheProvider() {
@@ -24,30 +24,30 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
    }
 
    public void clear() {
-      logger.info("UA cache: size " + this.a.size());
-      this.a.clear();
-      logger.info("UA cache cleared: size " + this.a.size());
-      logger.info("device cache: size " + this.b.size());
-      this.b.clear();
-      logger.info("device cache cleared: size " + this.b.size());
+      logger.info("UA cache: size " + this.deviceIdByUserAgent.size());
+      this.deviceIdByUserAgent.clear();
+      logger.info("UA cache cleared: size " + this.deviceIdByUserAgent.size());
+      logger.info("device cache: size " + this.deviceById.size());
+      this.deviceById.clear();
+      logger.info("device cache cleared: size " + this.deviceById.size());
    }
 
-   public InternalDevice getDevice(String var1) {
-      String var2;
-      InternalDevice var3;
-      return (var2 = this.a.get(var1)) != null && (var3 = this.b.get(var2)) != null ? var3 : null;
+   public InternalDevice getDevice(String userAgent) {
+      String deviceId;
+      InternalDevice device;
+      return (deviceId = this.deviceIdByUserAgent.get(userAgent)) != null && (device = this.deviceById.get(deviceId)) != null ? device : null;
    }
 
-   public void putDevice(String var1, InternalDevice var2) {
+   public void putDevice(String userAgent, InternalDevice device) {
       try {
-         this.b.put(var2.getId(), var2);
-         this.a.put(var1, var2.getId());
-      } catch (Exception var3) {
-         logger.error("Could not cache " + var1);
+         this.deviceById.put(device.getId(), device);
+         this.deviceIdByUserAgent.put(userAgent, device.getId());
+      } catch (Exception e) {
+         logger.error("Could not cache " + userAgent);
       }
    }
 
-   public InternalDevice getInternalDeviceFromDeviceId(String var1) {
-      return this.b.get(var1);
+   public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
+      return this.deviceById.get(deviceId);
    }
 }

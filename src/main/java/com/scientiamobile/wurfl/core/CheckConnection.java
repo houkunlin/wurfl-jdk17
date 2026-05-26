@@ -15,101 +15,146 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CheckConnection {
-   private final transient Logger a = LoggerFactory.getLogger(this.getClass());
-   private final List<CheckConnectionObserver> b = new ArrayList<>();
-   private String c;
-   private String d = System.getProperty("os.name") + " " + System.getProperty("os.version");
-   private String e;
-   private boolean f;
+   private final transient Logger logger = LoggerFactory.getLogger(this.getClass());
+   private final List<CheckConnectionObserver> observers = new ArrayList<>();
+   private String payloadJson;
+   private String osNameAndVersion = System.getProperty("os.name") + " " + System.getProperty("os.version");
+   private String platformName;
+   private boolean enabled;
 
    public interface CheckConnectionObserver {
-      void update(CheckConnection var1, Object var2);
+      void update(CheckConnection checkConnection, Object argument);
    }
 
    public CheckConnection() {
-      String var1;
-      this.e = StringUtils.isNotEmpty(System.getProperty("jboss.boot.library.list")) ? "JBoss/WildFly" : (StringUtils.isNotEmpty(System.getProperty("oracle.j2ee.home")) ? "OC4j/Oracle AS" : (!(var1 = System.getProperty("java.class.path").toLowerCase()).contains("websphere") && !var1.contains("web sphere") ? (!var1.contains("tomcat") && !var1.contains("juli") ? (var1.contains("jetty") ? "Jetty" : "Command line") : "Tomcat") : "IBM WebSphere"));
-      this.f = ResourceUtils.getFullBuildId().startsWith("ch");
+      String classPathLowerCase;
+      this.platformName = StringUtils.isNotEmpty(System.getProperty("jboss.boot.library.list"))
+         ? "JBoss/WildFly"
+         : (StringUtils.isNotEmpty(System.getProperty("oracle.j2ee.home"))
+            ? "OC4j/Oracle AS"
+            : (!(classPathLowerCase = System.getProperty("java.class.path").toLowerCase()).contains("websphere") && !classPathLowerCase.contains("web sphere")
+               ? (!classPathLowerCase.contains("tomcat") && !classPathLowerCase.contains("juli")
+                  ? (classPathLowerCase.contains("jetty") ? "Jetty" : "Command line")
+                  : "Tomcat")
+               : "IBM WebSphere"));
+      this.enabled = ResourceUtils.getFullBuildId().startsWith("ch");
    }
 
-   public void setup(WURFLEngine var1, WURFLModel var2) {
-      if (this.f) {
-         String var3 = "unknown";
-         if (var2 instanceof DefaultWURFLModel) {
-            var2 = var2;
+   public void setup(WURFLEngine wurflEngine, WURFLModel wurflModel) {
+      if (this.enabled) {
+         String wurflSmid = "unknown";
+         if (wurflModel instanceof DefaultWURFLModel) {
 
             try {
-               Field var4;
-               (var4 = DefaultWURFLModel.class.getDeclaredField("g")).setAccessible(true);
-               var3 = StringUtils.isEmpty(var3 = (String)var4.get(var2)) ? "unknown" : var3;
-            } catch (Exception var5) {
-               this.a.error("Unable to get data from model class " + var5.getMessage());
+               Field smidField;
+               (smidField = DefaultWURFLModel.class.getDeclaredField("g")).setAccessible(true);
+               wurflSmid = StringUtils.isEmpty(wurflSmid = (String)smidField.get(wurflModel)) ? "unknown" : wurflSmid;
+            } catch (Exception e) {
+               this.logger.error("Unable to get data from model class " + e.getMessage());
             }
 
-            String var7;
-            int var9;
-            int var10;
-            StringBuilder var11;
-            (var11 = a(a(a(a(a(a(a(a(new StringBuilder("{ "), "api-smid", ResourceUtils.getBuildId(), true), "wurfl-smid", var3, true), "api", this.getApiName(), true), "api_ver", "1.9.1.0", true), "wurfl", (var9 = (var7 = var1.getWURFLUtils().getVersion()).indexOf("for WURFL")) == -1 ? var7 : ((var10 = var7.indexOf(";")) != -1 ? var7.substring(var9, var10) : var7.substring(var9)), true), "host", a(), true), "os", this.d, true), "platform", this.e, false)).append(" }");
-            this.c = var11.toString();
+            String wurflVersion = wurflEngine.getWURFLUtils().getVersion();
+            int versionIndex = wurflVersion.indexOf("for WURFL");
+            if (versionIndex != -1) {
+               int versionEnd = wurflVersion.indexOf(";");
+               wurflVersion = versionEnd != -1 ? wurflVersion.substring(versionIndex, versionEnd) : wurflVersion.substring(versionIndex);
+            }
+
+            StringBuilder payloadBuilder;
+            (payloadBuilder = appendJsonField(
+               appendJsonField(
+                  appendJsonField(
+                     appendJsonField(
+                        appendJsonField(
+                           appendJsonField(
+                              appendJsonField(
+                                 appendJsonField(new StringBuilder("{ "), "api-smid", ResourceUtils.getBuildId(), true),
+                                 "wurfl-smid",
+                                 wurflSmid,
+                                 true
+                              ),
+                              "api",
+                              this.getApiName(),
+                              true
+                           ),
+                           "api_ver",
+                           "1.9.1.0",
+                           true
+                        ),
+                        "wurfl",
+                        wurflVersion,
+                        true
+                     ),
+                     "host",
+                     getHostNameOrUnknown(),
+                     true
+                  ),
+                  "os",
+                  this.osNameAndVersion,
+                  true
+               ),
+               "platform",
+               this.platformName,
+               false
+            )).append(" }");
+            this.payloadJson = payloadBuilder.toString();
          }
 
       }
    }
 
-   private static StringBuilder a(StringBuilder var0, String var1, String var2, boolean var3) {
-      var0.append("\"").append(var1).append("\": \"").append(var2).append("\"");
-      if (var3) {
-         var0.append(", ");
+   private static StringBuilder appendJsonField(StringBuilder builder, String key, String value, boolean hasMoreFields) {
+      builder.append("\"").append(key).append("\": \"").append(value).append("\"");
+      if (hasMoreFields) {
+         builder.append(", ");
       } else {
-         var0.append(" ");
+         builder.append(" ");
       }
 
-      return var0;
+      return builder;
    }
 
-   private static String a() {
+   private static String getHostNameOrUnknown() {
       try {
          return InetAddress.getLocalHost().getHostName();
-      } catch (Exception var0) {
+      } catch (Exception e) {
          return "unknown";
       }
    }
 
    public void check() {
-      if (this.f) {
-         ScheduledExecutorService var1 = Executors.newSingleThreadScheduledExecutor();
+      if (this.enabled) {
+         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
          try {
-            var1.execute(new ConnectivityCheckerTask(this));
+            executorService.execute(new ConnectivityCheckerTask(this));
          } finally {
-            var1.shutdown();
+            executorService.shutdown();
          }
 
       }
    }
 
-   public synchronized void addObserver(CheckConnectionObserver var1) {
-      this.b.add(var1);
+   public synchronized void addObserver(CheckConnectionObserver observer) {
+      this.observers.add(observer);
    }
 
-   public void notifyObservers(Object var1) {
-      Iterator<CheckConnectionObserver> var2 = this.b.iterator();
+   public void notifyObservers(Object argument) {
+      Iterator<CheckConnectionObserver> iterator = this.observers.iterator();
 
-      while(var2.hasNext()) {
-         var2.next().update(this, var1);
-         this.a.info("observer notified");
+      while(iterator.hasNext()) {
+         iterator.next().update(this, argument);
+         this.logger.info("observer notified");
       }
 
    }
 
-   public String getApiName() {
-      String var1;
-      return (var1 = System.getProperty("java.class.path")) != null && var1.contains("wurfl-scala") ? "WURFL_Scala_API" : "WURFL_Java_API";
+   final String getPayloadJson() {
+      return this.payloadJson;
    }
 
-   // $FF: synthetic method
-   static String a(CheckConnection var0) {
-      return var0.c;
+   public String getApiName() {
+      String classPath;
+      return (classPath = System.getProperty("java.class.path")) != null && classPath.contains("wurfl-scala") ? "WURFL_Scala_API" : "WURFL_Java_API";
    }
 }

@@ -9,78 +9,82 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HashMapCacheProvider implements CacheProvider {
-   private Map<String, InternalDevice> a;
-   private int b;
-   private float c;
-   private int d;
-   private final transient Logger e;
+   private Map<String, InternalDevice> cache;
+   private int initialCapacity;
+   private float loadFactor;
+   private int concurrentWrites;
+   private final transient Logger logger;
 
    public HashMapCacheProvider() {
       this(60000);
    }
 
-   public HashMapCacheProvider(int var1) {
-      this(var1, 0.75F);
+   public HashMapCacheProvider(int initialCapacity) {
+      this(initialCapacity, 0.75F);
    }
 
-   public HashMapCacheProvider(int var1, float var2) {
-      this(var1, var2, 16);
+   public HashMapCacheProvider(int initialCapacity, float loadFactor) {
+      this(initialCapacity, loadFactor, 16);
    }
 
-   public HashMapCacheProvider(int var1, float var2, int var3) {
-      this.b = 6000;
-      this.c = 0.75F;
-      this.d = 16;
-      this.e = LoggerFactory.getLogger(this.getClass());
-      this.b = var1;
-      this.c = var2;
-      this.d = var3;
-      this.a = CollectionFactory.createConcurrentHashMap(var1, var2, var3);
-      if (this.e.isInfoEnabled()) {
-         StringBuffer var4;
-         (var4 = new StringBuffer("Created HashMapCacheProvider with initial capacity: ")).append(var1);
-         var4.append(" load factor: ");
-         var4.append(var2);
-         var4.append(" concurrent writes: ");
-         var4.append(var3);
-         this.e.info(var4.toString());
+   public HashMapCacheProvider(int initialCapacity, float loadFactor, int concurrentWrites) {
+      this.initialCapacity = 6000;
+      this.loadFactor = 0.75F;
+      this.concurrentWrites = 16;
+      this.logger = LoggerFactory.getLogger(this.getClass());
+      this.initialCapacity = initialCapacity;
+      this.loadFactor = loadFactor;
+      this.concurrentWrites = concurrentWrites;
+      this.cache = CollectionFactory.createConcurrentHashMap(initialCapacity, loadFactor, concurrentWrites);
+      if (this.logger.isInfoEnabled()) {
+         StringBuffer builder;
+         (builder = new StringBuffer("Created HashMapCacheProvider with initial capacity: ")).append(initialCapacity);
+         builder.append(" load factor: ");
+         builder.append(loadFactor);
+         builder.append(" concurrent writes: ");
+         builder.append(concurrentWrites);
+         this.logger.info(builder.toString());
       }
 
    }
 
    public int getInitialCapacity() {
-      return this.b;
+      return this.initialCapacity;
    }
 
    public float getLoadFactor() {
-      return this.c;
+      return this.loadFactor;
    }
 
    public int getConcurrentWrites() {
-      return this.d;
+      return this.concurrentWrites;
    }
 
    public void clear() {
-      this.e.info("Cache size: " + this.a.size());
-      this.a.clear();
-      this.e.info("Cache erased");
+      this.logger.info("Cache size: " + this.cache.size());
+      this.cache.clear();
+      this.logger.info("Cache erased");
    }
 
-   public InternalDevice getDevice(String var1) {
-      Validate.notNull(var1, "The key is null");
-      return this.a.get(var1);
+   public InternalDevice getDevice(String key) {
+      Validate.notNull(key, "The key is null");
+      return this.cache.get(key);
    }
 
-   public void putDevice(String var1, InternalDevice var2) {
-      Validate.notNull(var1, "The key is null");
-      this.a.put(var1, var2);
+   public void putDevice(String key, InternalDevice device) {
+      Validate.notNull(key, "The key is null");
+      this.cache.put(key, device);
    }
 
    public String toString() {
-      return (new ToStringBuilder(this)).append("initialCapacity", this.b).append("loadFactor", this.c).append("concurrentWrites", this.d).toString();
+      return (new ToStringBuilder(this))
+         .append("initialCapacity", this.initialCapacity)
+         .append("loadFactor", this.loadFactor)
+         .append("concurrentWrites", this.concurrentWrites)
+         .toString();
    }
 
-   public InternalDevice getInternalDeviceFromDeviceId(String var1) {
+   public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
       return null;
    }
 }

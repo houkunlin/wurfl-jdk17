@@ -17,136 +17,136 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class ModelDevices implements Serializable, Iterable<ModelDevice> {
    private static final long serialVersionUID = 10L;
-   private Map<String, ModelDevice> a;
-   private LinkedList<String> b;
+   private Map<String, ModelDevice> devicesById;
+   private LinkedList<String> deviceIdsByInsertionOrder;
 
    public ModelDevices() {
-      this.a = CollectionFactory.createConcurrentHashMap();
-      this.b = new LinkedList<>();
+      this.devicesById = CollectionFactory.createConcurrentHashMap();
+      this.deviceIdsByInsertionOrder = new LinkedList<>();
    }
 
-   public ModelDevices(ModelDevices var1) {
-      this.a = CollectionFactory.createConcurrentHashMap();
-      this.b = new LinkedList<>();
-      this.a.putAll(var1.a);
-      this.b = new LinkedList<>(var1.getDeviceIdsByInsertionOrder());
+   public ModelDevices(ModelDevices modelDevices) {
+      this.devicesById = CollectionFactory.createConcurrentHashMap();
+      this.deviceIdsByInsertionOrder = new LinkedList<>();
+      this.devicesById.putAll(modelDevices.devicesById);
+      this.deviceIdsByInsertionOrder = new LinkedList<>(modelDevices.getDeviceIdsByInsertionOrder());
    }
 
    @SuppressWarnings("unchecked")
-   public ModelDevices(Map var1) {
-      this.a = CollectionFactory.createConcurrentHashMap();
-      this.b = new LinkedList<>();
-      Validate.notNull(var1, "The devicesById is null");
-      Validate.noNullElements(var1.values(), "The devicesById contains null value");
-      this.a.putAll((Map<String, ModelDevice>)var1);
+   public ModelDevices(Map devicesById) {
+      this.devicesById = CollectionFactory.createConcurrentHashMap();
+      this.deviceIdsByInsertionOrder = new LinkedList<>();
+      Validate.notNull(devicesById, "The devicesById is null");
+      Validate.noNullElements(devicesById.values(), "The devicesById contains null value");
+      this.devicesById.putAll((Map<String, ModelDevice>)devicesById);
    }
 
-   public ModelDevices(Collection<ModelDevice> var1) {
-      this.a = CollectionFactory.createConcurrentHashMap();
-      this.b = new LinkedList<>();
-      Validate.notNull(var1, "The devices is null");
-      Validate.noNullElements(var1, "The devices contains null value");
+   public ModelDevices(Collection<ModelDevice> devices) {
+      this.devicesById = CollectionFactory.createConcurrentHashMap();
+      this.deviceIdsByInsertionOrder = new LinkedList<>();
+      Validate.notNull(devices, "The devices is null");
+      Validate.noNullElements(devices, "The devices contains null value");
 
-      for(ModelDevice device : var1) {
-         this.a.put(device.getID(), device);
+      for(ModelDevice device : devices) {
+         this.devicesById.put(device.getID(), device);
       }
 
    }
 
-   public ModelDevices(ModelDevice[] var1) {
-      this(Arrays.asList(var1));
+   public ModelDevices(ModelDevice[] devices) {
+      this(Arrays.asList(devices));
    }
 
    public int size() {
-      return this.a.size();
+      return this.devicesById.size();
    }
 
-   public boolean contains(ModelDevice var1) {
-      return this.a.containsValue(var1);
+   public boolean contains(ModelDevice device) {
+      return this.devicesById.containsValue(device);
    }
 
-   public boolean containsId(String var1) {
-      return this.a.containsKey(var1);
+   public boolean containsId(String deviceId) {
+      return this.devicesById.containsKey(deviceId);
    }
 
    public Set<ModelDevice> getDevices() {
-      return new HashSet<>(this.a.values());
+      return new HashSet<>(this.devicesById.values());
    }
 
    public Map<String, ModelDevice> getDevicesById() {
-      return Collections.unmodifiableMap(this.a);
+      return Collections.unmodifiableMap(this.devicesById);
    }
 
    public Iterator<ModelDevice> iterator() {
       return this.getDevicesById().values().iterator();
    }
 
-   public ModelDevice getById(String var1) {
-      return this.a.get(var1);
+   public ModelDevice getById(String deviceId) {
+      return this.devicesById.get(deviceId);
    }
 
-   public void add(ModelDevice var1) {
-      this.a.put(var1.getID(), var1);
-      if (this.a.size() > this.b.size()) {
-         this.b.add(var1.getID());
+   public void add(ModelDevice device) {
+      this.devicesById.put(device.getID(), device);
+      if (this.devicesById.size() > this.deviceIdsByInsertionOrder.size()) {
+         this.deviceIdsByInsertionOrder.add(device.getID());
       }
 
    }
 
    public List<String> getDeviceIdsByInsertionOrder() {
-      return this.b;
+      return this.deviceIdsByInsertionOrder;
    }
 
-   public void addAll(Collection<ModelDevice> var1) {
-      Validate.notNull(var1, "The devices is null");
-      Validate.noNullElements(var1, "The devices contains null value");
+   public void addAll(Collection<ModelDevice> devices) {
+      Validate.notNull(devices, "The devices is null");
+      Validate.noNullElements(devices, "The devices contains null value");
 
-      for(ModelDevice device : var1) {
-         this.a.put(device.getID(), device);
+      for(ModelDevice device : devices) {
+         this.devicesById.put(device.getID(), device);
       }
 
    }
 
-   public void addAll(ModelDevices var1) {
-      this.a.putAll(var1.a);
+   public void addAll(ModelDevices devices) {
+      this.devicesById.putAll(devices.devicesById);
    }
 
-   public void remove(ModelDevice var1) {
-      this.a.remove(var1.getID());
+   public void remove(ModelDevice device) {
+      this.devicesById.remove(device.getID());
    }
 
-   public void removeAll(Collection<ModelDevice> var1) {
-      for(ModelDevice device : var1) {
-         this.a.remove(device.getID());
+   public void removeAll(Collection<ModelDevice> devices) {
+      for(ModelDevice device : devices) {
+         this.devicesById.remove(device.getID());
       }
 
    }
 
-   public void removeAll(ModelDevices var1) {
-      for(ModelDevice device : var1) {
-         this.a.remove(device.getID());
+   public void removeAll(ModelDevices devices) {
+      for(ModelDevice device : devices) {
+         this.devicesById.remove(device.getID());
       }
 
    }
 
    public void clear() {
-      this.a.clear();
+      this.devicesById.clear();
    }
 
    public int hashCode() {
-      HashCodeBuilder var1;
-      (var1 = new HashCodeBuilder()).append(this.getClass()).append(this.a);
-      return var1.toHashCode();
+      HashCodeBuilder hashCodeBuilder;
+      (hashCodeBuilder = new HashCodeBuilder()).append(this.getClass()).append(this.devicesById);
+      return hashCodeBuilder.toHashCode();
    }
 
-   public boolean equals(Object var1) {
-      if (this == var1) {
+   public boolean equals(Object object) {
+      if (this == object) {
          return true;
-      } else if (!(var1 instanceof ModelDevices)) {
+      } else if (!(object instanceof ModelDevices)) {
          return false;
       } else {
-         ModelDevices other = (ModelDevices)var1;
-         return (new EqualsBuilder()).append(this.a, other.a).isEquals();
+         ModelDevices other = (ModelDevices)object;
+         return (new EqualsBuilder()).append(this.devicesById, other.devicesById).isEquals();
       }
    }
 }

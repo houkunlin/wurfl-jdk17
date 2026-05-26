@@ -10,122 +10,122 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.Validate;
 
 public class WURFLUtils {
-   private final WURFLModel a;
-   private final DeviceProvider b;
-   private final WURFLService c;
+   private final WURFLModel wurflModel;
+   private final DeviceProvider deviceProvider;
+   private final WURFLService wurflService;
 
-   WURFLUtils(WURFLModel var1, DeviceProvider var2, WURFLService var3) {
-      this.a = var1;
-      this.b = var2;
-      this.c = var3;
+   WURFLUtils(WURFLModel wurflModel, DeviceProvider deviceProvider, WURFLService wurflService) {
+      this.wurflModel = wurflModel;
+      this.deviceProvider = deviceProvider;
+      this.wurflService = wurflService;
    }
 
    public String getVersion() {
-      return this.a.getVersion();
+      return this.wurflModel.getVersion();
    }
 
-   public boolean isDeviceDefined(String var1) {
-      Validate.notEmpty(var1, "deviceId must be not null");
-      return this.a.isDeviceDefined(var1);
+   public boolean isDeviceDefined(String deviceId) {
+      Validate.notEmpty(deviceId, "deviceId must be not null");
+      return this.wurflModel.isDeviceDefined(deviceId);
    }
 
-   public ModelDevice getModelDeviceById(String var1) {
-      Validate.notEmpty(var1, "The id must be not null Set");
-      return this.a.getDeviceById(var1);
+   public ModelDevice getModelDeviceById(String deviceId) {
+      Validate.notEmpty(deviceId, "The id must be not null Set");
+      return this.wurflModel.getDeviceById(deviceId);
    }
 
-   public Set getModelDevices(Set var1) {
-      Validate.notNull(var1, "The ids must be not null Set");
-      Validate.noNullElements(var1, "The ids must not containing null elements");
-      for(Object id : var1) {
+   public Set getModelDevices(Set deviceIds) {
+      Validate.notNull(deviceIds, "The ids must be not null Set");
+      Validate.noNullElements(deviceIds, "The ids must not containing null elements");
+      for(Object id : deviceIds) {
          Validate.isTrue(id instanceof String, "The ids must containing right devices id");
       }
-      return this.a.getDevices(var1);
+      return this.wurflModel.getDevices(deviceIds);
    }
 
    public Set getAllDevicesId() {
-      return this.a.getAllDevicesId();
+      return this.wurflModel.getAllDevicesId();
    }
 
    public Set getAllModelDevices() {
-      return this.a.getAllDevices();
+      return this.wurflModel.getAllDevices();
    }
 
-   public List getModelDeviceHierarchy(ModelDevice var1) {
-      Validate.notNull(var1, "The root ModelDevice must be not null");
-      return this.a.getDeviceHierarchy(var1);
+   public List getModelDeviceHierarchy(ModelDevice rootDevice) {
+      Validate.notNull(rootDevice, "The root ModelDevice must be not null");
+      return this.wurflModel.getDeviceHierarchy(rootDevice);
    }
 
-   public ModelDevice getModelDeviceFallback(ModelDevice var1) {
-      Validate.notNull(var1, "The target ModelDevice must be not null");
-      return this.a.getDeviceFallback(var1);
+   public ModelDevice getModelDeviceFallback(ModelDevice targetDevice) {
+      Validate.notNull(targetDevice, "The target ModelDevice must be not null");
+      return this.wurflModel.getDeviceFallback(targetDevice);
    }
 
-   public ModelDevice getModelDeviceAncestor(ModelDevice var1) {
-      Validate.notNull(var1, "The root ModelDevice must be not null");
-      return this.a.getDeviceAncestor(var1);
+   public ModelDevice getModelDeviceAncestor(ModelDevice rootDevice) {
+      Validate.notNull(rootDevice, "The root ModelDevice must be not null");
+      return this.wurflModel.getDeviceAncestor(rootDevice);
    }
 
-   public boolean isCapabilityDefined(String var1) {
-      Validate.notEmpty(var1, "The capabilityName must be not null");
-      return this.a.isCapabilityDefined(var1);
+   public boolean isCapabilityDefined(String capabilityName) {
+      Validate.notEmpty(capabilityName, "The capabilityName must be not null");
+      return this.wurflModel.isCapabilityDefined(capabilityName);
    }
 
    public Set getAllCapabilities() {
-      return this.a.getAllCapabilities();
+      return this.wurflModel.getAllCapabilities();
    }
 
-   public String getGroupByCapability(String var1) {
-      Validate.notEmpty(var1, "The capabilityName must be not null");
-      return this.a.getGroupByCapability(var1);
+   public String getGroupByCapability(String capabilityName) {
+      Validate.notEmpty(capabilityName, "The capabilityName must be not null");
+      return this.wurflModel.getGroupByCapability(capabilityName);
    }
 
-   public ModelDevice getModelDeviceWhereCapabilityIsDefined(ModelDevice var1, String var2) {
-      Validate.notNull(var1, "The rootDevice must be not null Set");
-      Validate.notEmpty(var2, "The capabilityName must be not null");
-      return this.a.getDeviceWhereCapabilityIsDefined(var1, var2);
+   public ModelDevice getModelDeviceWhereCapabilityIsDefined(ModelDevice rootDevice, String capabilityName) {
+      Validate.notNull(rootDevice, "The rootDevice must be not null Set");
+      Validate.notEmpty(capabilityName, "The capabilityName must be not null");
+      return this.wurflModel.getDeviceWhereCapabilityIsDefined(rootDevice, capabilityName);
    }
 
-   public boolean isGroupDefined(String var1) {
-      Validate.notEmpty(var1, "The groupName must be not null");
-      return this.a.isGroupDefined(var1);
+   public boolean isGroupDefined(String groupName) {
+      Validate.notEmpty(groupName, "The groupName must be not null");
+      return this.wurflModel.isGroupDefined(groupName);
    }
 
    public Set getAllGroups() {
-      return this.a.getAllGroups();
+      return this.wurflModel.getAllGroups();
    }
 
-   public Set getCapabilitiesForGroup(String var1) {
-      Validate.notEmpty(var1, "The groupName must be not null");
-      return this.a.getCapabilitiesForGroup(var1);
+   public Set getCapabilitiesForGroup(String groupName) {
+      Validate.notEmpty(groupName, "The groupName must be not null");
+      return this.wurflModel.getCapabilitiesForGroup(groupName);
    }
 
-   public InternalDevice getInternalDeviceById(String var1) {
-      return this.b.getInternalDevice(var1);
+   public InternalDevice getInternalDeviceById(String deviceId) {
+      return this.deviceProvider.getInternalDevice(deviceId);
    }
 
-   public Device getDeviceById(String var1) {
-      return this.c.getDeviceById(var1);
+   public Device getDeviceById(String deviceId) {
+      return this.wurflService.getDeviceById(deviceId);
    }
 
-   public Device getDeviceById(String var1, WURFLRequest var2) {
-      return this.c.getDeviceById(var1, var2);
+   public Device getDeviceById(String deviceId, WURFLRequest request) {
+      return this.wurflService.getDeviceById(deviceId, request);
    }
 
-   public Device getDeviceById(String var1, HttpServletRequest var2) {
-      return this.c.getDeviceById(var1, var2);
+   public Device getDeviceById(String deviceId, HttpServletRequest request) {
+      return this.wurflService.getDeviceById(deviceId, request);
    }
 
    @SuppressWarnings("unchecked")
    public Set<Device> getAllDevices() {
-      Set<String> var1 = (Set<String>)this.getAllDevicesId();
-      HashSet<Device> var2 = new HashSet<>(var1.size());
+      Set<String> allDeviceIds = (Set<String>)this.getAllDevicesId();
+      HashSet<Device> devices = new HashSet<>(allDeviceIds.size());
 
-      for(String deviceId : var1) {
-         Device var5 = this.getDeviceById(deviceId);
-         var2.add(var5);
+      for(String deviceId : allDeviceIds) {
+         Device device = this.getDeviceById(deviceId);
+         devices.add(device);
       }
 
-      return var2;
+      return devices;
    }
 }

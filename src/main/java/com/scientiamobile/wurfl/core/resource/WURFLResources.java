@@ -10,87 +10,87 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public final class WURFLResources {
-   private final List<WURFLResource> a = new ArrayList<>();
+   private final List<WURFLResource> resources = new ArrayList<>();
 
    public WURFLResources() {
    }
 
-   public WURFLResources(WURFLResource... var1) {
-      Validate.notNull(var1, "The resources is null");
-      this.a.addAll(Arrays.asList(var1));
+   public WURFLResources(WURFLResource... resources) {
+      Validate.notNull(resources, "The resources is null");
+      this.resources.addAll(Arrays.asList(resources));
    }
 
-   public WURFLResources(Collection<WURFLResource> var1) {
-      Validate.notNull(var1, "The resources is null");
-      Validate.noNullElements(var1, "The resources contains null value");
-      this.a.addAll(var1);
+   public WURFLResources(Collection<WURFLResource> resources) {
+      Validate.notNull(resources, "The resources is null");
+      Validate.noNullElements(resources, "The resources contains null value");
+      this.resources.addAll(resources);
    }
 
    public final int size() {
-      return this.a.size();
+      return this.resources.size();
    }
 
-   public final WURFLResource get(int var1) {
-      return this.a.get(var1);
+   public final WURFLResource get(int index) {
+      return this.resources.get(index);
    }
 
-   public final int indexOf(WURFLResource var1) {
-      Validate.notNull(var1, "The resource is null");
-      return this.a.indexOf(var1);
+   public final int indexOf(WURFLResource resource) {
+      Validate.notNull(resource, "The resource is null");
+      return this.resources.indexOf(resource);
    }
 
    public final void release() {
-      Iterator<WURFLResource> var1 = this.a.iterator();
+      Iterator<WURFLResource> iterator = this.resources.iterator();
 
-      while(var1.hasNext()) {
-         var1.next().release();
+      while(iterator.hasNext()) {
+         iterator.next().release();
       }
 
    }
 
-   public final void add(WURFLResource var1) {
-      Validate.notNull(var1, "The resource must be not null");
-      this.a.add(var1);
+   public final void add(WURFLResource resource) {
+      Validate.notNull(resource, "The resource must be not null");
+      this.resources.add(resource);
    }
 
-   public final void remove(WURFLResource var1) {
-      Validate.notNull(var1, "The resource must be not null");
-      this.a.remove(var1);
+   public final void remove(WURFLResource resource) {
+      Validate.notNull(resource, "The resource must be not null");
+      this.resources.remove(resource);
    }
 
    public final Iterator<WURFLResource> iterator() {
-      return this.a.iterator();
+      return this.resources.iterator();
    }
 
    public final String toString() {
-      StringBuilder var1 = new StringBuilder("[");
+      StringBuilder builder = new StringBuilder("[");
 
-      for(int var2 = 0; var2 < this.a.size(); ++var2) {
-         WURFLResource var3 = this.a.get(var2);
-         var1.append(var3).append("(").append(var3.getInfo()).append(" version: ").append(var3.getVersion()).append(")");
-         if (var2 < this.a.size() - 1) {
-            var1.append(" - ");
+      for(int i = 0; i < this.resources.size(); ++i) {
+         WURFLResource resource = this.resources.get(i);
+         builder.append(resource).append("(").append(resource.getInfo()).append(" version: ").append(resource.getVersion()).append(")");
+         if (i < this.resources.size() - 1) {
+            builder.append(" - ");
          }
       }
 
-      var1.append("]");
-      return var1.toString();
+      builder.append("]");
+      return builder.toString();
    }
 
-   public final boolean equals(Object var1) {
-      if (this == var1) {
+   public final boolean equals(Object object) {
+      if (this == object) {
          return true;
-      } else if (!(var1 instanceof WURFLResources)) {
+      } else if (!(object instanceof WURFLResources)) {
          return false;
       } else {
-         WURFLResources other = (WURFLResources)var1;
-         return (new EqualsBuilder()).append(this.a, other.a).isEquals();
+         WURFLResources other = (WURFLResources)object;
+         return (new EqualsBuilder()).append(this.resources, other.resources).isEquals();
       }
    }
 
    public final int hashCode() {
-      HashCodeBuilder var1;
-      (var1 = new HashCodeBuilder(53, 79)).append(this.getClass()).append(this.a);
-      return var1.toHashCode();
+      HashCodeBuilder hashCodeBuilder;
+      (hashCodeBuilder = new HashCodeBuilder(53, 79)).append(this.getClass()).append(this.resources);
+      return hashCodeBuilder.toHashCode();
    }
 }
