@@ -12,62 +12,51 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CheckForNewWurflFileTask implements UpdatePipelineTask {
-   private final Logger b = LoggerFactory.getLogger(this.getClass());
-   static final SimpleDateFormat a;
-   private ProxySettings c;
+   private final Logger log = LoggerFactory.getLogger(this.getClass());
+   static final SimpleDateFormat LAST_MODIFIED_FORMAT;
+   private ProxySettings proxySettings;
 
    public CheckForNewWurflFileTask() {
    }
 
-   public CheckForNewWurflFileTask(ProxySettings var1) {
-      this.c = var1;
+   public CheckForNewWurflFileTask(ProxySettings proxySettings) {
+      this.proxySettings = proxySettings;
    }
 
-   public void execute(Map<String, Object> var1) {
-      String var2 = (String)var1.get("original_wurfl_path");
-      File var11;
-      String var10000;
-      if ((var11 = new File(var2)).exists()) {
-         Date var12 = new Date(var11.lastModified());
-         var10000 = a.format(var12);
-      } else {
-         var10000 = "";
-      }
-
-      String var13 = var10000;
+   public void execute(Map<String, Object> context) {
+      String originalWurflPath = (String)context.get("original_wurfl_path");
+      File originalWurflFile = new File(originalWurflPath);
+      String ifModifiedSince = originalWurflFile.exists() ? LAST_MODIFIED_FORMAT.format(new Date(originalWurflFile.lastModified())) : "";
 
       try {
-         try {
-            URL var3 = URI.create((String)var1.get("new_wurfl_url")).toURL();
-            Integer var4 = UpdatePipeline.safeGetConnectionTimeout(var1);
-            int var14;
-            if ((var14 = UpdatePipeline.a(var3, var13, var4, (String)var1.get("API_USER_AGENT"), this.c)) == 200) {
-               var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
-            } else if (var14 == 304) {
-               var1.put("task_result_status", UpdateResultStatus.UPDATE_SKIPPED.value());
-               this.b.info("WURFL file is already updated to the latest version, exiting file update process");
-            } else if (var14 == 402) {
-               var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
-               var1.put("task_error_message", "Your WURFL LICENSE EXPIRED, WURFL file will not be updated. Please  renew you license to access newer versions of WURFL file and APIs");
-               this.b.info("WURFL license is invalid or expired, exiting update process");
-            } else {
-               var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
-               var1.put("task_error_message", "Invalid HTTP response code " + var14);
-            }
-         } catch (Exception var9) {
-            if (var9 instanceof java.net.SocketTimeoutException) {
-               var1.put("task_error_message", "Error trying to check if a new WURFL file is available: connection timed out");
-            } else {
-               var1.put("task_error_message", "Error trying to check if a new WURFL file is available: " + ExceptionUtils.getFirstAvailableMessage(var9));
-            }
-            var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
+         URL newWurflUrl = URI.create((String)context.get("new_wurfl_url")).toURL();
+         Integer connectionTimeoutMs = UpdatePipeline.getConnectionTimeoutMsOrDefault(context);
+         int responseCode = UpdatePipeline.headRequest(newWurflUrl, ifModifiedSince, connectionTimeoutMs, (String)context.get("API_USER_AGENT"), this.proxySettings);
+         if (responseCode == 200) {
+            context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
+         } else if (responseCode == 304) {
+            context.put("task_result_status", UpdateResultStatus.UPDATE_SKIPPED.value());
+            this.log.info("WURFL file is already updated to the latest version, exiting file update process");
+         } else if (responseCode == 402) {
+            context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
+            context.put("task_error_message", "Your WURFL LICENSE EXPIRED, WURFL file will not be updated. Please  renew you license to access newer versions of WURFL file and APIs");
+            this.log.info("WURFL license is invalid or expired, exiting update process");
+         } else {
+            context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
+            context.put("task_error_message", "Invalid HTTP response code " + responseCode);
          }
-      } catch (Throwable var10) {
-         throw var10;
+      } catch (Exception e) {
+         if (e instanceof java.net.SocketTimeoutException) {
+            context.put("task_error_message", "Error trying to check if a new WURFL file is available: connection timed out");
+         } else {
+            context.put("task_error_message", "Error trying to check if a new WURFL file is available: " + ExceptionUtils.getFirstAvailableMessage(e));
+         }
+
+         context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
       }
    }
 
    static {
-      (a = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")).setTimeZone(TimeZone.getTimeZone("UTC"));
+      (LAST_MODIFIED_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")).setTimeZone(TimeZone.getTimeZone("UTC"));
    }
 }

@@ -46,61 +46,59 @@ final class WurflXmlHandler extends DefaultHandler {
    public final void endDocument() {
    }
 
-   public final void startElement(String var1, String var2, String var3, Attributes var4) {
-      if (var3.equals("capability") && this.parseState != WurflXmlParseState.GROUP) {
-         var3 = var4.getValue("name");
-         throw new WURFLParsingException("Capability '" + var3 + "'  does not belong to any group");
+   public final void startElement(String uri, String localName, String qName, Attributes attributes) {
+      if (qName.equals("capability") && this.parseState != WurflXmlParseState.GROUP) {
+         String capabilityName = attributes.getValue("name");
+         throw new WURFLParsingException("Capability '" + capabilityName + "'  does not belong to any group");
       } else {
          switch (this.parseState) {
             case WurflXmlParseState.START_DOCUMENT:
-               this.patch = "wurfl_patch".equals(var3);
-               if ("wurfl".equals(var3) || this.patch) {
+               this.patch = "wurfl_patch".equals(qName);
+               if ("wurfl".equals(qName) || this.patch) {
                   this.parseState = WurflXmlParseState.WURFL;
                   return;
                }
                break;
             case WurflXmlParseState.WURFL:
-               if ("version".equals(var3)) {
+               if ("version".equals(qName)) {
                   this.parseState = WurflXmlParseState.VERSION;
                   return;
                }
 
-               if ("devices".equals(var3)) {
+               if ("devices".equals(qName)) {
                   this.parseState = WurflXmlParseState.DEVICES;
                   return;
                }
                break;
             case WurflXmlParseState.VERSION:
-               if ("ver".equals(var3)) {
+               if ("ver".equals(qName)) {
                   this.parseState = WurflXmlParseState.VERSION_VER;
                   return;
                }
 
-               if ("last_updated".equals(var3)) {
+               if ("last_updated".equals(qName)) {
                   this.parseState = WurflXmlParseState.VERSION_LAST_UPDATED;
                   return;
                }
 
-               if ("smid".equals(var3)) {
+               if ("smid".equals(qName)) {
                   this.parseState = WurflXmlParseState.VERSION_SMID;
                   return;
                }
                break;
             case WurflXmlParseState.DEVICES:
-               if ("device".equals(var3)) {
+               if ("device".equals(qName)) {
                   this.parseState = WurflXmlParseState.DEVICE;
-                  this.currentUserAgent = var4.getValue("user_agent");
-                  this.currentDeviceId = var4.getValue("id");
-                  this.currentFallback = var4.getValue("fall_back");
-                  this.currentActualDeviceRoot = Boolean.valueOf(var4.getValue("actual_device_root"));
+                  this.currentUserAgent = attributes.getValue("user_agent");
+                  this.currentDeviceId = attributes.getValue("id");
+                  this.currentFallback = attributes.getValue("fall_back");
+                  this.currentActualDeviceRoot = Boolean.valueOf(attributes.getValue("actual_device_root"));
                   if (StringUtils.isEmpty(this.currentDeviceId)) {
                      throw new WURFLParsingException("device id is not a valid");
                   }
 
                   if (!"generic".equals(this.currentDeviceId) && StringUtils.isEmpty(this.currentUserAgent)) {
-                     StringBuilder var8;
-                     (var8 = new StringBuilder()).append("Device with id ").append(this.currentDeviceId).append(" has an invalid user agent");
-                     throw new WURFLParsingException(var8.toString());
+                     throw new WURFLParsingException("Device with id " + this.currentDeviceId + " has an invalid user agent");
                   }
 
                   if (this.seenDeviceIds.contains(this.currentDeviceId)) {
@@ -119,19 +117,19 @@ final class WurflXmlHandler extends DefaultHandler {
                }
                break;
             case WurflXmlParseState.DEVICE:
-               if ("group".equals(var3)) {
+               if ("group".equals(qName)) {
                   this.parseState = WurflXmlParseState.GROUP;
-                  this.currentGroupId = var4.getValue("id").intern();
+                  this.currentGroupId = attributes.getValue("id").intern();
                   return;
                }
                break;
             case WurflXmlParseState.GROUP:
-               if ("capability".equals(var3)) {
+               if ("capability".equals(qName)) {
                   this.parseState = WurflXmlParseState.CAPABILITY;
                   if (!"virtual_capabilities".equals(this.currentGroupId)) {
-                     this.currentCapabilityName = var4.getValue("name");
+                     this.currentCapabilityName = attributes.getValue("name");
                      if (this.includedCapabilities.isEmpty() || this.includedCapabilities.contains(this.currentCapabilityName) || this.currentCapabilityName.startsWith("controlcap_")) {
-                        this.currentCapabilityValue = var4.getValue("value");
+                        this.currentCapabilityValue = attributes.getValue("value");
                         if (StringUtils.isEmpty(this.currentCapabilityName) || this.currentCapabilityValue == null) {
                            throw new WURFLParsingException("device with id " + this.currentDeviceId + " has capability with name or value not valid");
                         }
@@ -140,17 +138,18 @@ final class WurflXmlHandler extends DefaultHandler {
                            throw new WURFLParsingException("The device with id " + this.currentDeviceId + " defines capability " + this.currentCapabilityName + "more than once");
                         }
 
-                        String var5 = this.currentCapabilityName.intern();
+                        String internedCapabilityName = this.currentCapabilityName.intern();
                         if (!"experimental".equals(this.currentGroupId)) {
-                           if (StringUtils.isNotEmpty(var3 = this.currentCapabilityValue) && var3.length() > 255) {
-                              var3 = var3.substring(0, 255);
+                           String capabilityValue = this.currentCapabilityValue;
+                           if (StringUtils.isNotEmpty(capabilityValue) && capabilityValue.length() > 255) {
+                              capabilityValue = capabilityValue.substring(0, 255);
                            }
 
-                           this.currentCapabilityValue = var3;
+                           this.currentCapabilityValue = capabilityValue;
                         }
 
-                        this.currentCapabilities.put(var5, this.currentCapabilityValue);
-                        this.currentCapabilitiesByGroup.put(var5, this.currentGroupId);
+                        this.currentCapabilities.put(internedCapabilityName, this.currentCapabilityValue);
+                        this.currentCapabilitiesByGroup.put(internedCapabilityName, this.currentGroupId);
                      }
                   }
                }
@@ -159,32 +158,32 @@ final class WurflXmlHandler extends DefaultHandler {
       }
    }
 
-   public final void endElement(String var1, String var2, String var3) {
+   public final void endElement(String uri, String localName, String qName) {
       switch (this.parseState) {
          case WurflXmlParseState.WURFL:
-            if ("wurfl".equals(var3) || "wurfl_patch".equals(var3)) {
+            if ("wurfl".equals(qName) || "wurfl_patch".equals(qName)) {
                this.parseState = WurflXmlParseState.END;
                return;
             }
             break;
          case WurflXmlParseState.VERSION:
-            if ("version".equals(var3)) {
+            if ("version".equals(qName)) {
                this.parseState = WurflXmlParseState.WURFL;
                return;
             }
             break;
          case WurflXmlParseState.DEVICES:
-            if ("devices".equals(var3)) {
+            if ("devices".equals(qName)) {
                this.parseState = WurflXmlParseState.WURFL;
                return;
             }
             break;
          case WurflXmlParseState.DEVICE:
-            if ("device".equals(var3)) {
-               ModelDevice var4 = (new ModelDeviceBuilder(this.currentDeviceId, this.currentUserAgent, this.currentFallback)).setActualDeviceRoot(this.currentActualDeviceRoot).setCapabilities(this.currentCapabilities).setCapabilitiesByGroup(this.currentCapabilitiesByGroup).build();
-               this.devices.add(var4);
-               if (var4.isActualDeviceRoot()) {
-                  this.actualDeviceRootsById.put(this.currentDeviceId, var4);
+            if ("device".equals(qName)) {
+               ModelDevice modelDevice = (new ModelDeviceBuilder(this.currentDeviceId, this.currentUserAgent, this.currentFallback)).setActualDeviceRoot(this.currentActualDeviceRoot).setCapabilities(this.currentCapabilities).setCapabilitiesByGroup(this.currentCapabilitiesByGroup).build();
+               this.devices.add(modelDevice);
+               if (modelDevice.isActualDeviceRoot()) {
+                  this.actualDeviceRootsById.put(this.currentDeviceId, modelDevice);
                }
 
                this.parseState = WurflXmlParseState.DEVICES;
@@ -192,47 +191,47 @@ final class WurflXmlHandler extends DefaultHandler {
             }
             break;
          case WurflXmlParseState.GROUP:
-            if ("group".equals(var3)) {
+            if ("group".equals(qName)) {
                this.parseState = WurflXmlParseState.DEVICE;
                return;
             }
             break;
          case WurflXmlParseState.VERSION_VER:
-            if ("ver".equals(var3)) {
+            if ("ver".equals(qName)) {
                this.parseState = WurflXmlParseState.VERSION;
                return;
             }
             break;
          case WurflXmlParseState.VERSION_LAST_UPDATED:
-            if ("last_updated".equals(var3)) {
+            if ("last_updated".equals(qName)) {
                this.parseState = WurflXmlParseState.VERSION;
                return;
             }
             break;
          case WurflXmlParseState.VERSION_SMID:
-            if ("smid".equals(var3)) {
+            if ("smid".equals(qName)) {
                this.parseState = WurflXmlParseState.VERSION;
                return;
             }
             break;
          case WurflXmlParseState.CAPABILITY:
-            if ("capability".equals(var3)) {
+            if ("capability".equals(qName)) {
                this.parseState = WurflXmlParseState.GROUP;
             }
       }
 
    }
 
-   public final void characters(char[] var1, int var2, int var3) {
+   public final void characters(char[] ch, int start, int length) {
       switch (this.parseState) {
          case WurflXmlParseState.VERSION_VER:
-            this.wurflVersion = (new StringBuilder()).append(var1, var2, var3).toString();
+            this.wurflVersion = (new StringBuilder()).append(ch, start, length).toString();
             return;
          case WurflXmlParseState.VERSION_LAST_UPDATED:
-            this.wurflLastUpdated = (new StringBuilder()).append(var1, var2, var3).toString();
+            this.wurflLastUpdated = (new StringBuilder()).append(ch, start, length).toString();
             return;
          case WurflXmlParseState.VERSION_SMID:
-            this.wurflSmid = (new StringBuilder()).append(var1, var2, var3).toString();
+            this.wurflSmid = (new StringBuilder()).append(ch, start, length).toString();
          default:
       }
    }

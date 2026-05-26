@@ -22,76 +22,76 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
       this.normalizers = new ArrayList<>();
    }
 
-   public UserAgentNormalizerChain(List<UserAgentNormalizer> var1) {
+   public UserAgentNormalizerChain(List<UserAgentNormalizer> normalizers) {
       this.log = LoggerFactory.getLogger(this.getClass());
       this.normalizers = new ArrayList<>();
-      this.normalizers.addAll(var1);
+      this.normalizers.addAll(normalizers);
    }
 
-   public UserAgentNormalizerChain(UserAgentNormalizer[] var1) {
-      this(Arrays.asList(var1));
+   public UserAgentNormalizerChain(UserAgentNormalizer[] normalizers) {
+      this(Arrays.asList(normalizers));
    }
 
-   public UserAgentNormalizerChain add(UserAgentNormalizer var1) {
-      ArrayList<UserAgentNormalizer> var2;
-      (var2 = new ArrayList<>(this.normalizers)).add(var1);
-      return new UserAgentNormalizerChain(var2);
+   public UserAgentNormalizerChain add(UserAgentNormalizer normalizer) {
+      ArrayList<UserAgentNormalizer> newNormalizers = new ArrayList<>(this.normalizers);
+      newNormalizers.add(normalizer);
+      return new UserAgentNormalizerChain(newNormalizers);
    }
 
-   public String normalize(String var1) {
-      UserAgentWithNeedleCount var3;
-      String var2 = (var3 = UserAgentUtils.getAsciiPrintableStringWithNeedleCount(new StringBuilder(var1))).getAsciiPrintableUserAgent();
-      if (!var3.hasSpaceChars() && var3.getPlusCharCount() > 2) {
-         var2 = plusToSpaceAndMarkEncoded(var2, (WURFLRequest)null);
+   public String normalize(String rawUserAgent) {
+      UserAgentWithNeedleCount needleCount = UserAgentUtils.getAsciiPrintableStringWithNeedleCount(new StringBuilder(rawUserAgent));
+      String userAgent = needleCount.getAsciiPrintableUserAgent();
+      if (!needleCount.hasSpaceChars() && needleCount.getPlusCharCount() > 2) {
+         userAgent = plusToSpaceAndMarkEncoded(userAgent, (WURFLRequest)null);
       }
 
-      if (var3.getPercentageCharCount() > 2) {
-         var2 = rawDecodeIfNeeded(var2, (WURFLRequest)null);
+      if (needleCount.getPercentageCharCount() > 2) {
+         userAgent = rawDecodeIfNeeded(userAgent, (WURFLRequest)null);
       }
 
-      return this.applyChain(var2);
+      return this.applyChain(userAgent);
    }
 
-   public String normalize(String var1, WURFLRequest var2) {
-      UserAgentWithNeedleCount var4;
-      String var3 = (var4 = UserAgentUtils.getAsciiPrintableStringWithNeedleCount(new StringBuilder(var1))).getAsciiPrintableUserAgent();
-      if (!var4.hasSpaceChars() && var4.getPlusCharCount() > 2) {
-         var3 = plusToSpaceAndMarkEncoded(var3, var2);
+   public String normalize(String rawUserAgent, WURFLRequest request) {
+      UserAgentWithNeedleCount needleCount = UserAgentUtils.getAsciiPrintableStringWithNeedleCount(new StringBuilder(rawUserAgent));
+      String userAgent = needleCount.getAsciiPrintableUserAgent();
+      if (!needleCount.hasSpaceChars() && needleCount.getPlusCharCount() > 2) {
+         userAgent = plusToSpaceAndMarkEncoded(userAgent, request);
       }
 
-      if (var4.getPercentageCharCount() > 2) {
-         var3 = rawDecodeIfNeeded(var3, var2);
+      if (needleCount.getPercentageCharCount() > 2) {
+         userAgent = rawDecodeIfNeeded(userAgent, request);
       }
 
-      return this.applyChain(var3);
+      return this.applyChain(userAgent);
    }
 
-   private String applyChain(String var1) {
-      for(Iterator<UserAgentNormalizer> var2 = this.normalizers.iterator(); var2.hasNext(); var1 = var2.next().normalize(var1)) {
+   private String applyChain(String userAgent) {
+      for(Iterator<UserAgentNormalizer> iterator = this.normalizers.iterator(); iterator.hasNext(); userAgent = iterator.next().normalize(userAgent)) {
       }
 
-      return var1;
+      return userAgent;
    }
 
-   private String rawDecodeIfNeeded(String var1, WURFLRequest var2) {
+   private String rawDecodeIfNeeded(String userAgent, WURFLRequest request) {
       try {
-         var1 = StringMatchUtils.rawdecode(var1);
-         if (var2 != null) {
-            var2.setUrlEncoded(true);
+         userAgent = StringMatchUtils.rawdecode(userAgent);
+         if (request != null) {
+            request.setUrlEncoded(true);
          }
-      } catch (Exception var3) {
-         this.log.warn("rawdecoding for user agent " + var1 + " failed", var3);
+      } catch (Exception e) {
+         this.log.warn("rawdecoding for user agent " + userAgent + " failed", e);
       }
 
-      return var1;
+      return userAgent;
    }
 
-   private static String plusToSpaceAndMarkEncoded(String var0, WURFLRequest var1) {
-      if (var1 != null) {
-         var1.setUrlEncoded(true);
+   private static String plusToSpaceAndMarkEncoded(String userAgent, WURFLRequest request) {
+      if (request != null) {
+         request.setUrlEncoded(true);
       }
 
-      return var0.replace("+", " ");
+      return userAgent.replace("+", " ");
    }
 
    public List<UserAgentNormalizer> getAllNormalizers() {

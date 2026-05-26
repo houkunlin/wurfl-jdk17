@@ -22,101 +22,101 @@ public final class StringMatchUtils {
    private StringMatchUtils() {
    }
 
-   public static int firstSlash(String var0) {
-      return ordinalIndexOfOrNotFound(var0, "/", 1);
+   public static int firstSlash(String value) {
+      return ordinalIndexOfOrNotFound(value, "/", 1);
    }
 
-   public static int secondSlash(String var0) {
-      return ordinalIndexOfOrNotFound(var0, "/", 2);
+   public static int secondSlash(String value) {
+      return ordinalIndexOfOrNotFound(value, "/", 2);
    }
 
-   public static int firstCloseParenthesis(String var0) {
-      return ordinalIndexOfOrNotFound(var0, ")", 1);
+   public static int firstCloseParenthesis(String value) {
+      return ordinalIndexOfOrNotFound(value, ")", 1);
    }
 
-   public static int firstOpenParenthesis(String var0) {
-      return ordinalIndexOfOrNotFound(var0, "(", 1);
+   public static int firstOpenParenthesis(String value) {
+      return ordinalIndexOfOrNotFound(value, "(", 1);
    }
 
-   public static int firstSpace(String var0) {
-      return ordinalIndexOfOrNotFound(var0, " ", 1);
+   public static int firstSpace(String value) {
+      return ordinalIndexOfOrNotFound(value, " ", 1);
    }
 
-   public static int ordinalIndexOfOrNotFound(String var0, String var1, int var2) {
-      if (var1 == null) {
+   public static int ordinalIndexOfOrNotFound(String value, String search, int ordinal) {
+      if (search == null) {
          return -1;
       } else {
-         int var3;
-         return (var3 = StringUtils.ordinalIndexOf(var0, var1, var2)) == -1 ? -1 : var3 + var1.length();
+         int index;
+         return (index = StringUtils.ordinalIndexOf(value, search, ordinal)) == -1 ? -1 : index + search.length();
       }
    }
 
-   public static int firstSemiColon(String var0) {
-      return ordinalIndexOfOrLength(var0, ";", 1);
+   public static int firstSemiColon(String value) {
+      return ordinalIndexOfOrLength(value, ";", 1);
    }
 
-   public static int indexOfOrLength(String var0, String var1) {
-      return indexOfOrLength(var0, var1, 0);
+   public static int indexOfOrLength(String value, String search) {
+      return indexOfOrLength(value, search, 0);
    }
 
-   public static int indexOfOrLength(String var0, String var1, int var2) {
-      return ordinalIndexOfOrLength(var0, var1, 1, var2);
+   public static int indexOfOrLength(String value, String search, int fromIndex) {
+      return ordinalIndexOfOrLength(value, search, 1, fromIndex);
    }
 
-   public static int ordinalIndexOfOrLength(String var0, String var1, int var2) {
-      return ordinalIndexOfOrLength(var0, var1, var2, 0);
+   public static int ordinalIndexOfOrLength(String value, String search, int ordinal) {
+      return ordinalIndexOfOrLength(value, search, ordinal, 0);
    }
 
-   public static int ordinalIndexOfOrLength(String var0, String var1, int var2, int var3) {
-      String var4 = StringUtils.defaultString(var0);
-      if (var3 < 0) {
-         return var4.length();
+   public static int ordinalIndexOfOrLength(String value, String search, int ordinal, int fromIndex) {
+      String nonNullValue = StringUtils.defaultString(value);
+      if (fromIndex < 0) {
+         return nonNullValue.length();
       } else {
-         int var5;
-         if ((var5 = StringUtils.ordinalIndexOf(StringUtils.substring(var4, var3), var1, var2)) >= 0) {
-            var5 += var3;
+         int index;
+         if ((index = StringUtils.ordinalIndexOf(StringUtils.substring(nonNullValue, fromIndex), search, ordinal)) >= 0) {
+            index += fromIndex;
          } else {
-            var5 = var0.length();
+            index = value.length();
          }
 
-         return var5;
+         return index;
       }
    }
 
-   public static String risMatch(Collection var0, String var1, int var2) {
-      return RISMatcher.INSTANCE.match(var0, var1, var2);
+   public static String risMatch(Collection userAgents, String userAgent, int userAgentLength) {
+      return RISMatcher.INSTANCE.match(userAgents, userAgent, userAgentLength);
    }
 
-   public static String hierarchyAsString(List var0) {
-      StringBuilder var1 = new StringBuilder();
-      Iterator var2 = var0.iterator();
+   public static String hierarchyAsString(List devices) {
+      StringBuilder out = new StringBuilder();
+      Iterator iterator = devices.iterator();
 
-      while(var2.hasNext()) {
-         var1.append(((ModelDevice)var2.next()).getID());
-         if (var2.hasNext()) {
-            var1.append(" -> ");
+      while(iterator.hasNext()) {
+         out.append(((ModelDevice)iterator.next()).getID());
+         if (iterator.hasNext()) {
+            out.append(" -> ");
          }
       }
 
-      return var1.toString();
+      return out.toString();
    }
 
-   public static int indexOf(String var0, String var1) {
-      return var0 != null && var1 != null ? var0.indexOf(var1) : -1;
+   public static int indexOf(String value, String search) {
+      return value != null && search != null ? value.indexOf(search) : -1;
    }
 
-   public static int indexOf(String var0, String var1, int var2) {
-      return var0 != null && var1 != null ? var0.indexOf(var1, var2) : -1;
+   public static int indexOf(String value, String search, int fromIndex) {
+      return value != null && search != null ? value.indexOf(search, fromIndex) : -1;
    }
 
-   public static String removeSubstringBefore(String var0, String var1) {
-      int var2;
-      return (var2 = var0.indexOf(var1)) > 0 ? var0.substring(var2) : var0;
+   public static String removeSubstringBefore(String value, String search) {
+      int index;
+      return (index = value.indexOf(search)) > 0 ? value.substring(index) : value;
    }
 
-   public static boolean containsAnyOf(String var0, String... var1) {
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         if (var0.indexOf(var1[var2]) != -1) {
+   public static boolean containsAnyOf(String value, String... searches) {
+      for(int i = 0; i < searches.length; ++i) {
+         if (value.indexOf(searches[i]) != -1) {
             return true;
          }
       }
@@ -124,13 +124,13 @@ public final class StringMatchUtils {
       return false;
    }
 
-   public static boolean containsAnyOfIgnoreCase(String var0, String... var1) {
-      return containsAnyOf(var0.toLowerCase(), var1);
+   public static boolean containsAnyOfIgnoreCase(String value, String... searches) {
+      return containsAnyOf(value.toLowerCase(), searches);
    }
 
-   public static boolean startsWithAnyOf(String var0, String... var1) {
-      for(String var4 : var1 = var1) {
-         if (var0.startsWith(var4)) {
+   public static boolean startsWithAnyOf(String value, String... prefixes) {
+      for(String prefix : prefixes) {
+         if (value.startsWith(prefix)) {
             return true;
          }
       }
@@ -138,22 +138,22 @@ public final class StringMatchUtils {
       return false;
    }
 
-   public static int indexOfAnyOrLength(String var0, String... var1) {
-      return indexOfAnyOrLength(var0, var1, 0);
+   public static int indexOfAnyOrLength(String value, String... searches) {
+      return indexOfAnyOrLength(value, searches, 0);
    }
 
-   public static int indexOfAnyOrLength(String var0, String[] var1, int var2) {
-      if (var2 == -1) {
-         return var0.length();
+   public static int indexOfAnyOrLength(String value, String[] searches, int fromIndex) {
+      if (fromIndex == -1) {
+         return value.length();
       } else {
-         int var3;
-         return (var3 = StringUtils.indexOfAny(var2 > 0 ? var0.substring(var2) : var0, var1)) >= 0 ? var3 + var2 : var0.length();
+         int index;
+         return (index = StringUtils.indexOfAny(fromIndex > 0 ? value.substring(fromIndex) : value, searches)) >= 0 ? index + fromIndex : value.length();
       }
    }
 
-   public static boolean containsAllOf(String var0, String... var1) {
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         if (var0.indexOf(var1[var2]) == -1) {
+   public static boolean containsAllOf(String value, String... searches) {
+      for(int i = 0; i < searches.length; ++i) {
+         if (value.indexOf(searches[i]) == -1) {
             return false;
          }
       }
@@ -161,9 +161,9 @@ public final class StringMatchUtils {
       return true;
    }
 
-   public static boolean containsAllOf(String var0, List var1) {
-      for(int var2 = 0; var2 < var1.size(); ++var2) {
-         if (var0.indexOf((String)var1.get(var2)) == -1) {
+   public static boolean containsAllOf(String value, List searches) {
+      for(int i = 0; i < searches.size(); ++i) {
+         if (value.indexOf((String)searches.get(i)) == -1) {
             return false;
          }
       }
@@ -171,90 +171,90 @@ public final class StringMatchUtils {
       return true;
    }
 
-   public static String format(Set var0) {
-      StringBuilder var1 = new StringBuilder(10);
+   public static String format(Set lines) {
+      StringBuilder out = new StringBuilder(10);
 
-      for(Object lineObj : var0) {
-         var1.append((String)lineObj).append('\n');
+      for(Object lineObj : lines) {
+         out.append((String)lineObj).append('\n');
       }
 
-      return var1.toString();
+      return out.toString();
    }
 
-   public static String rtrim(String var0, char... var1) {
-      int var2;
-      for(var2 = var0.length(); var2 > 0 && ArrayUtils.contains(var1, var0.charAt(var2 - 1)); --var2) {
+   public static String rtrim(String value, char... trims) {
+      int length;
+      for(length = value.length(); length > 0 && ArrayUtils.contains(trims, value.charAt(length - 1)); --length) {
       }
 
-      return var0.substring(0, var2);
+      return value.substring(0, length);
    }
 
-   public static Integer firstChar(String var0, char var1) {
-      int var2;
-      return (var2 = var0.indexOf(var1)) != -1 ? var2 + 1 : -1;
+   public static Integer firstChar(String value, char ch) {
+      int index;
+      return (index = value.indexOf(ch)) != -1 ? index + 1 : -1;
    }
 
-   public static String rawdecode(String var0, String var1) {
-      if (StringUtils.isEmpty(var0)) {
-         return var0;
+   public static String rawdecode(String value, String encoding) {
+      if (StringUtils.isEmpty(value)) {
+         return value;
       } else {
-         int var2 = var0.length();
-         ByteArrayOutputStream var3 = new ByteArrayOutputStream(var2);
+         int length = value.length();
+         ByteArrayOutputStream buffer = new ByteArrayOutputStream(length);
 
          try {
-            for(int var4 = 0; var4 < var2; ++var4) {
-               if (var0.charAt(var4) == '%' && var4 + 2 < var2) {
-                  int var5 = var0.charAt(var4 + 1);
-                  int var6 = var0.charAt(var4 + 2);
-                  var5 = Character.digit((char)var5, 16);
-                  var6 = Character.digit((char)var6, 16);
-                  if (var5 != -1 && var6 != -1) {
-                     var5 = (char)((var5 << 4) + var6);
-                     var3.write(var5);
-                     var4 += 2;
+            for(int i = 0; i < length; ++i) {
+               if (value.charAt(i) == '%' && i + 2 < length) {
+                  int highNibble = value.charAt(i + 1);
+                  int lowNibble = value.charAt(i + 2);
+                  highNibble = Character.digit((char)highNibble, 16);
+                  lowNibble = Character.digit((char)lowNibble, 16);
+                  if (highNibble != -1 && lowNibble != -1) {
+                     int decoded = (char)((highNibble << 4) + lowNibble);
+                     buffer.write(decoded);
+                     i += 2;
                   } else {
-                     a(var3, var0, var4, var1);
+                     writeChar(buffer, value, i, encoding);
                   }
                } else {
-                  a(var3, var0, var4, var1);
+                  writeChar(buffer, value, i, encoding);
                }
             }
          } finally {
             try {
-               var3.close();
-            } catch (IOException var10) {
+               buffer.close();
+            } catch (IOException ignore) {
             }
 
          }
 
-         return new String(var3.toByteArray(), Charset.forName(var1));
+         return new String(buffer.toByteArray(), Charset.forName(encoding));
       }
    }
 
-   private static void a(ByteArrayOutputStream var0, String var1, int var2, String var3) {
-      char var5 = var1.charAt(var2);
-      String var6 = new String(new char[]{var5});
+   private static void writeChar(ByteArrayOutputStream buffer, String value, int index, String encoding) {
+      char ch = value.charAt(index);
+      String stringValue = new String(new char[]{ch});
 
       try {
-         var0.write(var6.getBytes(var3));
-      } catch (IOException var4) {
-         var0.write(var5);
+         buffer.write(stringValue.getBytes(encoding));
+      } catch (IOException ignore) {
+         buffer.write(ch);
       }
    }
 
-   public static byte[] charToBytesUTFCustom(char var0) {
-      byte[] var1;
-      (var1 = new byte[2])[0] = (byte)(var0 >> 8);
-      var1[1] = (byte)var0;
-      return var1;
+   public static byte[] charToBytesUTFCustom(char ch) {
+      byte[] out;
+      (out = new byte[2])[0] = (byte)(ch >> 8);
+      out[1] = (byte)ch;
+      return out;
    }
 
-   public static String rawdecode(String var0) {
-      return rawdecode(var0, "UTF-8");
+   public static String rawdecode(String value) {
+      return rawdecode(value, "UTF-8");
    }
 
-   public static String replaceAll(String var0, Pattern var1, String var2) {
-      return var1.matcher(var0).replaceAll(var2);
+   public static String replaceAll(String value, Pattern pattern, String replacement) {
+      return pattern.matcher(value).replaceAll(replacement);
    }
 
    static {

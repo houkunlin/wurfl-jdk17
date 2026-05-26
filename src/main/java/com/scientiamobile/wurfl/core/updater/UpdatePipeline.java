@@ -16,141 +16,139 @@ import org.apache.commons.lang3.StringUtils;
 public class UpdatePipeline {
    public static final String ENV_SCIENTIA_URL = "WURFL_UPDATE_URL";
    public static final String CLASSPATH_PREFIX = "classpath:";
-   private List<UpdatePipelineTask> a;
-   private Map<String, Object> b = new HashMap<>();
-   private String c;
-   private String d;
-   private String e;
-   private Integer f = 10000;
+   private List<UpdatePipelineTask> tasks;
+   private Map<String, Object> context = new HashMap<>();
+   private String newWurflUrl;
+   private String originalWurflPath;
+   private String apiUserAgent;
+   private Integer connectionTimeoutMs = 10000;
 
-   public UpdatePipeline(String var1, String var2) {
-      this.c = var2;
-      this.d = a(var1);
-      Validator.checkFileExtensions(var1, var2);
-      this.a = new ArrayList<>();
-      this.a.add(new CheckForNewWurflFileTask());
-      this.a.add(new WurflBackupTask());
-      this.a.add(new NewWurflFileDownloadTask());
-      this.a.add(new OverwriteAndCheckConsistencyTask());
+   public UpdatePipeline(String originalWurflPath, String newWurflUrl) {
+      this.newWurflUrl = newWurflUrl;
+      this.originalWurflPath = resolvePath(originalWurflPath);
+      Validator.checkFileExtensions(originalWurflPath, newWurflUrl);
+      this.tasks = new ArrayList<>();
+      this.tasks.add(new CheckForNewWurflFileTask());
+      this.tasks.add(new WurflBackupTask());
+      this.tasks.add(new NewWurflFileDownloadTask());
+      this.tasks.add(new OverwriteAndCheckConsistencyTask());
    }
 
-   public UpdatePipeline(String var1, String var2, String[] var3) {
-      this.c = var2;
-      this.d = a(var1);
-      Validator.checkFileExtensions(var1, var2);
-      this.a = new ArrayList<>();
-      this.a.add(new CheckForNewWurflFileTask());
-      this.a.add(new WurflBackupTask());
-      this.a.add(new NewWurflFileDownloadTask());
-      this.a.add(new OverwriteAndCheckConsistencyTask(var3));
+   public UpdatePipeline(String originalWurflPath, String newWurflUrl, String[] patchPaths) {
+      this.newWurflUrl = newWurflUrl;
+      this.originalWurflPath = resolvePath(originalWurflPath);
+      Validator.checkFileExtensions(originalWurflPath, newWurflUrl);
+      this.tasks = new ArrayList<>();
+      this.tasks.add(new CheckForNewWurflFileTask());
+      this.tasks.add(new WurflBackupTask());
+      this.tasks.add(new NewWurflFileDownloadTask());
+      this.tasks.add(new OverwriteAndCheckConsistencyTask(patchPaths));
    }
 
-   public UpdatePipeline(String var1, String var2, ProxySettings var3) {
-      this.c = var2;
-      this.d = a(var1);
-      Validator.checkFileExtensions(var1, var2);
-      this.a = new ArrayList<>();
-      this.a.add(new CheckForNewWurflFileTask(var3));
-      this.a.add(new WurflBackupTask());
-      this.a.add(new NewWurflFileDownloadTask(var3));
-      this.a.add(new OverwriteAndCheckConsistencyTask());
+   public UpdatePipeline(String originalWurflPath, String newWurflUrl, ProxySettings proxySettings) {
+      this.newWurflUrl = newWurflUrl;
+      this.originalWurflPath = resolvePath(originalWurflPath);
+      Validator.checkFileExtensions(originalWurflPath, newWurflUrl);
+      this.tasks = new ArrayList<>();
+      this.tasks.add(new CheckForNewWurflFileTask(proxySettings));
+      this.tasks.add(new WurflBackupTask());
+      this.tasks.add(new NewWurflFileDownloadTask(proxySettings));
+      this.tasks.add(new OverwriteAndCheckConsistencyTask());
    }
 
-   public UpdatePipeline(String var1, String var2, String[] var3, ProxySettings var4) {
-      this.c = var2;
-      this.d = a(var1);
-      Validator.checkFileExtensions(var1, var2);
-      this.a = new ArrayList<>();
-      this.a.add(new CheckForNewWurflFileTask(var4));
-      this.a.add(new WurflBackupTask());
-      this.a.add(new NewWurflFileDownloadTask(var4));
-      this.a.add(new OverwriteAndCheckConsistencyTask(var3));
+   public UpdatePipeline(String originalWurflPath, String newWurflUrl, String[] patchPaths, ProxySettings proxySettings) {
+      this.newWurflUrl = newWurflUrl;
+      this.originalWurflPath = resolvePath(originalWurflPath);
+      Validator.checkFileExtensions(originalWurflPath, newWurflUrl);
+      this.tasks = new ArrayList<>();
+      this.tasks.add(new CheckForNewWurflFileTask(proxySettings));
+      this.tasks.add(new WurflBackupTask());
+      this.tasks.add(new NewWurflFileDownloadTask(proxySettings));
+      this.tasks.add(new OverwriteAndCheckConsistencyTask(patchPaths));
    }
 
-   public void setUserAgent(String var1) {
-      this.e = var1;
+   public void setApiUserAgent(String apiUserAgent) {
+      this.apiUserAgent = apiUserAgent;
    }
 
-   public void setConnectionTimeout(Integer var1) {
-      this.f = var1;
+   public void setConnectionTimeoutMs(Integer connectionTimeoutMs) {
+      this.connectionTimeoutMs = connectionTimeoutMs;
    }
 
-   static String a(String var0) {
-      if (var0.contains("classpath:")) {
-         int var1;
-         if ((var1 = var0.indexOf("classpath:")) > 0) {
-            var0 = var0.substring(var1);
+   static String resolvePath(String path) {
+      if (path.contains("classpath:")) {
+         int classpathPrefixIndex;
+         if ((classpathPrefixIndex = path.indexOf("classpath:")) > 0) {
+            path = path.substring(classpathPrefixIndex);
          }
 
-         String var2 = var0.replaceFirst("classpath:", "");
-         return UpdatePipeline.class.getResource(var2).getFile();
+         String classpathResourcePath = path.replaceFirst("classpath:", "");
+         return UpdatePipeline.class.getResource(classpathResourcePath).getFile();
       } else {
-         return var0;
+         return path;
       }
    }
 
    public synchronized UpdateResult execute() {
-      Map<String, Object> var1 = this.b;
-      if (!MapUtils.isEmpty(var1)) {
-         var1.clear();
+      Map<String, Object> context = this.context;
+      if (!MapUtils.isEmpty(context)) {
+         context.clear();
       }
 
-      var1.put("original_wurfl_path", this.d);
-      var1.put("new_wurfl_url", this.c);
-      var1.put("API_USER_AGENT", this.e);
-      var1.put("CONN_TIMEOUT", String.valueOf(this.f));
+      context.put("original_wurfl_path", this.originalWurflPath);
+      context.put("new_wurfl_url", this.newWurflUrl);
+      context.put("API_USER_AGENT", this.apiUserAgent);
+      context.put("CONN_TIMEOUT", String.valueOf(this.connectionTimeoutMs));
 
-      UpdateResult var7;
+      UpdateResult result;
       try {
-         Iterator<UpdatePipelineTask> var6 = this.a.iterator();
-
-         String var2;
-         String var3;
+         Iterator<UpdatePipelineTask> taskIterator = this.tasks.iterator();
+         String taskResultStatus;
          do {
-            if (!var6.hasNext()) {
-               UpdateResult var8 = new UpdateResult(UpdateResultStatus.UPDATED, "Wurfl file update completed on " + (new SimpleDateFormat("yyyy/MM/dd hh:mm:ss")).format(Calendar.getInstance().getTime()));
-               return var8;
+            if (!taskIterator.hasNext()) {
+               return new UpdateResult(UpdateResultStatus.UPDATED, "Wurfl file update completed on " + (new SimpleDateFormat("yyyy/MM/dd hh:mm:ss")).format(Calendar.getInstance().getTime()));
             }
 
-            ((UpdatePipelineTask)var6.next()).execute(this.b);
-         } while(!StringUtils.isEmpty(var3 = var2 = (String)this.b.get("task_result_status")) && (var3.equals(UpdateResultStatus.UPDATED.value()) || var3.equals(UpdateResultStatus.PIPELINE_TASK_DONE.value())));
+            ((UpdatePipelineTask)taskIterator.next()).execute(this.context);
+            taskResultStatus = (String)this.context.get("task_result_status");
+         } while(StringUtils.isNotEmpty(taskResultStatus) && (taskResultStatus.equals(UpdateResultStatus.UPDATED.value()) || taskResultStatus.equals(UpdateResultStatus.PIPELINE_TASK_DONE.value())));
 
-         (new RollbackTask()).execute(this.b);
-         var7 = var2.equals(UpdateResultStatus.UPDATE_SKIPPED.value()) ? new UpdateResult(UpdateResult.statusFromString(var2), (String)this.b.get("task_result_message")) : new UpdateResult(UpdateResult.statusFromString(var2), (String)this.b.get("task_error_message"));
+         (new RollbackTask()).execute(this.context);
+         result = taskResultStatus.equals(UpdateResultStatus.UPDATE_SKIPPED.value()) ? new UpdateResult(UpdateResult.statusFromString(taskResultStatus), (String)this.context.get("task_result_message")) : new UpdateResult(UpdateResult.statusFromString(taskResultStatus), (String)this.context.get("task_error_message"));
       } finally {
-         (new CleanupTask()).execute(this.b);
+         (new CleanupTask()).execute(this.context);
       }
 
-      return var7;
+      return result;
    }
 
-   public static Integer safeGetConnectionTimeout(Map<String, Object> var0) {
-      String var1;
-      return !StringUtils.isEmpty(var1 = (String)var0.get("CONN_TIMEOUT")) && StringUtils.isNumeric(var1) ? Integer.parseInt(var1) : 10000;
+   public static Integer getConnectionTimeoutMsOrDefault(Map<String, Object> context) {
+      String timeoutValue;
+      return StringUtils.isNotEmpty(timeoutValue = (String)context.get("CONN_TIMEOUT")) && StringUtils.isNumeric(timeoutValue) ? Integer.parseInt(timeoutValue) : 10000;
    }
 
-   static int a(URL var0, String var1, int var2, String var3, ProxySettings var4) {
-      HttpsURLConnection var8 = null;
+   static int headRequest(URL url, String ifModifiedSince, int timeoutMs, String userAgent, ProxySettings proxySettings) {
+      HttpsURLConnection connection = null;
       try {
-         (var8 = var4 != null ? (HttpsURLConnection)var0.openConnection(var4.getProxy()) : (HttpsURLConnection)var0.openConnection()).setRequestMethod("HEAD");
-         var8.setUseCaches(false);
-         if (StringUtils.isNotEmpty(var1)) {
-            var8.setRequestProperty("If-Modified-Since", var1);
+         (connection = proxySettings != null ? (HttpsURLConnection)url.openConnection(proxySettings.getProxy()) : (HttpsURLConnection)url.openConnection()).setRequestMethod("HEAD");
+         connection.setUseCaches(false);
+         if (StringUtils.isNotEmpty(ifModifiedSince)) {
+            connection.setRequestProperty("If-Modified-Since", ifModifiedSince);
          }
 
-         if (StringUtils.isNotEmpty(var3)) {
-            var8.setRequestProperty("User-Agent", var3);
+         if (StringUtils.isNotEmpty(userAgent)) {
+            connection.setRequestProperty("User-Agent", userAgent);
          }
 
-         var8.setConnectTimeout(var2);
-         var8.setReadTimeout(var2);
-         var8.connect();
-         return var8.getResponseCode();
-      } catch (IOException var10) {
-         throw new RuntimeException(var10);
+         connection.setConnectTimeout(timeoutMs);
+         connection.setReadTimeout(timeoutMs);
+         connection.connect();
+         return connection.getResponseCode();
+      } catch (IOException e) {
+         throw new RuntimeException(e);
       } finally {
-         if (var8 != null) {
-            var8.disconnect();
+         if (connection != null) {
+            connection.disconnect();
          }
 
       }

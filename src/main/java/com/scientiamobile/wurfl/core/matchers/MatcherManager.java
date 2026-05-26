@@ -43,12 +43,12 @@ public final class MatcherManager {
    private UserAgentNormalizer webOSNormalizer;
    private UserAgentNormalizer operaNormalizer;
 
-   public MatcherManager(WURFLModel var1) {
-      this.matcherChain = this.buildMatcherChain(var1);
+   public MatcherManager(WURFLModel model) {
+      this.matcherChain = this.buildMatcherChain(model);
    }
 
-   private MatcherChain buildMatcherChain(WURFLModel var1) {
-      MatcherChain var2 = new MatcherChain();
+   private MatcherChain buildMatcherChain(WURFLModel model) {
+      MatcherChain matcherChain = new MatcherChain();
       this.lgNormalizer = new LGNormalizer();
       this.androidNormalizer = new AndroidNormalizer();
       this.operaMobiOrTabletOnAndroidNormalizer = new OperaMobiOrTabletOnAndroidNormalizer();
@@ -59,124 +59,123 @@ public final class MatcherManager {
       this.htcMacNormalizer = new HTCMacNormalizer();
       this.webOSNormalizer = new WebOSNormalizer();
       this.operaNormalizer = new OperaNormalizer();
-      SiemensMatcher var3 = new SiemensMatcher();
-      SagemMatcher var4 = new SagemMatcher();
-      PanasonicMatcher var5 = new PanasonicMatcher();
-      QtekMatcher var6 = new QtekMatcher();
-      MitsubishiMatcher var7 = new MitsubishiMatcher();
-      PhilipsMatcher var8 = new PhilipsMatcher();
-      KyoceraMatcher var9 = new KyoceraMatcher();
-      AlcatelMatcher var10 = new AlcatelMatcher();
-      SharpMatcher var11 = new SharpMatcher();
-      BenQMatcher var12 = new BenQMatcher();
-      ToshibaMatcher var13 = new ToshibaMatcher();
-      GrundigMatcher var14 = new GrundigMatcher();
-      PortalmmmMatcher var15 = new PortalmmmMatcher();
-      KonquerorMatcher var16 = new KonquerorMatcher();
-      CatchAllMozillaMatcher var17 = new CatchAllMozillaMatcher(var1);
-      CatchAllRISMatcher var18 = new CatchAllRISMatcher();
-      FirefoxMatcher var19 = new FirefoxMatcher(this.firefoxNormalizer, var1);
-      MSIEMatcher var21 = new MSIEMatcher(var1);
-      OperaMatcher var22 = new OperaMatcher(this.operaNormalizer, var1);
-      SafariMatcher var23 = new SafariMatcher(this.safariNormalizer, var1);
-      var2.addMatcher(new SmartTvMatcher(var1));
-      var2.addMatcher(new KindleMatcher(var1));
-      var2.addMatcher(new UcwebU3Matcher(new UcwebU3Normalizer(), var1));
-      var2.addMatcher(new UcwebU2Matcher(new UcwebU2Normalizer(), var1));
-      var2.addMatcher(new EmailClientUserAgentMatcher(new ThunderbirdNormalizer(), var1));
-      var2.addMatcher(new WindowsPhoneMatcher(this.windowsPhoneNormalizer, var1));
-      var2.addMatcher(new OperaMiniOnAndroidMatcher(var1));
-      var2.addMatcher(new OperaMobiOrTabletOnAndroidMatcher(this.operaMobiOrTabletOnAndroidNormalizer, var1));
-      var2.addMatcher(new FennecOnAndroidMatcher(var1));
-      var2.addMatcher(new UCWEB7OnAndroidMatcher(var1));
-      var2.addMatcher(new NetFrontOnAndroidMatcher(var1));
-      var2.addMatcher(new AndroidMatcher(this.androidNormalizer, var1));
-      var2.addMatcher(new UbuntuTouchOSMatcher(var1));
-      var2.addMatcher(new TizenMatcher(var1));
-      var2.addMatcher(new AppleMatcher(new AppleNormalizer(), var1));
-      var2.addMatcher(new NokiaOviBrowserMatcher(var1));
-      var2.addMatcher(new NokiaMatcher(var1));
-      var2.addMatcher(new SamsungMatcher(var1));
-      var2.addMatcher(new BlackBerryMatcher(var1));
-      var2.addMatcher(new SonyEricssonMatcher(var1));
-      var2.addMatcher(new MotorolaMatcher(var1));
-      var2.addMatcher(var10);
-      var2.addMatcher(var12);
-      var2.addMatcher(new DoCoMoMatcher(var1));
-      var2.addMatcher(var14);
-      var2.addMatcher(new HTCMacMatcher(this.htcMacNormalizer, var1));
-      var2.addMatcher(new HTCMatcher(var1));
-      var2.addMatcher(new KDDIMatcher(var1));
-      var2.addMatcher(var9);
-      var2.addMatcher(new LGMatcher(this.lgNormalizer, var1));
-      var2.addMatcher(new LGUPLUSMatcher(var1));
-      var2.addMatcher(new MaemoMatcher(this.maemoNormalizer, var1));
-      var2.addMatcher(var7);
-      var2.addMatcher(new NecMatcher(var1));
-      var2.addMatcher(new NintendoMatcher(var1));
-      var2.addMatcher(var5);
-      var2.addMatcher(new PantechMatcher(var1));
-      var2.addMatcher(var8);
-      var2.addMatcher(var15);
-      var2.addMatcher(var6);
-      var2.addMatcher(new ReksioMatcher(var1));
-      var2.addMatcher(var4);
-      var2.addMatcher(new SanyoMatcher(var1));
-      var2.addMatcher(var11);
-      var2.addMatcher(var3);
-      var2.addMatcher(new SkyfireMatcher(var1));
-      var2.addMatcher(new SPVMatcher(var1));
-      var2.addMatcher(var13);
-      var2.addMatcher(new VodafoneMatcher(var1));
-      var2.addMatcher(new WebOSMatcher(this.webOSNormalizer, var1));
-      var2.addMatcher(new OperaMiniMatcher(new OperaMiniNormalizer(), var1));
-      var2.addMatcher(new FirefoxOSMatcher(var1));
-      var2.addMatcher(new JavaMidletMatcher(var1));
-      var2.addMatcher(new WindowsRTMatcher(var1));
-      var2.addMatcher(new BotMatcher(var1));
-      var2.addMatcher(new XBoxMatcher(var1));
-      var2.addMatcher(new DesktopApplicationMatcher(var1));
-      var2.addMatcher(var21);
-      var2.addMatcher(var22);
-      var2.addMatcher(new ChromeMatcher(new ChromeNormalizer(), var1));
-      var2.addMatcher(var19);
-      var2.addMatcher(var23);
-      var2.addMatcher(var16);
-      var2.addMatcher(var17);
-      var2.addMatcher(var18);
-      new OrphanDeviceIdMatcher(var1);
-      List var25 = var1.getAllDevicesAsList();
-      MatcherChain var24 = var2;
-      Validate.notNull(var25, "Model devices list is null");
-      this.log.info("model devices: " + var25.size());
-      int var27 = 0;
+      SiemensMatcher siemensMatcher = new SiemensMatcher();
+      SagemMatcher sagemMatcher = new SagemMatcher();
+      PanasonicMatcher panasonicMatcher = new PanasonicMatcher();
+      QtekMatcher qtekMatcher = new QtekMatcher();
+      MitsubishiMatcher mitsubishiMatcher = new MitsubishiMatcher();
+      PhilipsMatcher philipsMatcher = new PhilipsMatcher();
+      KyoceraMatcher kyoceraMatcher = new KyoceraMatcher();
+      AlcatelMatcher alcatelMatcher = new AlcatelMatcher();
+      SharpMatcher sharpMatcher = new SharpMatcher();
+      BenQMatcher benqMatcher = new BenQMatcher();
+      ToshibaMatcher toshibaMatcher = new ToshibaMatcher();
+      GrundigMatcher grundigMatcher = new GrundigMatcher();
+      PortalmmmMatcher portalmmmMatcher = new PortalmmmMatcher();
+      KonquerorMatcher konquerorMatcher = new KonquerorMatcher();
+      CatchAllMozillaMatcher catchAllMozillaMatcher = new CatchAllMozillaMatcher(model);
+      CatchAllRISMatcher catchAllRISMatcher = new CatchAllRISMatcher();
+      FirefoxMatcher firefoxMatcher = new FirefoxMatcher(this.firefoxNormalizer, model);
+      MSIEMatcher msieMatcher = new MSIEMatcher(model);
+      OperaMatcher operaMatcher = new OperaMatcher(this.operaNormalizer, model);
+      SafariMatcher safariMatcher = new SafariMatcher(this.safariNormalizer, model);
+      matcherChain.addMatcher(new SmartTvMatcher(model));
+      matcherChain.addMatcher(new KindleMatcher(model));
+      matcherChain.addMatcher(new UcwebU3Matcher(new UcwebU3Normalizer(), model));
+      matcherChain.addMatcher(new UcwebU2Matcher(new UcwebU2Normalizer(), model));
+      matcherChain.addMatcher(new EmailClientUserAgentMatcher(new ThunderbirdNormalizer(), model));
+      matcherChain.addMatcher(new WindowsPhoneMatcher(this.windowsPhoneNormalizer, model));
+      matcherChain.addMatcher(new OperaMiniOnAndroidMatcher(model));
+      matcherChain.addMatcher(new OperaMobiOrTabletOnAndroidMatcher(this.operaMobiOrTabletOnAndroidNormalizer, model));
+      matcherChain.addMatcher(new FennecOnAndroidMatcher(model));
+      matcherChain.addMatcher(new UCWEB7OnAndroidMatcher(model));
+      matcherChain.addMatcher(new NetFrontOnAndroidMatcher(model));
+      matcherChain.addMatcher(new AndroidMatcher(this.androidNormalizer, model));
+      matcherChain.addMatcher(new UbuntuTouchOSMatcher(model));
+      matcherChain.addMatcher(new TizenMatcher(model));
+      matcherChain.addMatcher(new AppleMatcher(new AppleNormalizer(), model));
+      matcherChain.addMatcher(new NokiaOviBrowserMatcher(model));
+      matcherChain.addMatcher(new NokiaMatcher(model));
+      matcherChain.addMatcher(new SamsungMatcher(model));
+      matcherChain.addMatcher(new BlackBerryMatcher(model));
+      matcherChain.addMatcher(new SonyEricssonMatcher(model));
+      matcherChain.addMatcher(new MotorolaMatcher(model));
+      matcherChain.addMatcher(alcatelMatcher);
+      matcherChain.addMatcher(benqMatcher);
+      matcherChain.addMatcher(new DoCoMoMatcher(model));
+      matcherChain.addMatcher(grundigMatcher);
+      matcherChain.addMatcher(new HTCMacMatcher(this.htcMacNormalizer, model));
+      matcherChain.addMatcher(new HTCMatcher(model));
+      matcherChain.addMatcher(new KDDIMatcher(model));
+      matcherChain.addMatcher(kyoceraMatcher);
+      matcherChain.addMatcher(new LGMatcher(this.lgNormalizer, model));
+      matcherChain.addMatcher(new LGUPLUSMatcher(model));
+      matcherChain.addMatcher(new MaemoMatcher(this.maemoNormalizer, model));
+      matcherChain.addMatcher(mitsubishiMatcher);
+      matcherChain.addMatcher(new NecMatcher(model));
+      matcherChain.addMatcher(new NintendoMatcher(model));
+      matcherChain.addMatcher(panasonicMatcher);
+      matcherChain.addMatcher(new PantechMatcher(model));
+      matcherChain.addMatcher(philipsMatcher);
+      matcherChain.addMatcher(portalmmmMatcher);
+      matcherChain.addMatcher(qtekMatcher);
+      matcherChain.addMatcher(new ReksioMatcher(model));
+      matcherChain.addMatcher(sagemMatcher);
+      matcherChain.addMatcher(new SanyoMatcher(model));
+      matcherChain.addMatcher(sharpMatcher);
+      matcherChain.addMatcher(siemensMatcher);
+      matcherChain.addMatcher(new SkyfireMatcher(model));
+      matcherChain.addMatcher(new SPVMatcher(model));
+      matcherChain.addMatcher(toshibaMatcher);
+      matcherChain.addMatcher(new VodafoneMatcher(model));
+      matcherChain.addMatcher(new WebOSMatcher(this.webOSNormalizer, model));
+      matcherChain.addMatcher(new OperaMiniMatcher(new OperaMiniNormalizer(), model));
+      matcherChain.addMatcher(new FirefoxOSMatcher(model));
+      matcherChain.addMatcher(new JavaMidletMatcher(model));
+      matcherChain.addMatcher(new WindowsRTMatcher(model));
+      matcherChain.addMatcher(new BotMatcher(model));
+      matcherChain.addMatcher(new XBoxMatcher(model));
+      matcherChain.addMatcher(new DesktopApplicationMatcher(model));
+      matcherChain.addMatcher(msieMatcher);
+      matcherChain.addMatcher(operaMatcher);
+      matcherChain.addMatcher(new ChromeMatcher(new ChromeNormalizer(), model));
+      matcherChain.addMatcher(firefoxMatcher);
+      matcherChain.addMatcher(safariMatcher);
+      matcherChain.addMatcher(konquerorMatcher);
+      matcherChain.addMatcher(catchAllMozillaMatcher);
+      matcherChain.addMatcher(catchAllRISMatcher);
+      new OrphanDeviceIdMatcher(model);
+      List allDevices = model.getAllDevicesAsList();
+      Validate.notNull(allDevices, "Model devices list is null");
+      this.log.info("model devices: " + allDevices.size());
+      int filteredDevices = 0;
 
-      for(Iterator var26 = var25.iterator(); var26.hasNext(); ++var27) {
-         ModelDevice var28;
-         String var29 = (var28 = (ModelDevice)var26.next()).getUserAgent();
-         String var31 = var28.getID();
-         WURFLRequest var30;
-         (var30 = (new DefaultWURFLRequestFactory()).createRequest((String)var29, (EngineTarget)null)).performGenericNormalization();
-         if (!var24.recordMatch(var30, var31)) {
-            throw new UnsupportedOperationException("no filter found for " + var31 + "; device=" + var28 + "; count was " + var27);
+      for(Iterator iterator = allDevices.iterator(); iterator.hasNext(); ++filteredDevices) {
+         ModelDevice device = (ModelDevice)iterator.next();
+         String userAgent = device.getUserAgent();
+         String deviceId = device.getID();
+         WURFLRequest request;
+         (request = (new DefaultWURFLRequestFactory()).createRequest(userAgent, (EngineTarget)null)).performGenericNormalization();
+         if (!matcherChain.recordMatch(request, deviceId)) {
+            throw new UnsupportedOperationException("no filter found for " + deviceId + "; device=" + device + "; count was " + filteredDevices);
          }
       }
 
-      var24.sortAll();
-      this.log.info("model devices filtered: " + var27);
-      return var2;
+      matcherChain.sortAll();
+      this.log.info("model devices filtered: " + filteredDevices);
+      return matcherChain;
    }
 
-   public final void reloadModel(WURFLModel var1) {
+   public final void reloadModel(WURFLModel model) {
       this.log.info("reloading the model");
-      if (var1 == null) {
+      if (model == null) {
          throw new IllegalArgumentException("no model defined for Matcher Manager");
       } else {
-         this.matcherChain = this.buildMatcherChain(var1);
+         this.matcherChain = this.buildMatcherChain(model);
       }
    }
 
-   public final DeviceInfo matchRequest(WURFLRequest var1) {
-      return this.matcherChain.match(var1);
+   public final DeviceInfo matchRequest(WURFLRequest request) {
+      return this.matcherChain.match(request);
    }
 }

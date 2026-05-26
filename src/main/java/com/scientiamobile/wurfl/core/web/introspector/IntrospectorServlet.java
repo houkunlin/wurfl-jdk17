@@ -134,11 +134,11 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          try {
             out.println("WURFL Java API " + apiVersion);
             Field modelField;
-            boolean originalModelAccess = (modelField = GeneralWURFLEngine.class.getDeclaredField("o")).canAccess(wurflEngine);
+            boolean originalModelAccess = (modelField = GeneralWURFLEngine.class.getDeclaredField("wurflModel")).canAccess(wurflEngine);
             modelField.setAccessible(true);
             WURFLModel wurflModel = (WURFLModel)modelField.get(wurflEngine);
             Field holderField;
-            boolean originalHolderAccess = (holderField = GeneralWURFLEngine.class.getDeclaredField("l")).canAccess(wurflEngine);
+            boolean originalHolderAccess = (holderField = GeneralWURFLEngine.class.getDeclaredField("wurflService")).canAccess(wurflEngine);
             holderField.setAccessible(true);
             Object wurflHolder = holderField.get(wurflEngine);
             ArrayList<String> resultLines = null;

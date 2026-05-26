@@ -9,60 +9,60 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PeriodicUpdateTask implements Runnable {
-   private final Logger a = LoggerFactory.getLogger(this.getClass());
-   private UpdatePipeline b;
-   private Calendar c;
-   private final LinkedList<UpdateResult> d = new LinkedList<>();
-   private WURFLEngine e;
-   private String f;
-   private String[] g;
+   private final Logger log = LoggerFactory.getLogger(this.getClass());
+   private UpdatePipeline updatePipeline;
+   private Calendar lastSuccessfulUpdate;
+   private final LinkedList<UpdateResult> lastResults = new LinkedList<>();
+   private WURFLEngine wurflEngine;
+   private String resolvedWurflPath;
+   private String[] patchPaths;
 
-   public PeriodicUpdateTask(WURFLEngine var1, UpdatePipeline var2, String var3) {
-      this.b = var2;
-      this.f = var3;
-      this.e = var1;
+   public PeriodicUpdateTask(WURFLEngine wurflEngine, UpdatePipeline updatePipeline, String resolvedWurflPath) {
+      this.updatePipeline = updatePipeline;
+      this.resolvedWurflPath = resolvedWurflPath;
+      this.wurflEngine = wurflEngine;
    }
 
-   public void setPatches(String[] var1) {
-      this.g = var1;
+   public void setPatchPaths(String[] patchPaths) {
+      this.patchPaths = patchPaths;
    }
 
    public void run() {
-      this.a.info("WURFL periodic update started");
+      this.log.info("WURFL periodic update started");
 
       try {
-         UpdateResult var1 = this.b.execute();
-         if (this.d.size() >= 10) {
-            this.d.poll();
+         UpdateResult updateResult = this.updatePipeline.execute();
+         if (this.lastResults.size() >= 10) {
+            this.lastResults.poll();
          }
 
-         this.d.add(var1);
-         if (!var1.isUpdateProcessSuccessful()) {
-            this.a.error("Update process failed. Reason: " + var1.getMessage());
-            if (this.c != null) {
-               this.a.warn("Last successful updated was completed on " + CheckForNewWurflFileTask.a.format(this.c));
+         this.lastResults.add(updateResult);
+         if (!updateResult.isUpdateProcessSuccessful()) {
+            this.log.error("Update process failed. Reason: " + updateResult.getMessage());
+            if (this.lastSuccessfulUpdate != null) {
+               this.log.warn("Last successful updated was completed on " + CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
             }
-         } else if (var1.a()) {
-            this.a.info("Free memory before reload process " + Runtime.getRuntime().freeMemory());
-            if (ArrayUtils.isEmpty(this.g)) {
-               this.e.reload(this.f);
+         } else if (updateResult.a()) {
+            this.log.info("Free memory before reload process " + Runtime.getRuntime().freeMemory());
+            if (ArrayUtils.isEmpty(this.patchPaths)) {
+               this.wurflEngine.reload(this.resolvedWurflPath);
             } else {
-               this.e.reload(this.f, this.g);
+               this.wurflEngine.reload(this.resolvedWurflPath, this.patchPaths);
             }
 
-            this.c = Calendar.getInstance();
+            this.lastSuccessfulUpdate = Calendar.getInstance();
          }
 
-         if (this.c != null) {
-            this.a.info("WURFL file update completed on " + CheckForNewWurflFileTask.a.format(this.c.getTime()));
+         if (this.lastSuccessfulUpdate != null) {
+            this.log.info("WURFL file update completed on " + CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
          }
 
-      } catch (Exception var4) {
-         this.a.error("Unexpected exception performing periodic update", var4);
+      } catch (Exception e) {
+         this.log.error("Unexpected exception performing periodic update", e);
       }
    }
 
    public List<UpdateResult> getLastResults() {
-      return this.d;
+      return this.lastResults;
    }
 }

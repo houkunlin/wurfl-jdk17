@@ -16,59 +16,60 @@ public class Validator {
    private Validator() {
    }
 
-   public static void checkFileExtensions(String var0, String var1) {
-      if (!var0.endsWith(".gz") && !var0.endsWith(".zip") || !var1.endsWith(".gz") && !var1.endsWith(".zip")) {
+   public static void checkFileExtensions(String localWurflPath, String remoteWurflPath) {
+      if (!localWurflPath.endsWith(".gz") && !localWurflPath.endsWith(".zip") || !remoteWurflPath.endsWith(".gz") && !remoteWurflPath.endsWith(".zip")) {
          throw new BadWurflExtensionException("WURFL local and remote path must have either .zip or .gz extension. Updater will not start");
       }
    }
 
-   static void a(String var0) {
-      File var1 = new File(var0);
-      String var2 = "WURFL file at path " + var1.getAbsolutePath() + " is not writable, please provide write permission for it and its enclosing directory";
-      if (!var1.canWrite()) {
-         throw new WurflFilePermissionException(var2);
+   static void validateWritableFile(String localWurflPath) {
+      File wurflFile = new File(localWurflPath);
+      String errorMessage = "WURFL file at path " + wurflFile.getAbsolutePath() + " is not writable, please provide write permission for it and its enclosing directory";
+      if (!wurflFile.canWrite()) {
+         throw new WurflFilePermissionException(errorMessage);
       } else {
-         var0 = var0 + ".bk";
+         String backupPath = localWurflPath + ".bk";
 
          try {
-            File var5 = new File(var0);
-            FileUtils.copyFile(var1, var5);
-            var5.delete();
-         } catch (IOException var3) {
-            throw new WurflFilePermissionException(var2, var3);
+            File backupFile = new File(backupPath);
+            FileUtils.copyFile(wurflFile, backupFile);
+            backupFile.delete();
+         } catch (IOException e) {
+            throw new WurflFilePermissionException(errorMessage, e);
          }
 
-         if (!var1.isDirectory()) {
-            File var7;
-            int var8;
-            if (!(var7 = new File((var8 = (var0 = var1.getAbsolutePath()).lastIndexOf(File.separator)) != -1 ? var0.substring(0, var8) : var0)).canWrite()) {
-               throw new WurflFilePermissionException("Directory " + var7.getAbsolutePath() + " should be writable, please provide the proper permission");
+         if (!wurflFile.isDirectory()) {
+            String wurflFilePath = wurflFile.getAbsolutePath();
+            int separatorIndex = wurflFilePath.lastIndexOf(File.separator);
+            File wurflDirectory = new File(separatorIndex != -1 ? wurflFilePath.substring(0, separatorIndex) : wurflFilePath);
+            if (!wurflDirectory.canWrite()) {
+               throw new WurflFilePermissionException("Directory " + wurflDirectory.getAbsolutePath() + " should be writable, please provide the proper permission");
             }
          }
       }
    }
 
-   static void a(String var0, WURFLEngine var1, ProxySettings var2) {
-      URL var6;
+   static void validateRemoteUrl(String remoteWurflUrl, WURFLEngine wurflEngine, ProxySettings proxySettings) {
+      URL remoteUrl;
       try {
-         var6 = URI.create(var0).toURL();
-      } catch (IllegalArgumentException | MalformedURLException var3) {
-         throw new WURFLRuntimeException("An error occurred validating URL for WURFL file update, the URL is invalid", var3);
+         remoteUrl = URI.create(remoteWurflUrl).toURL();
+      } catch (IllegalArgumentException | MalformedURLException e) {
+         throw new WURFLRuntimeException("An error occurred validating URL for WURFL file update, the URL is invalid", e);
       }
 
-      int var7;
+      int responseCode;
       try {
-         var7 = UpdatePipeline.a(var6, (String)null, 10000, UserAgentUtils.createApiUserAgent(var1), var2);
-      } catch (ClassCastException var4) {
-         throw new WURFLRuntimeException("An class exception occurred validating URL for WURFL file update (using HTTPS is mandatory)", var4);
-      } catch (RuntimeException var5) {
-         throw new WURFLRuntimeException("An error occurred validating URL for WURFL file update", var5);
+         responseCode = UpdatePipeline.headRequest(remoteUrl, (String)null, 10000, UserAgentUtils.createApiUserAgent(wurflEngine), proxySettings);
+      } catch (ClassCastException e) {
+         throw new WURFLRuntimeException("An class exception occurred validating URL for WURFL file update (using HTTPS is mandatory)", e);
+      } catch (RuntimeException e) {
+         throw new WURFLRuntimeException("An error occurred validating URL for WURFL file update", e);
       }
 
-      if (var7 == 402) {
-         throw new WURFLRuntimeException("Invalid WURFL license, please check it on ScientiaMobile customer vault, response code " + var7);
-      } else if (var7 >= 400 && var7 < 500) {
-         throw new WURFLRuntimeException("Validation of http connection failed, response code " + var7);
+      if (responseCode == 402) {
+         throw new WURFLRuntimeException("Invalid WURFL license, please check it on ScientiaMobile customer vault, response code " + responseCode);
+      } else if (responseCode >= 400 && responseCode < 500) {
+         throw new WURFLRuntimeException("Validation of http connection failed, response code " + responseCode);
       }
    }
 }

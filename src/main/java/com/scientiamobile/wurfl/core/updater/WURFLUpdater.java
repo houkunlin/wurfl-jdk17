@@ -15,133 +15,133 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WURFLUpdater {
-   private final Logger a;
-   private String b;
-   private WURFLEngine c;
-   private Frequency d;
-   private PeriodicUpdateTask e;
-   private ScheduledExecutorService f;
-   private Integer g;
-   private String h;
-   private String[] i;
-   private Calendar j;
-   private ProxySettings k;
+   private final Logger log;
+   private String updateUrl;
+   private WURFLEngine wurflEngine;
+   private Frequency frequency;
+   private PeriodicUpdateTask periodicUpdateTask;
+   private ScheduledExecutorService scheduler;
+   private Integer connectionTimeoutMs;
+   private String resolvedWurflPath;
+   private String[] patchPaths;
+   private Calendar firstExecution;
+   private ProxySettings proxySettings;
 
-   public WURFLUpdater(WURFLEngine var1, String var2, String var3) {
-      this(var1, var3);
-      this.b();
+   public WURFLUpdater(WURFLEngine wurflEngine, String unused, String updateUrl) {
+      this(wurflEngine, updateUrl);
+      this.validateSetup();
    }
 
-   public WURFLUpdater(WURFLEngine var1, String var2) {
-      this.a = LoggerFactory.getLogger(this.getClass());
-      this.d = Frequency.DAILY;
-      this.a.info("WURFL path passed to Updater constructor: " + this.h);
-      this.c = var1;
-      this.h = UpdatePipeline.a(var1.getRootPath());
-      this.a.info("WURFL path passed to Updater constructor after resolve: " + this.h);
-      this.b = var2;
-      this.b();
+   public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl) {
+      this.log = LoggerFactory.getLogger(this.getClass());
+      this.frequency = Frequency.DAILY;
+      this.log.info("WURFL path passed to Updater constructor: " + this.resolvedWurflPath);
+      this.wurflEngine = wurflEngine;
+      this.resolvedWurflPath = UpdatePipeline.resolvePath(wurflEngine.getRootPath());
+      this.log.info("WURFL path passed to Updater constructor after resolve: " + this.resolvedWurflPath);
+      this.updateUrl = updateUrl;
+      this.validateSetup();
    }
 
-   public WURFLUpdater(WURFLEngine var1, String var2, String var3, ProxySettings var4) {
-      this(var1, var3);
-      this.k = var4;
+   public WURFLUpdater(WURFLEngine wurflEngine, String unused, String updateUrl, ProxySettings proxySettings) {
+      this(wurflEngine, updateUrl);
+      this.proxySettings = proxySettings;
    }
 
-   public WURFLUpdater(WURFLEngine var1, String var2, ProxySettings var3) {
-      this.a = LoggerFactory.getLogger(this.getClass());
-      this.d = Frequency.DAILY;
-      this.a.info("WURFL path passed to Updater constructor: " + this.h);
-      this.c = var1;
-      this.h = UpdatePipeline.a(var1.getRootPath());
-      this.a.info("WURFL path passed to Updater constructor after resolve: " + this.h);
-      this.b = var2;
-      this.k = var3;
-      this.b();
+   public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl, ProxySettings proxySettings) {
+      this.log = LoggerFactory.getLogger(this.getClass());
+      this.frequency = Frequency.DAILY;
+      this.log.info("WURFL path passed to Updater constructor: " + this.resolvedWurflPath);
+      this.wurflEngine = wurflEngine;
+      this.resolvedWurflPath = UpdatePipeline.resolvePath(wurflEngine.getRootPath());
+      this.log.info("WURFL path passed to Updater constructor after resolve: " + this.resolvedWurflPath);
+      this.updateUrl = updateUrl;
+      this.proxySettings = proxySettings;
+      this.validateSetup();
    }
 
    public boolean usesProxy() {
-      return this.k != null;
+      return this.proxySettings != null;
    }
 
-   public void setFirstExecution(Calendar var1) {
-      this.j = var1;
+   public void setFirstExecution(Calendar firstExecution) {
+      this.firstExecution = firstExecution;
    }
 
-   public void setFrequency(Frequency var1) {
-      this.d = var1;
+   public void setFrequency(Frequency frequency) {
+      this.frequency = frequency;
    }
 
    public List getLastPeriodicUpdateResults() {
-      return (List)(this.e != null ? this.e.getLastResults() : new ArrayList(0));
+      return (List)(this.periodicUpdateTask != null ? this.periodicUpdateTask.getLastResults() : new ArrayList(0));
    }
 
-   public void setConnectionTimeout(Integer var1) {
-      this.g = var1;
+   public void setConnectionTimeoutMs(Integer connectionTimeoutMs) {
+      this.connectionTimeoutMs = connectionTimeoutMs;
    }
 
-   public void setPatches(String[] var1) {
-      this.i = var1;
+   public void setPatches(String[] patchPaths) {
+      this.patchPaths = patchPaths;
    }
 
    public synchronized UpdateResult performUpdate() {
-      UpdateResult var1;
+      UpdateResult updateResult;
       try {
-         UpdatePipeline var4;
-         (var4 = this.usesProxy() ? new UpdatePipeline(this.h, this.b, this.k) : new UpdatePipeline(this.h, this.b)).setUserAgent(UserAgentUtils.createApiUserAgent(this.c));
-         var4.setConnectionTimeout(this.g);
-         if (!(var1 = var4.execute()).isUpdateProcessSuccessful()) {
-            this.a.warn(var1.getMessage());
-         } else if (var1.a()) {
-            if (ArrayUtils.isEmpty(this.i)) {
-               this.c.reload(this.h);
+         UpdatePipeline updatePipeline;
+         (updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl)).setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
+         updatePipeline.setConnectionTimeoutMs(this.connectionTimeoutMs);
+         if (!(updateResult = updatePipeline.execute()).isUpdateProcessSuccessful()) {
+            this.log.warn(updateResult.getMessage());
+         } else if (updateResult.a()) {
+            if (ArrayUtils.isEmpty(this.patchPaths)) {
+               this.wurflEngine.reload(this.resolvedWurflPath);
             } else {
-               this.c.reload(this.h, this.i);
+               this.wurflEngine.reload(this.resolvedWurflPath, this.patchPaths);
             }
          }
       } catch (WURFLRuntimeException var3) {
          String var2 = "Unable to start WURFL updater, cause: " + var3.getMessage();
-         this.a.error(var2, var3);
-         var1 = new UpdateResult(UpdateResultStatus.PIPELINE_TASK_FAILED, var2);
+         this.log.error(var2, var3);
+         updateResult = new UpdateResult(UpdateResultStatus.PIPELINE_TASK_FAILED, var2);
       }
 
-      return var1;
+      return updateResult;
    }
 
    public synchronized void performPeriodicUpdate() {
-      if (this.a()) {
-         this.a.warn("Periodic update is already running. Shutdown the current update process before invoking this method");
+      if (this.isPeriodicUpdateRunning()) {
+         this.log.warn("Periodic update is already running. Shutdown the current update process before invoking this method");
       } else {
          try {
-            UpdatePipeline var1;
-            (var1 = this.usesProxy() ? new UpdatePipeline(this.h, this.b, this.k) : new UpdatePipeline(this.h, this.b)).setUserAgent(UserAgentUtils.createApiUserAgent(this.c));
-            var1.setConnectionTimeout(this.g);
-            this.f = Executors.newScheduledThreadPool(1);
-            this.e = new PeriodicUpdateTask(this.c, var1, this.h);
-            this.f.scheduleAtFixedRate(this.e, this.j != null ? this.j.getTimeInMillis() - Calendar.getInstance().getTimeInMillis() : 100L, this.d.value(), TimeUnit.MILLISECONDS);
+            UpdatePipeline updatePipeline;
+            (updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl)).setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
+            updatePipeline.setConnectionTimeoutMs(this.connectionTimeoutMs);
+            this.scheduler = Executors.newScheduledThreadPool(1);
+            this.periodicUpdateTask = new PeriodicUpdateTask(this.wurflEngine, updatePipeline, this.resolvedWurflPath);
+            this.scheduler.scheduleAtFixedRate(this.periodicUpdateTask, this.firstExecution != null ? this.firstExecution.getTimeInMillis() - Calendar.getInstance().getTimeInMillis() : 100L, this.frequency.value(), TimeUnit.MILLISECONDS);
          } catch (BadWurflExtensionException var3) {
             String var2 = "Unable to start WURFL updater, cause: " + var3.getMessage();
-            this.a.error(var2, var3);
+            this.log.error(var2, var3);
          }
       }
    }
 
-   private boolean a() {
-      return this.f != null && !this.f.isTerminated();
+   private boolean isPeriodicUpdateRunning() {
+      return this.scheduler != null && !this.scheduler.isTerminated();
    }
 
    public void stopPeriodicUpdate() {
-      if (this.a()) {
-         this.f.shutdown();
-         this.f = null;
+      if (this.isPeriodicUpdateRunning()) {
+         this.scheduler.shutdown();
+         this.scheduler = null;
       } else {
-         this.a.warn("Cannot stop an updater that is not running. Command ignored");
+         this.log.warn("Cannot stop an updater that is not running. Command ignored");
       }
    }
 
-   private void b() {
-      Validator.checkFileExtensions(this.h, this.b);
-      Validator.a(this.h);
-      Validator.a(this.b, this.c, this.k);
+   private void validateSetup() {
+      Validator.checkFileExtensions(this.resolvedWurflPath, this.updateUrl);
+      Validator.validateWritableFile(this.resolvedWurflPath);
+      Validator.validateRemoteUrl(this.updateUrl, this.wurflEngine, this.proxySettings);
    }
 }
