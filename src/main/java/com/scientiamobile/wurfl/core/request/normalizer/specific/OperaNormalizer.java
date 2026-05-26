@@ -5,15 +5,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OperaNormalizer implements UserAgentNormalizer {
-   private static final Pattern a = Pattern.compile("Version/(\\d+\\.\\d+)");
-   private static final Pattern b = Pattern.compile("OPR/(\\d+\\.\\d+)");
+   private static final Pattern OPERA_VERSION_PATTERN = Pattern.compile("Version/(\\d+\\.\\d+)");
+   private static final Pattern OPERA_CHROMIUM_VERSION_PATTERN = Pattern.compile("OPR/(\\d+\\.\\d+)");
 
-   public String normalize(String var1) {
-      Matcher var2;
-      if (var1.startsWith("Opera/9.80") && (var2 = a.matcher(var1)).find()) {
-         return var1.replace("Opera/9.80", "Opera/" + var2.group(1));
+   public String normalize(String userAgent) {
+      Matcher versionMatcher;
+      if (userAgent.startsWith("Opera/9.80") && (versionMatcher = OPERA_VERSION_PATTERN.matcher(userAgent)).find()) {
+         return userAgent.replace("Opera/9.80", "Opera/" + versionMatcher.group(1));
       } else {
-         return (var2 = b.matcher(var1)).find() ? "Opera/" + var2.group(1) + " " + var1 : var1;
+         return (versionMatcher = OPERA_CHROMIUM_VERSION_PATTERN.matcher(userAgent)).find() ? "Opera/" + versionMatcher.group(1) + " " + userAgent : userAgent;
       }
    }
 }

@@ -5,25 +5,25 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class XmlFileLoader {
-   private final ResourceInput a;
-   private DefaultHandler b;
+   private final ResourceInput resourceInput;
+   private DefaultHandler handler;
 
-   public XmlFileLoader(String var1, DefaultHandler var2) {
-      this.a = new ResourceInput(var1);
-      this.b = var2;
+   public XmlFileLoader(String path, DefaultHandler handler) {
+      this.resourceInput = new ResourceInput(path);
+      this.handler = handler;
    }
 
    public final boolean parseFile() {
-      InputStream var1 = this.a.openInputStream();
+      InputStream inputStream = this.resourceInput.openInputStream();
 
       try {
-         SAXParserFactory.newInstance().newSAXParser().parse(var1, this.b);
-      } catch (Exception var5) {
-         throw new RuntimeException(var5);
+         SAXParserFactory.newInstance().newSAXParser().parse(inputStream, this.handler);
+      } catch (Exception e) {
+         throw new RuntimeException(e);
       } finally {
          try {
-            var1.close();
-         } catch (Exception var4) {
+            inputStream.close();
+         } catch (Exception e) {
          }
       }
 

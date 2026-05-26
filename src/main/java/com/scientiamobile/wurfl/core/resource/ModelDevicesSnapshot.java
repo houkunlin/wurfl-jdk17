@@ -26,12 +26,12 @@ final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevice
 
    public final String getSnapshotKey() {
       if (this.cachedKey == null) {
-         StringBuilder var1 = (new StringBuilder()).append(this.patch ? "Patch" : "Root").append(":").append(this.info);
+         StringBuilder builder = (new StringBuilder()).append(this.patch ? "Patch" : "Root").append(":").append(this.info);
          if (StringUtils.isNotBlank(this.version)) {
-            var1.append(":").append(this.version);
+            builder.append(":").append(this.version);
          }
 
-         this.cachedKey = var1.toString();
+         this.cachedKey = builder.toString();
       }
 
       return this.cachedKey;
@@ -42,9 +42,9 @@ final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevice
    }
 
    public final int hashCode() {
-      HashCodeBuilder var1;
-      (var1 = new HashCodeBuilder(33, 55)).append(this.info).append(this.version);
-      return var1.toHashCode();
+      HashCodeBuilder hashCodeBuilder;
+      (hashCodeBuilder = new HashCodeBuilder(33, 55)).append(this.info).append(this.version);
+      return hashCodeBuilder.toHashCode();
    }
 
    public final boolean equals(Object other) {
@@ -53,24 +53,24 @@ final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevice
       }
 
       ModelDevicesSnapshot o = (ModelDevicesSnapshot)other;
-      EqualsBuilder var2;
-      (var2 = new EqualsBuilder()).append(this.getSnapshotKey(), o.getSnapshotKey());
-      return var2.isEquals();
+      EqualsBuilder equalsBuilder;
+      (equalsBuilder = new EqualsBuilder()).append(this.getSnapshotKey(), o.getSnapshotKey());
+      return equalsBuilder.isEquals();
    }
 
    public final String toString() {
-      ToStringBuilder var1;
-      (var1 = new ToStringBuilder(this)).append(this.info).append(this.version);
-      return var1.toString();
+      ToStringBuilder toStringBuilder;
+      (toStringBuilder = new ToStringBuilder(this)).append(this.info).append(this.version);
+      return toStringBuilder.toString();
    }
 
    final String getSmid() {
       return this.smid;
    }
 
-   public final int compareTo(ModelDevicesSnapshot var2) {
-      CompareToBuilder var3;
-      (var3 = new CompareToBuilder()).append(this.info, var2.info).append(this.version, var2.version);
-      return var3.toComparison();
+   public final int compareTo(ModelDevicesSnapshot other) {
+      CompareToBuilder compareToBuilder;
+      (compareToBuilder = new CompareToBuilder()).append(this.info, other.info).append(this.version, other.version);
+      return compareToBuilder.toComparison();
    }
 }

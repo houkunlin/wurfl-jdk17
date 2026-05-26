@@ -4,13 +4,13 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import org.apache.commons.lang3.Validate;
 
 public class UPLinkNormalizer implements UserAgentNormalizer {
-   public String normalize(String var1) {
-      Validate.notNull(var1, "The userAgent is null");
-      int var2;
-      if ((var2 = var1.indexOf("UP.Link")) >= 0) {
-         var1 = var1.substring(0, var2);
+   public String normalize(String userAgent) {
+      Validate.notNull(userAgent, "The userAgent is null");
+      int upLinkIndex;
+      if ((upLinkIndex = userAgent.indexOf("UP.Link")) >= 0) {
+         userAgent = userAgent.substring(0, upLinkIndex);
       }
 
-      return var1;
+      return userAgent;
    }
 }

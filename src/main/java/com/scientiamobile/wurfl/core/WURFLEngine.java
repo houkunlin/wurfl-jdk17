@@ -13,63 +13,63 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface WURFLEngine {
    String API_VERSION = "1.9.1.0";
 
-   Device getDeviceForRequest(HttpServletRequest var1);
+   Device getDeviceForRequest(HttpServletRequest request);
 
-   Device getDeviceForRequest(WURFLRequest var1);
+   Device getDeviceForRequest(WURFLRequest request);
 
-   Device getDeviceForRequest(String var1);
+   Device getDeviceForRequest(String userAgent);
 
    void load();
 
-   void reload(String var1);
+   void reload(String wurflPath);
 
-   void reload(String var1, String[] var2);
+   void reload(String wurflPath, String[] wurflPatchPaths);
 
-   void reload(WURFLResource var1, WURFLResource... var2);
+   void reload(WURFLResource wurflResource, WURFLResource... patchResources);
 
-   void reload(WURFLResource var1, WURFLResources var2);
+   void reload(WURFLResource wurflResource, WURFLResources patchResources);
 
-   boolean replaceRoot(String var1);
+   boolean replaceRoot(String wurflPath);
 
-   void applyPatches(String... var1);
+   void applyPatches(String... patchPaths);
 
-   void applyPatches(WURFLResource... var1);
+   void applyPatches(WURFLResource... patchResources);
 
-   void applyPatches(WURFLResources var1);
+   void applyPatches(WURFLResources patchResources);
 
-   void setMarkupResolver(MarkupResolver var1);
+   void setMarkupResolver(MarkupResolver markupResolver);
 
-   void setCapabilitiesHolderFactory(CapabilitiesHolderFactory var1);
+   void setCapabilitiesHolderFactory(CapabilitiesHolderFactory capabilitiesHolderFactory);
 
-   void setWurflRequestFactory(WURFLRequestFactory var1);
+   void setWurflRequestFactory(WURFLRequestFactory wurflRequestFactory);
 
-   void setUserAgentResolver(UserAgentResolver var1);
+   void setUserAgentResolver(UserAgentResolver userAgentResolver);
 
-   void setDeviceProvider(DeviceProvider var1);
+   void setDeviceProvider(DeviceProvider deviceProvider);
 
-   void setCacheProvider(CacheProvider var1);
+   void setCacheProvider(CacheProvider cacheProvider);
 
-   void setCapabilityFilter(String... var1);
+   void setCapabilityFilter(String... capabilityFilter);
 
-   void setCapabilityFilter(Collection var1);
+   void setCapabilityFilter(Collection<String> capabilityFilter);
 
    EngineTarget getEngineTarget();
 
-   void setEngineTarget(EngineTarget var1);
+   void setEngineTarget(EngineTarget engineTarget);
 
    UserAgentPriority getUserAgentPriority();
 
-   void setUserAgentPriority(UserAgentPriority var1);
+   void setUserAgentPriority(UserAgentPriority userAgentPriority);
 
    WURFLUtils getWURFLUtils();
 
    Set getAllVirtualCapabilities();
 
-   Device getDeviceById(String var1);
+   Device getDeviceById(String deviceId);
 
-   Device getDeviceById(String var1, WURFLRequest var2);
+   Device getDeviceById(String deviceId, WURFLRequest request);
 
-   Device getDeviceById(String var1, HttpServletRequest var2);
+   Device getDeviceById(String deviceId, HttpServletRequest request);
 
    String getAPIVersion();
 

@@ -6,35 +6,35 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.map.LRUMap;
 
 public class LRUMapCacheProvider implements CacheProvider {
-   private Map<String, InternalDevice> a;
+   private Map<String, InternalDevice> cache;
 
-   public LRUMapCacheProvider(int var1, boolean var2) {
-      this.a = MapUtils.synchronizedMap(new LRUMap<>(var1, var2));
+   public LRUMapCacheProvider(int cacheSize, boolean scanUntilRemovable) {
+      this.cache = MapUtils.synchronizedMap(new LRUMap<>(cacheSize, scanUntilRemovable));
    }
 
-   public LRUMapCacheProvider(int var1) {
-      this.a = MapUtils.synchronizedMap(new LRUMap<>(var1));
+   public LRUMapCacheProvider(int cacheSize) {
+      this.cache = MapUtils.synchronizedMap(new LRUMap<>(cacheSize));
    }
 
    public LRUMapCacheProvider() {
-      this.a = MapUtils.synchronizedMap(new LRUMap<>());
+      this.cache = MapUtils.synchronizedMap(new LRUMap<>());
    }
 
    public void clear() {
-      logger.info("cache: size " + this.a.size());
-      this.a.clear();
-      logger.info("cache cleared: size " + this.a.size());
+      logger.info("cache: size " + this.cache.size());
+      this.cache.clear();
+      logger.info("cache cleared: size " + this.cache.size());
    }
 
-   public InternalDevice getDevice(String var1) {
-      return this.a.get(var1);
+   public InternalDevice getDevice(String key) {
+      return this.cache.get(key);
    }
 
-   public void putDevice(String var1, InternalDevice var2) {
-      this.a.put(var1, var2);
+   public void putDevice(String key, InternalDevice device) {
+      this.cache.put(key, device);
    }
 
-   public InternalDevice getInternalDeviceFromDeviceId(String var1) {
+   public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
       return null;
    }
 }

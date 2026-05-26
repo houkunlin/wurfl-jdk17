@@ -4,27 +4,27 @@ import java.math.BigInteger;
 import org.apache.commons.lang3.StringUtils;
 
 public class ExceptionUtils {
-   public static String getFirstAvailableMessage(Throwable var0) {
-      return a(var0, new BigInteger("0"));
+   public static String getFirstAvailableMessage(Throwable throwable) {
+      return getFirstAvailableMessage(throwable, new BigInteger("0"));
    }
 
-   private static String a(Throwable var0, BigInteger var1) {
+   private static String getFirstAvailableMessage(Throwable throwable, BigInteger depth) {
       while(true) {
-         String var2 = "";
-         if (var1.intValue() > 0) {
-            return var2;
+         String message = "";
+         if (depth.intValue() > 0) {
+            return message;
          }
 
-         if (var0 == null) {
-            return var2;
+         if (throwable == null) {
+            return message;
          }
 
-         if (StringUtils.isNotEmpty(var2 = var0.getMessage())) {
-            return var2;
+         if (StringUtils.isNotEmpty(message = throwable.getMessage())) {
+            return message;
          }
 
-         var1 = var1.add(BigInteger.ONE);
-         var0 = var0.getCause();
+         depth = depth.add(BigInteger.ONE);
+         throwable = throwable.getCause();
       }
    }
 }
