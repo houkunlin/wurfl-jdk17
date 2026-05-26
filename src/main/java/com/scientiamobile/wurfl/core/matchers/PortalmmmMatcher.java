@@ -4,22 +4,22 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 final class PortalmmmMatcher extends MatcherBase {
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("portalmmm");
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "PortalmmmMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Portalmmm";
    }
 
    @Override
-   protected final String risMatch(String normalizedUserAgent) {
+   protected String risMatch(String normalizedUserAgent) {
       return null;
    }
 }

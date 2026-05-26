@@ -76,7 +76,7 @@ public final class RISMatcher {
    }
 
    @Override
-   public final String toString() {
+   public String toString() {
       return this.getName();
    }
 }

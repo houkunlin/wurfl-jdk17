@@ -20,24 +20,24 @@ final class SmartTvMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add("generic_smarttv_browser");
       return requiredDeviceIds;
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return request._internalIsSmartTvBrowser();
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       return null;
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       if (normalizedUserAgent.contains("Tizen 3.0")) {
          return TIZEN_3_0;
@@ -61,12 +61,12 @@ final class SmartTvMatcher extends MatcherBase {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "SmartTvMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "SmartTV";
    }
 }

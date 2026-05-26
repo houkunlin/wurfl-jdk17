@@ -30,7 +30,7 @@ final class AppleMatcher extends AbstractMatcher {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.addAll(SUPPORTED_DEVICE_IDS);
       requiredDeviceIds.addAll(SUPPORTED_SUBHW_DEVICE_IDS);
@@ -39,13 +39,13 @@ final class AppleMatcher extends AbstractMatcher {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, APPLE_DEVICE_KEYWORDS) && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Symbian", "Nintendo");
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       String userAgent = request.getNormalizedDeviceUserAgent();
       String subHw = null;
       Matcher hwMatcher;
@@ -88,7 +88,7 @@ final class AppleMatcher extends AbstractMatcher {
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String userAgent = request.getNormalizedDeviceUserAgent();
       Matcher versionMatcher = IOS_MAJOR_VERSION_PATTERN.matcher(userAgent);
       String majorVersion = "-1";
@@ -117,12 +117,12 @@ final class AppleMatcher extends AbstractMatcher {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "AppleMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Apple";
    }
 

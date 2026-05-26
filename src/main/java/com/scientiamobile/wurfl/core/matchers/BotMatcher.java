@@ -14,7 +14,7 @@ final class BotMatcher extends AbstractMatcher {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(GOOGLE_IMAGE_PROXY);
       requiredDeviceIds.add("generic_web_crawler");
@@ -22,12 +22,12 @@ final class BotMatcher extends AbstractMatcher {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return request._internalIsBot();
    }
 
    @Override
-   protected final String risMatch(String normalizedUserAgent) {
+   protected String risMatch(String normalizedUserAgent) {
       int matchLength = normalizedUserAgent.startsWith("Mozilla")
          ? StringMatchUtils.firstCloseParenthesis(normalizedUserAgent)
          : StringMatchUtils.firstSlash(normalizedUserAgent);
@@ -37,22 +37,22 @@ final class BotMatcher extends AbstractMatcher {
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("GoogleImageProxy") ? GOOGLE_IMAGE_PROXY : super.applyConclusiveMatch(request);
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       return "generic_web_crawler";
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "BotMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Bot";
    }
 }

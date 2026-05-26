@@ -26,7 +26,7 @@ final class FirefoxOSMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICES);
       requiredDeviceIds.add(FALLBACK_TABLET);
       requiredDeviceIds.add(FALLBACK_GENERIC);
@@ -34,19 +34,19 @@ final class FirefoxOSMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return cleanedDeviceUserAgent.contains("Firefox/") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Mobile", "Tablet");
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       Matcher rvPrefixMatcher = VERSION_RV_PREFIX.matcher(userAgent);
       return rvPrefixMatcher.find() ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, rvPrefixMatcher.end(1)) : null;
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       String firefoxOsVersion = "1.0";
       Matcher rvMatcher = VERSION_RV.matcher(normalizedUserAgent);
@@ -68,12 +68,12 @@ final class FirefoxOSMatcher extends MatcherBase {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "FirefoxOSMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "FirefoxOS";
    }
 

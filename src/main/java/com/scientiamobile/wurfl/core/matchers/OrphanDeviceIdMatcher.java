@@ -16,7 +16,7 @@ public class OrphanDeviceIdMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add("opwv_v6_generic");
       requiredDeviceIds.add("opwv_v7_generic");

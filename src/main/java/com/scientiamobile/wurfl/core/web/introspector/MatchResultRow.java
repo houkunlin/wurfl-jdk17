@@ -14,7 +14,7 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
    }
 
    @Override
-   public final String toString() {
+   public String toString() {
       String matcherNameWithoutSuffix = this.matcherName;
       int matcherSuffixIndex;
       if ((matcherSuffixIndex = matcherNameWithoutSuffix.indexOf("Matcher")) > 0) {

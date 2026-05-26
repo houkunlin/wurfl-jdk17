@@ -6,12 +6,12 @@ import java.util.Collection;
 
 final class CatchAllRISMatcher extends AbstractMatcher {
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return true;
    }
 
    @Override
-   protected final String risMatch(String normalizedUserAgent) {
+   protected String risMatch(String normalizedUserAgent) {
       Collection<?> userAgents = this.getFilter().getIndex().getUserAgents();
       if (normalizedUserAgent != null && normalizedUserAgent.startsWith("CFNetwork")) {
          int matchLength = StringMatchUtils.firstSpace(normalizedUserAgent);
@@ -29,12 +29,12 @@ final class CatchAllRISMatcher extends AbstractMatcher {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "CatchAllRISMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "CatchAllRis";
    }
 }

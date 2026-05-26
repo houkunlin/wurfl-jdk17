@@ -17,7 +17,7 @@ final class KindleMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(GENERIC_AMAZON_KINDLE);
       requiredDeviceIds.addAll(DEVICE_BY_TOKEN.values());
@@ -25,13 +25,13 @@ final class KindleMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "/Kindle", "Silk") ? false : StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Kindle", "Silk");
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       int matchLength;
       if ((matchLength = userAgent.indexOf("Build/")) != -1) {
          return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
@@ -49,7 +49,7 @@ final class KindleMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
 
       for(Map.Entry<String, String> entry : DEVICE_BY_TOKEN.entrySet()) {
@@ -62,12 +62,12 @@ final class KindleMatcher extends MatcherBase {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "KindleMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Kindle";
    }
 

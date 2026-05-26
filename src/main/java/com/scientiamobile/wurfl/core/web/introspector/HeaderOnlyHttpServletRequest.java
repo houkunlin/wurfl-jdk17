@@ -193,7 +193,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
    }
 
    @Override
-   public final String getHeader(String name) {
+   public String getHeader(String name) {
       return this.headers.get(name);
    }
 
@@ -209,12 +209,12 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
    }
 
    @Override
-   public final Enumeration<String> getHeaders(String name) {
+   public Enumeration<String> getHeaders(String name) {
       return null;
    }
 
    @Override
-   public final Enumeration<String> getHeaderNames() {
+   public Enumeration<String> getHeaderNames() {
       Vector<String> headerNames = new Vector<>();
 
       for(String headerName : this.headers.keySet()) {

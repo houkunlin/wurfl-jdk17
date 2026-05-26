@@ -15,7 +15,7 @@ final class XBoxMatcher extends AbstractMatcher {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(MICROSOFT_XBOXONE_VER1);
       requiredDeviceIds.add(MICROSOFT_XBOX360_VER1_SUBIE10);
@@ -24,17 +24,17 @@ final class XBoxMatcher extends AbstractMatcher {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("Xbox");
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       return null;
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       if (normalizedUserAgent.contains("MSIE 10.0")) {
          return normalizedUserAgent.contains("Xbox One") ? MICROSOFT_XBOXONE_VER1 : MICROSOFT_XBOX360_VER1_SUBIE10;
@@ -44,12 +44,12 @@ final class XBoxMatcher extends AbstractMatcher {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "XBoxMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Xbox";
    }
 }

@@ -20,7 +20,7 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
    }
 
    @Override
-   public final Map<String, String> getAllCapabilities() {
+   public Map<String, String> getAllCapabilities() {
       HashMap<String, String> capabilities = new HashMap<>(this.wurflModel.getAllCapabilities().size());
 
       try {
@@ -37,7 +37,7 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
    }
 
    @Override
-   public final String getCapability(Map<String, String> capabilities, String capabilityName) {
+   public String getCapability(Map<String, String> capabilities, String capabilityName) {
       Map<String, String> capabilitiesMap = capabilities;
       String capabilityValue;
       if ((capabilityValue = capabilitiesMap.get(capabilityName)) != null) {

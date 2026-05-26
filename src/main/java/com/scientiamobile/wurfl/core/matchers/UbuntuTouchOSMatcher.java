@@ -15,7 +15,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(GENERIC_UBUNTU_TOUCH_OS);
       requiredDeviceIds.add(GENERIC_UBUNTU_TOUCH_OS_TABLET);
@@ -29,7 +29,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       int matchLength;
       if ((matchLength = userAgent.indexOf("like Android")) >= 0) {
          matchLength += 12;
@@ -41,7 +41,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       return request.getNormalizedDeviceUserAgent().contains("Tablet") ? GENERIC_UBUNTU_TOUCH_OS_TABLET : GENERIC_UBUNTU_TOUCH_OS;
    }
 

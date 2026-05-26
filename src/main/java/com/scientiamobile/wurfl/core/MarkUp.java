@@ -9,7 +9,7 @@ public final class MarkUp {
    private String name;
 
    @Override
-   public final String toString() {
+   public String toString() {
       return this.name;
    }
 

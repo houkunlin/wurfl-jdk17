@@ -15,20 +15,20 @@ final class ChromeMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(CHROME_DEVICE_ID);
       return requiredDeviceIds;
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsMobileBrowser() && cleanedDeviceUserAgent != null && cleanedDeviceUserAgent.contains("Chrome");
    }
 
    @Override
-   protected final String risMatch(String normalizedUserAgent) {
+   protected String risMatch(String normalizedUserAgent) {
       return StringMatchUtils.risMatch(
          this.getFilter().getIndex().getUserAgents(),
          normalizedUserAgent,
@@ -37,17 +37,17 @@ final class ChromeMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       return CHROME_DEVICE_ID;
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "ChromeMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Chrome";
    }
 }

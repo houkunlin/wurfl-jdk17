@@ -124,7 +124,7 @@ final class NameVersionPair implements Serializable {
    }
 
    @Override
-   public final String toString() {
+   public String toString() {
       return "[name: " + this.name + " - version: " + this.version + "]";
    }
 }

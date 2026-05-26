@@ -5,17 +5,17 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 final class KyoceraMatcher extends MatcherBase {
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "kyocera", "KWC-", "QC-");
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "KyoceraMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Kyocera";
    }
 }

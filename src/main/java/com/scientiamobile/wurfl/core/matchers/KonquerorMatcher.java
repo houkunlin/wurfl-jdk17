@@ -4,17 +4,17 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 final class KonquerorMatcher extends MatcherBase {
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return !request._internalIsMobileBrowser() && request.getCleanedDeviceUserAgent().contains("Konqueror");
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "KonquerorMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Konqueror";
    }
 }

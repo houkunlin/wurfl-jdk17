@@ -11,7 +11,7 @@ import java.util.Set;
 
 final class UcwebU2Matcher extends MatcherBase {
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add("generic_ucweb");
       return requiredDeviceIds;
@@ -22,13 +22,13 @@ final class UcwebU2Matcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.startsWith("UCWEB") && cleanedDeviceUserAgent.contains("UCBrowser");
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       if (UserAgentUtils.getUcBrowserVersion(userAgent, true) == null) {
          return null;
       } else {
@@ -64,17 +64,17 @@ final class UcwebU2Matcher extends MatcherBase {
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       return "generic_ucweb";
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "UcwebU2Matcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "UcwebU2";
    }
 }

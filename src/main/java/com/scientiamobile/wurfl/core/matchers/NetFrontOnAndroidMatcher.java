@@ -18,37 +18,37 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER);
       return requiredDeviceIds;
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Android", "NetFrontLifeBrowser/2.2");
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, StringMatchUtils.indexOfOrLength(userAgent, "NetFrontLifeBrowser/2.2"));
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String androidVersion = UserAgentUtils.getAndroidVersion(request.getNormalizedDeviceUserAgent(), true);
       String deviceId = ANDROID_VERSION_TO_DEVICE_ID.get(androidVersion);
       return deviceId != null ? deviceId : GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER;
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "NetFrontOnAndroidMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "NetFrontOnAndroid";
    }
 

@@ -57,13 +57,13 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    @Override
-   public final void setCacheProvider(CacheProvider cacheProvider) {
+   public void setCacheProvider(CacheProvider cacheProvider) {
       this.log.info("feeding {}", cacheProvider);
       this.cacheProvider = cacheProvider;
    }
 
    @Override
-   public final Device getDevice(WURFLRequest request) {
+   public Device getDevice(WURFLRequest request) {
       this.modelLock.readLock().lock();
 
       try {
@@ -102,14 +102,14 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    @Override
-   public final Device getDevice(HttpServletRequest request) {
+   public Device getDevice(HttpServletRequest request) {
       Validate.notNull(request, "The request must be not null");
       WURFLRequest wurflRequest = this.requestFactory.createRequest(request, this.engineTarget);
       return this.getDevice(wurflRequest);
    }
 
    @Override
-   public final Device getDevice(String userAgent) {
+   public Device getDevice(String userAgent) {
       Validate.notNull(userAgent, "The userAgent must be not null");
       WURFLRequest wurflRequest = this.requestFactory.createRequest(userAgent, this.engineTarget);
       return this.getDevice(wurflRequest);
@@ -128,12 +128,12 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    @Override
-   public final EngineTarget getEngineTarget() {
+   public EngineTarget getEngineTarget() {
       return this.engineTarget;
    }
 
    @Override
-   public final void setEngineTarget(EngineTarget engineTarget) {
+   public void setEngineTarget(EngineTarget engineTarget) {
       if (engineTarget != EngineTarget.fastDesktopBrowserMatch) {
          this.engineTarget = EngineTarget.defaultTarget;
       } else {
@@ -142,17 +142,17 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    @Override
-   public final UserAgentPriority getUserAgentPriority() {
+   public UserAgentPriority getUserAgentPriority() {
       return this.requestFactory.getUserAgentPriority();
    }
 
    @Override
-   public final void setUserAgentPriority(UserAgentPriority priority) {
+   public void setUserAgentPriority(UserAgentPriority priority) {
       this.requestFactory.setUserAgentPriority(priority);
    }
 
    @Override
-   public final Device getDeviceById(String deviceId) {
+   public Device getDeviceById(String deviceId) {
       InternalDevice internalDevice = this.deviceProvider.getInternalDevice(deviceId);
       String userAgentFromModel;
       String userAgent;
@@ -171,21 +171,21 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    @Override
-   public final Device getDeviceById(String deviceId, HttpServletRequest request) {
+   public Device getDeviceById(String deviceId, HttpServletRequest request) {
       Validate.notNull(request, "The request must be not null");
       WURFLRequest wurflRequest = this.requestFactory.createRequest(request, this.engineTarget);
       return this.getDeviceById(deviceId, wurflRequest);
    }
 
    @Override
-   public final Device getDeviceById(String deviceId, WURFLRequest request) {
+   public Device getDeviceById(String deviceId, WURFLRequest request) {
       Validate.notNull(request, "The request must be not null");
       request.performGenericNormalization();
       return this.deviceProvider.buildDevice(this.deviceProvider.getInternalDevice(deviceId), request, MatchType.none, "Utils", "Utils");
    }
 
    @Override
-   public final void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches) {
+   public void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches) {
       this.modelLock.writeLock().lock();
       this.log.info("reloading service");
 
@@ -206,7 +206,7 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    @Override
-   public final void applyPatches(WURFLResources wurflResources, String... patches) {
+   public void applyPatches(WURFLResources wurflResources, String... patches) {
       this.log.info("before applying patches {}", wurflResources);
       this.modelLock.writeLock().lock();
 

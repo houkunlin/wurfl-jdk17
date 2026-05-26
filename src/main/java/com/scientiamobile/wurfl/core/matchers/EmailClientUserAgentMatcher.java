@@ -43,7 +43,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       if (userAgent.contains("Thunderbird")) {
          userAgent = userAgent.substring(userAgent.indexOf("Thunderbird"));
       }
@@ -61,12 +61,12 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       return new HashSet<>(REQUIRED_DEVICE_IDS);
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String deviceUserAgent = request.getDeviceUserAgent();
       if (deviceUserAgent.contains("Thunderbird")) {
          return MOZILLA_THUNDERBIRD;

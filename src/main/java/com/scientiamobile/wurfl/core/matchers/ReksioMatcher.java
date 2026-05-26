@@ -13,29 +13,29 @@ final class ReksioMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(REKSIO_DEVICE_ID);
       return requiredDeviceIds;
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("Reksio");
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       return REKSIO_DEVICE_ID;
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "ReksioMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Reksio";
    }
 }

@@ -23,7 +23,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.addAll(VERSION_TO_DEVICE_ID.values());
       requiredDeviceIds.add(GENERIC_MS_PHONE_OS7_DESKTOPMODE);
@@ -35,13 +35,13 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "WPDesktop", "ZuneWP7") || StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/") || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Windows Phone", "WindowsPhone", "NativeHost"));
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       boolean containsSeparator = normalizedUserAgent.contains("---");
       if (!containsSeparator || !StringMatchUtils.containsAnyOf(normalizedUserAgent, "WPDesktop", "ZuneWP7") && !StringMatchUtils.containsAllOf(normalizedUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/") && !UserAgentUtils.isWindowsPhoneAdClient(request.getCleanedDeviceUserAgent())) {
@@ -52,13 +52,13 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       int index;
       return (index = userAgent.indexOf("---")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, index + 3) : null;
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       boolean isDesktopMode = StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "WPDesktop", "ZuneWP7");
       boolean isArmEdge = false;
@@ -84,12 +84,12 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "WindowsPhoneMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "WindowsPhone";
    }
 

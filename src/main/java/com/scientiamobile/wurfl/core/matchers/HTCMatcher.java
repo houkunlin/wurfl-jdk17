@@ -16,7 +16,7 @@ final class HTCMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add("generic");
       requiredDeviceIds.add("generic_ms_mobile");
@@ -24,12 +24,12 @@ final class HTCMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "HTC", "XV6875");
    }
 
    @Override
-   protected final String risMatch(String normalizedUserAgent) {
+   protected String risMatch(String normalizedUserAgent) {
       int matchLength = normalizedUserAgent.length();
       Matcher prefixMatcher;
       if ((prefixMatcher = HTC_PREFIX.matcher(normalizedUserAgent)).find()) {
@@ -40,17 +40,17 @@ final class HTCMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       return request.getNormalizedDeviceUserAgent().contains("Windows CE;") ? "generic_ms_mobile" : "generic";
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "HTCMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "HTC";
    }
 }

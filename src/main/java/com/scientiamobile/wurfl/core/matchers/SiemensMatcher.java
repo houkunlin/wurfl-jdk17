@@ -4,17 +4,17 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 final class SiemensMatcher extends MatcherBase {
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("SIE-");
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "SiemensMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Siemens";
    }
 }

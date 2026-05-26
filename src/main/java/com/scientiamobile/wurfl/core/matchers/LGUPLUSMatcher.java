@@ -17,7 +17,7 @@ final class LGUPLUSMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).addAll(DEVICE_BY_TOKENS.keySet());
       requiredDeviceIds.add(GENERIC_LGUPLUS);
@@ -25,17 +25,17 @@ final class LGUPLUSMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "lgtelecom", "LGUPLUS");
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       return null;
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
       for(Map.Entry<String, String[]> entry : DEVICE_BY_TOKENS.entrySet()) {
          if (StringMatchUtils.containsAllOf(normalizedDeviceUserAgent, entry.getValue())) {
@@ -47,12 +47,12 @@ final class LGUPLUSMatcher extends MatcherBase {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "LGUPLUSMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "LGUPLUS";
    }
 

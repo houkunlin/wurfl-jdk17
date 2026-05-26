@@ -12,7 +12,7 @@ final class NintendoMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add("nintendo_wii_u_ver1");
       requiredDeviceIds.add("nintendo_wii_ver1");
@@ -25,7 +25,7 @@ final class NintendoMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       if (request._internalIsDesktopBrowser()) {
          return false;
@@ -37,7 +37,7 @@ final class NintendoMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       if (normalizedUserAgent.contains("New Nintendo 3DS")) {
          return "nintendo_new3ds_ver1";
@@ -57,12 +57,12 @@ final class NintendoMatcher extends MatcherBase {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "NintendoMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Nintendo";
    }
 }

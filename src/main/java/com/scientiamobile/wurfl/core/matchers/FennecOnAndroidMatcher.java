@@ -23,7 +23,7 @@ final class FennecOnAndroidMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       if (this.requiredDeviceIds != null) {
          return this.requiredDeviceIds;
       } else {
@@ -56,13 +56,13 @@ final class FennecOnAndroidMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Fennec", "Firefox");
    }
 
    @Override
-   protected final String risMatch(String normalizedUserAgent) {
+   protected String risMatch(String normalizedUserAgent) {
       Matcher versionPrefixMatcher = VERSION_PREFIX.matcher(normalizedUserAgent);
       int matchLength;
       return versionPrefixMatcher.find() && (matchLength = versionPrefixMatcher.end()) < normalizedUserAgent.length()
@@ -71,7 +71,7 @@ final class FennecOnAndroidMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String deviceId = null;
       int androidMajorVersion = 0;
       String androidVersion;
@@ -96,12 +96,12 @@ final class FennecOnAndroidMatcher extends MatcherBase {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "FennecOnAndroidMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "FennecOnAndroid";
    }
 }

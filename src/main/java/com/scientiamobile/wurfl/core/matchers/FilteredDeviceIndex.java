@@ -42,7 +42,7 @@ final class FilteredDeviceIndex {
    }
 
    @Override
-   public final String toString() {
+   public String toString() {
       return this.ownerFilter.getMatcherName() + this.userAgentToDeviceId.values();
    }
 }

@@ -22,7 +22,7 @@ public class TizenMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICE_IDS);
       requiredDeviceIds.add(GENERIC_TIZEN);
       return requiredDeviceIds;
@@ -35,13 +35,13 @@ public class TizenMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       int appleWebKitIndex = userAgent.indexOf("AppleWebKit/");
       return appleWebKitIndex >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, appleWebKitIndex + 12) : null;
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       Matcher versionMatcher = TIZEN_VERSION_PATTERN.matcher(normalizedUserAgent);
       String deviceIdSuffix = versionMatcher.find() && SUPPORTED_VERSIONS.contains(versionMatcher.group(1)) ? versionMatcher.group(1).replace('.', '_') : "1_0";

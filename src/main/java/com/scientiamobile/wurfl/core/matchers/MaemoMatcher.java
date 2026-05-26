@@ -17,7 +17,7 @@ final class MaemoMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(GENERIC_OPERA_MOBI_MAEMO);
       requiredDeviceIds.add(NOKIA_GENERIC_MAEMO_WITH_FIREFOX);
@@ -26,12 +26,12 @@ final class MaemoMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("Maemo");
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedDeviceUserAgent;
       if ((normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent()).contains("Opera Mobi")) {
          return GENERIC_OPERA_MOBI_MAEMO;
@@ -41,7 +41,7 @@ final class MaemoMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String risMatch(String normalizedUserAgent) {
+   protected String risMatch(String normalizedUserAgent) {
       int matchLength;
       return (matchLength = normalizedUserAgent.indexOf("---")) >= 0
          ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength + 3)
@@ -49,12 +49,12 @@ final class MaemoMatcher extends MatcherBase {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "MaemoMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Maemo";
    }
 }

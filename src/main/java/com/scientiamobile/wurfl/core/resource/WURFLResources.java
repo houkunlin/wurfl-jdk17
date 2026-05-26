@@ -63,7 +63,7 @@ public final class WURFLResources {
    }
 
    @Override
-   public final String toString() {
+   public String toString() {
       StringBuilder builder = new StringBuilder("[");
 
       for(int i = 0; i < this.resources.size(); ++i) {
@@ -79,7 +79,7 @@ public final class WURFLResources {
    }
 
    @Override
-   public final boolean equals(Object object) {
+   public boolean equals(Object object) {
       if (this == object) {
          return true;
       } else if (!(object instanceof WURFLResources)) {
@@ -91,7 +91,7 @@ public final class WURFLResources {
    }
 
    @Override
-   public final int hashCode() {
+   public int hashCode() {
       HashCodeBuilder hashCodeBuilder;
       (hashCodeBuilder = new HashCodeBuilder(53, 79)).append(this.getClass()).append(this.resources);
       return hashCodeBuilder.toHashCode();

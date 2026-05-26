@@ -246,7 +246,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    }
 
    @Override
-   public final WURFLUtils getWURFLUtils() {
+   public WURFLUtils getWURFLUtils() {
       this.ensureInitialized();
       this.lock.readLock().lock();
       WURFLUtils out = this.wurflUtils;
@@ -458,7 +458,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    }
 
    @Override
-   public final void setCapabilityFilter(String... capabilityFilter) {
+   public void setCapabilityFilter(String... capabilityFilter) {
       ArrayList<String> capabilities = new ArrayList<>(Arrays.asList(capabilityFilter));
 
       for(String capability : ALWAYS_INCLUDED_CAPABILITIES) {
@@ -471,7 +471,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    }
 
    @Override
-   public final void setCapabilityFilter(Collection<String> capabilityFilter) {
+   public void setCapabilityFilter(Collection<String> capabilityFilter) {
       if (capabilityFilter != null) {
          ArrayList<String> capabilities = new ArrayList<>(capabilityFilter);
 

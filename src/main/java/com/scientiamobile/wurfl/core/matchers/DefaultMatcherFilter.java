@@ -14,7 +14,7 @@ final class DefaultMatcherFilter implements MatcherFilter {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return this.matcher.canHandle(request);
    }
 
@@ -28,7 +28,7 @@ final class DefaultMatcherFilter implements MatcherFilter {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return this.matcher.getMatcherName();
    }
 }

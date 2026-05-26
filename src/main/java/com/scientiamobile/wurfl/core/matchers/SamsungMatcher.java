@@ -17,14 +17,14 @@ final class SamsungMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add("generic");
       return requiredDeviceIds;
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       if (request.getOriginalUserAgent().contains("SamsungBrowser")) {
          return false;
@@ -34,13 +34,13 @@ final class SamsungMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       int matchLength = StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SLASH_PREFIXES) ? StringMatchUtils.firstSlash(userAgent) : (StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SPACE_PREFIXES) ? StringMatchUtils.firstSpace(userAgent) : StringMatchUtils.secondSlash(userAgent));
       return matchLength == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       int samsungIndex = StringMatchUtils.indexOf(normalizedUserAgent, "Samsung");
       int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "/", samsungIndex);
@@ -49,12 +49,12 @@ final class SamsungMatcher extends MatcherBase {
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "SamsungMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Samsung";
    }
 }

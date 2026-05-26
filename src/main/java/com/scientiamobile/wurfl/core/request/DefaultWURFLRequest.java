@@ -162,7 +162,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    @Override
-   public final String getOriginalUserAgent() {
+   public String getOriginalUserAgent() {
       return this.userAgentPriority == UserAgentPriority.OverrideSideloadedBrowserUserAgent ? this.getDeviceUserAgent() : this.getBrowserUserAgent();
    }
 

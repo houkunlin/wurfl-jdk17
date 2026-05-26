@@ -29,7 +29,7 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
    }
 
    @Override
-   public final String getCapability(String capabilityName) {
+   public String getCapability(String capabilityName) {
       String capabilityValue;
       if ((capabilityValue = this.capabilitiesProvider.getCapability(this.capabilitiesCache, capabilityName)) == null) {
          throw new CapabilityNotDefinedException(capabilityName);
@@ -39,7 +39,7 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
    }
 
    @Override
-   public final Map<String, String> getCapabilities() {
+   public Map<String, String> getCapabilities() {
       if (this.capabilitiesCache == null || this.capabilitiesCache.size() < this.minCacheSize) {
          if (this.capabilitiesProvider == null) {
             throw new IllegalStateException("The device must be initialized before serialization");

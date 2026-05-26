@@ -17,7 +17,7 @@ final class ConnectivityCheckerTask implements Runnable {
    }
 
    @Override
-   public final void run() {
+   public void run() {
       try {
          HttpsURLConnection connection;
          URL url = URI.create("https://core.scientiamobile.com/api/v2/checkconnectivity/update").toURL();

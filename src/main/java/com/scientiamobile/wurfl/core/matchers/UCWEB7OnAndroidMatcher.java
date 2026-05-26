@@ -18,7 +18,7 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.addAll(ANDROID_VERSION_TO_DEVICE_ID.values());
       requiredDeviceIds.add(GENERIC_ANDROID_VER2_0_UCWEB);
@@ -26,30 +26,30 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Android", "UCWEB7");
    }
 
    @Override
-   protected final String risMatch(String userAgent) {
+   protected String risMatch(String userAgent) {
       return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, StringMatchUtils.indexOfOrLength(userAgent, "UCWEB7"));
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       String androidVersion = UserAgentUtils.getAndroidVersion(request.getNormalizedDeviceUserAgent(), true);
       String deviceId = ANDROID_VERSION_TO_DEVICE_ID.get(androidVersion);
       return deviceId != null ? deviceId : GENERIC_ANDROID_VER2_0_UCWEB;
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "UCWEB7OnAndroidMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "Ucweb7OnAndroid";
    }
 

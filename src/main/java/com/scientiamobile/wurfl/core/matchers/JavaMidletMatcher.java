@@ -13,29 +13,29 @@ final class JavaMidletMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(GENERIC_MIDP_MIDLET);
       return requiredDeviceIds;
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("UNTRUSTED/1.0");
    }
 
    @Override
-   protected final String applyConclusiveMatch(WURFLRequest request) {
+   protected String applyConclusiveMatch(WURFLRequest request) {
       return GENERIC_MIDP_MIDLET;
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "JavaMidletMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "JavaMidlet";
    }
 }

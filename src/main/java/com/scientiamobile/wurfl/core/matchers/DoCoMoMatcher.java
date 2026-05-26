@@ -15,7 +15,7 @@ final class DoCoMoMatcher extends MatcherBase {
    }
 
    @Override
-   protected final Set<String> getRequiredDeviceIds() {
+   protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(DOCOMO_VER1);
       requiredDeviceIds.add(DOCOMO_VER2);
@@ -23,12 +23,12 @@ final class DoCoMoMatcher extends MatcherBase {
    }
 
    @Override
-   public final boolean canHandle(WURFLRequest request) {
+   public boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("DoCoMo");
    }
 
    @Override
-   protected final String risMatch(String normalizedUserAgent) {
+   protected String risMatch(String normalizedUserAgent) {
       int matchLength;
       if ((matchLength = StringMatchUtils.secondSlash(normalizedUserAgent)) == -1) {
          matchLength = StringMatchUtils.firstOpenParenthesis(normalizedUserAgent);
@@ -40,17 +40,17 @@ final class DoCoMoMatcher extends MatcherBase {
    }
 
    @Override
-   protected final String applyRecoveryMatch(WURFLRequest request) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       return request.getNormalizedDeviceUserAgent().startsWith("DoCoMo/2") ? DOCOMO_VER2 : DOCOMO_VER1;
    }
 
    @Override
-   public final String getMatcherName() {
+   public String getMatcherName() {
       return "DoCoMoMatcher";
    }
 
    @Override
-   public final String getBucketMatcherName() {
+   public String getBucketMatcherName() {
       return "DoCoMo";
    }
 }

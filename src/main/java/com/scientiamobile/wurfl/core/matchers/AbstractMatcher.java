@@ -81,7 +81,7 @@ abstract class AbstractMatcher implements Matcher {
    }
 
    @Override
-   public final DeviceInfo match(WURFLRequest request) {
+   public DeviceInfo match(WURFLRequest request) {
       String deviceId = "generic";
       request.normalizeUserAgent(this.normalizer);
       String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
@@ -165,7 +165,7 @@ abstract class AbstractMatcher implements Matcher {
    }
 
    @Override
-   public final String normalize(String value) {
+   public String normalize(String value) {
       return this.normalizer == null ? value : this.normalizer.normalize(value);
    }
 
