@@ -7,8 +7,8 @@ import java.io.Serializable;
 public class IsHTMLPreferred implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = -4750338441403942375L;
 
-   public String eval(Device var1, WURFLRequest var2) {
-      return Boolean.toString(var1.getCapability("preferred_markup").startsWith("html_web"));
+   public String eval(Device device, WURFLRequest request) {
+      return Boolean.toString(device.getCapability("preferred_markup").startsWith("html_web"));
    }
 
    public String getHandledVirtualCapabilityName() {

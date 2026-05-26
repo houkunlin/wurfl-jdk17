@@ -28,7 +28,7 @@ public interface VirtualCapabilityEvaluator {
    String MOBILE_BROWSER_VERSION = "mobile_browser_version";
    String[] MANDATORY_CAPABILITIES = new String[]{"device_os", "ux_full_desktop", "xhtml_support_level", "preferred_markup", "is_smarttv", "is_wireless_device", "is_tablet", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "resolution_width", "resolution_height", "pointing_method", "device_os_version", "mobile_browser_version"};
 
-   String eval(Device var1, WURFLRequest var2);
+   String eval(Device device, WURFLRequest request);
 
    String getHandledVirtualCapabilityName();
 }

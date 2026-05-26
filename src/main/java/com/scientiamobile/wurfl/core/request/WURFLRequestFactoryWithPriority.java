@@ -5,5 +5,5 @@ import com.scientiamobile.wurfl.core.UserAgentPriority;
 public interface WURFLRequestFactoryWithPriority extends WURFLRequestFactory {
    UserAgentPriority getUserAgentPriority();
 
-   void setUserAgentPriority(UserAgentPriority var1);
+   void setUserAgentPriority(UserAgentPriority userAgentPriority);
 }

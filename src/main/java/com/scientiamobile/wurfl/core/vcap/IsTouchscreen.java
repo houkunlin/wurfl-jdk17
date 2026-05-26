@@ -8,9 +8,9 @@ import java.io.Serializable;
 public class IsTouchscreen implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 3516513258503645772L;
 
-   public String eval(Device var1, WURFLRequest var2) {
-      String var3 = var2.isUrlEncoded() ? var2.getCleanedDeviceUserAgent() : var2.getOriginalUserAgent();
-      return Boolean.toString("touchscreen".equals(var1.getCapability("pointing_method")) || StringMatchUtils.containsAllOf(var3, "Trident", "Touch"));
+   public String eval(Device device, WURFLRequest request) {
+      String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
+      return Boolean.toString("touchscreen".equals(device.getCapability("pointing_method")) || StringMatchUtils.containsAllOf(userAgent, "Trident", "Touch"));
    }
 
    public String getHandledVirtualCapabilityName() {

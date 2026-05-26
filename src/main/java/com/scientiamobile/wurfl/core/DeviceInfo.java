@@ -8,7 +8,7 @@ public class DeviceInfo {
    private final String matcherName;
    private final String bucketMatcherName;
 
-   public DeviceInfo(String id, MatchType matchType, String matcherName, String bucketMatcherName, String var5, String var6) {
+   public DeviceInfo(String id, MatchType matchType, String matcherName, String bucketMatcherName, String unused1, String unused2) {
       this.id = id;
       this.matchType = matchType;
       this.matcherName = matcherName;

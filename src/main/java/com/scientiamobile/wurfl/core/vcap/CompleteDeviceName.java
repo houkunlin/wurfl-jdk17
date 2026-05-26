@@ -7,18 +7,18 @@ import java.io.Serializable;
 public class CompleteDeviceName implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = -65030764132400949L;
 
-   public String eval(Device var1, WURFLRequest var2) {
-      StringBuilder var4 = new StringBuilder(var1.getCapability("brand_name"));
-      String var3;
-      if ((var3 = var1.getCapability("model_name")).length() > 0) {
-         var4.append(" ").append(var3);
+   public String eval(Device device, WURFLRequest request) {
+      StringBuilder builder = new StringBuilder(device.getCapability("brand_name"));
+      String namePart;
+      if ((namePart = device.getCapability("model_name")).length() > 0) {
+         builder.append(" ").append(namePart);
       }
 
-      if ((var3 = var1.getCapability("marketing_name")).length() > 0) {
-         var4.append(" (").append(var3).append(")");
+      if ((namePart = device.getCapability("marketing_name")).length() > 0) {
+         builder.append(" (").append(namePart).append(")");
       }
 
-      return var4.toString();
+      return builder.toString();
    }
 
    public String getHandledVirtualCapabilityName() {

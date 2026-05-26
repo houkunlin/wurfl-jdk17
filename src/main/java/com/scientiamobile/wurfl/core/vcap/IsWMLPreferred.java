@@ -7,10 +7,10 @@ import java.io.Serializable;
 public class IsWMLPreferred implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 4429460118740181952L;
 
-   public String eval(Device var1, WURFLRequest var2) {
+   public String eval(Device device, WURFLRequest request) {
       try {
-         return Boolean.toString(var1.getCapabilityAsInt("xhtml_support_level") <= 0);
-      } catch (Exception var3) {
+         return Boolean.toString(device.getCapabilityAsInt("xhtml_support_level") <= 0);
+      } catch (Exception e) {
          return "false";
       }
    }

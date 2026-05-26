@@ -10,37 +10,37 @@ public class ResourceUtils {
    }
 
    public static String getBuildId() {
-      String var0;
-      String var1 = var0 = getFullBuildId();
-      if (var0 != null && !"unknown".equals(var0)) {
-         int var2;
-         var1 = (var2 = var0.indexOf(":")) != -1 ? var0.substring(var2 + 1) : var0;
+      String fullBuildId;
+      String result = fullBuildId = getFullBuildId();
+      if (fullBuildId != null && !"unknown".equals(fullBuildId)) {
+         int colonIndex;
+         result = (colonIndex = fullBuildId.indexOf(":")) != -1 ? fullBuildId.substring(colonIndex + 1) : fullBuildId;
       }
 
-      return var1;
+      return result;
    }
 
    public static String getFullBuildId() {
-      String var0 = "unknown";
-      InputStream var1;
-      if ((var1 = ResourceUtils.class.getResourceAsStream("/ca")) != null) {
-         BufferedReader var12 = new BufferedReader(new InputStreamReader(var1));
+      String buildId = "unknown";
+      InputStream inputStream;
+      if ((inputStream = ResourceUtils.class.getResourceAsStream("/ca")) != null) {
+         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
          try {
-            String var2 = (var0 = var12.readLine()) != null ? var0 : "unknown";
-            return var2;
-         } catch (IOException var9) {
+            String line = (buildId = reader.readLine()) != null ? buildId : "unknown";
+            return line;
+         } catch (IOException e) {
          } finally {
             try {
-               var12.close();
-            } catch (IOException var8) {
+               reader.close();
+            } catch (IOException e) {
             }
 
          }
 
-         return var0;
+         return buildId;
       } else {
-         return var0;
+         return buildId;
       }
    }
 }

@@ -6,9 +6,9 @@ import java.util.Set;
 public interface WURFLModel {
    String getVersion();
 
-   ModelDevice getDeviceById(String var1);
+   ModelDevice getDeviceById(String deviceId);
 
-   boolean isDeviceDefined(String var1);
+   boolean isDeviceDefined(String deviceId);
 
    Set getAllDevices();
 
@@ -16,35 +16,35 @@ public interface WURFLModel {
 
    Set getAllDevicesId();
 
-   Set getDevices(Set var1);
+   Set getDevices(Set deviceIds);
 
-   List getDeviceHierarchy(ModelDevice var1);
+   List getDeviceHierarchy(ModelDevice device);
 
-   ModelDevice getDeviceFallback(ModelDevice var1);
+   ModelDevice getDeviceFallback(ModelDevice device);
 
-   ModelDevice getDeviceAncestor(ModelDevice var1);
+   ModelDevice getDeviceAncestor(ModelDevice device);
 
    int size();
 
    Integer getCapabilityCount();
 
-   void reload(WURFLResource var1, WURFLResources var2, String... var3);
+   void reload(WURFLResource resource, WURFLResources resources, String... params);
 
-   void applyPatches(WURFLResources var1, String... var2);
+   void applyPatches(WURFLResources resources, String... params);
 
    Set getAllCapabilities();
 
-   boolean isCapabilityDefined(String var1);
+   boolean isCapabilityDefined(String capabilityName);
 
-   String getGroupByCapability(String var1);
+   String getGroupByCapability(String capabilityName);
 
-   ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice var1, String var2);
+   ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice device, String capabilityName);
 
    Set getAllGroups();
 
-   boolean isGroupDefined(String var1);
+   boolean isGroupDefined(String groupId);
 
-   Set getCapabilitiesForGroup(String var1);
+   Set getCapabilitiesForGroup(String groupId);
 
    Set getRootDevicesIds();
 }
