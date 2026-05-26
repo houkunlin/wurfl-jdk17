@@ -36,8 +36,8 @@ import org.slf4j.LoggerFactory;
 
 public class IntrospectorServlet extends HttpServlet implements WurflWebConstants {
    private static final long serialVersionUID = 1L;
-   private static WURFLEngine a = null;
-   private final ObjectMapper b = new ObjectMapper();
+   private static WURFLEngine wurflEngine = null;
+   private final ObjectMapper objectMapper = new ObjectMapper();
    public static final String ESCAPED_SPLIT_CHAR = "\\|";
    public static final String SPLIT_CHAR = "|";
    public static final String COLON = ":";
@@ -59,293 +59,292 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
    public static final String REQUEST_ACCURACY = "RequestAccuracy";
    public static final String INFO = "Info";
    public static final String BUCKETS = "Buckets";
-   private static final Pattern c = Pattern.compile("[\r\n]+");
-   private static final Logger d = LoggerFactory.getLogger(IntrospectorServlet.class);
-   private static String e;
+   private static final Pattern LINE_BREAK_PATTERN = Pattern.compile("[\r\n]+");
+   private static final Logger log = LoggerFactory.getLogger(IntrospectorServlet.class);
+   private static String apiVersion;
 
-   public static void setWURFLEngine(WURFLEngine var0) {
-      a = var0;
+   public static void setWURFLEngine(WURFLEngine wurflEngine) {
+      IntrospectorServlet.wurflEngine = wurflEngine;
    }
 
-   public void init(ServletConfig var1) throws ServletException {
-      super.init(var1);
+   public void init(ServletConfig config) throws ServletException {
+      super.init(config);
       this.getServletContext().getServerInfo();
       (new StringBuilder()).append(System.getProperty("os.name")).append(" ").append(System.getProperty("os.version"));
       (new StringBuilder()).append(System.getProperty("java.vendor")).append(" ").append(System.getProperty("java.version"));
    }
 
-   protected void doGet(HttpServletRequest var1, HttpServletResponse var2) throws ServletException, IOException {
-      this.doPost(var1, var2);
+   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      this.doPost(request, response);
    }
 
-   protected void doPost(HttpServletRequest var1, HttpServletResponse var2) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       System.currentTimeMillis();
-      String var5 = var1.getParameter("action");
-      boolean var3 = false;
-      var2.setContentType("text/plain");
-      PrintWriter var7 = var2.getWriter();
-      if ("Request".equalsIgnoreCase(var5)) {
-         a.setEngineTarget(EngineTarget.accuracy);
-         var3 = this.a(var1, var7);
-      } else if ("Info".equalsIgnoreCase(var5)) {
-         a.setEngineTarget(EngineTarget.accuracy);
+      String action = request.getParameter("action");
+      boolean handled = false;
+      response.setContentType("text/plain");
+      PrintWriter out = response.getWriter();
+      if ("Request".equalsIgnoreCase(action)) {
+         wurflEngine.setEngineTarget(EngineTarget.accuracy);
+         handled = this.handleRequest(request, out);
+      } else if ("Info".equalsIgnoreCase(action)) {
+         wurflEngine.setEngineTarget(EngineTarget.accuracy);
          boolean var10000;
-         if (a == null) {
-            b(var7);
+         if (wurflEngine == null) {
+            writeMissingEngineError(out);
             var10000 = true;
          } else {
-            EngineTarget var4 = a.getEngineTarget();
-            IntrospectorInfoResponse var8 = new IntrospectorInfoResponse();
-            var8.apiVersion = e;
-            var8.wurflVersion = a.getWURFLUtils().getVersion();
-            var8.engineTarget = var4.name();
-            var8.userAgentPriority = a.getUserAgentPriority().name();
-            var8.serverInfo = this.getServletContext().getServerInfo();
-            var8.osName = System.getProperty("os.name");
-            var8.osVersion = System.getProperty("os.version");
-            var8.javaVendor = System.getProperty("java.vendor");
-            var8.javaVersion = System.getProperty("java.version");
-            String var6 = this.b.writerWithDefaultPrettyPrinter().writeValueAsString(var8);
-            var7.println(var6);
+            EngineTarget engineTarget = wurflEngine.getEngineTarget();
+            IntrospectorInfoResponse responseBody = new IntrospectorInfoResponse();
+            responseBody.apiVersion = apiVersion;
+            responseBody.wurflVersion = wurflEngine.getWURFLUtils().getVersion();
+            responseBody.engineTarget = engineTarget.name();
+            responseBody.userAgentPriority = wurflEngine.getUserAgentPriority().name();
+            responseBody.serverInfo = this.getServletContext().getServerInfo();
+            responseBody.osName = System.getProperty("os.name");
+            responseBody.osVersion = System.getProperty("os.version");
+            responseBody.javaVendor = System.getProperty("java.vendor");
+            responseBody.javaVersion = System.getProperty("java.version");
+            String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
+            out.println(json);
             var10000 = true;
          }
 
-         var3 = var10000;
-      } else if ("form".equalsIgnoreCase(var5)) {
-         a.setEngineTarget(EngineTarget.valueOf(var1.getParameter("wurflEngineTarget")));
-         a.setUserAgentPriority(UserAgentPriority.valueOf(var1.getParameter("wurflUserAgentPriority")));
-         var3 = this.a(var1, var7);
-      } else if ("Buckets".equalsIgnoreCase(var5)) {
-         var3 = this.a(var7);
+         handled = var10000;
+      } else if ("form".equalsIgnoreCase(action)) {
+         wurflEngine.setEngineTarget(EngineTarget.valueOf(request.getParameter("wurflEngineTarget")));
+         wurflEngine.setUserAgentPriority(UserAgentPriority.valueOf(request.getParameter("wurflUserAgentPriority")));
+         handled = this.handleRequest(request, out);
+      } else if ("Buckets".equalsIgnoreCase(action)) {
+         handled = this.writeBuckets(out);
       }
 
-      if (!var3) {
-         var7.println("action " + var5 + " not supported");
+      if (!handled) {
+         out.println("action " + action + " not supported");
       }
 
-      var7.flush();
+      out.flush();
    }
 
-   private boolean a(PrintWriter var1) {
-      if (a == null) {
-         b(var1);
+   private boolean writeBuckets(PrintWriter out) {
+      if (wurflEngine == null) {
+         writeMissingEngineError(out);
          return true;
       } else {
          try {
-            var1.println("WURFL Java API " + e);
-            Field var2;
-            boolean var3 = (var2 = GeneralWURFLEngine.class.getDeclaredField("o")).canAccess(a);
-            var2.setAccessible(true);
-            WURFLModel var4 = (WURFLModel)var2.get(a);
-            Field var5;
-            boolean var6 = (var5 = GeneralWURFLEngine.class.getDeclaredField("l")).canAccess(a);
-            var5.setAccessible(true);
-            Object var7 = var5.get(a);
-            ArrayList<String> var8 = null;
-            if (var4 != null && var7 != null) {
-               Field var9;
-               boolean var10 = (var9 = var7.getClass().getDeclaredField("engineTarget")).canAccess(var7);
-               var9.setAccessible(true);
-               EngineTarget var11 = (EngineTarget)var9.get(var7);
-               Field var12;
-               boolean var13 = (var12 = var7.getClass().getDeclaredField("matcherManager")).canAccess(var7);
-               var12.setAccessible(true);
-               MatcherManager var14 = (MatcherManager)var12.get(var7);
-               Set var24 = var4.getAllDevices();
-               ArrayList<String> var15 = new ArrayList<>(var24.size());
-               Iterator var25 = var24.iterator();
+            out.println("WURFL Java API " + apiVersion);
+            Field modelField;
+            boolean originalModelAccess = (modelField = GeneralWURFLEngine.class.getDeclaredField("o")).canAccess(wurflEngine);
+            modelField.setAccessible(true);
+            WURFLModel wurflModel = (WURFLModel)modelField.get(wurflEngine);
+            Field holderField;
+            boolean originalHolderAccess = (holderField = GeneralWURFLEngine.class.getDeclaredField("l")).canAccess(wurflEngine);
+            holderField.setAccessible(true);
+            Object wurflHolder = holderField.get(wurflEngine);
+            ArrayList<String> resultLines = null;
+            if (wurflModel != null && wurflHolder != null) {
+               Field engineTargetField;
+               boolean originalEngineTargetAccess = (engineTargetField = wurflHolder.getClass().getDeclaredField("engineTarget")).canAccess(wurflHolder);
+               engineTargetField.setAccessible(true);
+               EngineTarget originalEngineTarget = (EngineTarget)engineTargetField.get(wurflHolder);
+               Field matcherManagerField;
+               boolean originalMatcherManagerAccess = (matcherManagerField = wurflHolder.getClass().getDeclaredField("matcherManager")).canAccess(wurflHolder);
+               matcherManagerField.setAccessible(true);
+               MatcherManager matcherManager = (MatcherManager)matcherManagerField.get(wurflHolder);
+               Set allDevices = wurflModel.getAllDevices();
+               ArrayList<String> userAgents = new ArrayList<>(allDevices.size());
+               Iterator var25 = allDevices.iterator();
 
                while(var25.hasNext()) {
-                  ModelDevice var18;
-                  if (!StringUtils.isEmpty((var18 = (ModelDevice)var25.next()).getUserAgent())) {
-                     var15.add(var18.getUserAgent());
+                  ModelDevice device = (ModelDevice)var25.next();
+                  if (!StringUtils.isEmpty(device.getUserAgent())) {
+                     userAgents.add(device.getUserAgent());
                   }
                }
 
-               var9.set(var7, EngineTarget.accuracy);
-               var8 = new ArrayList<>(var15.size());
-               ArrayList<MatchResultRow> var26 = new ArrayList<>(var15.size());
-               DefaultWURFLRequestFactory var16 = new DefaultWURFLRequestFactory();
-               d.info("BUCKETS (1/3): start matching...");
-               long var33 = System.currentTimeMillis();
+               engineTargetField.set(wurflHolder, EngineTarget.accuracy);
+               resultLines = new ArrayList<>(userAgents.size());
+               ArrayList<MatchResultRow> matchResults = new ArrayList<>(userAgents.size());
+               DefaultWURFLRequestFactory requestFactory = new DefaultWURFLRequestFactory();
+               log.info("BUCKETS (1/3): start matching...");
+               long start = System.currentTimeMillis();
 
-               for(String var17 : var15) {
-                  DeviceInfo var31 = var14.matchRequest(var16.createRequest(var17, EngineTarget.accuracy));
-                  String var20 = a((String)"matcherName", (Object)var31);
-                  String var21 = a((String)"normalizedUserAgent", (Object)var31);
-                  String var22 = a((String)"originalUserAgent", (Object)var31);
-                  var26.add(new MatchResultRow(var20, var31.getId(), var21, var22));
+               for(String ua : userAgents) {
+                  DeviceInfo deviceInfo = matcherManager.matchRequest(requestFactory.createRequest(ua, EngineTarget.accuracy));
+                  String matcherName = readStringField("matcherName", deviceInfo);
+                  String normalizedUserAgent = readStringField("normalizedUserAgent", deviceInfo);
+                  String originalUserAgent = readStringField("originalUserAgent", deviceInfo);
+                  matchResults.add(new MatchResultRow(matcherName, deviceInfo.getId(), normalizedUserAgent, originalUserAgent));
                }
 
-               d.info("BUCKETS (1/3): finished matching. Took " + (System.currentTimeMillis() - var33) + " ms");
-               d.info("BUCKETS (2/3): start sorting...");
-               var33 = System.currentTimeMillis();
-               Collections.sort(var26);
-               d.info("BUCKETS (2/3): finished sorting. Took " + (System.currentTimeMillis() - var33) + " ms");
-               d.info("BUCKETS (3/3): start building strings...");
-               var33 = System.currentTimeMillis();
+               log.info("BUCKETS (1/3): finished matching. Took " + (System.currentTimeMillis() - start) + " ms");
+               log.info("BUCKETS (2/3): start sorting...");
+               start = System.currentTimeMillis();
+               Collections.sort(matchResults);
+               log.info("BUCKETS (2/3): finished sorting. Took " + (System.currentTimeMillis() - start) + " ms");
+               log.info("BUCKETS (3/3): start building strings...");
+               start = System.currentTimeMillis();
 
-               for(MatchResultRow var32 : var26) {
-                  var8.add(var32.toString());
+               for(MatchResultRow row : matchResults) {
+                  resultLines.add(row.toString());
                }
 
-               d.info("BUCKETS (3/3): finished building strings. Took " + (System.currentTimeMillis() - var33) + " ms");
-               var9.set(var7, var11);
-               var12.setAccessible(var13);
-               var9.setAccessible(var10);
+               log.info("BUCKETS (3/3): finished building strings. Took " + (System.currentTimeMillis() - start) + " ms");
+               engineTargetField.set(wurflHolder, originalEngineTarget);
+               matcherManagerField.setAccessible(originalMatcherManagerAccess);
+               engineTargetField.setAccessible(originalEngineTargetAccess);
             }
 
-            var5.setAccessible(var6);
-            var2.setAccessible(var3);
+            holderField.setAccessible(originalHolderAccess);
+            modelField.setAccessible(originalModelAccess);
 
-            for(Object lineObj : var8) {
-               var1.println((String)lineObj);
+            for(Object lineObj : resultLines) {
+               out.println((String)lineObj);
             }
 
             return true;
          } catch (Exception var23) {
-            d.debug(var23.getClass().getSimpleName() + " - " + var23.getMessage());
+            log.debug(var23.getClass().getSimpleName() + " - " + var23.getMessage());
             return false;
          }
       }
    }
 
-   private static String a(String var0, Object var1) {
+   private static String readStringField(String fieldName, Object target) {
       try {
-         Field var3;
-         boolean var2 = (var3 = var1.getClass().getDeclaredField(var0)).canAccess(var1);
-         var3.setAccessible(true);
-         String var4 = (String)var3.get(var1);
-         var3.setAccessible(var2);
-         return var4;
+         Field field;
+         boolean originalAccess = (field = target.getClass().getDeclaredField(fieldName)).canAccess(target);
+         field.setAccessible(true);
+         String value = (String)field.get(target);
+         field.setAccessible(originalAccess);
+         return value;
       } catch (Exception var5) {
          return null;
       }
    }
 
-   private boolean a(HttpServletRequest var1, PrintWriter var2) throws IOException {
-      if (a == null) {
-         b(var2);
+   private boolean handleRequest(HttpServletRequest request, PrintWriter out) throws IOException {
+      if (wurflEngine == null) {
+         writeMissingEngineError(out);
          return true;
       } else {
-         String var3;
-         if ((var3 = var1.getParameter("uaprof")) == null || var3.trim().length() == 0) {
-            var3 = var1.getHeader("x-wap-profile");
+         String uaProfile;
+         if ((uaProfile = request.getParameter("uaprof")) == null || uaProfile.trim().length() == 0) {
+            uaProfile = request.getHeader("x-wap-profile");
          }
 
-         if (var3 == null) {
-            var3 = var1.getHeader("X-Wap-Profile");
+         if (uaProfile == null) {
+            uaProfile = request.getHeader("X-Wap-Profile");
          }
 
-         HeaderOnlyHttpServletRequest var5 = new HeaderOnlyHttpServletRequest();
-         if (var1.getParameter("form") == null) {
-            HashMap<String, String> var4 = new HashMap<>();
-            Enumeration<String> var6 = var1.getHeaderNames();
+         HeaderOnlyHttpServletRequest headerOnlyRequest = new HeaderOnlyHttpServletRequest();
+         if (request.getParameter("form") == null) {
+            HashMap<String, String> headers = new HashMap<>();
+            Enumeration<String> headerNames = request.getHeaderNames();
 
-            while(var6.hasMoreElements()) {
-               String var7 = var6.nextElement().toString();
-               if ("User-Agent".equalsIgnoreCase(var7)) {
-                  var4.put("User-Agent", var1.getHeader(var7));
+            while(headerNames.hasMoreElements()) {
+               String headerName = headerNames.nextElement().toString();
+               if ("User-Agent".equalsIgnoreCase(headerName)) {
+                  headers.put("User-Agent", request.getHeader(headerName));
                } else {
-                  var4.put(var7, var1.getHeader(var7));
+                  headers.put(headerName, request.getHeader(headerName));
                }
             }
 
-            var5.addHeaders(var4);
-            UserAgentUtils.getUserAgent(var1);
+            headerOnlyRequest.addHeaders(headers);
+            UserAgentUtils.getUserAgent(request);
          } else {
-            String var11;
-            if ((var11 = var1.getParameter("ua")) == null || var11.trim().length() <= 0) {
-               var11 = var1.getHeader("User-Agent");
+            String userAgent;
+            if ((userAgent = request.getParameter("ua")) == null || userAgent.trim().length() <= 0) {
+               userAgent = request.getHeader("User-Agent");
             }
 
-            if (var11 != null) {
-               var5.addHeader("User-Agent", var11);
+            if (userAgent != null) {
+               headerOnlyRequest.addHeader("User-Agent", userAgent);
             }
 
-            String var16;
-            if ((var16 = var1.getParameter("headers")) != null && var16.trim().length() > 0) {
-               var16 = var16.trim();
-               String[] var17 = c.matcher(var16).replaceAll("|").split("\\|");
+            String rawHeaders;
+            if ((rawHeaders = request.getParameter("headers")) != null && rawHeaders.trim().length() > 0) {
+               rawHeaders = rawHeaders.trim();
+               String[] headerPairs = LINE_BREAK_PATTERN.matcher(rawHeaders).replaceAll("|").split("\\|");
 
-               for(int var8 = 0; var8 < var17.length; ++var8) {
-                  String var9;
-                  if ((var9 = var17[var8]).indexOf(":") >= 0) {
-                     String[] var10 = var9.split(":");
-                     var5.addHeader(var10[0].trim(), var10[1].trim());
+               for(int i = 0; i < headerPairs.length; ++i) {
+                  String headerPair = headerPairs[i];
+                  if (headerPair.indexOf(":") >= 0) {
+                     String[] headerKeyValue = headerPair.split(":");
+                     headerOnlyRequest.addHeader(headerKeyValue[0].trim(), headerKeyValue[1].trim());
                   }
                }
             }
          }
 
-         if (var3 != null) {
-            var5.addHeader("X-Wap-Profile", var3);
+         if (uaProfile != null) {
+            headerOnlyRequest.addHeader("X-Wap-Profile", uaProfile);
          }
 
-         String var13 = var1.getParameter("capabilities");
-         String[] var18 = null;
-         if (var13 != null && var13.trim().length() > 0) {
-            var13 = var13.trim();
-            var18 = c.matcher(var13).replaceAll("|").split("\\|");
+         String rawCapabilities = request.getParameter("capabilities");
+         String[] capabilities = null;
+         if (rawCapabilities != null && rawCapabilities.trim().length() > 0) {
+            rawCapabilities = rawCapabilities.trim();
+            capabilities = LINE_BREAK_PATTERN.matcher(rawCapabilities).replaceAll("|").split("\\|");
          }
 
-         IntrospectorRequestResponse var19 = new IntrospectorRequestResponse();
-         Device var15;
-         var15 = a.getDeviceForRequest((HttpServletRequest)var5);
-         var19.deviceId = var15.getId();
-         var19.userAgent = var5.getHeader("User-Agent");
-         var19.requestType = var1.getParameter("form") == null ? "request" : "form";
-         if (var18 != null && var18.length > 0) {
-            HashMap<String, String> var20 = new HashMap<>();
+         IntrospectorRequestResponse responseBody = new IntrospectorRequestResponse();
+         Device device = wurflEngine.getDeviceForRequest((HttpServletRequest)headerOnlyRequest);
+         responseBody.deviceId = device.getId();
+         responseBody.userAgent = headerOnlyRequest.getHeader("User-Agent");
+         responseBody.requestType = request.getParameter("form") == null ? "request" : "form";
+         if (capabilities != null && capabilities.length > 0) {
+            HashMap<String, String> capabilityMap = new HashMap<>();
 
-            for(int var22 = 0; var22 < var18.length; ++var22) {
-               String var23 = var18[var22].trim();
-               var20.put(var23, var15.getCapability(var23));
+            for(int i = 0; i < capabilities.length; ++i) {
+               String capabilityName = capabilities[i].trim();
+               capabilityMap.put(capabilityName, device.getCapability(capabilityName));
             }
-            var19.capabilities = var20;
+            responseBody.capabilities = capabilityMap;
          }
 
-         String var21 = this.b.writerWithDefaultPrettyPrinter().writeValueAsString(var19);
-         var2.println(var21);
+         String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
+         out.println(json);
          return true;
       }
    }
 
-   private static void b(PrintWriter var0) {
-      StringBuilder var1;
-      (var1 = new StringBuilder()).append("INTROSPECTOR SERVLET ERROR!\n");
-      var1.append("\n");
-      var1.append("No WURFLHolder was initialized in the IntrospectorServlet.\n");
-      var1.append("To use IntrospectorServlet, please call the method:\n");
-      var1.append("\tpublic static void IntrospectorServlet.setWURFLHolder(WURFLHolder holder)\n");
-      var1.append("to provide the servlet with the running WURFL instance.\n");
-      var1.append("\n");
-      var1.append("For more details, see documentation.\n");
-      var0.println(var1.toString());
+   private static void writeMissingEngineError(PrintWriter out) {
+      StringBuilder message;
+      (message = new StringBuilder()).append("INTROSPECTOR SERVLET ERROR!\n");
+      message.append("\n");
+      message.append("No WURFLEngine was initialized in the IntrospectorServlet.\n");
+      message.append("To use IntrospectorServlet, please call the method:\n");
+      message.append("\tpublic static void IntrospectorServlet.setWURFLEngine(WURFLEngine wurflEngine)\n");
+      message.append("to provide the servlet with the running WURFL instance.\n");
+      message.append("\n");
+      message.append("For more details, see documentation.\n");
+      out.println(message.toString());
    }
 
    static {
-      String var0 = "/META-INF/maven/com.scientiamobile.wurfl/wurfl/pom.properties";
-      InputStream var10 = IntrospectorServlet.class.getResourceAsStream(var0);
-      Properties var1 = new Properties();
+      String resourcePath = "/META-INF/maven/com.scientiamobile.wurfl/wurfl/pom.properties";
+      InputStream pomPropertiesStream = IntrospectorServlet.class.getResourceAsStream(resourcePath);
+      Properties pomProperties = new Properties();
 
       try {
-         var1.load(var10);
-         e = "1.9.1.0";
+         pomProperties.load(pomPropertiesStream);
+         apiVersion = "1.9.1.0";
       } catch (IOException var8) {
-         e = "(Unavailable...)";
+         apiVersion = "(Unavailable...)";
       } finally {
          try {
-            var10.close();
+            pomPropertiesStream.close();
          } catch (Exception var7) {
          }
 
       }
 
-      if (e == null || "".equals(e)) {
-         e = "(Unavailable...)";
+      if (apiVersion == null || "".equals(apiVersion)) {
+         apiVersion = "(Unavailable...)";
       }
 
-      d.info("WURFL core library running version " + var1.get("version"));
+      log.info("WURFL core library running version " + pomProperties.get("version"));
    }
 }

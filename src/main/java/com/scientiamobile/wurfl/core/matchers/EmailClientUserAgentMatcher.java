@@ -93,7 +93,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
    }
 
    static {
-      List<String> var10000 = UserAgentUtils.getMobileBrowsers();
+      List<String> var10000 = UserAgentUtils.getMobileKeywords();
       f = var10000.toArray(new String[0]);
       (g = new ArrayList<>()).add(MOZILLA_THUNDERBIRD);
       g.add(MS_OUTLOOK);
