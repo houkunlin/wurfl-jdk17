@@ -71,7 +71,7 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
    private static int parseIntOrMinusOne(String value) {
       try {
          return Integer.parseInt(value);
-      } catch (NumberFormatException var1) {
+      } catch (NumberFormatException e) {
          return -1;
       }
    }

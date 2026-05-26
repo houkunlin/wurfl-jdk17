@@ -4,14 +4,14 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 public class UserAgentNotUniqueException extends UserAgentConsistencyException {
    private static final long serialVersionUID = 10L;
-   private ModelDevice a;
+   private ModelDevice definingDevice;
 
-   public UserAgentNotUniqueException(ModelDevice var1, String var2, ModelDevice var3) {
-      super(var1, var2, (new StringBuilder("Device: ")).append(var1).append(" define duplicate user-agent: ").append(var2).append(" defined by device: ").append(var3).toString());
-      this.a = var3;
+   public UserAgentNotUniqueException(ModelDevice device, String userAgent, ModelDevice definingDevice) {
+      super(device, userAgent, (new StringBuilder("Device: ")).append(device).append(" define duplicate user-agent: ").append(userAgent).append(" defined by device: ").append(definingDevice).toString());
+      this.definingDevice = definingDevice;
    }
 
    public ModelDevice getDefiningDevice() {
-      return this.a;
+      return this.definingDevice;
    }
 }

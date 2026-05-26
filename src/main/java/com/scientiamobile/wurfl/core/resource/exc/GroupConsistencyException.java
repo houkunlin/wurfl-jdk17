@@ -4,19 +4,19 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 public abstract class GroupConsistencyException extends DeviceConsistencyException {
    private static final long serialVersionUID = 10L;
-   private String a;
+   private String groupId;
 
-   public GroupConsistencyException(ModelDevice var1, String var2) {
-      super(var1, (new StringBuilder("Group: ")).append(var2).append(" in device: ").append(var1.getID()).append(" consistency exception").toString());
-      this.a = var2;
+   public GroupConsistencyException(ModelDevice device, String groupId) {
+      super(device, (new StringBuilder("Group: ")).append(groupId).append(" in device: ").append(device.getID()).append(" consistency exception").toString());
+      this.groupId = groupId;
    }
 
-   public GroupConsistencyException(ModelDevice var1, String var2, String var3) {
-      super(var1, var3);
-      this.a = var2;
+   public GroupConsistencyException(ModelDevice device, String groupId, String message) {
+      super(device, message);
+      this.groupId = groupId;
    }
 
    public String getGroup() {
-      return this.a;
+      return this.groupId;
    }
 }

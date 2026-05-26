@@ -7,8 +7,8 @@ import java.io.Serializable;
 public class IsIOs implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 5384820129703085119L;
 
-   public String eval(Device var1, WURFLRequest var2) {
-      return Boolean.toString("iOS".equals(var1.getCapability("device_os")) || "iPhoneOS".equals(var1.getCapability("device_os")));
+   public String eval(Device device, WURFLRequest request) {
+      return Boolean.toString("iOS".equals(device.getCapability("device_os")) || "iPhoneOS".equals(device.getCapability("device_os")));
    }
 
    public String getHandledVirtualCapabilityName() {

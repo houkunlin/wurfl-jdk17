@@ -6,13 +6,13 @@ public enum Frequency {
    THREE_DAYS(259200000),
    WEEKLY(604800000);
 
-   private long a;
+   private long value;
 
-   private Frequency(int var3) {
-      this.a = (long)var3;
+   private Frequency(int value) {
+      this.value = (long)value;
    }
 
    public final long value() {
-      return this.a;
+      return this.value;
    }
 }

@@ -9,15 +9,15 @@ public abstract class WURFLConsistencyException extends WURFLRuntimeException {
       super("WURFL consistency exception");
    }
 
-   public WURFLConsistencyException(Throwable var1) {
-      super("WURFL consistency exception", var1);
+   public WURFLConsistencyException(Throwable cause) {
+      super("WURFL consistency exception", cause);
    }
 
-   public WURFLConsistencyException(String var1) {
-      super(var1);
+   public WURFLConsistencyException(String message) {
+      super(message);
    }
 
-   public WURFLConsistencyException(String var1, Throwable var2) {
-      super(var1, var2);
+   public WURFLConsistencyException(String message, Throwable cause) {
+      super(message, cause);
    }
 }

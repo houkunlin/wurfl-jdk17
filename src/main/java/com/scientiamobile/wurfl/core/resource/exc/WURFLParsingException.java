@@ -8,15 +8,15 @@ public class WURFLParsingException extends WURFLRuntimeException {
    public WURFLParsingException() {
    }
 
-   public WURFLParsingException(String var1) {
-      super(var1);
+   public WURFLParsingException(String message) {
+      super(message);
    }
 
-   public WURFLParsingException(Throwable var1) {
-      super(var1);
+   public WURFLParsingException(Throwable cause) {
+      super(cause);
    }
 
-   public WURFLParsingException(String var1, Throwable var2) {
-      super(var1, var2);
+   public WURFLParsingException(String message, Throwable cause) {
+      super(message, cause);
    }
 }

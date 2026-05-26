@@ -4,19 +4,19 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 public abstract class DeviceConsistencyException extends WURFLConsistencyException {
    private static final long serialVersionUID = 10L;
-   private ModelDevice a;
+   private ModelDevice device;
 
-   public DeviceConsistencyException(ModelDevice var1, String var2) {
-      super(var2);
-      this.a = var1;
+   public DeviceConsistencyException(ModelDevice device, String message) {
+      super(message);
+      this.device = device;
    }
 
-   public DeviceConsistencyException(ModelDevice var1) {
-      super((new StringBuilder("Device: ")).append(var1.getID()).append(" consistency error").toString());
-      this.a = var1;
+   public DeviceConsistencyException(ModelDevice device) {
+      super((new StringBuilder("Device: ")).append(device.getID()).append(" consistency error").toString());
+      this.device = device;
    }
 
    public ModelDevice getDevice() {
-      return this.a;
+      return this.device;
    }
 }

@@ -65,7 +65,7 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
       int resolutionWidth;
       try {
          resolutionWidth = Integer.parseInt(device.getCapability("resolution_width"));
-      } catch (NumberFormatException var5) {
+      } catch (NumberFormatException e) {
          return false;
       }
 
@@ -87,7 +87,7 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
          if (versionParsed = versionMatcher.matches()) {
             try {
                version = Float.parseFloat(versionMatcher.group(1));
-            } catch (NumberFormatException var4) {
+            } catch (NumberFormatException e) {
                versionParsed = false;
             }
          }

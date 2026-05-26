@@ -89,10 +89,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          handled = this.handleRequest(request, out);
       } else if ("Info".equalsIgnoreCase(action)) {
          wurflEngine.setEngineTarget(EngineTarget.accuracy);
-         boolean var10000;
          if (wurflEngine == null) {
             writeMissingEngineError(out);
-            var10000 = true;
          } else {
             EngineTarget engineTarget = wurflEngine.getEngineTarget();
             IntrospectorInfoResponse responseBody = new IntrospectorInfoResponse();
@@ -107,10 +105,9 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             responseBody.javaVersion = System.getProperty("java.version");
             String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
             out.println(json);
-            var10000 = true;
          }
 
-         handled = var10000;
+         handled = true;
       } else if ("form".equalsIgnoreCase(action)) {
          wurflEngine.setEngineTarget(EngineTarget.valueOf(request.getParameter("wurflEngineTarget")));
          wurflEngine.setUserAgentPriority(UserAgentPriority.valueOf(request.getParameter("wurflUserAgentPriority")));
@@ -153,10 +150,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                MatcherManager matcherManager = (MatcherManager)matcherManagerField.get(wurflHolder);
                Set allDevices = wurflModel.getAllDevices();
                ArrayList<String> userAgents = new ArrayList<>(allDevices.size());
-               Iterator var25 = allDevices.iterator();
+               Iterator deviceIterator = allDevices.iterator();
 
-               while(var25.hasNext()) {
-                  ModelDevice device = (ModelDevice)var25.next();
+               while(deviceIterator.hasNext()) {
+                  ModelDevice device = (ModelDevice)deviceIterator.next();
                   if (!StringUtils.isEmpty(device.getUserAgent())) {
                      userAgents.add(device.getUserAgent());
                   }
@@ -203,8 +200,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             }
 
             return true;
-         } catch (Exception var23) {
-            log.debug(var23.getClass().getSimpleName() + " - " + var23.getMessage());
+         } catch (Exception e) {
+            log.debug(e.getClass().getSimpleName() + " - " + e.getMessage());
             return false;
          }
       }
@@ -218,7 +215,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          String value = (String)field.get(target);
          field.setAccessible(originalAccess);
          return value;
-      } catch (Exception var5) {
+      } catch (Exception e) {
          return null;
       }
    }
@@ -331,12 +328,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
       try {
          pomProperties.load(pomPropertiesStream);
          apiVersion = "1.9.1.0";
-      } catch (IOException var8) {
+      } catch (IOException e) {
          apiVersion = "(Unavailable...)";
       } finally {
          try {
             pomPropertiesStream.close();
-         } catch (Exception var7) {
+         } catch (Exception ignore) {
          }
 
       }

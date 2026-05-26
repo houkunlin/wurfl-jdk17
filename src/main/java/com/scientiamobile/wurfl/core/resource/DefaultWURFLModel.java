@@ -144,14 +144,14 @@ public class DefaultWURFLModel implements WURFLModel {
       for(Object id : deviceIds) {
          Validate.isTrue(id instanceof String, "The devicesIds must containing right devicesById id");
       }
-      HashSet<ModelDevice> var2 = new HashSet<>();
-      Iterator var3 = deviceIds.iterator();
+      HashSet<ModelDevice> devices = new HashSet<>();
+      Iterator deviceIdIterator = deviceIds.iterator();
 
-      while(var3.hasNext()) {
-         var2.add(this.getDeviceById((String)var3.next()));
+      while(deviceIdIterator.hasNext()) {
+         devices.add(this.getDeviceById((String)deviceIdIterator.next()));
       }
 
-      return var2;
+      return devices;
    }
 
    public Set getAllDevices() {
@@ -172,31 +172,31 @@ public class DefaultWURFLModel implements WURFLModel {
    }
 
    public Set<String> getAllDevicesId() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(this.devicesById.keySet());
-      return var1;
+      HashSet<String> deviceIds = new HashSet<>();
+      deviceIds.addAll(this.devicesById.keySet());
+      return deviceIds;
    }
 
-   public List<ModelDevice> getDeviceHierarchy(ModelDevice var1) {
-      Validate.notNull(var1, "The device must be not null");
+   public List<ModelDevice> getDeviceHierarchy(ModelDevice device) {
+      Validate.notNull(device, "The device must be not null");
 
-      LinkedList<ModelDevice> var2;
-      for(var2 = new LinkedList<>(); !"generic".equals(var1.getID()); var1 = this.getDeviceFallback(var1)) {
-         var2.addFirst(var1);
+      LinkedList<ModelDevice> hierarchy = new LinkedList<>();
+      for(; !"generic".equals(device.getID()); device = this.getDeviceFallback(device)) {
+         hierarchy.addFirst(device);
       }
 
-      var2.addFirst(var1);
-      return var2;
+      hierarchy.addFirst(device);
+      return hierarchy;
    }
 
-   public ModelDevice getDeviceFallback(ModelDevice var1) {
-      Validate.notNull(var1, "The device must be not null");
+   public ModelDevice getDeviceFallback(ModelDevice device) {
+      Validate.notNull(device, "The device must be not null");
 
       try {
-         ModelDevice fallbackDevice = this.getDeviceById(var1.getFallBack());
+         ModelDevice fallbackDevice = this.getDeviceById(device.getFallBack());
          return fallbackDevice;
-      } catch (DeviceNotDefinedException var3) {
-         throw new DeviceNotInModelException(var1);
+      } catch (DeviceNotDefinedException e) {
+         throw new DeviceNotInModelException(device);
       }
    }
 
@@ -244,11 +244,11 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public String getGroupByCapability(String capabilityName) {
       Validate.notEmpty(capabilityName, "The capabilityName must be not null");
-      ModelDevice var2;
-      if (!(var2 = this.getGenericDevice()).defineCapability(capabilityName)) {
+      ModelDevice genericDevice = this.getGenericDevice();
+      if (!genericDevice.defineCapability(capabilityName)) {
          throw new CapabilityNotDefinedException(capabilityName);
       } else {
-         return var2.getGroupForCapability(capabilityName);
+         return genericDevice.getGroupForCapability(capabilityName);
       }
    }
 
@@ -262,8 +262,8 @@ public class DefaultWURFLModel implements WURFLModel {
    }
 
    public Set getAllCapabilities() {
-      ModelDevice var1 = this.getGenericDevice();
-      return new HashSet<>(var1.getCapabilities().keySet());
+      ModelDevice genericDevice = this.getGenericDevice();
+      return new HashSet<>(genericDevice.getCapabilities().keySet());
    }
 
    public Integer getCapabilityCount() {
@@ -281,11 +281,11 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public Set getCapabilitiesForGroup(String groupId) {
       Validate.notEmpty(groupId, "The groupId must be not null");
-      ModelDevice var2;
-      if (!(var2 = this.getGenericDevice()).defineGroup(groupId)) {
+      ModelDevice genericDevice = this.getGenericDevice();
+      if (!genericDevice.defineGroup(groupId)) {
          throw new GroupNotDefinedException(groupId);
       } else {
-         return var2.getCapabilitiesNamesForGroup(groupId);
+         return genericDevice.getCapabilitiesNamesForGroup(groupId);
       }
    }
 

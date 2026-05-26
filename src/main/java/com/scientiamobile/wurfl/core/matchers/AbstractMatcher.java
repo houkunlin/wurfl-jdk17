@@ -7,7 +7,6 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
@@ -31,11 +30,11 @@ abstract class AbstractMatcher implements Matcher {
 
    private void validateRequiredDeviceIds(WURFLModel model) {
       if (model != null) {
-         Set var4 = model.getAllDevicesId();
+         Set allDeviceIds = model.getAllDevicesId();
 
          for(Object deviceIdObj : this.getRequiredDeviceIds()) {
             String deviceId = (String)deviceIdObj;
-            if (!var4.contains(deviceId)) {
+            if (!allDeviceIds.contains(deviceId)) {
                throw new MissingDeviceIdConsistencyException("wurfl.xml load error - Missing device id " + deviceId + " you may need to update the wurfl.xml file to a more recent version");
             }
          }
@@ -49,24 +48,24 @@ abstract class AbstractMatcher implements Matcher {
       this.normalizer = null;
    }
 
-   public AbstractMatcher(WURFLModel var1) {
+   public AbstractMatcher(WURFLModel model) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.normalizer = null;
-      this.validateRequiredDeviceIds(var1);
+      this.validateRequiredDeviceIds(model);
    }
 
-   public AbstractMatcher(UserAgentNormalizer var1) {
+   public AbstractMatcher(UserAgentNormalizer normalizer) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
-      this.normalizer = var1;
+      this.normalizer = normalizer;
    }
 
-   public AbstractMatcher(UserAgentNormalizer var1, WURFLModel var2) {
+   public AbstractMatcher(UserAgentNormalizer normalizer, WURFLModel model) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
-      this.normalizer = var1;
-      this.validateRequiredDeviceIds(var2);
+      this.normalizer = normalizer;
+      this.validateRequiredDeviceIds(model);
    }
 
    public final void setFilter(MatcherFilter filter) {
@@ -81,85 +80,82 @@ abstract class AbstractMatcher implements Matcher {
       return this.filter;
    }
 
-   public final DeviceInfo match(WURFLRequest var1) {
-      String var2 = "generic";
-      var1.normalizeUserAgent(this.normalizer);
-      String var3 = var1.getNormalizedDeviceUserAgent();
-      MatchType var4 = MatchType.none;
-      String var5 = this.getMatcherName();
-      String var6 = this.getBucketMatcherName();
-      if (!StringUtils.isBlank(var3)) {
-         if (isBlankOrGeneric(var2 = this.getFilter().getIndex().getDeviceIdByUserAgent(var3))) {
-            if (isBlankOrGeneric(var2 = this.applyConclusiveMatch(var1))) {
-               if (isBlankOrGeneric(var2 = this.applyRecoveryMatch(var1))) {
+   public final DeviceInfo match(WURFLRequest request) {
+      String deviceId = "generic";
+      request.normalizeUserAgent(this.normalizer);
+      String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
+      MatchType matchType = MatchType.none;
+      String matcherName = this.getMatcherName();
+      String bucketMatcherName = this.getBucketMatcherName();
+      if (!StringUtils.isBlank(normalizedDeviceUserAgent)) {
+         if (isBlankOrGeneric(deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(normalizedDeviceUserAgent))) {
+            if (isBlankOrGeneric(deviceId = this.applyConclusiveMatch(request))) {
+               if (isBlankOrGeneric(deviceId = this.applyRecoveryMatch(request))) {
                   this.getFilter().getIndex();
-                  String var10000;
-                  if (var1._internalIsDesktopBrowserHeavyDutyAnalysis()) {
-                     var10000 = "generic_web_browser";
+                  String fallbackDeviceId;
+                  if (request._internalIsDesktopBrowserHeavyDutyAnalysis()) {
+                     fallbackDeviceId = "generic_web_browser";
                   } else {
-                     String var9 = var1.getCleanedDeviceUserAgent();
-                     Iterator var7 = CATCH_ALL_FALLBACKS.iterator();
+                     String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+                     fallbackDeviceId = null;
 
-                     while(true) {
-                        if (!var7.hasNext()) {
-                           if (var9.indexOf("Mozilla/") <= 0 && !StringMatchUtils.containsAnyOf(var9, "Obigo", "AU-MIC/2", "AU-MIC-", "AU-OBIGO/", "Teleca Q03B1")) {
-                              var10000 = StringMatchUtils.startsWithAnyOf(var9, "DoCoMo", "KDDI") ? "docomo_generic_jap_ver1" : (var1._internalIsMobileBrowser() ? "generic_mobile" : "generic");
-                              break;
-                           }
-
-                           var10000 = "generic_xhtml";
+                     for(UserAgentFallbackRule fallbackRule : CATCH_ALL_FALLBACKS) {
+                        if (cleanedDeviceUserAgent.contains(fallbackRule.keyword)) {
+                           fallbackDeviceId = fallbackRule.deviceId;
                            break;
                         }
+                     }
 
-                        UserAgentFallbackRule var8 = (UserAgentFallbackRule)var7.next();
-                        if (var9.contains(var8.keyword)) {
-                           var10000 = var8.deviceId;
-                           break;
+                     if (fallbackDeviceId == null) {
+                        if (cleanedDeviceUserAgent.indexOf("Mozilla/") <= 0 && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Obigo", "AU-MIC/2", "AU-MIC-", "AU-OBIGO/", "Teleca Q03B1")) {
+                           fallbackDeviceId = StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, "DoCoMo", "KDDI") ? "docomo_generic_jap_ver1" : (request._internalIsMobileBrowser() ? "generic_mobile" : "generic");
+                        } else {
+                           fallbackDeviceId = "generic_xhtml";
                         }
                      }
                   }
 
-                  var2 = var10000;
-                  var4 = MatchType.catchAll;
+                  deviceId = fallbackDeviceId;
+                  matchType = MatchType.catchAll;
                } else {
-                  var4 = MatchType.recovery;
+                  matchType = MatchType.recovery;
                }
             } else {
-               var4 = MatchType.conclusive;
+               matchType = MatchType.conclusive;
             }
          } else {
-            var4 = MatchType.exact;
+            matchType = MatchType.exact;
          }
       }
 
-      if (!ASSERTIONS_DISABLED && var2 == null) {
+      if (!ASSERTIONS_DISABLED && deviceId == null) {
          throw new AssertionError();
       } else {
-         return new DeviceInfo(var2, var4, var5, var6, var1.getOriginalUserAgent(), var3);
+         return new DeviceInfo(deviceId, matchType, matcherName, bucketMatcherName, request.getOriginalUserAgent(), normalizedDeviceUserAgent);
       }
    }
 
-   protected String applyConclusiveMatch(WURFLRequest var1) {
-      String var3 = var1.getNormalizedDeviceUserAgent();
-      var3 = this.risMatch(var3);
-      String var2 = "generic";
-      if (var3 != null) {
-         var2 = this.getFilter().getIndex().getDeviceIdByUserAgent(var3);
+   protected String applyConclusiveMatch(WURFLRequest request) {
+      String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
+      normalizedDeviceUserAgent = this.risMatch(normalizedDeviceUserAgent);
+      String deviceId = "generic";
+      if (normalizedDeviceUserAgent != null) {
+         deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(normalizedDeviceUserAgent);
       }
 
-      if (var2 == null) {
-         var2 = "generic";
+      if (deviceId == null) {
+         deviceId = "generic";
       }
 
-      return var2;
+      return deviceId;
    }
 
-   protected String risMatch(String var1) {
-      int var2;
-      return (var2 = StringMatchUtils.firstSlash(var1)) == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+   protected String risMatch(String value) {
+      int firstSlashIndex;
+      return (firstSlashIndex = StringMatchUtils.firstSlash(value)) == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), value, firstSlashIndex);
    }
 
-   protected String applyRecoveryMatch(WURFLRequest var1) {
+   protected String applyRecoveryMatch(WURFLRequest request) {
       return "generic";
    }
 
@@ -167,8 +163,8 @@ abstract class AbstractMatcher implements Matcher {
       return StringUtils.isBlank(deviceId) || "generic".equals(deviceId);
    }
 
-   public final String normalize(String var1) {
-      return this.normalizer == null ? var1 : this.normalizer.normalize(var1);
+   public final String normalize(String value) {
+      return this.normalizer == null ? value : this.normalizer.normalize(value);
    }
 
    public String getBucketMatcherName() {

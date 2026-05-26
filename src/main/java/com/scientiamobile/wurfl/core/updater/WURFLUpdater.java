@@ -92,7 +92,7 @@ public class WURFLUpdater {
          updatePipeline.setConnectionTimeoutMs(this.connectionTimeoutMs);
          if (!(updateResult = updatePipeline.execute()).isUpdateProcessSuccessful()) {
             this.log.warn(updateResult.getMessage());
-         } else if (updateResult.a()) {
+         } else if (updateResult.isUpdated()) {
             if (ArrayUtils.isEmpty(this.patchPaths)) {
                this.wurflEngine.reload(this.resolvedWurflPath);
             } else {

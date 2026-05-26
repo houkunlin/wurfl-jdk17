@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpSession;
 final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
    private final Map<String, String> headers = new HashMap<>();
 
-   public final Object getAttribute(String var1) {
+   public final Object getAttribute(String attributeName) {
       return null;
    }
 
@@ -39,7 +39,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final void setCharacterEncoding(String var1) {
+   public final void setCharacterEncoding(String encoding) {
    }
 
    public final int getContentLength() {
@@ -58,7 +58,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final String getParameter(String var1) {
+   public final String getParameter(String parameterName) {
       return null;
    }
 
@@ -66,7 +66,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final String[] getParameterValues(String var1) {
+   public final String[] getParameterValues(String parameterName) {
       return null;
    }
 
@@ -106,10 +106,10 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final void setAttribute(String var1, Object var2) {
+   public final void setAttribute(String attributeName, Object value) {
    }
 
-   public final void removeAttribute(String var1) {
+   public final void removeAttribute(String attributeName) {
    }
 
    public final Locale getLocale() {
@@ -124,11 +124,11 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return false;
    }
 
-   public final RequestDispatcher getRequestDispatcher(String var1) {
+   public final RequestDispatcher getRequestDispatcher(String path) {
       return null;
    }
 
-   public final String getRealPath(String var1) {
+   public final String getRealPath(String path) {
       return null;
    }
 
@@ -156,7 +156,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final AsyncContext startAsync(ServletRequest var1, ServletResponse var2) throws IllegalStateException {
+   public final AsyncContext startAsync(ServletRequest request, ServletResponse response) throws IllegalStateException {
       return null;
    }
 
@@ -188,12 +188,12 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final long getDateHeader(String var1) {
+   public final long getDateHeader(String name) {
       return 0L;
    }
 
-   public final String getHeader(String var1) {
-      return (String)this.headers.get(var1);
+   public final String getHeader(String name) {
+      return (String)this.headers.get(name);
    }
 
    public final void addHeader(String headerName, String headerValue) {
@@ -207,21 +207,21 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
 
    }
 
-   public final Enumeration<String> getHeaders(String var1) {
+   public final Enumeration<String> getHeaders(String name) {
       return null;
    }
 
    public final Enumeration<String> getHeaderNames() {
-      Vector<String> var1 = new Vector<>();
+      Vector<String> headerNames = new Vector<>();
 
       for(String headerName : this.headers.keySet()) {
-         var1.add(headerName);
+         headerNames.add(headerName);
       }
 
-      return var1.elements();
+      return headerNames.elements();
    }
 
-   public final int getIntHeader(String var1) {
+   public final int getIntHeader(String name) {
       return 0;
    }
 
@@ -253,7 +253,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final boolean isUserInRole(String var1) {
+   public final boolean isUserInRole(String role) {
       return false;
    }
 
@@ -261,11 +261,11 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final boolean authenticate(HttpServletResponse var1) throws IOException, ServletException {
+   public final boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
       return false;
    }
 
-   public final void login(String var1, String var2) throws ServletException {
+   public final void login(String username, String password) throws ServletException {
    }
 
    public final void logout() throws ServletException {
@@ -291,7 +291,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
-   public final HttpSession getSession(boolean var1) {
+   public final HttpSession getSession(boolean create) {
       return null;
    }
 
@@ -315,11 +315,11 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return false;
    }
 
-   public final <T extends HttpUpgradeHandler> T upgrade(Class<T> var1) {
+   public final <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) {
       return null;
    }
 
-   public final Part getPart(String var1) {
+   public final Part getPart(String name) {
       return null;
    }
 

@@ -4,14 +4,14 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 public class UserAgentOverrideException extends UserAgentConsistencyException {
    private static final long serialVersionUID = 10L;
-   private String a;
+   private String existingUserAgent;
 
-   public UserAgentOverrideException(ModelDevice var1, String var2, String var3) {
-      super(var1, var2, (new StringBuilder("Device: ")).append(var1).append(" override defined user-agent: ").append(var3).append(" with overriding user-agent:").append(var2).toString());
-      this.a = var3;
+   public UserAgentOverrideException(ModelDevice device, String overridingUserAgent, String existingUserAgent) {
+      super(device, overridingUserAgent, (new StringBuilder("Device: ")).append(device).append(" override defined user-agent: ").append(existingUserAgent).append(" with overriding user-agent:").append(overridingUserAgent).toString());
+      this.existingUserAgent = existingUserAgent;
    }
 
    public String getExistUserAgent() {
-      return this.a;
+      return this.existingUserAgent;
    }
 }

@@ -5,29 +5,29 @@ import com.scientiamobile.wurfl.core.resource.WURFLResource;
 
 public class WURFLResourceException extends WURFLRuntimeException {
    private static final long serialVersionUID = 10L;
-   private WURFLResource a;
+   private WURFLResource resource;
 
-   public WURFLResourceException(WURFLResource var1) {
-      super((new StringBuilder("WURFL resource exception in: ")).append(var1.getInfo()).toString());
-      this.a = var1;
+   public WURFLResourceException(WURFLResource resource) {
+      super((new StringBuilder("WURFL resource exception in: ")).append(resource.getInfo()).toString());
+      this.resource = resource;
    }
 
-   public WURFLResourceException(WURFLResource var1, Throwable var2) {
-      super(var2);
-      this.a = var1;
+   public WURFLResourceException(WURFLResource resource, Throwable cause) {
+      super(cause);
+      this.resource = resource;
    }
 
-   public WURFLResourceException(WURFLResource var1, String var2) {
-      super(var2);
-      this.a = var1;
+   public WURFLResourceException(WURFLResource resource, String message) {
+      super(message);
+      this.resource = resource;
    }
 
-   public WURFLResourceException(WURFLResource var1, String var2, Throwable var3) {
-      super(var2, var3);
-      this.a = var1;
+   public WURFLResourceException(WURFLResource resource, String message, Throwable cause) {
+      super(message, cause);
+      this.resource = resource;
    }
 
    public WURFLResource getResource() {
-      return this.a;
+      return this.resource;
    }
 }

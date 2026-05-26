@@ -16,64 +16,62 @@ public final class RISMatcher {
       return "RIS";
    }
 
-   public final String match(Collection var1, String var2, int var3) {
-      String var4 = null;
-      int var5 = var2.length();
-      ArrayList var13 = (ArrayList)var1;
-      int var6 = -1;
-      int var7 = -1;
-      int var8 = 0;
-      int var9 = var13.size() - 1;
+   public final String match(Collection candidates, String value, int threshold) {
+      String matchedValue = null;
+      int valueLength = value.length();
+      ArrayList candidatesList = (ArrayList)candidates;
+      int bestIndex = -1;
+      int bestMatchLength = -1;
+      int low = 0;
+      int high = candidatesList.size() - 1;
 
-      while(var8 <= var9 && var7 < var5) {
-         int var10 = (var8 + var9) / 2;
-         String var11 = (String)var13.get(var10);
-         int var12;
-         if ((var12 = a(var2, var11)) > var7) {
-            var6 = var10;
-            var7 = var12;
+      while(low <= high && bestMatchLength < valueLength) {
+         int middle = (low + high) / 2;
+         String middleValue = (String)candidatesList.get(middle);
+         int matchLength;
+         if ((matchLength = commonPrefixLength(value, middleValue)) > bestMatchLength) {
+            bestIndex = middle;
+            bestMatchLength = matchLength;
          }
 
-         int var21;
-         if ((var21 = var11.compareTo(var2)) < 0) {
-            var8 = var10 + 1;
+         int compareResult;
+         if ((compareResult = middleValue.compareTo(value)) < 0) {
+            low = middle + 1;
          } else {
-            if (var21 <= 0) {
+            if (compareResult <= 0) {
                break;
             }
 
-            var9 = var10 - 1;
+            high = middle - 1;
          }
       }
 
-      if (var7 >= var3) {
-         int var17 = var7;
-         var3 = var6;
-         String var14 = var2;
-         var5 = var7;
-         ListIterator var20 = var13.listIterator(var6);
+      if (bestMatchLength >= threshold) {
+         int leftMostIndex = bestIndex;
+         int currentMatchLength = bestMatchLength;
+         ListIterator iterator = candidatesList.listIterator(bestIndex);
 
-         while(var20.hasPrevious() && var5 == var17) {
-            String var19 = (String)var20.previous();
-            if ((var5 = a(var14, var19)) == var17) {
-               --var3;
+         while(iterator.hasPrevious() && currentMatchLength == bestMatchLength) {
+            String previousCandidate = (String)iterator.previous();
+            if ((currentMatchLength = commonPrefixLength(value, previousCandidate)) == bestMatchLength) {
+               --leftMostIndex;
             }
          }
 
-         var4 = (String)var13.get(var3);
+         matchedValue = (String)candidatesList.get(leftMostIndex);
       }
 
-      return var4;
+      return matchedValue;
    }
 
-   private static int a(String var0, String var1) {
-      int var2 = Math.min(var0.length(), var1.length());
+   private static int commonPrefixLength(String firstValue, String secondValue) {
+      int minLength = Math.min(firstValue.length(), secondValue.length());
 
-      int var3;
-      for(var3 = 0; var3 < var2 && var0.charAt(var3) == var1.charAt(var3); ++var3) {
+      int index;
+      for(index = 0; index < minLength && firstValue.charAt(index) == secondValue.charAt(index); ++index) {
       }
 
-      return var3;
+      return index;
    }
 
    public final String toString() {

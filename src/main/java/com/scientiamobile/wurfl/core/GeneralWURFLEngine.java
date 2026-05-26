@@ -178,20 +178,20 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
             this.log.error("Engine root at " + this.rootPath + "is not writable, cannot replace it");
             return false;
          } else {
-            GeneralWURFLEngine var2;
+            GeneralWURFLEngine newEngine;
             if (this.patchResources != null && this.patchResources.size() != 0) {
-               var2 = new GeneralWURFLEngine(new XMLResource(newRootPath), this.patchResources);
+               newEngine = new GeneralWURFLEngine(new XMLResource(newRootPath), this.patchResources);
             } else {
-               var2 = new GeneralWURFLEngine(newRootPath);
+               newEngine = new GeneralWURFLEngine(newRootPath);
             }
 
-            var2.load();
+            newEngine.load();
             FileUtils.copyFile(new File(newRootPath), new File(this.rootPath), true);
             this.reload(this.rootPath);
             return true;
          }
-      } catch (Exception var3) {
-         this.log.error("An error has occurred replacing " + this.rootPath + "root with " + newRootPath, var3);
+      } catch (Exception e) {
+         this.log.error("An error has occurred replacing " + this.rootPath + "root with " + newRootPath, e);
          return false;
       }
    }
@@ -239,17 +239,17 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       return out;
    }
 
-   public Device getDeviceById(String var1) {
-      return this.getWURFLUtils().getDeviceById(var1);
+   public Device getDeviceById(String deviceId) {
+      return this.getWURFLUtils().getDeviceById(deviceId);
    }
 
-   public Device getDeviceById(String var1, WURFLRequest var2) {
-      return this.getWURFLUtils().getDeviceById(var1, var2);
+   public Device getDeviceById(String deviceId, WURFLRequest request) {
+      return this.getWURFLUtils().getDeviceById(deviceId, request);
    }
 
-   public Device getDeviceById(String var1, HttpServletRequest var2) {
+   public Device getDeviceById(String deviceId, HttpServletRequest request) {
       this.ensureInitialized();
-      return this.getWURFLUtils().getDeviceById(var1, (new DefaultWURFLRequestFactory(this.userAgentResolver, this.wurflService.getUserAgentPriority())).createRequest(var2, this.wurflService.getEngineTarget()));
+      return this.getWURFLUtils().getDeviceById(deviceId, (new DefaultWURFLRequestFactory(this.userAgentResolver, this.wurflService.getUserAgentPriority())).createRequest(request, this.wurflService.getEngineTarget()));
    }
 
    public Set<String> getAllVirtualCapabilities() {
@@ -326,21 +326,21 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                   } finally {
                      this.lock.writeLock().unlock();
                   }
-               } catch (Exception var11) {
-                  this.log.error("cannot initialize: " + var11, var11);
-                  if (var11 instanceof WURFLRuntimeException) {
-                     throw (WURFLRuntimeException)var11;
+               } catch (Exception e) {
+                  this.log.error("cannot initialize: " + e, e);
+                  if (e instanceof WURFLRuntimeException) {
+                     throw (WURFLRuntimeException)e;
                   }
 
-                  throw new WURFLRuntimeException(var11);
+                  throw new WURFLRuntimeException(e);
                }
 
                try {
-                  Class<?> var14;
-                  Object var4 = (var14 = Class.forName("com.scientiamobile.wurfl.core.CheckConnection")).getDeclaredConstructor().newInstance();
-                  var14.getDeclaredMethod("setup", WURFLEngine.class, WURFLModel.class).invoke(var4, this, this.wurflModel);
-                  var14.getDeclaredMethod("check").invoke(var4);
-               } catch (Exception var9) {
+                  Class<?> checkConnectionClass = Class.forName("com.scientiamobile.wurfl.core.CheckConnection");
+                  Object checkConnectionInstance = checkConnectionClass.getDeclaredConstructor().newInstance();
+                  checkConnectionClass.getDeclaredMethod("setup", WURFLEngine.class, WURFLModel.class).invoke(checkConnectionInstance, this, this.wurflModel);
+                  checkConnectionClass.getDeclaredMethod("check").invoke(checkConnectionInstance);
+               } catch (Exception ignore) {
                }
             }
 
@@ -484,18 +484,18 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
    public Set<String> getAllCapabilities() {
       this.ensureInitialized();
-      HashSet<String> var1 = new HashSet<>();
+      HashSet<String> capabilities = new HashSet<>();
       @SuppressWarnings("unchecked")
-      Iterator<String> var2 = ((Set<String>)this.wurflModel.getAllCapabilities()).iterator();
+      Iterator<String> iterator = ((Set<String>)this.wurflModel.getAllCapabilities()).iterator();
 
-      while(var2.hasNext()) {
-         String var3;
-         if (!(var3 = var2.next()).startsWith("controlcap_")) {
-            var1.add(var3);
+      while(iterator.hasNext()) {
+         String capability = iterator.next();
+         if (!capability.startsWith("controlcap_")) {
+            capabilities.add(capability);
          }
       }
 
-      return var1;
+      return capabilities;
    }
 
    public String getRootPath() {

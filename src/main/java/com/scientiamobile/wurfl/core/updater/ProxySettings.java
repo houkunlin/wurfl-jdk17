@@ -4,29 +4,29 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 public class ProxySettings {
-   private String a;
-   private Integer b;
-   private Proxy.Type c;
+   private String host;
+   private Integer port;
+   private Proxy.Type type;
 
-   public ProxySettings(String var1, Integer var2, Proxy.Type var3) {
-      this.a = var1;
-      this.b = var2;
-      this.c = var3;
+   public ProxySettings(String host, Integer port, Proxy.Type type) {
+      this.host = host;
+      this.port = port;
+      this.type = type;
    }
 
    public String getHost() {
-      return this.a;
+      return this.host;
    }
 
    public Integer getPort() {
-      return this.b;
+      return this.port;
    }
 
-   public Proxy.Type type() {
-      return this.c;
+   public Proxy.Type getType() {
+      return this.type;
    }
 
    public Proxy getProxy() {
-      return new Proxy(this.c, new InetSocketAddress(this.a, this.b));
+      return new Proxy(this.type, new InetSocketAddress(this.host, this.port));
    }
 }

@@ -14,13 +14,13 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
    }
 
    public final String toString() {
-      String var1;
-      int var2;
-      if ((var2 = (var1 = this.matcherName).indexOf("Matcher")) > 0) {
-         var1 = var1.substring(0, var2);
+      String matcherNameWithoutSuffix = this.matcherName;
+      int matcherSuffixIndex;
+      if ((matcherSuffixIndex = matcherNameWithoutSuffix.indexOf("Matcher")) > 0) {
+         matcherNameWithoutSuffix = matcherNameWithoutSuffix.substring(0, matcherSuffixIndex);
       }
 
-      return var1 + "\t" + this.deviceId + "\t" + this.normalizedUserAgent + "\t" + this.originalUserAgent;
+      return matcherNameWithoutSuffix + "\t" + this.deviceId + "\t" + this.normalizedUserAgent + "\t" + this.originalUserAgent;
    }
 
    public final int compareTo(MatchResultRow other) {

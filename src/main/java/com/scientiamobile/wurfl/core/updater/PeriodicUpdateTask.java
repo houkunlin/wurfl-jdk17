@@ -42,7 +42,7 @@ public class PeriodicUpdateTask implements Runnable {
             if (this.lastSuccessfulUpdate != null) {
                this.log.warn("Last successful updated was completed on " + CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
             }
-         } else if (updateResult.a()) {
+         } else if (updateResult.isUpdated()) {
             this.log.info("Free memory before reload process " + Runtime.getRuntime().freeMemory());
             if (ArrayUtils.isEmpty(this.patchPaths)) {
                this.wurflEngine.reload(this.resolvedWurflPath);

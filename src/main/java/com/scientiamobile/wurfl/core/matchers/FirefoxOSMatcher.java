@@ -13,59 +13,52 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final class FirefoxOSMatcher extends MatcherBase {
-   private static String FALLBACK_TABLET = "firefox_os_ver1_3_tablet";
-   private static String FALLBACK_GENERIC = "generic_firefox_os";
+   private static final String FALLBACK_TABLET = "firefox_os_ver1_3_tablet";
+   private static final String FALLBACK_GENERIC = "generic_firefox_os";
    private static final Pattern VERSION_RV_PREFIX = Pattern.compile("\\brv:\\d+\\.\\d+(.)");
    private static final Pattern VERSION_RV = Pattern.compile("\\brv:(\\d+\\.\\d+)");
    private static final Map<String, String> RV_TO_FIREFOX_OS_VERSION = new HashMap<>();
    private static final List<String> SUPPORTED_DEVICES = new ArrayList<>();
 
-   public FirefoxOSMatcher(WURFLModel var1) {
-      super(var1);
+   public FirefoxOSMatcher(WURFLModel model) {
+      super(model);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(SUPPORTED_DEVICES);
-      var1.add(FALLBACK_TABLET);
-      var1.add(FALLBACK_GENERIC);
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICES);
+      requiredDeviceIds.add(FALLBACK_TABLET);
+      requiredDeviceIds.add(FALLBACK_GENERIC);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2;
-      return (var2 = var1.getCleanedDeviceUserAgent()).contains("Firefox/") && StringMatchUtils.containsAnyOf(var2, "Mobile", "Tablet");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return cleanedDeviceUserAgent.contains("Firefox/") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Mobile", "Tablet");
    }
 
-   protected final String risMatch(String var1) {
-      Matcher var2;
-      return (var2 = VERSION_RV_PREFIX.matcher(var1)).find() ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2.end(1)) : null;
+   protected final String risMatch(String userAgent) {
+      Matcher rvPrefixMatcher = VERSION_RV_PREFIX.matcher(userAgent);
+      return rvPrefixMatcher.find() ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, rvPrefixMatcher.end(1)) : null;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String normalizedUserAgent = var1.getNormalizedDeviceUserAgent();
-      String var10000;
-      label24: {
-         String var2 = normalizedUserAgent;
-         Matcher var5;
-         if ((var5 = VERSION_RV.matcher(var2)).find()) {
-            String var6 = var5.group(1);
-            if (RV_TO_FIREFOX_OS_VERSION.containsKey(var6)) {
-               var10000 = (String)RV_TO_FIREFOX_OS_VERSION.get(var6);
-               break label24;
-            }
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+      String firefoxOsVersion = "1.0";
+      Matcher rvMatcher = VERSION_RV.matcher(normalizedUserAgent);
+      if (rvMatcher.find()) {
+         String rvVersion = rvMatcher.group(1);
+         if (RV_TO_FIREFOX_OS_VERSION.containsKey(rvVersion)) {
+            firefoxOsVersion = (String)RV_TO_FIREFOX_OS_VERSION.get(rvVersion);
          }
-
-         var10000 = "1.0";
       }
 
-      String var7 = var10000.replace(".", "_").replace("_0", "");
-      var7 = "firefox_os_ver" + var7;
+      String versionSuffix = firefoxOsVersion.replace(".", "_").replace("_0", "");
+      String baseDeviceId = "firefox_os_ver" + versionSuffix;
       if (normalizedUserAgent.contains("Tablet")) {
-         String var4 = var7 + "_tablet";
-         return SUPPORTED_DEVICES.contains(var4) ? var4 : FALLBACK_TABLET;
+         String tabletDeviceId = baseDeviceId + "_tablet";
+         return SUPPORTED_DEVICES.contains(tabletDeviceId) ? tabletDeviceId : FALLBACK_TABLET;
       } else {
-         return SUPPORTED_DEVICES.contains(var7) ? var7 : FALLBACK_GENERIC;
+         return SUPPORTED_DEVICES.contains(baseDeviceId) ? baseDeviceId : FALLBACK_GENERIC;
       }
    }
 

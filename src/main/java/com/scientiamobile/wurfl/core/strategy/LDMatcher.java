@@ -15,101 +15,101 @@ public final class LDMatcher {
       return "LD";
    }
 
-   public final String match(Collection var1, String var2, int var3) {
-      return this.match(var1, var2, var3, 0);
+   public final String match(Collection candidates, String value, int maxDistance) {
+      return this.match(candidates, value, maxDistance, 0);
    }
 
-   public final String match(Collection var1, String var2, int var3, int var4) {
-      String var5 = null;
-      int var6 = var3 + 1;
-      int var7 = var2.length();
-      Iterator var10 = var1.iterator();
-      int var8 = var2.length();
+   public final String match(Collection candidates, String value, int maxDistance, int commonPrefixLength) {
+      String bestMatch = null;
+      int bestDistance = maxDistance + 1;
+      int currentDistance = value.length();
+      int valueLength = value.length();
+      Iterator iterator = candidates.iterator();
 
-      while(var10.hasNext() && var7 > 0) {
-         String var9;
-         if (Math.abs((var9 = (String)var10.next()).length() - var2.length()) <= var3 && ((var7 = getLevenshteinDistance(var9, var2, var9.length(), var8, var3, var4)) < var6 || var7 == 0)) {
-            var6 = var7;
-            var5 = var9;
+      while(iterator.hasNext() && currentDistance > 0) {
+         String candidate = (String)iterator.next();
+         if (Math.abs(candidate.length() - valueLength) <= maxDistance && ((currentDistance = getLevenshteinDistance(candidate, value, candidate.length(), valueLength, maxDistance, commonPrefixLength)) < bestDistance || currentDistance == 0)) {
+            bestDistance = currentDistance;
+            bestMatch = candidate;
          }
       }
 
-      return var5;
+      return bestMatch;
    }
 
-   public static int getLevenshteinDistance(String var0, String var1, int var2, int var3, int var4, int var5) {
+   public static int getLevenshteinDistance(String firstValue, String secondValue, int firstLength, int secondLength, int maxDistance, int prefixLength) {
       while(true) {
-         if (var0 != null && var1 != null) {
-            if (var4 == 0) {
-               if (var0.equals(var1)) {
+         if (firstValue != null && secondValue != null) {
+            if (maxDistance == 0) {
+               if (firstValue.equals(secondValue)) {
                   return 0;
                }
 
                return Integer.MAX_VALUE;
             }
 
-            if (var2 > var3) {
-               String var10000 = var1;
-               int var10002 = var3;
-               var3 = var2;
-               var2 = var10002;
-               var1 = var0;
-               var0 = var10000;
+            if (firstLength > secondLength) {
+               String tempValue = secondValue;
+               secondValue = firstValue;
+               firstValue = tempValue;
+               int tempLength = secondLength;
+               secondLength = firstLength;
+               firstLength = tempLength;
                continue;
             }
 
-            if (var3 < var5) {
+            if (secondLength < prefixLength) {
                return Integer.MAX_VALUE;
             }
 
-            if (var2 == 0) {
-               return var3;
+            if (firstLength == 0) {
+               return secondLength;
             }
 
-            int[] var6 = new int[256];
+            int[] charHistogram = new int[256];
 
-            for(int var7 = var5; var7 < var3; ++var7) {
-               ++var6[(char)(var1.charAt(var7) & 255)];
+            for(int i = prefixLength; i < secondLength; ++i) {
+               ++charHistogram[(char)(secondValue.charAt(i) & 255)];
             }
 
-            for(int var20 = var5; var20 < var2; ++var20) {
-               --var6[(char)(var0.charAt(var20) & 255)];
+            for(int i = prefixLength; i < firstLength; ++i) {
+               --charHistogram[(char)(firstValue.charAt(i) & 255)];
             }
 
-            int var21 = 0;
-            var4 <<= 1;
+            int histogramDistance = 0;
+            maxDistance <<= 1;
 
-            for(char var8 = ' '; var8 < 'z'; ++var8) {
-               if ((var21 += Math.abs(var6[var8])) > var4) {
+            for(char c = ' '; c < 'z'; ++c) {
+               if ((histogramDistance += Math.abs(charHistogram[c])) > maxDistance) {
                   return Integer.MAX_VALUE;
                }
             }
 
-            var0 = var0.substring(var5);
-            var2 -= var5;
-            var1 = var1.substring(var5);
-            var3 -= var5;
-            int[] var23 = new int[var2 + 1];
-            int[] var15 = new int[var2 + 1];
+            firstValue = firstValue.substring(prefixLength);
+            firstLength -= prefixLength;
+            secondValue = secondValue.substring(prefixLength);
+            secondLength -= prefixLength;
+            int[] previousRow = new int[firstLength + 1];
+            int[] currentRow = new int[firstLength + 1];
 
-            for(int var16 = 0; var16 <= var2; var23[var16] = var16++) {
+            for(int i = 0; i <= firstLength; previousRow[i] = i++) {
             }
 
-            for(int var19 = 1; var19 <= var3; ++var19) {
-               var21 = var1.charAt(var19 - 1);
-               var15[0] = var19;
+            for(int rowIndex = 1; rowIndex <= secondLength; ++rowIndex) {
+               histogramDistance = secondValue.charAt(rowIndex - 1);
+               currentRow[0] = rowIndex;
 
-               for(int var17 = 1; var17 <= var2; ++var17) {
-                  int var9 = var0.charAt(var17 - 1) == var21 ? 0 : 1;
-                  var15[var17] = Math.min(Math.min(var15[var17 - 1] + 1, var23[var17] + 1), var23[var17 - 1] + var9);
+               for(int columnIndex = 1; columnIndex <= firstLength; ++columnIndex) {
+                  int substitutionCost = firstValue.charAt(columnIndex - 1) == histogramDistance ? 0 : 1;
+                  currentRow[columnIndex] = Math.min(Math.min(currentRow[columnIndex - 1] + 1, previousRow[columnIndex] + 1), previousRow[columnIndex - 1] + substitutionCost);
                }
 
-               int[] var18 = var23;
-               var23 = var15;
-               var15 = var18;
+               int[] previousRowTemp = previousRow;
+               previousRow = currentRow;
+               currentRow = previousRowTemp;
             }
 
-            return var23[var2];
+            return previousRow[firstLength];
          }
 
          throw new IllegalArgumentException("Strings must not be null");

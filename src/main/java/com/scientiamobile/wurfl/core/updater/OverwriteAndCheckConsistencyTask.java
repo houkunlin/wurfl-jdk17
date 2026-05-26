@@ -11,38 +11,38 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
-   private final Logger a = LoggerFactory.getLogger(this.getClass());
-   private String[] b;
+   private final Logger log = LoggerFactory.getLogger(this.getClass());
+   private String[] patchPaths;
 
    public OverwriteAndCheckConsistencyTask() {
    }
 
-   public OverwriteAndCheckConsistencyTask(String[] var1) {
-      this.b = var1;
+   public OverwriteAndCheckConsistencyTask(String[] patchPaths) {
+      this.patchPaths = patchPaths;
    }
 
-   public void execute(Map<String, Object> var1) {
-      String var2;
-      Validate.notEmpty(var2 = (String)var1.get("new_wurfl_temp_path"));
-      String var3 = (String)var1.get("original_wurfl_path");
+   public void execute(Map<String, Object> context) {
+      String newWurflTempPath;
+      Validate.notEmpty(newWurflTempPath = (String)context.get("new_wurfl_temp_path"));
+      String originalWurflPath = (String)context.get("original_wurfl_path");
 
       try {
-         (new File(var3)).delete();
-         FileUtils.copyFile(new File(var2), new File(var3), true);
-         var1.put("original_wurfl_overwritten", "true");
-         GeneralWURFLEngine var5;
-         if (ArrayUtils.isEmpty(this.b)) {
-            var5 = new GeneralWURFLEngine(var3);
+         (new File(originalWurflPath)).delete();
+         FileUtils.copyFile(new File(newWurflTempPath), new File(originalWurflPath), true);
+         context.put("original_wurfl_overwritten", "true");
+         GeneralWURFLEngine newEngine;
+         if (ArrayUtils.isEmpty(this.patchPaths)) {
+            newEngine = new GeneralWURFLEngine(originalWurflPath);
          } else {
-            var5 = new GeneralWURFLEngine(var3, this.b);
+            newEngine = new GeneralWURFLEngine(originalWurflPath, this.patchPaths);
          }
 
-         var5.load();
-         var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
-      } catch (Throwable var4) {
-         this.a.error("WURFL consistency check failed", var4);
-         var1.put("task_error_message", "Error trying to overwrite WURFL file : " + ExceptionUtils.getFirstAvailableMessage(var4));
-         var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
+         newEngine.load();
+         context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
+      } catch (Throwable e) {
+         this.log.error("WURFL consistency check failed", e);
+         context.put("task_error_message", "Error trying to overwrite WURFL file : " + ExceptionUtils.getFirstAvailableMessage(e));
+         context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
       }
    }
 }

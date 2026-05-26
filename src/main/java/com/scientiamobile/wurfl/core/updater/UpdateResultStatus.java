@@ -6,13 +6,13 @@ public enum UpdateResultStatus {
    UPDATED("UPDATED"),
    UPDATE_SKIPPED("UPDATE_SKIPPED");
 
-   private String a;
+   private String value;
 
-   private UpdateResultStatus(String var3) {
-      this.a = var3;
+   private UpdateResultStatus(String value) {
+      this.value = value;
    }
 
    public final String value() {
-      return this.a;
+      return this.value;
    }
 }

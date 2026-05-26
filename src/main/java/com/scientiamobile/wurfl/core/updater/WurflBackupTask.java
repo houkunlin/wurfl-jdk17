@@ -7,17 +7,17 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 
 public class WurflBackupTask implements UpdatePipelineTask {
-   public void execute(Map<String, Object> var1) {
-      String var2 = (String)var1.get("original_wurfl_path");
-      String var3 = var2 + ".old";
+   public void execute(Map<String, Object> context) {
+      String originalWurflPath = (String)context.get("original_wurfl_path");
+      String backupWurflPath = originalWurflPath + ".old";
 
       try {
-         FileUtils.copyFile(new File(var2), new File(var3));
-         var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
-         var1.put("backup_wurfl_path", var3);
-      } catch (IOException var4) {
-         var1.put("task_error_message", "IOException: Error trying to backup WURFL file: " + ExceptionUtils.getFirstAvailableMessage(var4));
-         var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
+         FileUtils.copyFile(new File(originalWurflPath), new File(backupWurflPath));
+         context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
+         context.put("backup_wurfl_path", backupWurflPath);
+      } catch (IOException e) {
+         context.put("task_error_message", "IOException: Error trying to backup WURFL file: " + ExceptionUtils.getFirstAvailableMessage(e));
+         context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
       }
    }
 }

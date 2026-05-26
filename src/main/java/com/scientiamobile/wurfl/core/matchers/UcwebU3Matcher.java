@@ -23,97 +23,95 @@ final class UcwebU3Matcher extends MatcherBase {
    private static final Pattern IPAD_IOS_VERSION = Pattern.compile("CPU OS (\\d+)(?:_\\d+)?.+like Mac");
    private static final List<String> SUPPORTED_DEVICE_IDS;
 
-   public UcwebU3Matcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public UcwebU3Matcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
+      super(userAgentNormalizer, wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(SUPPORTED_DEVICE_IDS);
-      return var1;
+      return new HashSet<>(SUPPORTED_DEVICE_IDS);
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsDesktopBrowser() && var2.startsWith("Mozilla") && var2.contains("UCBrowser");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.startsWith("Mozilla") && cleanedDeviceUserAgent.contains("UCBrowser");
    }
 
-   protected final String risMatch(String var1) {
-      if (UserAgentUtils.getUcBrowserVersion(var1, false) == null) {
+   protected final String risMatch(String userAgent) {
+      if (UserAgentUtils.getUcBrowserVersion(userAgent, false) == null) {
          return null;
       } else {
-         int var2 = var1.indexOf("---") + 3;
-         if (var1.contains("Windows Phone")) {
-            String var3 = UserAgentUtils.getWindowsPhoneVersion(var1);
-            if (UserAgentUtils.getWindowsPhoneModel(var1) != null && var3 != null) {
-               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+         int matchLength = userAgent.indexOf("---") + 3;
+         if (userAgent.contains("Windows Phone")) {
+            String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(userAgent);
+            if (UserAgentUtils.getWindowsPhoneModel(userAgent) != null && windowsPhoneVersion != null) {
+               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
             }
-         } else if (var1.contains("Android")) {
-            String var5 = UserAgentUtils.getAndroidModel(var1);
-            String var4 = UserAgentUtils.getAndroidVersion(var1, false);
-            if (var5 != null && var4 != null) {
-               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+         } else if (userAgent.contains("Android")) {
+            String androidModel = UserAgentUtils.getAndroidModel(userAgent);
+            String androidVersion = UserAgentUtils.getAndroidVersion(userAgent, false);
+            if (androidModel != null && androidVersion != null) {
+               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
             }
-         } else if (var1.contains("iPhone;")) {
-            if (UcwebU3Normalizer.IPHONE.matcher(var1).find()) {
-               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+         } else if (userAgent.contains("iPhone;")) {
+            if (UcwebU3Normalizer.IPHONE.matcher(userAgent).find()) {
+               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
             }
-         } else if (var1.contains("iPad") && UcwebU3Normalizer.IPAD.matcher(var1).find()) {
-            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+         } else if (userAgent.contains("iPad") && UcwebU3Normalizer.IPAD.matcher(userAgent).find()) {
+            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
          }
 
          return null;
       }
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var2 = var1.getNormalizedDeviceUserAgent();
-      if (var2.contains("Windows Phone")) {
-         String var3 = UserAgentUtils.getWindowsPhoneVersion(var2);
-         String var4 = null;
-         if (StringUtils.isNotEmpty(var3)) {
-            String[] var5 = var3.split("\\.");
-            if (var5.length >= 2) {
-               String var6 = var5[0];
-               String var7 = var5[1];
-               if (StringUtils.isEmpty(var7)) {
-                  var4 = "generic_ms_phone_os" + var6 + "_subuaucweb";
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+      if (normalizedUserAgent.contains("Windows Phone")) {
+         String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(normalizedUserAgent);
+         String windowsPhoneDeviceId = null;
+         if (StringUtils.isNotEmpty(windowsPhoneVersion)) {
+            String[] versionParts = windowsPhoneVersion.split("\\.");
+            if (versionParts.length >= 2) {
+               String major = versionParts[0];
+               String minor = versionParts[1];
+               if (StringUtils.isEmpty(minor)) {
+                  windowsPhoneDeviceId = "generic_ms_phone_os" + major + "_subuaucweb";
                } else {
-                  var4 = "generic_ms_phone_os" + var6 + "_" + var7 + "_subuaucweb";
+                  windowsPhoneDeviceId = "generic_ms_phone_os" + major + "_" + minor + "_subuaucweb";
                }
             }
          } else {
-            LOG.debug("user agent " + var2 + " has no version information");
+            LOG.debug("user agent " + normalizedUserAgent + " has no version information");
          }
 
-         return SUPPORTED_DEVICE_IDS.contains(var4) ? var4 : GENERIC_MS_PHONE_OS8_SUBUAWCWEB;
-      } else if (var2.contains("Android")) {
-         String var9 = UserAgentUtils.getAndroidVersion(var2, false);
-         String var10 = null;
-         if (StringUtils.isNotEmpty(var9)) {
-            String[] var11 = var9.split("\\.");
-            if (var11.length > 0) {
-               var10 = "generic_ucweb_android_ver" + var11[0];
+         return SUPPORTED_DEVICE_IDS.contains(windowsPhoneDeviceId) ? windowsPhoneDeviceId : GENERIC_MS_PHONE_OS8_SUBUAWCWEB;
+      } else if (normalizedUserAgent.contains("Android")) {
+         String androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent, false);
+         String androidDeviceId = null;
+         if (StringUtils.isNotEmpty(androidVersion)) {
+            String[] versionParts = androidVersion.split("\\.");
+            if (versionParts.length > 0) {
+               androidDeviceId = "generic_ucweb_android_ver" + versionParts[0];
             }
          }
 
-         return SUPPORTED_DEVICE_IDS.contains(var10) ? var10 : GENERIC_UCWEB_ANDROID_VER1;
-      } else if (var2.contains("iPhone")) {
-         Matcher var12 = IPHONE_IOS_VERSION.matcher(var2);
-         String var13 = null;
-         if (var12.find() && var12.groupCount() > 0) {
-            var13 = "apple_iphone_ver" + var12.group(1) + "_subuaucweb";
+         return SUPPORTED_DEVICE_IDS.contains(androidDeviceId) ? androidDeviceId : GENERIC_UCWEB_ANDROID_VER1;
+      } else if (normalizedUserAgent.contains("iPhone")) {
+         Matcher iphoneVersionMatcher = IPHONE_IOS_VERSION.matcher(normalizedUserAgent);
+         String iphoneDeviceId = null;
+         if (iphoneVersionMatcher.find() && iphoneVersionMatcher.groupCount() > 0) {
+            iphoneDeviceId = "apple_iphone_ver" + iphoneVersionMatcher.group(1) + "_subuaucweb";
          }
 
-         return SUPPORTED_DEVICE_IDS.contains(var13) ? var13 : APPLE_IPHONE_VER1_SUBUAWCWEB;
-      } else if (var2.contains("iPad")) {
-         Matcher var14 = IPAD_IOS_VERSION.matcher(var2);
-         String var15 = null;
-         if (var14.find() && var14.groupCount() > 0) {
-            var15 = "apple_ipad_ver1_sub" + var14.group(1) + "_subuaucweb";
+         return SUPPORTED_DEVICE_IDS.contains(iphoneDeviceId) ? iphoneDeviceId : APPLE_IPHONE_VER1_SUBUAWCWEB;
+      } else if (normalizedUserAgent.contains("iPad")) {
+         Matcher ipadVersionMatcher = IPAD_IOS_VERSION.matcher(normalizedUserAgent);
+         String ipadDeviceId = null;
+         if (ipadVersionMatcher.find() && ipadVersionMatcher.groupCount() > 0) {
+            ipadDeviceId = "apple_ipad_ver1_sub" + ipadVersionMatcher.group(1) + "_subuaucweb";
          }
 
-         return SUPPORTED_DEVICE_IDS.contains(var15) ? var15 : APPLE_IPAD_VER1_SUBUAWCWEB;
+         return SUPPORTED_DEVICE_IDS.contains(ipadDeviceId) ? ipadDeviceId : APPLE_IPAD_VER1_SUBUAWCWEB;
       } else {
          return "generic_ucweb";
       }
