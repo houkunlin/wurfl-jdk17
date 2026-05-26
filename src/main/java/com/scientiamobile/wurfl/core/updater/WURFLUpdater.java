@@ -99,10 +99,10 @@ public class WURFLUpdater {
                this.wurflEngine.reload(this.resolvedWurflPath, this.patchPaths);
             }
          }
-      } catch (WURFLRuntimeException var3) {
-         String var2 = "Unable to start WURFL updater, cause: " + var3.getMessage();
-         this.log.error(var2, var3);
-         updateResult = new UpdateResult(UpdateResultStatus.PIPELINE_TASK_FAILED, var2);
+      } catch (WURFLRuntimeException e) {
+         String errorMessage = "Unable to start WURFL updater, cause: " + e.getMessage();
+         this.log.error(errorMessage, e);
+         updateResult = new UpdateResult(UpdateResultStatus.PIPELINE_TASK_FAILED, errorMessage);
       }
 
       return updateResult;
@@ -119,9 +119,9 @@ public class WURFLUpdater {
             this.scheduler = Executors.newScheduledThreadPool(1);
             this.periodicUpdateTask = new PeriodicUpdateTask(this.wurflEngine, updatePipeline, this.resolvedWurflPath);
             this.scheduler.scheduleAtFixedRate(this.periodicUpdateTask, this.firstExecution != null ? this.firstExecution.getTimeInMillis() - Calendar.getInstance().getTimeInMillis() : 100L, this.frequency.value(), TimeUnit.MILLISECONDS);
-         } catch (BadWurflExtensionException var3) {
-            String var2 = "Unable to start WURFL updater, cause: " + var3.getMessage();
-            this.log.error(var2, var3);
+         } catch (BadWurflExtensionException e) {
+            String errorMessage = "Unable to start WURFL updater, cause: " + e.getMessage();
+            this.log.error(errorMessage, e);
          }
       }
    }

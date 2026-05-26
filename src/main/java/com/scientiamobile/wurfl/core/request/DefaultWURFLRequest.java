@@ -92,11 +92,11 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
       this.userAgentProfile = UserAgentUtils.getUaProfile(headerProvider);
       this.headers = new HashMap<>();
-      Enumeration var5 = headerProvider.getHeaderNames();
+      Enumeration headerNames = headerProvider.getHeaderNames();
 
-      while(var5.hasMoreElements()) {
-         String var6 = (String)var5.nextElement();
-         this.headers.put(var6, headerProvider.getHeader(var6));
+      while(headerNames.hasMoreElements()) {
+         String headerName = (String)headerNames.nextElement();
+         this.headers.put(headerName, headerProvider.getHeader(headerName));
       }
 
       this.genericNormalizer = genericNormalizer;
@@ -113,10 +113,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    private static String getFirstAvailableUserAgent(WURFLHeaderProvider headerProvider) {
-      for(int var1 = 0; var1 < 4; ++var1) {
-         String var2;
-         if ((var2 = headerProvider.getHeader(USER_AGENT_HEADERS[var1])) != null) {
-            return truncateUserAgent(var2);
+      for(int i = 0; i < 4; ++i) {
+         String headerValue = headerProvider.getHeader(USER_AGENT_HEADERS[i]);
+         if (headerValue != null) {
+            return truncateUserAgent(headerValue);
          }
       }
 
@@ -124,10 +124,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    private static String getFirstAvailableUserAgent(Map<String, String> headers) {
-      for(int var1 = 0; var1 < 4; ++var1) {
-         String var2;
-         if ((var2 = headers.get(USER_AGENT_HEADERS[var1])) != null) {
-            return truncateUserAgent(var2);
+      for(int i = 0; i < 4; ++i) {
+         String headerValue = headers.get(USER_AGENT_HEADERS[i]);
+         if (headerValue != null) {
+            return truncateUserAgent(headerValue);
          }
       }
 
@@ -290,25 +290,25 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    public int hashCode() {
-      HashCodeBuilder var1;
-      (var1 = new HashCodeBuilder(35, 79)).append(this.getClass()).append(this.deviceUserAgent).append(this.userAgentProfile).toHashCode();
-      return var1.toHashCode();
+      HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(35, 79);
+      hashCodeBuilder.append(this.getClass()).append(this.deviceUserAgent).append(this.userAgentProfile).toHashCode();
+      return hashCodeBuilder.toHashCode();
    }
 
-   public boolean equals(Object var1) {
-      if (this == var1) {
+   public boolean equals(Object obj) {
+      if (this == obj) {
          return true;
-      } else if (!(var1 instanceof DefaultWURFLRequest)) {
+      } else if (!(obj instanceof DefaultWURFLRequest)) {
          return false;
       } else {
-         DefaultWURFLRequest other = (DefaultWURFLRequest)var1;
+         DefaultWURFLRequest other = (DefaultWURFLRequest)obj;
          return (new EqualsBuilder()).append(this.deviceUserAgent, other.deviceUserAgent).append(this.userAgentProfile, other.userAgentProfile).isEquals();
       }
    }
 
    public String toString() {
-      StringBuilder var1;
-      (var1 = new StringBuilder()).append("[userAgent: ").append(this.getOriginalUserAgent()).append(", userAgentProfile: ").append(this.userAgentProfile).append("]");
-      return var1.toString();
+      StringBuilder builder = new StringBuilder();
+      builder.append("[userAgent: ").append(this.getOriginalUserAgent()).append(", userAgentProfile: ").append(this.userAgentProfile).append("]");
+      return builder.toString();
    }
 }

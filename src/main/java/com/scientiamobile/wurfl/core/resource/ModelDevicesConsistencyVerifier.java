@@ -25,32 +25,31 @@ final class ModelDevicesConsistencyVerifier {
    }
 
    public static void verifyModelDevices(ModelDevices devices) {
-      HashMap<String, ModelDevice> var1 = new HashMap<>();
-      HashSet<String> var2 = new HashSet<>();
+      HashMap<String, ModelDevice> deviceByUserAgent = new HashMap<>();
+      HashSet<String> visitedDeviceIds = new HashSet<>();
       if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
       } else if (!devices.containsId("generic")) {
          throw new GenericNotDefinedException();
       } else {
-         Iterator var3 = devices.iterator();
+         Iterator<ModelDevice> iterator = devices.iterator();
 
-         while(var3.hasNext()) {
-            ModelDevice var4;
-            ModelDevice var5 = var4 = (ModelDevice)var3.next();
-            if (!ASSERTIONS_DISABLED && var5 == null) {
+         while(iterator.hasNext()) {
+            ModelDevice device = iterator.next();
+            if (!ASSERTIONS_DISABLED && device == null) {
                throw new AssertionError("device is null");
             }
 
-            if (var1.containsKey(var5.getUserAgent())) {
-               ModelDevice var7 = var1.get(var5.getUserAgent());
-               throw new UserAgentNotUniqueException(var5, var5.getUserAgent(), var7);
+            if (deviceByUserAgent.containsKey(device.getUserAgent())) {
+               ModelDevice existing = deviceByUserAgent.get(device.getUserAgent());
+               throw new UserAgentNotUniqueException(device, device.getUserAgent(), existing);
             }
 
-            var1.put(var4.getUserAgent(), var4);
-            verifyHierarchy(var4, devices, var2);
-            var2.add(var4.getID());
-            verifyGroups(var4, devices);
-            verifyCapabilities(var4, devices);
+            deviceByUserAgent.put(device.getUserAgent(), device);
+            verifyHierarchy(device, devices, visitedDeviceIds);
+            visitedDeviceIds.add(device.getID());
+            verifyGroups(device, devices);
+            verifyCapabilities(device, devices);
          }
 
       }
@@ -62,34 +61,34 @@ final class ModelDevicesConsistencyVerifier {
       } else if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
       } else {
-         ArrayList<ModelDevice> var3 = new ArrayList<>(10);
-         String var5 = device.getID();
-         if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(var5)) {
+         ArrayList<ModelDevice> hierarchy = new ArrayList<>(10);
+         String currentDeviceId = device.getID();
+         if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(currentDeviceId)) {
             throw new AssertionError();
          } else {
-            var3.add(devices.getById(var5));
+            hierarchy.add(devices.getById(currentDeviceId));
 
-            while(!"generic".equals(var5)) {
-               var5 = devices.getById(var5).getFallBack();
-               if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(var5)) {
+            while(!"generic".equals(currentDeviceId)) {
+               currentDeviceId = devices.getById(currentDeviceId).getFallBack();
+               if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(currentDeviceId)) {
                   throw new AssertionError();
                }
 
-               if (visited.contains(var5)) {
+               if (visited.contains(currentDeviceId)) {
                   return;
                }
 
-               if (!devices.containsId(var5)) {
-                  throw new OrphanHierarchyException(var3);
+               if (!devices.containsId(currentDeviceId)) {
+                  throw new OrphanHierarchyException(hierarchy);
                }
 
-               int var4;
-               if ((var4 = var3.indexOf(devices.getById(var5))) != -1) {
-                  LinkedList<ModelDevice> var6 = new LinkedList<>(var3.subList(var4, var3.size()));
-                  throw new CircularHierarchyException(var6);
+               int circularIndex;
+               if ((circularIndex = hierarchy.indexOf(devices.getById(currentDeviceId))) != -1) {
+                  LinkedList<ModelDevice> circularHierarchy = new LinkedList<>(hierarchy.subList(circularIndex, hierarchy.size()));
+                  throw new CircularHierarchyException(circularHierarchy);
                }
 
-               var3.add(devices.getById(var5));
+               hierarchy.add(devices.getById(currentDeviceId));
             }
 
          }
@@ -102,13 +101,13 @@ final class ModelDevicesConsistencyVerifier {
       } else if (!ASSERTIONS_DISABLED && devices == null) {
          throw new AssertionError("devices is null");
       } else {
-         ModelDevice var4 = devices.getById("generic");
-         Set<String> var2 = device.getGroups();
-         Set<String> var5 = var4.getGroups();
+         ModelDevice genericDevice = devices.getById("generic");
+         Set<String> deviceGroups = device.getGroups();
+         Set<String> genericGroups = genericDevice.getGroups();
 
-         for(Object groupObj : var2) {
+         for(Object groupObj : deviceGroups) {
             String group = (String)groupObj;
-            if (!var5.contains(group)) {
+            if (!genericGroups.contains(group)) {
                throw new InexistentGroupException(device, group);
             }
          }
@@ -124,19 +123,19 @@ final class ModelDevicesConsistencyVerifier {
       } else if (!ASSERTIONS_DISABLED && !devices.containsId("generic")) {
          throw new AssertionError("device do not containing generic");
       } else {
-         ModelDevice var7;
-         Map<String, String> var2 = (var7 = devices.getById("generic")).getCapabilities();
+         ModelDevice genericDevice = devices.getById("generic");
+         Map<String, String> genericCapabilities = genericDevice.getCapabilities();
 
          for(Object capabilityNameObj : device.getCapabilities().keySet()) {
             String capabilityName = (String)capabilityNameObj;
-            if (!var2.containsKey(capabilityName)) {
+            if (!genericCapabilities.containsKey(capabilityName)) {
                throw new InexistentCapabilityException(device, capabilityName);
             }
 
-            String var5 = device.getGroupForCapability(capabilityName);
-            String var6 = var7.getGroupForCapability(capabilityName);
-            if (!var5.equals(var6)) {
-               throw new BadCapabilityGroupException(device, capabilityName, var5, var6);
+            String deviceGroup = device.getGroupForCapability(capabilityName);
+            String genericGroup = genericDevice.getGroupForCapability(capabilityName);
+            if (!deviceGroup.equals(genericGroup)) {
+               throw new BadCapabilityGroupException(device, capabilityName, deviceGroup, genericGroup);
             }
          }
 
@@ -144,28 +143,28 @@ final class ModelDevicesConsistencyVerifier {
    }
 
    public static void verifyNoRedefinedDevices(ModelDevices patchDevices, ModelDevices baseDevices) {
-      Iterator var7 = patchDevices.getDevices().iterator();
+      Iterator<ModelDevice> iterator = patchDevices.getDevices().iterator();
 
-      while(var7.hasNext()) {
-         ModelDevice var2;
-         String var3 = (var2 = (ModelDevice)var7.next()).getUserAgent();
-         String var4 = var2.getID();
-         String var5 = var2.getFallBack();
-         ModelDevice var6;
-         if ((var6 = baseDevices.getById(var4)) == null) {
+      while(iterator.hasNext()) {
+         ModelDevice patchDevice = iterator.next();
+         String patchUserAgent = patchDevice.getUserAgent();
+         String patchDeviceId = patchDevice.getID();
+         String patchFallBack = patchDevice.getFallBack();
+         ModelDevice baseDevice = baseDevices.getById(patchDeviceId);
+         if (baseDevice == null) {
             return;
          }
 
-         if (StringUtils.isEmpty(var5)) {
-            throw new RedefinedDeviceException("Patched device with id " + var4 + "does not provide a value for fall_back");
+         if (StringUtils.isEmpty(patchFallBack)) {
+            throw new RedefinedDeviceException("Patched device with id " + patchDeviceId + "does not provide a value for fall_back");
          }
 
-         if (!var3.equals(var6.getUserAgent())) {
-            throw new RedefinedDeviceException(var2, var6, "user agent");
+         if (!patchUserAgent.equals(baseDevice.getUserAgent())) {
+            throw new RedefinedDeviceException(patchDevice, baseDevice, "user agent");
          }
 
-         if (!var5.equals(var6.getFallBack())) {
-            throw new RedefinedDeviceException(var2, var6, "fall_back");
+         if (!patchFallBack.equals(baseDevice.getFallBack())) {
+            throw new RedefinedDeviceException(patchDevice, baseDevice, "fall_back");
          }
       }
 

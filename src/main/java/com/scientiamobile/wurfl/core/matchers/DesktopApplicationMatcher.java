@@ -16,44 +16,48 @@ public final class DesktopApplicationMatcher extends MatcherBase {
    private static final Pattern MSOFFICE_PATTERN = Pattern.compile("MSOffice ([0-9]+)");
    private static final Pattern MICROSOFT_OFFICE_PATTERN = Pattern.compile("Microsoft Office/([0-9.]+)");
 
-   public DesktopApplicationMatcher(WURFLModel var1) {
-      super(var1);
+   public DesktopApplicationMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(SUPPORTED_DEVICE_IDS);
-      var1.add(GENERIC_WEB_BROWSER);
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICE_IDS);
+      requiredDeviceIds.add(GENERIC_WEB_BROWSER);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Microsoft Office", "MSOffice", "office", "DesktopApp ");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Microsoft Office", "MSOffice", "office", "DesktopApp ");
    }
 
-   protected final String risMatch(String var1) {
-      Matcher var2 = MSOFFICE_PATTERN.matcher(var1);
-      Matcher var3 = MICROSOFT_OFFICE_PATTERN.matcher(var1);
-      if (var2.find()) {
-         int var6;
-         if ((var6 = StringMatchUtils.firstCloseParenthesis(var1 = var1.substring(var1.indexOf("MSOffice")))) != -1) {
-            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var6);
+   protected final String risMatch(String userAgent) {
+      Matcher msOfficeMatcher = MSOFFICE_PATTERN.matcher(userAgent);
+      Matcher microsoftOfficeMatcher = MICROSOFT_OFFICE_PATTERN.matcher(userAgent);
+      if (msOfficeMatcher.find()) {
+         userAgent = userAgent.substring(userAgent.indexOf("MSOffice"));
+         int matchLength = StringMatchUtils.firstCloseParenthesis(userAgent);
+         if (matchLength != -1) {
+            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
          }
       } else {
-         int var7;
-         if (var3.find() && (var7 = (var1 = var1.substring(var1.indexOf("Microsoft Office"))).indexOf(46)) != -1) {
-            return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var7);
+         if (microsoftOfficeMatcher.find()) {
+            userAgent = userAgent.substring(userAgent.indexOf("Microsoft Office"));
+            int dotIndex = userAgent.indexOf(46);
+            if (dotIndex != -1) {
+               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, dotIndex);
+            }
          }
       }
 
       return "generic";
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      if (StringMatchUtils.containsAnyOf(var1.getDeviceUserAgent(), "Office", "office")) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String deviceUserAgent = request.getDeviceUserAgent();
+      if (StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office")) {
          return MS_OFFICE;
       } else {
-         return var1.getDeviceUserAgent().contains("DesktopApp ") ? GENERIC_DESKTOP_APPLICATION : GENERIC_WEB_BROWSER;
+         return deviceUserAgent.contains("DesktopApp ") ? GENERIC_DESKTOP_APPLICATION : GENERIC_WEB_BROWSER;
       }
    }
 
