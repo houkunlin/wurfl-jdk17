@@ -4,9 +4,9 @@ import com.scientiamobile.wurfl.core.EngineTarget;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface WURFLRequestFactory {
-   WURFLRequest createRequest(HttpServletRequest var1, EngineTarget var2);
+   WURFLRequest createRequest(HttpServletRequest request, EngineTarget engineTarget);
 
-   WURFLRequest createRequest(String var1, EngineTarget var2);
+   WURFLRequest createRequest(String userAgent, EngineTarget engineTarget);
 
-   WURFLRequest createRequest(WURFLHeaderProvider var1, EngineTarget var2);
+   WURFLRequest createRequest(WURFLHeaderProvider headerProvider, EngineTarget engineTarget);
 }

@@ -7,15 +7,15 @@ public abstract class WURFLException extends Exception {
       super("Generic Exception in WURFL.");
    }
 
-   public WURFLException(String var1) {
-      super(var1);
+   public WURFLException(String message) {
+      super(message);
    }
 
-   public WURFLException(Throwable var1) {
-      super(var1);
+   public WURFLException(Throwable cause) {
+      super(cause);
    }
 
-   public WURFLException(String var1, Throwable var2) {
-      super(var1, var2);
+   public WURFLException(String message, Throwable cause) {
+      super(message, cause);
    }
 }

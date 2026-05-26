@@ -7,15 +7,15 @@ public class WURFLRuntimeException extends RuntimeException {
       super("WURFL unexpected exception");
    }
 
-   public WURFLRuntimeException(String var1) {
-      super(var1);
+   public WURFLRuntimeException(String message) {
+      super(message);
    }
 
-   public WURFLRuntimeException(String var1, Throwable var2) {
-      super(var1, var2);
+   public WURFLRuntimeException(String message, Throwable cause) {
+      super(message, cause);
    }
 
-   public WURFLRuntimeException(Throwable var1) {
-      super("WURFL unexpected exception", var1);
+   public WURFLRuntimeException(Throwable cause) {
+      super("WURFL unexpected exception", cause);
    }
 }

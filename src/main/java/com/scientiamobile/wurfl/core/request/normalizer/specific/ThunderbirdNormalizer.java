@@ -5,8 +5,8 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class ThunderbirdNormalizer implements UserAgentNormalizer {
-   public String normalize(String var1) {
-      int var2;
-      return (var2 = StringMatchUtils.indexOf(var1, "Thunderbird")) >= 0 ? StringUtils.substring(var1, var2) : var1;
+   public String normalize(String userAgent) {
+      int thunderbirdIndex = StringMatchUtils.indexOf(userAgent, "Thunderbird");
+      return thunderbirdIndex >= 0 ? StringUtils.substring(userAgent, thunderbirdIndex) : userAgent;
    }
 }

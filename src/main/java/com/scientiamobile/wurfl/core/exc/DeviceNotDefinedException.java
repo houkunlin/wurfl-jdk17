@@ -2,18 +2,18 @@ package com.scientiamobile.wurfl.core.exc;
 
 public class DeviceNotDefinedException extends WURFLRuntimeException {
    private static final long serialVersionUID = 1L;
-   private String a;
+   private String deviceId;
 
-   public DeviceNotDefinedException(String var1, String var2) {
-      super(var2);
-      this.a = var1;
+   public DeviceNotDefinedException(String deviceId, String message) {
+      super(message);
+      this.deviceId = deviceId;
    }
 
-   public DeviceNotDefinedException(String var1) {
-      this(var1, (new StringBuilder("Device: ")).append(var1).append(" is not defined in WURFL").toString());
+   public DeviceNotDefinedException(String deviceId) {
+      this(deviceId, (new StringBuilder("Device: ")).append(deviceId).append(" is not defined in WURFL").toString());
    }
 
    public String getDeviceId() {
-      return this.a;
+      return this.deviceId;
    }
 }

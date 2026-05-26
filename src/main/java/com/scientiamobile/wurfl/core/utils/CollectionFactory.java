@@ -8,7 +8,7 @@ public abstract class CollectionFactory {
       return createConcurrentHashMap(6000, 0.75F, 16);
    }
 
-   public static <K, V> Map<K, V> createConcurrentHashMap(int var0, float var1, int var2) {
-      return new ConcurrentHashMap<>(var0, var1, var2);
+   public static <K, V> Map<K, V> createConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel) {
+      return new ConcurrentHashMap<>(initialCapacity, loadFactor, concurrencyLevel);
    }
 }

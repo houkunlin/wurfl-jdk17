@@ -2,18 +2,18 @@ package com.scientiamobile.wurfl.core.exc;
 
 public class CapabilityNotDefinedException extends WURFLRuntimeException {
    private static final long serialVersionUID = 1L;
-   private String a;
+   private String capabilityName;
 
-   public CapabilityNotDefinedException(String var1) {
-      this(var1, (new StringBuilder("Capability: ")).append(var1).append(" is not defined in WURFL").toString());
+   public CapabilityNotDefinedException(String capabilityName) {
+      this(capabilityName, (new StringBuilder("Capability: ")).append(capabilityName).append(" is not defined in WURFL").toString());
    }
 
-   public CapabilityNotDefinedException(String var1, String var2) {
-      super((new StringBuilder("Capability: ")).append(var1).append(" - ").append(var2).toString());
-      this.a = var1;
+   public CapabilityNotDefinedException(String capabilityName, String message) {
+      super((new StringBuilder("Capability: ")).append(capabilityName).append(" - ").append(message).toString());
+      this.capabilityName = capabilityName;
    }
 
    public String getCapabilityName() {
-      return this.a;
+      return this.capabilityName;
    }
 }
