@@ -17,7 +17,7 @@ class MarkupResolverImpl implements MarkupResolver, Serializable {
          xhtmlSupportLevel = device.getCapability("xhtml_support_level");
          preferredMarkup = device.getCapability("preferred_markup");
       } catch (CapabilityNotDefinedException e) {
-         this.log.error("It is not possible getting markUp from capabilities: " + e.getLocalizedMessage());
+         this.log.error("It is not possible getting markUp from capabilities: {}", e.getLocalizedMessage());
          throw new RuntimeException(e.getLocalizedMessage(), e);
       }
 

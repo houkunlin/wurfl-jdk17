@@ -38,12 +38,12 @@ public class PeriodicUpdateTask implements Runnable {
 
          this.lastResults.add(updateResult);
          if (!updateResult.isUpdateProcessSuccessful()) {
-            this.log.error("Update process failed. Reason: " + updateResult.getMessage());
+            this.log.error("Update process failed. Reason: {}", updateResult.getMessage());
             if (this.lastSuccessfulUpdate != null) {
-               this.log.warn("Last successful updated was completed on " + CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
+               this.log.warn("Last successful updated was completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
             }
          } else if (updateResult.isUpdated()) {
-            this.log.info("Free memory before reload process " + Runtime.getRuntime().freeMemory());
+            this.log.info("Free memory before reload process {}", Runtime.getRuntime().freeMemory());
             if (ArrayUtils.isEmpty(this.patchPaths)) {
                this.wurflEngine.reload(this.resolvedWurflPath);
             } else {
@@ -54,7 +54,7 @@ public class PeriodicUpdateTask implements Runnable {
          }
 
          if (this.lastSuccessfulUpdate != null) {
-            this.log.info("WURFL file update completed on " + CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
+            this.log.info("WURFL file update completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
          }
 
       } catch (Exception e) {

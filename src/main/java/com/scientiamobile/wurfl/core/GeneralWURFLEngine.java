@@ -175,7 +175,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
             this.log.warn("Empty value has been provided for replacing root, skipping");
             return false;
          } else if (!(new File(this.rootPath)).canWrite()) {
-            this.log.error("Engine root at " + this.rootPath + "is not writable, cannot replace it");
+            this.log.error("Engine root at {}is not writable, cannot replace it", this.rootPath);
             return false;
          } else {
             GeneralWURFLEngine newEngine;
@@ -191,7 +191,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
             return true;
          }
       } catch (Exception e) {
-         this.log.error("An error has occurred replacing " + this.rootPath + "root with " + newRootPath, e);
+         this.log.error("An error has occurred replacing {}root with {}", this.rootPath, newRootPath, e);
          return false;
       }
    }
@@ -273,22 +273,22 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                      if (this.wurflService == null) {
                         MatcherManager matcherManager = new MatcherManager(this.wurflModel);
                         if (this.markupResolver != null && this.log.isInfoEnabled()) {
-                           this.log.info("markupResolver is custom: " + this.markupResolver.getClass().getName());
+                           this.log.info("markupResolver is custom: {}", this.markupResolver.getClass().getName());
                         }
 
                         if (this.capabilitiesHolderFactory != null && this.log.isInfoEnabled()) {
-                           this.log.info("capabilitiesHolderFactory is custom: " + this.capabilitiesHolderFactory.getClass().getName());
+                           this.log.info("capabilitiesHolderFactory is custom: {}", this.capabilitiesHolderFactory.getClass().getName());
                         }
 
                         this.ensureDeviceProviderInitialized();
                         if (this.cacheProvider != null && this.log.isInfoEnabled()) {
-                           this.log.info("cacheProvider is custom: " + this.cacheProvider.getClass().getName());
+                           this.log.info("cacheProvider is custom: {}", this.cacheProvider.getClass().getName());
                         }
 
                         if (this.requestFactory == null) {
                            if (this.userAgentResolver != null) {
                               if (this.log.isInfoEnabled()) {
-                                 this.log.info("userAgentResolver is custom: " + this.userAgentResolver.getClass().getName());
+                                 this.log.info("userAgentResolver is custom: {}", this.userAgentResolver.getClass().getName());
                               }
 
                               this.requestFactory = new DefaultWURFLRequestFactory(this.userAgentResolver, this.userAgentPriority);
@@ -296,7 +296,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                               this.requestFactory = new DefaultWURFLRequestFactory(this.userAgentPriority);
                            }
                         } else if (this.log.isInfoEnabled()) {
-                           this.log.info("wurflRequestFactory is custom: " + this.requestFactory.getClass().getName());
+                           this.log.info("wurflRequestFactory is custom: {}", this.requestFactory.getClass().getName());
                         }
 
                         if (this.engineTarget != null) {
@@ -305,13 +305,13 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                            this.wurflService = new WURFLServiceImpl(this.wurflModel, matcherManager, this.deviceProvider, this.requestFactory);
                         }
                      } else if (this.log.isInfoEnabled()) {
-                        this.log.info("wurflService is fed: " + this.wurflService.getClass().getName());
+                        this.log.info("wurflService is fed: {}", this.wurflService.getClass().getName());
                      }
 
                      this.ensureDeviceProviderInitialized();
                      if (this.cacheProvider != null) {
                         if (this.log.isInfoEnabled()) {
-                           this.log.info("cacheProvider is fed: " + this.cacheProvider.getClass().getName());
+                           this.log.info("cacheProvider is fed: {}", this.cacheProvider.getClass().getName());
                         }
 
                         this.wurflService.setCacheProvider(this.cacheProvider);
@@ -327,7 +327,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                      this.lock.writeLock().unlock();
                   }
                } catch (Exception e) {
-                  this.log.error("cannot initialize: " + e, e);
+                  this.log.error("cannot initialize: {}", e);
                   if (e instanceof WURFLRuntimeException) {
                      throw (WURFLRuntimeException)e;
                   }
@@ -361,7 +361,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
          }
       } else {
          if (this.log.isInfoEnabled()) {
-            this.log.info("Device Provider is fed: " + this.deviceProvider.getClass().getName());
+            this.log.info("Device Provider is fed: {}", this.deviceProvider.getClass().getName());
          }
 
       }

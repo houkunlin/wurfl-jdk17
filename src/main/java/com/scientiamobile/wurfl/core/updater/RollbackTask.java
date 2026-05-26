@@ -19,7 +19,7 @@ public class RollbackTask implements UpdatePipelineTask {
 
          try {
             FileUtils.copyFile(new File(backupWurflPath), new File(originalWurflPath));
-            this.log.info("Update rollback: restored file " + originalWurflPath);
+            this.log.info("Update rollback: restored file {}", originalWurflPath);
             FileUtils.deleteQuietly(new File((String)context.get("new_wurfl_temp_path")));
             FileUtils.deleteQuietly(new File((String)context.get("backup_wurfl_path")));
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());

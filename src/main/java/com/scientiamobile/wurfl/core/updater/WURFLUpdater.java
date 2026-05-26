@@ -35,10 +35,10 @@ public class WURFLUpdater {
    public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl) {
       this.log = LoggerFactory.getLogger(this.getClass());
       this.frequency = Frequency.DAILY;
-      this.log.info("WURFL path passed to Updater constructor: " + this.resolvedWurflPath);
+      this.log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
       this.wurflEngine = wurflEngine;
       this.resolvedWurflPath = UpdatePipeline.resolvePath(wurflEngine.getRootPath());
-      this.log.info("WURFL path passed to Updater constructor after resolve: " + this.resolvedWurflPath);
+      this.log.info("WURFL path passed to Updater constructor after resolve: {}", this.resolvedWurflPath);
       this.updateUrl = updateUrl;
       this.validateSetup();
    }
@@ -51,10 +51,10 @@ public class WURFLUpdater {
    public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl, ProxySettings proxySettings) {
       this.log = LoggerFactory.getLogger(this.getClass());
       this.frequency = Frequency.DAILY;
-      this.log.info("WURFL path passed to Updater constructor: " + this.resolvedWurflPath);
+      this.log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
       this.wurflEngine = wurflEngine;
       this.resolvedWurflPath = UpdatePipeline.resolvePath(wurflEngine.getRootPath());
-      this.log.info("WURFL path passed to Updater constructor after resolve: " + this.resolvedWurflPath);
+      this.log.info("WURFL path passed to Updater constructor after resolve: {}", this.resolvedWurflPath);
       this.updateUrl = updateUrl;
       this.proxySettings = proxySettings;
       this.validateSetup();

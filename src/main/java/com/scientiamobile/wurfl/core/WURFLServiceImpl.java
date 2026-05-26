@@ -49,7 +49,7 @@ class WURFLServiceImpl implements WURFLService {
       }
 
       this.modelLock = new ReentrantReadWriteLock();
-      this.log.info(this.getClass().getSimpleName() + " created");
+      this.log.info("{} created", this.getClass().getSimpleName());
    }
 
    public WURFLServiceImpl(WURFLModel wurflModel, MatcherManager matcherManager, DeviceProvider deviceProvider, WURFLRequestFactoryWithPriority requestFactory) {
@@ -57,7 +57,7 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    public final void setCacheProvider(CacheProvider cacheProvider) {
-      this.log.info("feeding " + cacheProvider);
+      this.log.info("feeding {}", cacheProvider);
       this.cacheProvider = cacheProvider;
    }
 
@@ -194,14 +194,14 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    public final void applyPatches(WURFLResources wurflResources, String... patches) {
-      this.log.info("before applying patches " + wurflResources);
+      this.log.info("before applying patches {}", wurflResources);
       this.modelLock.writeLock().lock();
 
       try {
          this.wurflModel.applyPatches(wurflResources, patches);
          this.matcherManager.reloadModel(this.wurflModel);
          this.clearCacheProvider();
-         this.log.info("finished applying patches " + wurflResources);
+         this.log.info("finished applying patches {}", wurflResources);
       } finally {
          this.modelLock.writeLock().unlock();
       }

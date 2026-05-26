@@ -81,7 +81,7 @@ final class UcwebU3Matcher extends MatcherBase {
                }
             }
          } else {
-            LOG.debug("user agent " + normalizedUserAgent + " has no version information");
+            LOG.debug("user agent {} has no version information", normalizedUserAgent);
          }
 
          return SUPPORTED_DEVICE_IDS.contains(windowsPhoneDeviceId) ? windowsPhoneDeviceId : GENERIC_MS_PHONE_OS8_SUBUAWCWEB;

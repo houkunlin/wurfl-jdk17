@@ -178,7 +178,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                log.info("BUCKETS (2/3): start sorting...");
                start = System.currentTimeMillis();
                Collections.sort(matchResults);
-               log.info("BUCKETS (2/3): finished sorting. Took " + (System.currentTimeMillis() - start) + " ms");
+               log.info("BUCKETS (2/3): finished sorting. Took {} ms", System.currentTimeMillis() - start);
                log.info("BUCKETS (3/3): start building strings...");
                start = System.currentTimeMillis();
 
@@ -201,7 +201,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
             return true;
          } catch (Exception e) {
-            log.debug(e.getClass().getSimpleName() + " - " + e.getMessage());
+            log.debug("{} - {}", e.getClass().getSimpleName(), e.getMessage());
             return false;
          }
       }
@@ -342,6 +342,6 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          apiVersion = "(Unavailable...)";
       }
 
-      log.info("WURFL core library running version " + pomProperties.get("version"));
+      log.info("WURFL core library running version {}", pomProperties.get("version"));
    }
 }

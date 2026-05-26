@@ -45,7 +45,7 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
             context.put("new_wurfl_temp_path", tempWurflPath);
          } else {
-            this.log.error("Wurfl updater: unable to download new WURFL file, HTTP RESPONSE code: " + responseCode);
+            this.log.error("Wurfl updater: unable to download new WURFL file, HTTP RESPONSE code: {}", responseCode);
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
             context.put("task_error_message", "Invalid HTTP response code " + responseCode);
          }

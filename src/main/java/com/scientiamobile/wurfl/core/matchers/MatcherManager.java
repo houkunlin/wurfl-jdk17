@@ -147,7 +147,7 @@ public final class MatcherManager {
       new OrphanDeviceIdMatcher(model);
       List allDevices = model.getAllDevicesAsList();
       Validate.notNull(allDevices, "Model devices list is null");
-      this.log.info("model devices: " + allDevices.size());
+      this.log.info("model devices: {}", allDevices.size());
       int filteredDevices = 0;
 
       for(Iterator iterator = allDevices.iterator(); iterator.hasNext(); ++filteredDevices) {
@@ -162,7 +162,7 @@ public final class MatcherManager {
       }
 
       matcherChain.sortAll();
-      this.log.info("model devices filtered: " + filteredDevices);
+      this.log.info("model devices filtered: {}", filteredDevices);
       return matcherChain;
    }
 

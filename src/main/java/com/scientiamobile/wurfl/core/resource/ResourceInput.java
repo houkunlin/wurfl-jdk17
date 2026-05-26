@@ -108,7 +108,7 @@ final class ResourceInput {
 
          return inputStream;
       } catch (IOException e) {
-         LOG.error("Error opening stream URI:" + uri.toString());
+         LOG.error("Error opening stream URI: {}", uri.toString());
          throw new RuntimeException(e);
       }
    }
@@ -125,7 +125,7 @@ final class ResourceInput {
 
    private void closeStream() {
       try {
-         LOG.info("closing input stream: " + this.stream.getClass().getSimpleName());
+         LOG.info("closing input stream: {}", this.stream.getClass().getSimpleName());
          this.stream.close();
       } catch (IOException e) {
          LOG.warn("Error closing stream");

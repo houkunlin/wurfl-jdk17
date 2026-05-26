@@ -105,7 +105,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
       this.genericDevice = this.devicesById.get("generic");
       if (this.log.isInfoEnabled()) {
-         this.log.info("WURFLModel version: " + this.version + "; devices: " + this.devicesById.size() + " root devices: " + rootDevicesCount + "; families: " + this.familyDeviceIds.size() + "; generic devices: " + genericDevicesCount);
+         this.log.info("WURFLModel version: {}; devices: {} root devices: {}; families: {}; generic devices: {}", this.version, this.devicesById.size(), rootDevicesCount, this.familyDeviceIds.size(), genericDevicesCount);
       }
 
    }
