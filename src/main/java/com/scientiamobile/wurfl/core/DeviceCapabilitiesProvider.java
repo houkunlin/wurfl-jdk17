@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 class DeviceCapabilitiesProvider implements CapabilitiesProvider {
    private WURFLModel wurflModel;
    private ModelDevice modelDevice;
-   private final Logger log = LoggerFactory.getLogger(DeviceCapabilitiesProvider.class);
+   private static final Logger log = LoggerFactory.getLogger(DeviceCapabilitiesProvider.class);
 
    public DeviceCapabilitiesProvider(ModelDevice modelDevice, WURFLModel wurflModel) {
       this.wurflModel = wurflModel;
@@ -28,8 +28,8 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
             capabilities.putAll(deviceInHierarchy.getCapabilities());
          }
       } catch (DeviceNotInModelException e) {
-         if (this.log.isErrorEnabled()) {
-            this.log.error((new StringBuilder()).append("Device: ").append(this.modelDevice.getID()).append(" is not in model. ").append("Capabilities will not loaded.").toString());
+         if (log.isErrorEnabled()) {
+            log.error((new StringBuilder()).append("Device: ").append(this.modelDevice.getID()).append(" is not in model. ").append("Capabilities will not loaded.").toString());
          }
       }
 

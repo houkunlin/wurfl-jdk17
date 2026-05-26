@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class WURFLServiceImpl implements WURFLService {
-   private final Logger log;
+   private static final Logger log = LoggerFactory.getLogger(WURFLServiceImpl.class);
    private WURFLModel wurflModel;
    private ReentrantReadWriteLock modelLock;
    private CacheProvider cacheProvider;
@@ -32,7 +32,7 @@ class WURFLServiceImpl implements WURFLService {
    private static boolean assertionsDisabled = !WURFLServiceImpl.class.desiredAssertionStatus();
 
    public WURFLServiceImpl(WURFLModel wurflModel, MatcherManager matcherManager, DeviceProvider deviceProvider, WURFLRequestFactoryWithPriority requestFactory, EngineTarget engineTarget) {
-      this.log = LoggerFactory.getLogger(this.getClass());
+      
       this.configFileLoader = new XmlFileLoader("classpath:/META-INF/wurfl-config.xml", new ApiConfigHandler(this, (byte)0));
       this.configLoaded = false;
       this.wurflModel = wurflModel;
@@ -49,7 +49,7 @@ class WURFLServiceImpl implements WURFLService {
       }
 
       this.modelLock = new ReentrantReadWriteLock();
-      this.log.info("{} created", this.getClass().getSimpleName());
+      log.info("{} created", this.getClass().getSimpleName());
    }
 
    public WURFLServiceImpl(WURFLModel wurflModel, MatcherManager matcherManager, DeviceProvider deviceProvider, WURFLRequestFactoryWithPriority requestFactory) {
@@ -58,7 +58,7 @@ class WURFLServiceImpl implements WURFLService {
 
    @Override
    public void setCacheProvider(CacheProvider cacheProvider) {
-      this.log.info("feeding {}", cacheProvider);
+      log.info("feeding {}", cacheProvider);
       this.cacheProvider = cacheProvider;
    }
 
@@ -119,7 +119,7 @@ class WURFLServiceImpl implements WURFLService {
       if (this.cacheProvider == null) {
          synchronized(this) {
             if (this.cacheProvider == null) {
-               this.log.info("no Cache Provider, using default (DoubleLRUMapCacheProvider)");
+               log.info("no Cache Provider, using default (DoubleLRUMapCacheProvider)");
                this.cacheProvider = new DoubleLRUMapCacheProvider();
             }
 
@@ -187,7 +187,7 @@ class WURFLServiceImpl implements WURFLService {
    @Override
    public void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches) {
       this.modelLock.writeLock().lock();
-      this.log.info("reloading service");
+      log.info("reloading service");
 
       try {
          this.wurflModel.reload(wurflResource, wurflResources, patches);
@@ -200,21 +200,21 @@ class WURFLServiceImpl implements WURFLService {
    }
 
    private void clearCacheProvider() {
-      this.log.info("about to clear cache provider");
+      log.info("about to clear cache provider");
       this.ensureCacheProvider();
       this.cacheProvider.clear();
    }
 
    @Override
    public void applyPatches(WURFLResources wurflResources, String... patches) {
-      this.log.info("before applying patches {}", wurflResources);
+      log.info("before applying patches {}", wurflResources);
       this.modelLock.writeLock().lock();
 
       try {
          this.wurflModel.applyPatches(wurflResources, patches);
          this.matcherManager.reloadModel(this.wurflModel);
          this.clearCacheProvider();
-         this.log.info("finished applying patches {}", wurflResources);
+         log.info("finished applying patches {}", wurflResources);
       } finally {
          this.modelLock.writeLock().unlock();
       }

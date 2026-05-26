@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PeriodicUpdateTask implements Runnable {
-   private final Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger log = LoggerFactory.getLogger(PeriodicUpdateTask.class);
    private UpdatePipeline updatePipeline;
    private Calendar lastSuccessfulUpdate;
    private final LinkedList<UpdateResult> lastResults = new LinkedList<>();
@@ -29,7 +29,7 @@ public class PeriodicUpdateTask implements Runnable {
 
    @Override
    public void run() {
-      this.log.info("WURFL periodic update started");
+      log.info("WURFL periodic update started");
 
       try {
          UpdateResult updateResult = this.updatePipeline.execute();
@@ -39,12 +39,12 @@ public class PeriodicUpdateTask implements Runnable {
 
          this.lastResults.add(updateResult);
          if (!updateResult.isUpdateProcessSuccessful()) {
-            this.log.error("Update process failed. Reason: {}", updateResult.getMessage());
+            log.error("Update process failed. Reason: {}", updateResult.getMessage());
             if (this.lastSuccessfulUpdate != null) {
-               this.log.warn("Last successful updated was completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
+               log.warn("Last successful updated was completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
             }
          } else if (updateResult.isUpdated()) {
-            this.log.info("Free memory before reload process {}", Runtime.getRuntime().freeMemory());
+            log.info("Free memory before reload process {}", Runtime.getRuntime().freeMemory());
             if (ArrayUtils.isEmpty(this.patchPaths)) {
                this.wurflEngine.reload(this.resolvedWurflPath);
             } else {
@@ -55,11 +55,11 @@ public class PeriodicUpdateTask implements Runnable {
          }
 
          if (this.lastSuccessfulUpdate != null) {
-            this.log.info("WURFL file update completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
+            log.info("WURFL file update completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
          }
 
       } catch (RuntimeException e) {
-         this.log.error("Unexpected exception performing periodic update", e);
+         log.error("Unexpected exception performing periodic update", e);
       }
    }
 

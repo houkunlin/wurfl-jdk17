@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CleanupTask implements UpdatePipelineTask {
-   private final Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger log = LoggerFactory.getLogger(CleanupTask.class);
 
    public void execute(Map<String, Object> context) {
       String[] pathsToDelete;
@@ -20,7 +20,7 @@ public class CleanupTask implements UpdatePipelineTask {
                try {
                   File file = new File(path).getCanonicalFile();
                   if (file.exists() && !file.delete()) {
-                     this.log.warn("Failed to delete file: {}", file.getAbsolutePath());
+                     log.warn("Failed to delete file: {}", file.getAbsolutePath());
                   }
                } catch (IOException e) {
                }

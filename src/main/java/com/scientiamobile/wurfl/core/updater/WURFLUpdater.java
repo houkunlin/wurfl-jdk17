@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WURFLUpdater {
-   private final Logger log;
+   private static final Logger log = LoggerFactory.getLogger(WURFLUpdater.class);
    private String updateUrl;
    private WURFLEngine wurflEngine;
    private Frequency frequency;
@@ -33,12 +33,12 @@ public class WURFLUpdater {
    }
 
    public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl) {
-      this.log = LoggerFactory.getLogger(this.getClass());
+      
       this.frequency = Frequency.DAILY;
-      this.log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
+      log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
       this.wurflEngine = wurflEngine;
       this.resolvedWurflPath = UpdatePipeline.resolvePath(wurflEngine.getRootPath());
-      this.log.info("WURFL path passed to Updater constructor after resolve: {}", this.resolvedWurflPath);
+      log.info("WURFL path passed to Updater constructor after resolve: {}", this.resolvedWurflPath);
       this.updateUrl = updateUrl;
       this.validateSetup();
    }
@@ -49,12 +49,12 @@ public class WURFLUpdater {
    }
 
    public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl, ProxySettings proxySettings) {
-      this.log = LoggerFactory.getLogger(this.getClass());
+      
       this.frequency = Frequency.DAILY;
-      this.log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
+      log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
       this.wurflEngine = wurflEngine;
       this.resolvedWurflPath = UpdatePipeline.resolvePath(wurflEngine.getRootPath());
-      this.log.info("WURFL path passed to Updater constructor after resolve: {}", this.resolvedWurflPath);
+      log.info("WURFL path passed to Updater constructor after resolve: {}", this.resolvedWurflPath);
       this.updateUrl = updateUrl;
       this.proxySettings = proxySettings;
       this.validateSetup();
@@ -91,7 +91,7 @@ public class WURFLUpdater {
          (updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl)).setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
          updatePipeline.setConnectionTimeoutMs(this.connectionTimeoutMs);
          if (!(updateResult = updatePipeline.execute()).isUpdateProcessSuccessful()) {
-            this.log.warn(updateResult.getMessage());
+            log.warn(updateResult.getMessage());
          } else if (updateResult.isUpdated()) {
             if (ArrayUtils.isEmpty(this.patchPaths)) {
                this.wurflEngine.reload(this.resolvedWurflPath);
@@ -101,7 +101,7 @@ public class WURFLUpdater {
          }
       } catch (WURFLRuntimeException e) {
          String errorMessage = "Unable to start WURFL updater, cause: " + e.getMessage();
-         this.log.error(errorMessage, e);
+         log.error(errorMessage, e);
          updateResult = new UpdateResult(UpdateResultStatus.PIPELINE_TASK_FAILED, errorMessage);
       }
 
@@ -110,7 +110,7 @@ public class WURFLUpdater {
 
    public synchronized void performPeriodicUpdate() {
       if (this.isPeriodicUpdateRunning()) {
-         this.log.warn("Periodic update is already running. Shutdown the current update process before invoking this method");
+         log.warn("Periodic update is already running. Shutdown the current update process before invoking this method");
       } else {
          try {
             UpdatePipeline updatePipeline;
@@ -121,7 +121,7 @@ public class WURFLUpdater {
             this.scheduler.scheduleAtFixedRate(this.periodicUpdateTask, this.firstExecution != null ? this.firstExecution.getTimeInMillis() - Calendar.getInstance().getTimeInMillis() : 100L, this.frequency.value(), TimeUnit.MILLISECONDS);
          } catch (BadWurflExtensionException e) {
             String errorMessage = "Unable to start WURFL updater, cause: " + e.getMessage();
-            this.log.error(errorMessage, e);
+            log.error(errorMessage, e);
          }
       }
    }
@@ -135,7 +135,7 @@ public class WURFLUpdater {
          this.scheduler.shutdown();
          this.scheduler = null;
       } else {
-         this.log.warn("Cannot stop an updater that is not running. Command ignored");
+         log.warn("Cannot stop an updater that is not running. Command ignored");
       }
    }
 

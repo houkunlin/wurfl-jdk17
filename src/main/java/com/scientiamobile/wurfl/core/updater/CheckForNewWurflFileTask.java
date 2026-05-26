@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CheckForNewWurflFileTask implements UpdatePipelineTask {
-   private final Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger log = LoggerFactory.getLogger(CheckForNewWurflFileTask.class);
    static final SimpleDateFormat LAST_MODIFIED_FORMAT;
    private ProxySettings proxySettings;
 
@@ -38,11 +38,11 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
          } else if (responseCode == 304) {
             context.put("task_result_status", UpdateResultStatus.UPDATE_SKIPPED.value());
-            this.log.info("WURFL file is already updated to the latest version, exiting file update process");
+            log.info("WURFL file is already updated to the latest version, exiting file update process");
          } else if (responseCode == 402) {
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
             context.put("task_error_message", "Your WURFL LICENSE EXPIRED, WURFL file will not be updated. Please  renew you license to access newer versions of WURFL file and APIs");
-            this.log.info("WURFL license is invalid or expired, exiting update process");
+            log.info("WURFL license is invalid or expired, exiting update process");
          } else {
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
             context.put("task_error_message", "Invalid HTTP response code " + responseCode);

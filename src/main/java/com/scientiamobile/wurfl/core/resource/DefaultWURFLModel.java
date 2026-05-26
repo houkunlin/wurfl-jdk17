@@ -30,7 +30,7 @@ public class DefaultWURFLModel implements WURFLModel {
    private String version;
    private String smid;
    private Integer capabilityCount;
-   private final Logger log;
+   private static final Logger log = LoggerFactory.getLogger(DefaultWURFLModel.class);
 
    public DefaultWURFLModel(WURFLResource rootResource, String... includedCapabilities) {
       this(rootResource, new WURFLResources(), includedCapabilities);
@@ -40,7 +40,7 @@ public class DefaultWURFLModel implements WURFLModel {
    public DefaultWURFLModel(WURFLResource rootResource, WURFLResources patchResources, String... includedCapabilities) {
       this.deviceIdToAncestorIdCache = CollectionFactory.createConcurrentHashMap();
       this.familyDeviceIds = new HashSet<>();
-      this.log = LoggerFactory.getLogger(this.getClass());
+      
       this.loadFromRootResource(rootResource, patchResources, includedCapabilities);
    }
 
@@ -105,8 +105,8 @@ public class DefaultWURFLModel implements WURFLModel {
       }
 
       this.genericDevice = this.devicesById.get("generic");
-      if (this.log.isInfoEnabled()) {
-         this.log.info("WURFLModel version: {}; devices: {} root devices: {}; families: {}; generic devices: {}", this.version, this.devicesById.size(), rootDevicesCount, this.familyDeviceIds.size(), genericDevicesCount);
+      if (log.isInfoEnabled()) {
+         log.info("WURFLModel version: {}; devices: {} root devices: {}; families: {}; generic devices: {}", this.version, this.devicesById.size(), rootDevicesCount, this.familyDeviceIds.size(), genericDevicesCount);
       }
 
    }
@@ -259,7 +259,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
    @Override
    public void reload(WURFLResource rootResource, WURFLResources patchResources, String... includedCapabilities) {
-      this.log.info("about to reload the WURFL Model");
+      log.info("about to reload the WURFL Model");
       this.loadFromRootResource(rootResource, patchResources, includedCapabilities);
    }
 

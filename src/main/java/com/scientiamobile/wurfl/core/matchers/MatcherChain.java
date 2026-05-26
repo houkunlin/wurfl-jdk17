@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 class MatcherChain implements Matcher, MatcherFilter {
    private List<Matcher> matchers = new LinkedList<>();
-   private final Logger logger = LoggerFactory.getLogger(MatcherChain.class);
+   private static final Logger logger = LoggerFactory.getLogger(MatcherChain.class);
    private List<MatcherFilter> filters = new LinkedList<>();
 
    public final void addMatcher(Matcher matcher) {
@@ -30,8 +30,8 @@ class MatcherChain implements Matcher, MatcherFilter {
          }
       }
 
-      if (this.logger.isWarnEnabled()) {
-         this.logger.warn("No any matcher can handle the request: " + request + ", returning generic device.");
+      if (logger.isWarnEnabled()) {
+         logger.warn("No any matcher can handle the request: " + request + ", returning generic device.");
       }
 
       return new DeviceInfo("generic", MatchType.none, this.getMatcherName(), "MatcherChain", request.getOriginalUserAgent(), "");
@@ -71,7 +71,7 @@ class MatcherChain implements Matcher, MatcherFilter {
    }
 
    public final FilteredDeviceIndex getIndex() {
-      this.logger.warn("A Filter of type MatcherChain should never be asked for its FilteredDevices set.");
+      logger.warn("A Filter of type MatcherChain should never be asked for its FilteredDevices set.");
       FilteredDeviceIndex filteredDeviceIndex = new FilteredDeviceIndex(this);
       Iterator<MatcherFilter> filterIterator = this.filters.iterator();
 

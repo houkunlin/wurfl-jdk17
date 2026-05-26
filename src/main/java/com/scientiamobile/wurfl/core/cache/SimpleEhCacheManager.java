@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class SimpleEhCacheManager implements EhCacheManager {
    public static final String DEFAULT_CACHE_NAME = "com.scientiamobile.wurfl.core.InternalDevice";
-   private final Logger logger = LoggerFactory.getLogger(this.getClass());
+   private static final Logger logger = LoggerFactory.getLogger(SimpleEhCacheManager.class);
    private final CacheManager cacheManager = new CacheManager();
 
    public Cache getDefaultCache() {
@@ -19,7 +19,7 @@ public class SimpleEhCacheManager implements EhCacheManager {
    }
 
    public void shutdown() {
-      this.logger.info("shutting down cache manager");
+      logger.info("shutting down cache manager");
       this.cacheManager.shutdown();
    }
 }

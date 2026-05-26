@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NewWurflFileDownloadTask implements UpdatePipelineTask {
-   private final Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger log = LoggerFactory.getLogger(NewWurflFileDownloadTask.class);
    private ProxySettings proxySettings;
 
    public NewWurflFileDownloadTask() {
@@ -38,18 +38,18 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
          if (responseCode == 200) {
             File tempWurflFile = new File(tempWurflPath).getCanonicalFile();
             if (!tempWurflFile.exists() && !tempWurflFile.createNewFile()) {
-               this.log.warn("Failed to create temp WURFL file: {}", tempWurflFile.getAbsolutePath());
+               log.warn("Failed to create temp WURFL file: {}", tempWurflFile.getAbsolutePath());
             }
 
             FileUtils.copyInputStreamToFile(connection.getInputStream(), tempWurflFile);
             if (!tempWurflFile.setLastModified(connection.getLastModified())) {
-               this.log.warn("Failed to set last modified time on temp WURFL file");
+               log.warn("Failed to set last modified time on temp WURFL file");
             }
-            this.log.info("WURFL updater: new WURFL file download completed");
+            log.info("WURFL updater: new WURFL file download completed");
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
             context.put("new_wurfl_temp_path", tempWurflPath);
          } else {
-            this.log.error("Wurfl updater: unable to download new WURFL file, HTTP RESPONSE code: {}", responseCode);
+            log.error("Wurfl updater: unable to download new WURFL file, HTTP RESPONSE code: {}", responseCode);
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
             context.put("task_error_message", "Invalid HTTP response code " + responseCode);
          }

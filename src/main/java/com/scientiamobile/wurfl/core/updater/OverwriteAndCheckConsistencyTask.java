@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
-   private final Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger log = LoggerFactory.getLogger(OverwriteAndCheckConsistencyTask.class);
    private String[] patchPaths;
 
    public OverwriteAndCheckConsistencyTask() {
@@ -28,7 +28,7 @@ public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
 
       try {
          if (!(new File(originalWurflPath).getCanonicalFile()).delete()) {
-            this.log.warn("Failed to delete original WURFL file before overwriting");
+            log.warn("Failed to delete original WURFL file before overwriting");
          }
          FileUtils.copyFile(new File(newWurflTempPath).getCanonicalFile(), new File(originalWurflPath).getCanonicalFile(), true);
          context.put("original_wurfl_overwritten", "true");
@@ -42,7 +42,7 @@ public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
          newEngine.load();
          context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
       } catch (Throwable e) {
-         this.log.error("WURFL consistency check failed", e);
+         log.error("WURFL consistency check failed", e);
          context.put("task_error_message", "Error trying to overwrite WURFL file : " + ExceptionUtils.getFirstAvailableMessage(e));
          context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
       }
