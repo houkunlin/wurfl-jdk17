@@ -6,9 +6,8 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.text.StrBuilder;
 
-final class ModelDevicesSnapshot implements Serializable, Comparable {
+final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevicesSnapshot> {
    private static final long serialVersionUID = 1L;
    private String info;
    private String version;
@@ -27,8 +26,7 @@ final class ModelDevicesSnapshot implements Serializable, Comparable {
 
    public final String getSnapshotKey() {
       if (this.cachedKey == null) {
-         StrBuilder var1;
-         (var1 = new StrBuilder()).append(this.patch ? "Patch" : "Root").append(":").append(this.info);
+         StringBuilder var1 = (new StringBuilder()).append(this.patch ? "Patch" : "Root").append(":").append(this.info);
          if (StringUtils.isNotBlank(this.version)) {
             var1.append(":").append(this.version);
          }
@@ -70,11 +68,9 @@ final class ModelDevicesSnapshot implements Serializable, Comparable {
       return this.smid;
    }
 
-   public final int compareTo(Object other) {
-      ModelDevicesSnapshot var2 = (ModelDevicesSnapshot)other;
+   public final int compareTo(ModelDevicesSnapshot var2) {
       CompareToBuilder var3;
       (var3 = new CompareToBuilder()).append(this.info, var2.info).append(this.version, var2.version);
       return var3.toComparison();
    }
 }
-

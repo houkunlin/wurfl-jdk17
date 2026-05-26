@@ -6,18 +6,18 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.map.LRUMap;
 
 public class LRUMapCacheProvider implements CacheProvider {
-   private Map a;
+   private Map<String, InternalDevice> a;
 
    public LRUMapCacheProvider(int var1, boolean var2) {
-      this.a = MapUtils.synchronizedMap(new LRUMap(var1, var2));
+      this.a = MapUtils.synchronizedMap(new LRUMap<>(var1, var2));
    }
 
    public LRUMapCacheProvider(int var1) {
-      this.a = MapUtils.synchronizedMap(new LRUMap(var1));
+      this.a = MapUtils.synchronizedMap(new LRUMap<>(var1));
    }
 
    public LRUMapCacheProvider() {
-      this.a = MapUtils.synchronizedMap(new LRUMap());
+      this.a = MapUtils.synchronizedMap(new LRUMap<>());
    }
 
    public void clear() {
@@ -27,7 +27,7 @@ public class LRUMapCacheProvider implements CacheProvider {
    }
 
    public InternalDevice getDevice(String var1) {
-      return (InternalDevice)this.a.get(var1);
+      return this.a.get(var1);
    }
 
    public void putDevice(String var1, InternalDevice var2) {

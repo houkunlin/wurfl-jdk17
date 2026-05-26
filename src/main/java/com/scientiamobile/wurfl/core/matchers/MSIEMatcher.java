@@ -15,15 +15,15 @@ final class MSIEMatcher extends MatcherBase {
    private static final Pattern TRIDENT_RV = Pattern.compile("^Mozilla/5\\.0 \\(.+?Trident.+?; rv:(\\d\\d)\\.(\\d+)\\)");
    private static final Pattern EDGE = Pattern.compile("^Mozilla/5\\.0 \\(Windows NT.+? Edge/(\\d+)\\.(\\d+)");
    private static final Pattern UNIMPORTANT_TOKENS = Pattern.compile("( \\.NET CLR [\\d\\.]+;?| Media Center PC [\\d\\.]+;?| OfficeLive[a-zA-Z0-9\\.\\d]+;?| InfoPath[\\.\\d]+;?)");
-   private static final Map DEVICE_BY_MAJOR_VERSION;
+   private static final Map<String, String> DEVICE_BY_MAJOR_VERSION;
 
    public MSIEMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(DEVICE_BY_MAJOR_VERSION.values());
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(DEVICE_BY_MAJOR_VERSION.values());
       var1.add("generic");
       var1.add("generic_web_browser");
       var1.add("msie_5_5");
@@ -68,7 +68,7 @@ final class MSIEMatcher extends MatcherBase {
          }
 
          String var12;
-         if ((var12 = (String)DEVICE_BY_MAJOR_VERSION.get(var9)) != null) {
+         if ((var12 = DEVICE_BY_MAJOR_VERSION.get(var9)) != null) {
             return var12;
          }
       }
@@ -95,7 +95,7 @@ final class MSIEMatcher extends MatcherBase {
    }
 
    static {
-      (DEVICE_BY_MAJOR_VERSION = new HashMap()).put("0", "msie");
+      (DEVICE_BY_MAJOR_VERSION = new HashMap<>()).put("0", "msie");
       DEVICE_BY_MAJOR_VERSION.put("4", "msie_4");
       DEVICE_BY_MAJOR_VERSION.put("5", "msie_5");
       DEVICE_BY_MAJOR_VERSION.put("6", "msie_6");

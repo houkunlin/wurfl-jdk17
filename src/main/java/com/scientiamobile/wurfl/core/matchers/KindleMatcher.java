@@ -10,15 +10,15 @@ import java.util.Set;
 
 final class KindleMatcher extends MatcherBase {
    private static String GENERIC_AMAZON_KINDLE = "generic_amazon_kindle";
-   private static final Map DEVICE_BY_TOKEN;
+   private static final Map<String, String> DEVICE_BY_TOKEN;
 
    public KindleMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(GENERIC_AMAZON_KINDLE);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(GENERIC_AMAZON_KINDLE);
       var1.addAll(DEVICE_BY_TOKEN.values());
       return var1;
    }
@@ -48,10 +48,9 @@ final class KindleMatcher extends MatcherBase {
    protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var4 = var1.getNormalizedDeviceUserAgent();
 
-      for(Object entryObj : DEVICE_BY_TOKEN.entrySet()) {
-         Map.Entry var3 = (Map.Entry)entryObj;
-         if (var4.contains((CharSequence)var3.getKey())) {
-            return (String)var3.getValue();
+      for(Map.Entry<String, String> var3 : DEVICE_BY_TOKEN.entrySet()) {
+         if (var4.contains(var3.getKey())) {
+            return var3.getValue();
          }
       }
 
@@ -67,7 +66,7 @@ final class KindleMatcher extends MatcherBase {
    }
 
    static {
-      (DEVICE_BY_TOKEN = new LinkedHashMap()).put("Kindle/1", "amazon_kindle_ver1");
+      (DEVICE_BY_TOKEN = new LinkedHashMap<>()).put("Kindle/1", "amazon_kindle_ver1");
       DEVICE_BY_TOKEN.put("Kindle/2", "amazon_kindle2_ver1");
       DEVICE_BY_TOKEN.put("Kindle/3", "amazon_kindle3_ver1");
       DEVICE_BY_TOKEN.put("Kindle Fire", "amazon_kindle_fire_ver1");

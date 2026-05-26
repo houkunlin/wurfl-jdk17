@@ -147,7 +147,7 @@ public final class MatcherManager {
       new OrphanDeviceIdMatcher(var1);
       List var25 = var1.getAllDevicesAsList();
       MatcherChain var24 = var2;
-      Validate.notNull(var25);
+      Validate.notNull(var25, "Model devices list is null");
       this.b.info("model devices: " + var25.size());
       int var27 = 0;
 

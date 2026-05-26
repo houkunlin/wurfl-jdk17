@@ -10,18 +10,18 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
 
 final class FilteredDeviceIndex {
-   private SortedMap userAgentToDeviceId;
-   private List userAgents;
+   private SortedMap<String, String> userAgentToDeviceId;
+   private List<String> userAgents;
    private final MatcherFilter ownerFilter;
 
    public FilteredDeviceIndex(MatcherFilter ownerFilter) {
       LoggerFactory.getLogger(this.getClass());
-      this.userAgentToDeviceId = new TreeMap();
-      this.userAgents = new ArrayList();
+      this.userAgentToDeviceId = new TreeMap<>();
+      this.userAgents = new ArrayList<>();
       this.ownerFilter = ownerFilter;
    }
 
-   public final Collection getUserAgents() {
+   public final Collection<String> getUserAgents() {
       return this.userAgents;
    }
 
@@ -31,7 +31,7 @@ final class FilteredDeviceIndex {
 
    public final String getDeviceIdByUserAgent(String userAgent) {
       Validate.notNull(userAgent, "The userAgent is empty");
-      return (String)this.userAgentToDeviceId.get(userAgent);
+      return this.userAgentToDeviceId.get(userAgent);
    }
 
    public final void put(String userAgent, String deviceId) {
@@ -41,7 +41,7 @@ final class FilteredDeviceIndex {
       this.userAgents.add(userAgent);
    }
 
-   public final Collection a() {
+   public final Collection<String> a() {
       return this.getUserAgents();
    }
 

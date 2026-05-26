@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public final class WURFLResources {
-   private final List a = new ArrayList();
+   private final List<WURFLResource> a = new ArrayList<>();
 
    public WURFLResources() {
    }
@@ -20,12 +20,9 @@ public final class WURFLResources {
       this.a.addAll(Arrays.asList(var1));
    }
 
-   public WURFLResources(Collection var1) {
+   public WURFLResources(Collection<WURFLResource> var1) {
       Validate.notNull(var1, "The resources is null");
       Validate.noNullElements(var1, "The resources contains null value");
-      for(Object value : var1) {
-         Validate.isTrue(value instanceof WURFLResource, "The resources contains value not instaceof WURFLResource");
-      }
       this.a.addAll(var1);
    }
 
@@ -34,7 +31,7 @@ public final class WURFLResources {
    }
 
    public final WURFLResource get(int var1) {
-      return (WURFLResource)this.a.get(var1);
+      return this.a.get(var1);
    }
 
    public final int indexOf(WURFLResource var1) {
@@ -43,10 +40,10 @@ public final class WURFLResources {
    }
 
    public final void release() {
-      Iterator var1 = this.a.iterator();
+      Iterator<WURFLResource> var1 = this.a.iterator();
 
       while(var1.hasNext()) {
-         ((WURFLResource)var1.next()).release();
+         var1.next().release();
       }
 
    }
@@ -61,7 +58,7 @@ public final class WURFLResources {
       this.a.remove(var1);
    }
 
-   public final Iterator iterator() {
+   public final Iterator<WURFLResource> iterator() {
       return this.a.iterator();
    }
 
@@ -69,7 +66,7 @@ public final class WURFLResources {
       StringBuilder var1 = new StringBuilder("[");
 
       for(int var2 = 0; var2 < this.a.size(); ++var2) {
-         WURFLResource var3 = (WURFLResource)this.a.get(var2);
+         WURFLResource var3 = this.a.get(var2);
          var1.append(var3).append("(").append(var3.getInfo()).append(" version: ").append(var3.getVersion()).append(")");
          if (var2 < this.a.size() - 1) {
             var1.append(" - ");

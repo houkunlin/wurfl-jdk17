@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    private final transient Logger a;
-   private static final List b = Arrays.asList("device_os", "device_os_version", "is_tablet", "is_wireless_device", "pointing_method", "preferred_markup", "resolution_height", "resolution_width", "ux_full_desktop", "xhtml_support_level", "is_smarttv", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "mobile_browser_version");
+   private static final List<String> b = Arrays.asList("device_os", "device_os_version", "is_tablet", "is_wireless_device", "pointing_method", "preferred_markup", "resolution_height", "resolution_width", "ux_full_desktop", "xhtml_support_level", "is_smarttv", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "mobile_browser_version");
    private String[] c;
    private final ReadWriteLock d;
    private WURFLResource e;
@@ -252,9 +252,9 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       return this.getWURFLUtils().getDeviceById(var1, (new DefaultWURFLRequestFactory(this.m, this.l.getUserAgentPriority())).createRequest(var2, this.l.getEngineTarget()));
    }
 
-   public Set getAllVirtualCapabilities() {
+   public Set<String> getAllVirtualCapabilities() {
       this.a();
-      return new HashSet(VirtualCapabilityHandler.getAllVirtualCapabilities());
+      return new HashSet<>(VirtualCapabilityHandler.getAllVirtualCapabilities());
    }
 
    private void a() {
@@ -340,8 +340,8 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                GeneralWURFLEngine var13 = this;
 
                try {
-                  Class var14;
-                  Object var4 = (var14 = Class.forName("com.scientiamobile.wurfl.core.CheckConnection")).newInstance();
+                  Class<?> var14;
+                  Object var4 = (var14 = Class.forName("com.scientiamobile.wurfl.core.CheckConnection")).getDeclaredConstructor().newInstance();
                   var14.getDeclaredMethod("setup", WURFLEngine.class, WURFLModel.class).invoke(var4, var13, var13.o);
                   var14.getDeclaredMethod("check").invoke(var4);
                } catch (Exception var9) {
@@ -435,30 +435,29 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    }
 
    public final void setCapabilityFilter(String... var1) {
-      ArrayList var4 = new ArrayList(Arrays.asList(var1));
+      ArrayList<String> var4 = new ArrayList<>(Arrays.asList(var1));
 
-      for(Object capabilityObj : b) {
-         String capability = (String)capabilityObj;
+      for(String capability : b) {
          if (!var4.contains(capability)) {
             var4.add(capability);
          }
       }
 
-      this.c = (String[])var4.toArray(new String[var4.size()]);
+      this.c = var4.toArray(new String[var4.size()]);
    }
 
+   @SuppressWarnings("unchecked")
    public final void setCapabilityFilter(Collection var1) {
       if (var1 != null) {
-         ArrayList var4 = new ArrayList(var1);
+         ArrayList<String> var4 = new ArrayList<>((Collection<String>)var1);
 
-         for(Object capabilityObj : b) {
-            String capability = (String)capabilityObj;
+         for(String capability : b) {
             if (!var4.contains(capability)) {
                var4.add(capability);
             }
          }
 
-         this.c = (String[])var4.toArray(new String[var4.size()]);
+         this.c = var4.toArray(new String[var4.size()]);
       }
 
    }
@@ -482,19 +481,20 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       return "1.9.1.0";
    }
 
-   public Set getAllMandatoryCapabilities() {
+   public Set<String> getAllMandatoryCapabilities() {
       this.a();
-      return new HashSet(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
+      return new HashSet<>(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
    }
 
-   public Set getAllCapabilities() {
+   public Set<String> getAllCapabilities() {
       this.a();
-      HashSet var1 = new HashSet();
-      Iterator var2 = this.o.getAllCapabilities().iterator();
+      HashSet<String> var1 = new HashSet<>();
+      @SuppressWarnings("unchecked")
+      Iterator<String> var2 = ((Set<String>)this.o.getAllCapabilities()).iterator();
 
       while(var2.hasNext()) {
          String var3;
-         if (!(var3 = (String)var2.next()).startsWith("controlcap_")) {
+         if (!(var3 = var2.next()).startsWith("controlcap_")) {
             var1.add(var3);
          }
       }

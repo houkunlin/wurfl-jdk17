@@ -2,6 +2,7 @@ package com.scientiamobile.wurfl.core;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
@@ -15,7 +16,8 @@ final class ConnectivityCheckerTask implements Runnable {
    public final void run() {
       try {
          HttpsURLConnection connection;
-         (connection = (HttpsURLConnection)(new URL("https://core.scientiamobile.com/api/v2/checkconnectivity/update")).openConnection()).setRequestMethod("POST");
+         URL url = URI.create("https://core.scientiamobile.com/api/v2/checkconnectivity/update").toURL();
+         (connection = (HttpsURLConnection)url.openConnection()).setRequestMethod("POST");
          connection.setUseCaches(false);
          connection.setDoOutput(true);
          connection.setConnectTimeout(10000);
@@ -63,4 +65,3 @@ final class ConnectivityCheckerTask implements Runnable {
       }
    }
 }
-

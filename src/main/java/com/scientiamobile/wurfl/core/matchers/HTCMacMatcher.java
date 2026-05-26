@@ -10,9 +10,9 @@ import java.util.Set;
 final class HTCMacMatcher extends MatcherBase {
    private static String GENERIC_HTC_ANDROID_DISGUISED_AS_MAC = "generic_android_htc_disguised_as_mac";
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(GENERIC_HTC_ANDROID_DISGUISED_AS_MAC);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(GENERIC_HTC_ANDROID_DISGUISED_AS_MAC);
       return var1;
    }
 

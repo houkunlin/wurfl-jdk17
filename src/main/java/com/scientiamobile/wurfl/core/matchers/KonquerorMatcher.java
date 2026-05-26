@@ -1,11 +1,10 @@
 package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
-import org.apache.commons.lang3.StringUtils;
 
 final class KonquerorMatcher extends MatcherBase {
    public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsMobileBrowser() && StringUtils.contains(var1.getCleanedDeviceUserAgent(), "Konqueror");
+      return !var1._internalIsMobileBrowser() && var1.getCleanedDeviceUserAgent().contains("Konqueror");
    }
 
    public final String getMatcherName() {

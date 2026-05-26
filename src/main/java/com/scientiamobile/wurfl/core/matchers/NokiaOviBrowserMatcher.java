@@ -14,9 +14,9 @@ final class NokiaOviBrowserMatcher extends MatcherBase {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(NOKIA_GENERIC_SERIES30PLUS);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(NOKIA_GENERIC_SERIES30PLUS);
       var1.add(NOKIA_GENERIC_SERIES40_OVIBROSR);
       return var1;
    }

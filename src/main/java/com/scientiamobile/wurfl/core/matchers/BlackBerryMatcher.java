@@ -9,22 +9,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 
 final class BlackBerryMatcher extends AbstractMatcher {
    private static final String BLACKBERRY_GENERIC_VER10 = "blackberry_generic_ver10";
    private static final String BLACKBERRY_GENERIC_VER10_TABLET = "blackberry_generic_ver10_tablet";
    private static final String RIM_PLAYBOOK_VER1 = "rim_playbook_ver1";
-   private static final Map OS_VERSION_TO_DEVICE_ID;
+   private static final Map<String, String> OS_VERSION_TO_DEVICE_ID;
    private static final Pattern BLACKBERRY_OS_VERSION;
 
    public BlackBerryMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(OS_VERSION_TO_DEVICE_ID.values());
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(OS_VERSION_TO_DEVICE_ID.values());
       var1.add("generic_mobile");
       var1.add(RIM_PLAYBOOK_VER1);
       return var1;
@@ -32,7 +31,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
 
    public final boolean canHandle(WURFLRequest var1) {
       String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsDesktopBrowser() && (StringUtils.containsIgnoreCase(var2, "blackberry") || StringMatchUtils.containsAnyOf(var2, "(BB10;", "(PlayBook"));
+      return !var1._internalIsDesktopBrowser() && var2 != null && (var2.toLowerCase().contains("blackberry") || StringMatchUtils.containsAnyOf(var2, "(BB10;", "(PlayBook"));
    }
 
    protected final String risMatch(String var1) {
@@ -63,10 +62,9 @@ final class BlackBerryMatcher extends AbstractMatcher {
          return RIM_PLAYBOOK_VER1;
       } else {
          if (var2 != null) {
-            for(Object entryObj : OS_VERSION_TO_DEVICE_ID.entrySet()) {
-               Map.Entry var3 = (Map.Entry)entryObj;
-               if (var2.contains((CharSequence)var3.getKey())) {
-                  return (String)var3.getValue();
+            for(Map.Entry<String, String> var3 : OS_VERSION_TO_DEVICE_ID.entrySet()) {
+               if (var2.contains(var3.getKey())) {
+                  return var3.getValue();
                }
             }
          }
@@ -84,7 +82,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
    }
 
    static {
-      (OS_VERSION_TO_DEVICE_ID = new LinkedHashMap()).put("2.", "blackberry_generic_ver2");
+      (OS_VERSION_TO_DEVICE_ID = new LinkedHashMap<>()).put("2.", "blackberry_generic_ver2");
       OS_VERSION_TO_DEVICE_ID.put("3.2", "blackberry_generic_ver3_sub2");
       OS_VERSION_TO_DEVICE_ID.put("3.3", "blackberry_generic_ver3_sub30");
       OS_VERSION_TO_DEVICE_ID.put("3.5", "blackberry_generic_ver3_sub50");

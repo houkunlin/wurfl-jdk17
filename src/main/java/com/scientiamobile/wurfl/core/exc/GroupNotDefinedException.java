@@ -1,7 +1,5 @@
 package com.scientiamobile.wurfl.core.exc;
 
-import org.apache.commons.lang3.text.StrBuilder;
-
 public class GroupNotDefinedException extends WURFLRuntimeException {
    private static final long serialVersionUID = 1L;
    private String a;
@@ -12,7 +10,7 @@ public class GroupNotDefinedException extends WURFLRuntimeException {
    }
 
    public GroupNotDefinedException(String var1) {
-      this(var1, (new StrBuilder("Group: ")).append(var1).append(" is not defined in WURFL").toString());
+      this(var1, (new StringBuilder("Group: ")).append(var1).append(" is not defined in WURFL").toString());
    }
 
    public String getGroupId() {

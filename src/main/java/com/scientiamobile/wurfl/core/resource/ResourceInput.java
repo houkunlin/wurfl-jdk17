@@ -9,7 +9,6 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.text.StrBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,21 +73,20 @@ final class ResourceInput {
          if ((var1 = new File(path)).exists() && var1.isFile() && var1.canRead()) {
             var2 = var1.toURI();
          } else {
-            StrBuilder var3;
-            (var3 = new StrBuilder(path)).replaceAll(" ", "%20");
-            if (SystemUtils.IS_OS_WINDOWS && StringUtils.contains(path, "\\")) {
-               var3.replaceAll("\\\\", "/");
+            String var3 = path.replace(" ", "%20");
+            if (SystemUtils.IS_OS_WINDOWS && path.contains("\\")) {
+               var3 = var3.replace("\\", "/");
             }
 
-            if (!var3.contains(':')) {
+            if (!var3.contains(":")) {
                while(var3.startsWith("/")) {
-                  var3 = var3.deleteCharAt(0);
+                  var3 = var3.substring(1);
                }
 
-               var3.insert(0, "file:///");
+               var3 = "file:///" + var3;
             }
 
-            var2 = URI.create(var3.toString());
+            var2 = URI.create(var3);
          }
 
          return var2;
@@ -99,10 +97,8 @@ final class ResourceInput {
       try {
          Object var4;
          if (uri.getScheme().equals("classpath")) {
-            StrBuilder var2;
-            (var2 = new StrBuilder()).append(uri.toString());
-            var2.replaceFirst("classpath:", "");
-            var4 = this.getClass().getResourceAsStream(var2.toString());
+            String var2 = uri.toString().replaceFirst("classpath:", "");
+            var4 = this.getClass().getResourceAsStream(var2);
          } else {
             var4 = uri.toURL().openConnection().getInputStream();
          }

@@ -6,16 +6,15 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
 
 final class SafariMatcher extends MatcherBase {
    public SafariMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add("generic_web_browser");
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add("generic_web_browser");
       var1.add("generic_xhtml");
       return var1;
    }
@@ -32,7 +31,7 @@ final class SafariMatcher extends MatcherBase {
 
    protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var2;
-      return !StringUtils.contains(var2 = var1.getNormalizedDeviceUserAgent(), "Macintosh") && !StringUtils.contains(var2, "Windows") ? "generic_xhtml" : "generic_web_browser";
+      return !(var2 = var1.getNormalizedDeviceUserAgent()).contains("Macintosh") && !var2.contains("Windows") ? "generic_xhtml" : "generic_web_browser";
    }
 
    public final String getMatcherName() {

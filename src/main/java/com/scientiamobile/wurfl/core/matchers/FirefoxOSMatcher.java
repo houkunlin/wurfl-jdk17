@@ -11,23 +11,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 
 final class FirefoxOSMatcher extends MatcherBase {
    private static String FALLBACK_TABLET = "firefox_os_ver1_3_tablet";
    private static String FALLBACK_GENERIC = "generic_firefox_os";
    private static final Pattern VERSION_RV_PREFIX = Pattern.compile("\\brv:\\d+\\.\\d+(.)");
    private static final Pattern VERSION_RV = Pattern.compile("\\brv:(\\d+\\.\\d+)");
-   private static final Map RV_TO_FIREFOX_OS_VERSION = new HashMap();
-   private static final List SUPPORTED_DEVICES = new ArrayList();
+   private static final Map<String, String> RV_TO_FIREFOX_OS_VERSION = new HashMap<>();
+   private static final List<String> SUPPORTED_DEVICES = new ArrayList<>();
 
    public FirefoxOSMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(SUPPORTED_DEVICES);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(SUPPORTED_DEVICES);
       var1.add(FALLBACK_TABLET);
       var1.add(FALLBACK_GENERIC);
       return var1;
@@ -35,7 +34,7 @@ final class FirefoxOSMatcher extends MatcherBase {
 
    public final boolean canHandle(WURFLRequest var1) {
       String var2;
-      return StringUtils.contains(var2 = var1.getCleanedDeviceUserAgent(), "Firefox/") && StringMatchUtils.containsAnyOf(var2, "Mobile", "Tablet");
+      return (var2 = var1.getCleanedDeviceUserAgent()).contains("Firefox/") && StringMatchUtils.containsAnyOf(var2, "Mobile", "Tablet");
    }
 
    protected final String risMatch(String var1) {

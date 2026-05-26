@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 abstract class AbstractMatcher implements Matcher {
    protected static final Logger LOG = LoggerFactory.getLogger(AbstractMatcher.class);
-   private static final List CATCH_ALL_FALLBACKS;
+   private static final List<UserAgentFallbackRule> CATCH_ALL_FALLBACKS;
    private MatcherFilter filter;
    private final UserAgentNormalizer normalizer;
    private static boolean ASSERTIONS_DISABLED = !AbstractMatcher.class.desiredAssertionStatus();
@@ -180,7 +180,7 @@ abstract class AbstractMatcher implements Matcher {
    }
 
    static {
-      (CATCH_ALL_FALLBACKS = new ArrayList()).add(new UserAgentFallbackRule("CoreMedia", "apple_iphone_coremedia_ver1"));
+      (CATCH_ALL_FALLBACKS = new ArrayList<>()).add(new UserAgentFallbackRule("CoreMedia", "apple_iphone_coremedia_ver1"));
       CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("Windows CE", "generic_ms_mobile"));
       CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/7.2", "opwv_v72_generic"));
       CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/7", "opwv_v7_generic"));

@@ -14,9 +14,9 @@ final class FirefoxMatcher extends MatcherBase {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(FIREFOX_DEVICE_ID);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(FIREFOX_DEVICE_ID);
       return var1;
    }
 

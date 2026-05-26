@@ -6,17 +6,17 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.map.LRUMap;
 
 public class DoubleLRUMapCacheProvider implements CacheProvider {
-   private Map a;
-   private Map b;
+   private Map<String, String> a;
+   private Map<String, InternalDevice> b;
 
    public DoubleLRUMapCacheProvider(int var1, int var2, boolean var3) {
-      this.a = MapUtils.synchronizedMap(new LRUMap(var1, var3));
-      this.b = MapUtils.synchronizedMap(new LRUMap(var2, var3));
+      this.a = MapUtils.synchronizedMap(new LRUMap<>(var1, var3));
+      this.b = MapUtils.synchronizedMap(new LRUMap<>(var2, var3));
    }
 
    public DoubleLRUMapCacheProvider(int var1, int var2) {
-      this.a = MapUtils.synchronizedMap(new LRUMap(var1));
-      this.b = MapUtils.synchronizedMap(new LRUMap(var2));
+      this.a = MapUtils.synchronizedMap(new LRUMap<>(var1));
+      this.b = MapUtils.synchronizedMap(new LRUMap<>(var2));
    }
 
    public DoubleLRUMapCacheProvider() {
@@ -35,7 +35,7 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
    public InternalDevice getDevice(String var1) {
       String var2;
       InternalDevice var3;
-      return (var2 = (String)this.a.get(var1)) != null && (var3 = (InternalDevice)this.b.get(var2)) != null ? var3 : null;
+      return (var2 = this.a.get(var1)) != null && (var3 = this.b.get(var2)) != null ? var3 : null;
    }
 
    public void putDevice(String var1, InternalDevice var2) {
@@ -48,6 +48,6 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
    }
 
    public InternalDevice getInternalDeviceFromDeviceId(String var1) {
-      return (InternalDevice)this.b.get(var1);
+      return this.b.get(var1);
    }
 }

@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HashMapCacheProvider implements CacheProvider {
-   private Map a;
+   private Map<String, InternalDevice> a;
    private int b;
    private float c;
    private int d;
@@ -68,7 +68,7 @@ public class HashMapCacheProvider implements CacheProvider {
 
    public InternalDevice getDevice(String var1) {
       Validate.notNull(var1, "The key is null");
-      return (InternalDevice)this.a.get(var1);
+      return this.a.get(var1);
    }
 
    public void putDevice(String var1, InternalDevice var2) {

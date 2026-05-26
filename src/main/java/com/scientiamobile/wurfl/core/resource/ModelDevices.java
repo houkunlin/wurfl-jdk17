@@ -15,46 +15,46 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class ModelDevices implements Serializable, Iterable {
+public class ModelDevices implements Serializable, Iterable<ModelDevice> {
    private static final long serialVersionUID = 10L;
-   private Map a;
-   private LinkedList b;
+   private Map<String, ModelDevice> a;
+   private LinkedList<String> b;
 
    public ModelDevices() {
       this.a = CollectionFactory.createConcurrentHashMap();
-      this.b = new LinkedList();
+      this.b = new LinkedList<>();
    }
 
    public ModelDevices(ModelDevices var1) {
       this.a = CollectionFactory.createConcurrentHashMap();
-      this.b = new LinkedList();
+      this.b = new LinkedList<>();
       this.a.putAll(var1.a);
-      this.b = (LinkedList)var1.getDeviceIdsByInsertionOrder();
+      this.b = new LinkedList<>(var1.getDeviceIdsByInsertionOrder());
    }
 
+   @SuppressWarnings("unchecked")
    public ModelDevices(Map var1) {
       this.a = CollectionFactory.createConcurrentHashMap();
-      this.b = new LinkedList();
-      Validate.notNull(var1);
-      Validate.noNullElements(var1.values());
-      this.a.putAll(var1);
+      this.b = new LinkedList<>();
+      Validate.notNull(var1, "The devicesById is null");
+      Validate.noNullElements(var1.values(), "The devicesById contains null value");
+      this.a.putAll((Map<String, ModelDevice>)var1);
    }
 
-   public ModelDevices(Collection var1) {
+   public ModelDevices(Collection<ModelDevice> var1) {
       this.a = CollectionFactory.createConcurrentHashMap();
-      this.b = new LinkedList();
-      Validate.notNull(var1);
-      Validate.noNullElements(var1);
+      this.b = new LinkedList<>();
+      Validate.notNull(var1, "The devices is null");
+      Validate.noNullElements(var1, "The devices contains null value");
 
-      for(Object deviceObj : var1) {
-         ModelDevice device = (ModelDevice)deviceObj;
+      for(ModelDevice device : var1) {
          this.a.put(device.getID(), device);
       }
 
    }
 
    public ModelDevices(ModelDevice[] var1) {
-      this((Collection)Arrays.asList(var1));
+      this(Arrays.asList(var1));
    }
 
    public int size() {
@@ -69,20 +69,20 @@ public class ModelDevices implements Serializable, Iterable {
       return this.a.containsKey(var1);
    }
 
-   public Set getDevices() {
-      return new HashSet(this.a.values());
+   public Set<ModelDevice> getDevices() {
+      return new HashSet<>(this.a.values());
    }
 
-   public Map getDevicesById() {
+   public Map<String, ModelDevice> getDevicesById() {
       return Collections.unmodifiableMap(this.a);
    }
 
-   public Iterator iterator() {
+   public Iterator<ModelDevice> iterator() {
       return this.getDevicesById().values().iterator();
    }
 
    public ModelDevice getById(String var1) {
-      return (ModelDevice)this.a.get(var1);
+      return this.a.get(var1);
    }
 
    public void add(ModelDevice var1) {
@@ -93,16 +93,15 @@ public class ModelDevices implements Serializable, Iterable {
 
    }
 
-   public List getDeviceIdsByInsertionOrder() {
+   public List<String> getDeviceIdsByInsertionOrder() {
       return this.b;
    }
 
-   public void addAll(Collection var1) {
-      Validate.notNull(var1);
-      Validate.noNullElements(var1);
+   public void addAll(Collection<ModelDevice> var1) {
+      Validate.notNull(var1, "The devices is null");
+      Validate.noNullElements(var1, "The devices contains null value");
 
-      for(Object deviceObj : var1) {
-         ModelDevice device = (ModelDevice)deviceObj;
+      for(ModelDevice device : var1) {
          this.a.put(device.getID(), device);
       }
 
@@ -116,17 +115,15 @@ public class ModelDevices implements Serializable, Iterable {
       this.a.remove(var1.getID());
    }
 
-   public void removeAll(Collection var1) {
-      for(Object deviceObj : var1) {
-         ModelDevice device = (ModelDevice)deviceObj;
+   public void removeAll(Collection<ModelDevice> var1) {
+      for(ModelDevice device : var1) {
          this.a.remove(device.getID());
       }
 
    }
 
    public void removeAll(ModelDevices var1) {
-      for(Object deviceObj : var1) {
-         ModelDevice device = (ModelDevice)deviceObj;
+      for(ModelDevice device : var1) {
          this.a.remove(device.getID());
       }
 

@@ -17,7 +17,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
    private static final Pattern d = Pattern.compile("Microsoft Outlook ([0-9]+).");
    private static final Pattern e = Pattern.compile("^MacOutlook ([0-9]+).");
    private static final String[] f;
-   private static final List g;
+   private static final List<String> g;
    public static final String[] EMAIL_CLIENTS;
 
    public EmailClientUserAgentMatcher(UserAgentNormalizer var1, WURFLModel var2) {
@@ -53,10 +53,8 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
       return (var2 = var1.indexOf(".")) != -1 ? StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2) : "generic";
    }
 
-   protected final Set a() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(g);
-      return var1;
+   protected final Set<String> a() {
+      return new HashSet<>(g);
    }
 
    protected final String b(WURFLRequest var1) {
@@ -95,9 +93,10 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
    }
 
    static {
-      List var10000 = UserAgentUtils.getMobileBrowsers();
-      f = (String[])var10000.toArray(new String[var10000.size()]);
-      (g = new ArrayList()).add(b);
+      @SuppressWarnings("unchecked")
+      List<String> var10000 = (List<String>)UserAgentUtils.getMobileBrowsers();
+      f = var10000.toArray(new String[var10000.size()]);
+      (g = new ArrayList<>()).add(b);
       g.add(c);
       g.add("mac_outlook");
       g.add("ms_outlook_ios_ver1");

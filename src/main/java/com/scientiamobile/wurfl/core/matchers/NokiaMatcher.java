@@ -5,7 +5,6 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
 
 final class NokiaMatcher extends MatcherBase {
    private static final String NOKIA_GENERIC_SERIES60 = "nokia_generic_series60";
@@ -16,9 +15,9 @@ final class NokiaMatcher extends MatcherBase {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(NOKIA_GENERIC_SERIES60);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(NOKIA_GENERIC_SERIES60);
       var1.add(NOKIA_GENERIC_SERIES80);
       var1.add(NOKIA_GENERIC_MEEGO);
       var1.add("generic_mobile");
@@ -40,12 +39,12 @@ final class NokiaMatcher extends MatcherBase {
 
    protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var2;
-      if (StringUtils.contains(var2 = var1.getNormalizedDeviceUserAgent(), "Series60")) {
+      if ((var2 = var1.getNormalizedDeviceUserAgent()).contains("Series60")) {
          return NOKIA_GENERIC_SERIES60;
-      } else if (StringUtils.contains(var2, "Series80")) {
+      } else if (var2.contains("Series80")) {
          return NOKIA_GENERIC_SERIES80;
       } else {
-         return StringUtils.contains(var2, "MeeGo") ? NOKIA_GENERIC_MEEGO : "generic";
+         return var2.contains("MeeGo") ? NOKIA_GENERIC_MEEGO : "generic";
       }
    }
 

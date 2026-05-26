@@ -15,18 +15,18 @@ final class FennecOnAndroidMatcher extends MatcherBase {
    private static String GENERIC_ANDROID_FENNEC_2 = "generic_android_ver2_0_fennec";
    private static String GENERIC_ANDROID_FENNEC_2_TABLET = "generic_android_ver2_0_fennec_tablet";
    private static String GENERIC_ANDROID_FENNEC_2_DESKTOP = "generic_android_ver2_0_fennec_desktop";
-   private Set requiredDeviceIds = this.getRequiredDeviceIds();
+   private Set<String> requiredDeviceIds = this.getRequiredDeviceIds();
 
    public FennecOnAndroidMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
+   protected final Set<String> getRequiredDeviceIds() {
       if (this.requiredDeviceIds != null) {
          return this.requiredDeviceIds;
       } else {
-         HashSet var1;
-         (var1 = new HashSet()).add("generic");
+         HashSet<String> var1;
+         (var1 = new HashSet<>()).add("generic");
          var1.add(GENERIC_ANDROID_FENNEC_2);
          var1.add(GENERIC_ANDROID_FENNEC_2_TABLET);
          var1.add(GENERIC_ANDROID_FENNEC_2_DESKTOP);
@@ -48,6 +48,7 @@ final class FennecOnAndroidMatcher extends MatcherBase {
          var1.add("generic_android_ver9_0_fennec");
          var1.add("generic_android_ver9_0_fennec_tablet");
          var1.add("generic_android_ver9_0_fennec_desktop");
+         this.requiredDeviceIds = var1;
          return var1;
       }
    }

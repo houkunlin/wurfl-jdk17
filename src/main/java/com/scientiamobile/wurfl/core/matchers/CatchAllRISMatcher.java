@@ -3,7 +3,6 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Collection;
-import org.apache.commons.lang3.StringUtils;
 
 final class CatchAllRISMatcher extends AbstractMatcher {
    public final boolean canHandle(WURFLRequest var1) {
@@ -12,7 +11,7 @@ final class CatchAllRISMatcher extends AbstractMatcher {
 
    protected final String risMatch(String var1) {
       Collection var2 = this.getFilter().getIndex().getUserAgents();
-      if (StringUtils.startsWith(var1, "CFNetwork")) {
+      if (var1 != null && var1.startsWith("CFNetwork")) {
          int var3;
          if ((var3 = StringMatchUtils.firstSpace(var1)) != -1) {
             return StringMatchUtils.risMatch(var2, var1, var3);
@@ -35,4 +34,3 @@ final class CatchAllRISMatcher extends AbstractMatcher {
       return "CatchAllRis";
    }
 }
-

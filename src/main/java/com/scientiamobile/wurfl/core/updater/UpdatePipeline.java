@@ -12,13 +12,12 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrBuilder;
 
 public class UpdatePipeline {
    public static final String ENV_SCIENTIA_URL = "WURFL_UPDATE_URL";
    public static final String CLASSPATH_PREFIX = "classpath:";
-   private List a;
-   private Map b = new HashMap();
+   private List<UpdatePipelineTask> a;
+   private Map<String, Object> b = new HashMap<>();
    private String c;
    private String d;
    private String e;
@@ -83,17 +82,15 @@ public class UpdatePipeline {
             var0 = var0.substring(var1);
          }
 
-         StrBuilder var2;
-         (var2 = new StrBuilder()).append(var0);
-         var2.replaceFirst("classpath:", "");
-         return UpdatePipeline.class.getResource(var2.toString()).getFile();
+         String var2 = var0.replaceFirst("classpath:", "");
+         return UpdatePipeline.class.getResource(var2).getFile();
       } else {
          return var0;
       }
    }
 
    public synchronized UpdateResult execute() {
-      Map var1 = this.b;
+      Map<String, Object> var1 = this.b;
       if (!MapUtils.isEmpty(var1)) {
          var1.clear();
       }
@@ -105,7 +102,7 @@ public class UpdatePipeline {
 
       UpdateResult var7;
       try {
-         Iterator var6 = this.a.iterator();
+         Iterator<UpdatePipelineTask> var6 = this.a.iterator();
 
          String var2;
          String var3;

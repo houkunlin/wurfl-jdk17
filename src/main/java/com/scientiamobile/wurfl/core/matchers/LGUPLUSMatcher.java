@@ -10,15 +10,15 @@ import java.util.Set;
 
 final class LGUPLUSMatcher extends MatcherBase {
    private static String GENERIC_LGUPLUS = "generic_lguplus";
-   private static final Map DEVICE_BY_TOKENS;
+   private static final Map<String, String[]> DEVICE_BY_TOKENS;
 
    public LGUPLUSMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(DEVICE_BY_TOKENS.keySet());
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(DEVICE_BY_TOKENS.keySet());
       var1.add(GENERIC_LGUPLUS);
       return var1;
    }
@@ -32,10 +32,9 @@ final class LGUPLUSMatcher extends MatcherBase {
    }
 
    protected final String applyRecoveryMatch(WURFLRequest var1) {
-      for(Object entryObj : DEVICE_BY_TOKENS.entrySet()) {
-         Map.Entry var3 = (Map.Entry)entryObj;
-         if (StringMatchUtils.containsAllOf(var1.getNormalizedDeviceUserAgent(), (String[])var3.getValue())) {
-            return (String)var3.getKey();
+      for(Map.Entry<String, String[]> var3 : DEVICE_BY_TOKENS.entrySet()) {
+         if (StringMatchUtils.containsAllOf(var1.getNormalizedDeviceUserAgent(), var3.getValue())) {
+            return var3.getKey();
          }
       }
 
@@ -51,7 +50,7 @@ final class LGUPLUSMatcher extends MatcherBase {
    }
 
    static {
-      (DEVICE_BY_TOKENS = new LinkedHashMap()).put("generic_lguplus_rexos_facebook_browser", new String[]{"Windows NT 5", "POLARIS"});
+      (DEVICE_BY_TOKENS = new LinkedHashMap<>()).put("generic_lguplus_rexos_facebook_browser", new String[]{"Windows NT 5", "POLARIS"});
       DEVICE_BY_TOKENS.put("generic_lguplus_rexos_webviewer_browser", new String[]{"Windows NT 5"});
       DEVICE_BY_TOKENS.put("generic_lguplus_winmo_facebook_browser", new String[]{"Windows CE", "POLARIS"});
       DEVICE_BY_TOKENS.put("generic_lguplus_android_webkit_browser", new String[]{"Android", "AppleWebKit"});

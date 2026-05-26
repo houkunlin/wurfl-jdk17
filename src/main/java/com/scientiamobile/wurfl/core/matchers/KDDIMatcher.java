@@ -13,9 +13,9 @@ final class KDDIMatcher extends MatcherBase {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(OPWV_V62_GENERIC);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(OPWV_V62_GENERIC);
       return var1;
    }
 

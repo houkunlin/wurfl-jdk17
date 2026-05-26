@@ -63,14 +63,15 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
       }
    }
 
-   public Map getCapabilities() {
-      Map allCapabilities = this.capabilitiesHolder.getCapabilities();
-      HashMap filteredCapabilities = new HashMap(allCapabilities.size());
-      Iterator it = allCapabilities.keySet().iterator();
+   @SuppressWarnings("unchecked")
+   public Map<String, String> getCapabilities() {
+      Map<String, String> allCapabilities = (Map<String, String>)this.capabilitiesHolder.getCapabilities();
+      HashMap<String, String> filteredCapabilities = new HashMap<>(allCapabilities.size());
+      Iterator<String> it = allCapabilities.keySet().iterator();
 
       while(it.hasNext()) {
          String capabilityName;
-         if (!(capabilityName = (String)it.next()).startsWith("controlcap_")) {
+         if (!(capabilityName = it.next()).startsWith("controlcap_")) {
             filteredCapabilities.put(capabilityName, allCapabilities.get(capabilityName));
          }
       }

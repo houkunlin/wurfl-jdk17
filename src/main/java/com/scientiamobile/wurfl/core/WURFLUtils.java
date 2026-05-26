@@ -116,12 +116,12 @@ public class WURFLUtils {
       return this.c.getDeviceById(var1, var2);
    }
 
-   public Set getAllDevices() {
-      Set var1 = this.getAllDevicesId();
-      HashSet var2 = new HashSet(var1.size());
+   @SuppressWarnings("unchecked")
+   public Set<Device> getAllDevices() {
+      Set<String> var1 = (Set<String>)this.getAllDevicesId();
+      HashSet<Device> var2 = new HashSet<>(var1.size());
 
-      for(Object deviceIdObj : var1) {
-         String deviceId = (String)deviceIdObj;
+      for(String deviceId : var1) {
          Device var5 = this.getDeviceById(deviceId);
          var2.add(var5);
       }

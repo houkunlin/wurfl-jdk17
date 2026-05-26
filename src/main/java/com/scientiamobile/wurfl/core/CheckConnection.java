@@ -8,21 +8,23 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CheckConnection extends Observable {
+public class CheckConnection {
    private final transient Logger a = LoggerFactory.getLogger(this.getClass());
-   private final List b = new ArrayList();
+   private final List<CheckConnectionObserver> b = new ArrayList<>();
    private String c;
    private String d = System.getProperty("os.name") + " " + System.getProperty("os.version");
    private String e;
    private boolean f;
+
+   public interface CheckConnectionObserver {
+      void update(CheckConnection var1, Object var2);
+   }
 
    public CheckConnection() {
       String var1;
@@ -87,15 +89,15 @@ public class CheckConnection extends Observable {
       }
    }
 
-   public synchronized void addObserver(Observer var1) {
+   public synchronized void addObserver(CheckConnectionObserver var1) {
       this.b.add(var1);
    }
 
    public void notifyObservers(Object var1) {
-      Iterator var2 = this.b.iterator();
+      Iterator<CheckConnectionObserver> var2 = this.b.iterator();
 
       while(var2.hasNext()) {
-         ((Observer)var2.next()).update(this, var1);
+         var2.next().update(this, var1);
          this.a.info("observer notified");
       }
 

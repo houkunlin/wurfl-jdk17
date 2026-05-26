@@ -18,8 +18,8 @@ public class ModelDevice implements Serializable {
    private String b;
    private String c;
    private boolean d;
-   private Map e;
-   private Map f;
+   private Map<String, String> e;
+   private Map<String, String> f;
    private ModelDevice g;
    // $FF: synthetic field
    private static boolean h = !ModelDevice.class.desiredAssertionStatus();
@@ -27,7 +27,7 @@ public class ModelDevice implements Serializable {
    protected ModelDevice() {
    }
 
-   public ModelDevice(String var1, String var2, String var3, boolean var4, Map var5, Map var6) {
+   public ModelDevice(String var1, String var2, String var3, boolean var4, Map<String, String> var5, Map<String, String> var6) {
       Validate.notEmpty(var2, "The id must be not null");
       Validate.notEmpty(var3, "The fallBack must be not null");
       Validate.notEmpty(var1, "The userAgent must be not null");
@@ -35,21 +35,6 @@ public class ModelDevice implements Serializable {
       Validate.notNull(var6, "The groupsByCapability must be not null");
       Validate.noNullElements(var5.values(), "The capabilities can not contain null value");
       Validate.noNullElements(var6.values(), "The capabilities can not contain null value");
-      for(Object value : var5.values()) {
-         Validate.isTrue(value instanceof String, "The capabilities must be a <String,String> map");
-      }
-
-      for(Object key : var5.keySet()) {
-         Validate.isTrue(key instanceof String, "The capabilities must be a <String,String> map");
-      }
-
-      for(Object value : var6.values()) {
-         Validate.isTrue(value instanceof String, "The capabilities must be a <String,String> map");
-      }
-
-      for(Object key : var6.keySet()) {
-         Validate.isTrue(key instanceof String, "The capabilities must be a <String,String> map");
-      }
       Validate.isTrue(var5.keySet().equals(var6.keySet()), "The capabilities and groups must be same Set");
       this.a = var1;
       this.b = var2;
@@ -75,11 +60,11 @@ public class ModelDevice implements Serializable {
       return this.d;
    }
 
-   public Map getCapabilities() {
+   public Map<String, String> getCapabilities() {
       return this.e;
    }
 
-   public Map getGroupsByCapability() {
+   public Map<String, String> getGroupsByCapability() {
       return this.f;
    }
 
@@ -99,8 +84,8 @@ public class ModelDevice implements Serializable {
       return this.f.containsValue(var1);
    }
 
-   public Set getGroups() {
-      return new HashSet(this.f.values());
+   public Set<String> getGroups() {
+      return new HashSet<>(this.f.values());
    }
 
    public String getGroupForCapability(String var1) {
@@ -111,16 +96,16 @@ public class ModelDevice implements Serializable {
       }
    }
 
-   public Set getCapabilitiesNamesForGroup(String var1) {
+   public Set<String> getCapabilitiesNamesForGroup(String var1) {
       if (!h && !this.defineGroup(var1)) {
          throw new AssertionError();
       } else {
-         HashSet var2 = new HashSet();
-         Iterator var3 = this.f.entrySet().iterator();
+         HashSet<String> var2 = new HashSet<>();
+         Iterator<Map.Entry<String, String>> var3 = this.f.entrySet().iterator();
 
          while(var3.hasNext()) {
-            Map.Entry var4;
-            if (((String)(var4 = (Map.Entry)var3.next()).getValue()).equals(var1)) {
+            Map.Entry<String, String> var4;
+            if ((var4 = var3.next()).getValue().equals(var1)) {
                var2.add(var4.getKey());
             }
          }
@@ -129,10 +114,10 @@ public class ModelDevice implements Serializable {
       }
    }
 
-   public Map getCapabilitiesForGroup(String var1) {
-      HashMap var2 = new HashMap();
+   public Map<String, String> getCapabilitiesForGroup(String var1) {
+      HashMap<String, String> var2 = new HashMap<>();
 
-      for(Object capabilityName : this.getCapabilitiesNamesForGroup(var1)) {
+      for(String capabilityName : this.getCapabilitiesNamesForGroup(var1)) {
          var2.put(capabilityName, this.e.get(capabilityName));
       }
 
@@ -191,12 +176,12 @@ public class ModelDevice implements Serializable {
    }
 
    // $FF: synthetic method
-   static Map a(ModelDevice var0, Map var1) {
+   static Map<String, String> a(ModelDevice var0, Map<String, String> var1) {
       return var0.e = var1;
    }
 
    // $FF: synthetic method
-   static Map b(ModelDevice var0, Map var1) {
+   static Map<String, String> b(ModelDevice var0, Map<String, String> var1) {
       return var0.f = var1;
    }
 

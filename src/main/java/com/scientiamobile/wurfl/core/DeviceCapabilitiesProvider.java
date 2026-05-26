@@ -4,8 +4,8 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.resource.exc.DeviceNotInModelException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang3.text.StrBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,28 +19,28 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
       this.modelDevice = modelDevice;
    }
 
+   @SuppressWarnings("unchecked")
    public final Map getAllCapabilities() {
-      HashMap capabilities = new HashMap(this.wurflModel.getAllCapabilities().size());
+      HashMap<String, String> capabilities = new HashMap<>(this.wurflModel.getAllCapabilities().size());
 
       try {
-         for(Object deviceObj : this.wurflModel.getDeviceHierarchy(this.modelDevice)) {
-            ModelDevice deviceInHierarchy = (ModelDevice)deviceObj;
+         for(ModelDevice deviceInHierarchy : (List<ModelDevice>)this.wurflModel.getDeviceHierarchy(this.modelDevice)) {
             capabilities.putAll(deviceInHierarchy.getCapabilities());
          }
       } catch (DeviceNotInModelException e) {
          if (this.log.isErrorEnabled()) {
-            StrBuilder sb;
-            (sb = new StrBuilder()).append("Device: ").append(this.modelDevice.getID()).append(" is not in model. ").append("Capabilities will not loaded.");
-            this.log.error(sb.toString());
+            this.log.error((new StringBuilder()).append("Device: ").append(this.modelDevice.getID()).append(" is not in model. ").append("Capabilities will not loaded.").toString());
          }
       }
 
       return capabilities;
    }
 
+   @SuppressWarnings("unchecked")
    public final String getCapability(Map capabilities, String capabilityName) {
+      Map<String, String> capabilitiesMap = (Map<String, String>)capabilities;
       String capabilityValue;
-      if ((capabilityValue = (String)capabilities.get(capabilityName)) != null) {
+      if ((capabilityValue = capabilitiesMap.get(capabilityName)) != null) {
          return capabilityValue;
       } else {
          ModelDevice currentDevice;
@@ -49,7 +49,7 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
 
          String resolvedValue = currentDevice != null ? currentDevice.getCapability(capabilityName) : null;
          if (resolvedValue != null) {
-            capabilities.put(capabilityName, resolvedValue);
+            capabilitiesMap.put(capabilityName, resolvedValue);
          }
 
          return resolvedValue;

@@ -14,9 +14,9 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(GENERIC_OPERA_MINI_ANDROID_VERSION5);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(GENERIC_OPERA_MINI_ANDROID_VERSION5);
       return var1;
    }
 

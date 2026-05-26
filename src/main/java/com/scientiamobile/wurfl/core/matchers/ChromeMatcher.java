@@ -6,7 +6,6 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
 
 final class ChromeMatcher extends MatcherBase {
    private static String CHROME_DEVICE_ID = "google_chrome";
@@ -15,14 +14,15 @@ final class ChromeMatcher extends MatcherBase {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(CHROME_DEVICE_ID);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(CHROME_DEVICE_ID);
       return var1;
    }
 
    public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsMobileBrowser() && StringUtils.contains(var1.getCleanedDeviceUserAgent(), "Chrome");
+      String var2 = var1.getCleanedDeviceUserAgent();
+      return !var1._internalIsMobileBrowser() && var2 != null && var2.contains("Chrome");
    }
 
    protected final String risMatch(String var1) {

@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VirtualCapabilityHandler {
-   private static final Map a;
+   private static final Map<String, VirtualCapabilityEvaluator> a;
    private WURFLRequest b;
 
    private VirtualCapabilityHandler() {
@@ -67,32 +67,31 @@ public class VirtualCapabilityHandler {
       return var1 == null ? "" : var1;
    }
 
-   public Map getAllVirtualCapabilities(Device var1) {
-      HashMap var2 = new HashMap();
-      HashSet var3;
-      (var3 = new HashSet()).addAll(a.values());
-      Iterator var6 = var3.iterator();
+   public Map<String, String> getAllVirtualCapabilities(Device var1) {
+      HashMap<String, String> var2 = new HashMap<>();
+      HashSet<VirtualCapabilityEvaluator> var3 = new HashSet<>(a.values());
+      Iterator<VirtualCapabilityEvaluator> var6 = var3.iterator();
 
       while(var6.hasNext()) {
          VirtualCapabilityEvaluator var4;
-         String var5 = (var4 = (VirtualCapabilityEvaluator)var6.next()).getHandledVirtualCapabilityName();
+         String var5 = (var4 = var6.next()).getHandledVirtualCapabilityName();
          var2.put(var5, a(var5, var4.eval(var1, this.b), var1));
       }
 
       return var2;
    }
 
-   public static Set getAllVirtualCapabilities() {
+   public static Set<String> getAllVirtualCapabilities() {
       new VirtualCapabilityHandler();
       return a.keySet();
    }
 
-   public static Set getMandatoryCapabilities() {
-      return new HashSet(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
+   public static Set<String> getMandatoryCapabilities() {
+      return new HashSet<>(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
    }
 
    static {
-      (a = new ConcurrentHashMap()).put("is_android", new IsAndroidOs());
+      (a = new ConcurrentHashMap<>()).put("is_android", new IsAndroidOs());
       a.put("is_ios", new IsIOs());
       a.put("is_windows_phone", new IsWindowsPhone());
       a.put("is_full_desktop", new IsFullDesktop());
@@ -117,9 +116,9 @@ public class VirtualCapabilityHandler {
       a.put("advertised_app_name", new AppName());
 
       try {
-         Class var0;
+         Class<?> var0;
          Object var2;
-         if ((var0 = Class.forName("com.scientiamobile.wurfl.core.vcap.OsManufacturer")) != null && (var2 = var0.newInstance()) != null) {
+         if ((var0 = Class.forName("com.scientiamobile.wurfl.core.vcap.OsManufacturer")) != null && (var2 = var0.getDeclaredConstructor().newInstance()) != null) {
             a.put("os_manufacturer", (VirtualCapabilityEvaluator)var2);
          }
 

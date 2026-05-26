@@ -11,9 +11,9 @@ final class NintendoMatcher extends MatcherBase {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add("nintendo_wii_u_ver1");
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add("nintendo_wii_u_ver1");
       var1.add("nintendo_wii_ver1");
       var1.add("nintendo_dsi_ver1");
       var1.add("nintendo_ds_ver1");

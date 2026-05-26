@@ -14,9 +14,9 @@ public class OrphanDeviceIdMatcher extends MatcherBase {
       return false;
    }
 
-   protected final Set a() {
-      HashSet var1;
-      (var1 = new HashSet()).add("opwv_v6_generic");
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add("opwv_v6_generic");
       var1.add("opwv_v7_generic");
       var1.add("opwv_v72_generic");
       var1.add("upgui_generic");

@@ -6,12 +6,11 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
 
 final class LGMatcher extends MatcherBase {
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add("generic");
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add("generic");
       return var1;
    }
 
@@ -20,7 +19,8 @@ final class LGMatcher extends MatcherBase {
    }
 
    public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && StringUtils.startsWithIgnoreCase(var1.getCleanedDeviceUserAgent(), "lg");
+      String var2 = var1.getCleanedDeviceUserAgent();
+      return !var1._internalIsDesktopBrowser() && var2 != null && var2.regionMatches(true, 0, "lg", 0, 2);
    }
 
    protected final String risMatch(String var1) {

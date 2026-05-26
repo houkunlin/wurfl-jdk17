@@ -16,9 +16,9 @@ final class MaemoMatcher extends MatcherBase {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(GENERIC_OPERA_MOBI_MAEMO);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(GENERIC_OPERA_MOBI_MAEMO);
       var1.add(NOKIA_GENERIC_MAEMO_WITH_FIREFOX);
       var1.add(NOKIA_GENERIC_MAEMO);
       return var1;

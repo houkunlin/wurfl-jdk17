@@ -11,14 +11,14 @@ import java.util.Set;
 final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
    private static final String GENERIC_ANDROID_VER2_0_OPERA_MOBI = "generic_android_ver2_0_opera_mobi";
    private static final String GENERIC_ANDROID_VER2_1_OPERA_TABLET = "generic_android_ver2_1_opera_tablet";
-   private static final Set SUPPORTED_ANDROID_OPERA_DEVICE_IDS;
+   private static final Set<String> SUPPORTED_ANDROID_OPERA_DEVICE_IDS;
 
    public OperaMobiOrTabletOnAndroidMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      return new HashSet(SUPPORTED_ANDROID_OPERA_DEVICE_IDS);
+   protected final Set<String> getRequiredDeviceIds() {
+      return new HashSet<>(SUPPORTED_ANDROID_OPERA_DEVICE_IDS);
    }
 
    public final boolean canHandle(WURFLRequest var1) {
@@ -52,7 +52,7 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
    }
 
    static {
-      (SUPPORTED_ANDROID_OPERA_DEVICE_IDS = new HashSet()).add("generic_android_ver1_5_opera_mobi");
+      (SUPPORTED_ANDROID_OPERA_DEVICE_IDS = new HashSet<>()).add("generic_android_ver1_5_opera_mobi");
       SUPPORTED_ANDROID_OPERA_DEVICE_IDS.add("generic_android_ver1_6_opera_mobi");
       SUPPORTED_ANDROID_OPERA_DEVICE_IDS.add(GENERIC_ANDROID_VER2_0_OPERA_MOBI);
       SUPPORTED_ANDROID_OPERA_DEVICE_IDS.add("generic_android_ver2_1_opera_mobi");

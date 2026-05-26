@@ -16,15 +16,15 @@ import org.apache.commons.lang3.StringUtils;
 final class OperaMatcher extends MatcherBase {
    private static final String OPERA_GENERIC = "opera";
    private static final Pattern OPERA_VERSION = Pattern.compile("Opera[ /]?(\\d+\\.\\d+)");
-   private static final Map MAJOR_VERSION_TO_DEVICE_ID;
+   private static final Map<String, String> MAJOR_VERSION_TO_DEVICE_ID;
 
    public OperaMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(MAJOR_VERSION_TO_DEVICE_ID.values());
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(MAJOR_VERSION_TO_DEVICE_ID.values());
       return var1;
    }
 
@@ -43,7 +43,7 @@ final class OperaMatcher extends MatcherBase {
       String var3;
       String[] var4;
       String var5;
-      return (var2 = OPERA_VERSION.matcher(var1.getNormalizedDeviceUserAgent())).find() && StringUtils.isNotEmpty(var3 = var2.group(1)) && ArrayUtils.isNotEmpty(var4 = var3.split("\\.")) && StringUtils.isNotEmpty(var5 = (String)MAJOR_VERSION_TO_DEVICE_ID.get(var4[0])) ? var5 : OPERA_GENERIC;
+      return (var2 = OPERA_VERSION.matcher(var1.getNormalizedDeviceUserAgent())).find() && StringUtils.isNotEmpty(var3 = var2.group(1)) && ArrayUtils.isNotEmpty(var4 = var3.split("\\.")) && StringUtils.isNotEmpty(var5 = MAJOR_VERSION_TO_DEVICE_ID.get(var4[0])) ? var5 : OPERA_GENERIC;
    }
 
    public final String getMatcherName() {
@@ -55,7 +55,7 @@ final class OperaMatcher extends MatcherBase {
    }
 
    static {
-      (MAJOR_VERSION_TO_DEVICE_ID = new HashMap()).put("", OPERA_GENERIC);
+      (MAJOR_VERSION_TO_DEVICE_ID = new HashMap<>()).put("", OPERA_GENERIC);
       MAJOR_VERSION_TO_DEVICE_ID.put("7", "opera_7");
       MAJOR_VERSION_TO_DEVICE_ID.put("8", "opera_8");
       MAJOR_VERSION_TO_DEVICE_ID.put("9", "opera_9");

@@ -12,16 +12,16 @@ final class AndroidMatcher extends AbstractMatcher {
    private static final String GENERIC_ANDROID = "generic_android";
    private static final String GENERIC_ANDROID_VER2_2 = "generic_android_ver2_2";
    private static final String GENERIC_ANDROID_VER1_5_TABLET = "generic_android_ver1_5_tablet";
-   private static final Set SUPPORTED_MOBILE_DEVICE_IDS = new HashSet();
-   private static final Set SUPPORTED_TABLET_DEVICE_IDS = new HashSet();
+   private static final Set<String> SUPPORTED_MOBILE_DEVICE_IDS = new HashSet<>();
+   private static final Set<String> SUPPORTED_TABLET_DEVICE_IDS = new HashSet<>();
 
    public AndroidMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(SUPPORTED_MOBILE_DEVICE_IDS);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(SUPPORTED_MOBILE_DEVICE_IDS);
       var1.addAll(SUPPORTED_TABLET_DEVICE_IDS);
       var1.add(GENERIC_ANDROID);
       return var1;

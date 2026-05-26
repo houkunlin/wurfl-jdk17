@@ -11,15 +11,15 @@ import java.util.Set;
 
 final class NetFrontOnAndroidMatcher extends MatcherBase {
    private static final String GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER = "generic_android_ver2_0_netfrontlifebrowser";
-   private static final Map ANDROID_VERSION_TO_DEVICE_ID;
+   private static final Map<String, String> ANDROID_VERSION_TO_DEVICE_ID;
 
    public NetFrontOnAndroidMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER);
       return var1;
    }
 
@@ -35,7 +35,7 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
    protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var2 = UserAgentUtils.getAndroidVersion(var1.getNormalizedDeviceUserAgent(), true);
       String var3;
-      return (var3 = (String)ANDROID_VERSION_TO_DEVICE_ID.get(var2)) != null ? var3 : GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER;
+      return (var3 = ANDROID_VERSION_TO_DEVICE_ID.get(var2)) != null ? var3 : GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER;
    }
 
    public final String getMatcherName() {
@@ -47,7 +47,7 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
    }
 
    static {
-      (ANDROID_VERSION_TO_DEVICE_ID = new HashMap()).put("2.1", "generic_android_ver2_1_netfrontlifebrowser");
+      (ANDROID_VERSION_TO_DEVICE_ID = new HashMap<>()).put("2.1", "generic_android_ver2_1_netfrontlifebrowser");
       ANDROID_VERSION_TO_DEVICE_ID.put("2.2", "generic_android_ver2_2_netfrontlifebrowser");
       ANDROID_VERSION_TO_DEVICE_ID.put("2.3", "generic_android_ver2_3_netfrontlifebrowser");
    }

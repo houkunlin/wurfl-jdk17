@@ -7,11 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 
 public final class DesktopApplicationMatcher extends MatcherBase {
    private static String b = "ms_office";
-   private static final Set c = new HashSet();
+   private static final Set<String> c = new HashSet<>();
    private static final Pattern d = Pattern.compile("MSOffice ([0-9]+)");
    private static final Pattern e = Pattern.compile("Microsoft Office/([0-9.]+)");
 
@@ -19,9 +18,9 @@ public final class DesktopApplicationMatcher extends MatcherBase {
       super(var1);
    }
 
-   protected final Set a() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(c);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(c);
       var1.add("generic_web_browser");
       return var1;
    }
@@ -52,7 +51,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
       if (StringMatchUtils.containsAnyOf(var1.getDeviceUserAgent(), "Office", "office")) {
          return b;
       } else {
-         return StringUtils.contains(var1.getDeviceUserAgent(), "DesktopApp ") ? "generic_desktop_application" : "generic_web_browser";
+         return var1.getDeviceUserAgent().contains("DesktopApp ") ? "generic_desktop_application" : "generic_web_browser";
       }
    }
 
