@@ -26,21 +26,21 @@ public class ModelDevice implements Serializable {
    protected ModelDevice() {
    }
 
-   public ModelDevice(String var1, String var2, String var3, boolean var4, Map<String, String> var5, Map<String, String> var6) {
-      Validate.notEmpty(var2, "The id must be not null");
-      Validate.notEmpty(var3, "The fallBack must be not null");
-      Validate.notEmpty(var1, "The userAgent must be not null");
-      Validate.notNull(var5, "The capabilities must be not null");
-      Validate.notNull(var6, "The groupsByCapability must be not null");
-      Validate.noNullElements(var5.values(), "The capabilities can not contain null value");
-      Validate.noNullElements(var6.values(), "The capabilities can not contain null value");
-      Validate.isTrue(var5.keySet().equals(var6.keySet()), "The capabilities and groups must be same Set");
-      this.userAgent = var1;
-      this.id = var2;
-      this.fallBack = var3;
-      this.actualDeviceRoot = var4;
-      this.capabilities = Collections.unmodifiableMap(var5);
-      this.groupsByCapability = Collections.unmodifiableMap(var6);
+   public ModelDevice(String userAgent, String id, String fallBack, boolean actualDeviceRoot, Map<String, String> capabilities, Map<String, String> groupsByCapability) {
+      Validate.notEmpty(id, "The id must be not null");
+      Validate.notEmpty(fallBack, "The fallBack must be not null");
+      Validate.notEmpty(userAgent, "The userAgent must be not null");
+      Validate.notNull(capabilities, "The capabilities must be not null");
+      Validate.notNull(groupsByCapability, "The groupsByCapability must be not null");
+      Validate.noNullElements(capabilities.values(), "The capabilities can not contain null value");
+      Validate.noNullElements(groupsByCapability.values(), "The capabilities can not contain null value");
+      Validate.isTrue(capabilities.keySet().equals(groupsByCapability.keySet()), "The capabilities and groups must be same Set");
+      this.userAgent = userAgent;
+      this.id = id;
+      this.fallBack = fallBack;
+      this.actualDeviceRoot = actualDeviceRoot;
+      this.capabilities = Collections.unmodifiableMap(capabilities);
+      this.groupsByCapability = Collections.unmodifiableMap(groupsByCapability);
    }
 
    public String getUserAgent() {
@@ -67,114 +67,114 @@ public class ModelDevice implements Serializable {
       return this.groupsByCapability;
    }
 
-   public boolean defineCapability(String var1) {
-      return this.capabilities.containsKey(var1);
+   public boolean defineCapability(String capabilityName) {
+      return this.capabilities.containsKey(capabilityName);
    }
 
-   public String getCapability(String var1) {
-      if (!ASSERTIONS_DISABLED && !this.defineCapability(var1)) {
-         throw new AssertionError(this.id + " do not define " + var1);
+   public String getCapability(String capabilityName) {
+      if (!ASSERTIONS_DISABLED && !this.defineCapability(capabilityName)) {
+         throw new AssertionError(this.id + " do not define " + capabilityName);
       } else {
-         return this.capabilities.get(var1);
+         return this.capabilities.get(capabilityName);
       }
    }
 
-   public boolean defineGroup(String var1) {
-      return this.groupsByCapability.containsValue(var1);
+   public boolean defineGroup(String groupId) {
+      return this.groupsByCapability.containsValue(groupId);
    }
 
    public Set<String> getGroups() {
       return new HashSet<>(this.groupsByCapability.values());
    }
 
-   public String getGroupForCapability(String var1) {
-      if (!ASSERTIONS_DISABLED && !this.defineCapability(var1)) {
+   public String getGroupForCapability(String capabilityName) {
+      if (!ASSERTIONS_DISABLED && !this.defineCapability(capabilityName)) {
          throw new AssertionError();
       } else {
-         return this.groupsByCapability.get(var1);
+         return this.groupsByCapability.get(capabilityName);
       }
    }
 
-   public Set<String> getCapabilitiesNamesForGroup(String var1) {
-      if (!ASSERTIONS_DISABLED && !this.defineGroup(var1)) {
+   public Set<String> getCapabilitiesNamesForGroup(String groupId) {
+      if (!ASSERTIONS_DISABLED && !this.defineGroup(groupId)) {
          throw new AssertionError();
       } else {
-         HashSet<String> var2 = new HashSet<>();
-         Iterator<Map.Entry<String, String>> var3 = this.groupsByCapability.entrySet().iterator();
+         HashSet<String> capabilityNames = new HashSet<>();
+         Iterator<Map.Entry<String, String>> iterator = this.groupsByCapability.entrySet().iterator();
 
-         while(var3.hasNext()) {
-            Map.Entry<String, String> var4;
-            if ((var4 = var3.next()).getValue().equals(var1)) {
-               var2.add(var4.getKey());
+         while(iterator.hasNext()) {
+            Map.Entry<String, String> entry = iterator.next();
+            if (entry.getValue().equals(groupId)) {
+               capabilityNames.add(entry.getKey());
             }
          }
 
-         return var2;
+         return capabilityNames;
       }
    }
 
-   public Map<String, String> getCapabilitiesForGroup(String var1) {
-      HashMap<String, String> var2 = new HashMap<>();
+   public Map<String, String> getCapabilitiesForGroup(String groupId) {
+      HashMap<String, String> capabilities = new HashMap<>();
 
-      for(String capabilityName : this.getCapabilitiesNamesForGroup(var1)) {
-         var2.put(capabilityName, this.capabilities.get(capabilityName));
+      for(String capabilityName : this.getCapabilitiesNamesForGroup(groupId)) {
+         capabilities.put(capabilityName, this.capabilities.get(capabilityName));
       }
 
-      return var2;
+      return capabilities;
    }
 
    public ModelDevice getAncestor() {
       return this.ancestor;
    }
 
-   public void setAncestor(ModelDevice var1) {
-      this.ancestor = var1;
+   public void setAncestor(ModelDevice ancestor) {
+      this.ancestor = ancestor;
    }
 
    public int hashCode() {
-      HashCodeBuilder var1;
-      (var1 = new HashCodeBuilder(11, 45)).append(this.getClass()).append(this.id);
-      return var1.toHashCode();
+      HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(11, 45);
+      hashCodeBuilder.append(this.getClass()).append(this.id);
+      return hashCodeBuilder.toHashCode();
    }
 
-   public boolean equals(Object var1) {
-      if (this == var1) {
+   public boolean equals(Object obj) {
+      if (this == obj) {
          return true;
-      } else if (!(var1 instanceof ModelDevice)) {
+      } else if (!(obj instanceof ModelDevice)) {
          return false;
       } else {
-         ModelDevice other = (ModelDevice)var1;
+         ModelDevice other = (ModelDevice)obj;
          return (new EqualsBuilder()).append(this.id, other.id).isEquals();
       }
    }
 
    public String toString() {
-      ToStringBuilder var1;
-      (var1 = new ToStringBuilder(this)).append(this.id);
-      return var1.toString();
+      ToStringBuilder toStringBuilder = new ToStringBuilder(this);
+      toStringBuilder.append(this.id);
+      return toStringBuilder.toString();
    }
 
-   final void setUserAgent(String var1) {
-      this.userAgent = var1;
+   final void setUserAgent(String userAgent) {
+      this.userAgent = userAgent;
    }
 
-   final void setId(String var1) {
-      this.id = var1;
+   final void setId(String id) {
+      this.id = id;
    }
 
-   final void setFallBack(String var1) {
-      this.fallBack = var1;
+   final void setFallBack(String fallBack) {
+      this.fallBack = fallBack;
    }
 
-   final void setActualDeviceRoot(boolean var1) {
-      this.actualDeviceRoot = var1;
+   final void setActualDeviceRoot(boolean actualDeviceRoot) {
+      this.actualDeviceRoot = actualDeviceRoot;
    }
 
-   final void setCapabilities(Map<String, String> var1) {
-      this.capabilities = var1;
+   final void setCapabilities(Map<String, String> capabilities) {
+      this.capabilities = capabilities;
    }
 
-   final void setGroupsByCapability(Map<String, String> var1) {
-      this.groupsByCapability = var1;
+   final void setGroupsByCapability(Map<String, String> groupsByCapability) {
+      this.groupsByCapability = groupsByCapability;
    }
 }
