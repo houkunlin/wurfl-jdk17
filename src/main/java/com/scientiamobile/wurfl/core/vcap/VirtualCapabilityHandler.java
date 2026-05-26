@@ -113,13 +113,15 @@ public class VirtualCapabilityHandler {
       EVALUATORS_BY_NAME.put("advertised_app_name", new AppName());
 
       try {
-         Class<?> evaluatorClass;
-         Object evaluatorInstance;
-         if ((evaluatorClass = Class.forName("com.scientiamobile.wurfl.core.vcap.OsManufacturer")) != null && (evaluatorInstance = evaluatorClass.getDeclaredConstructor().newInstance()) != null) {
-            EVALUATORS_BY_NAME.put("os_manufacturer", (VirtualCapabilityEvaluator)evaluatorInstance);
+         Class<?> evaluatorClass = Class.forName("com.scientiamobile.wurfl.core.vcap.OsManufacturer");
+         if (evaluatorClass != null) {
+            Object evaluatorInstance = evaluatorClass.getDeclaredConstructor().newInstance();
+            if (evaluatorInstance != null) {
+               EVALUATORS_BY_NAME.put("os_manufacturer", (VirtualCapabilityEvaluator)evaluatorInstance);
+            }
          }
-
-      } catch (Exception ignore) {
+      } catch (RuntimeException ignore) {
+      } catch (ReflectiveOperationException ignore) {
       }
    }
 }

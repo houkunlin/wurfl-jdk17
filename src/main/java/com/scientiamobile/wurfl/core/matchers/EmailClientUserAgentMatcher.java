@@ -6,6 +6,8 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +20,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
    private static final Pattern MAC_OUTLOOK_PATTERN = Pattern.compile("^MacOutlook ([0-9]+).");
    private static final String[] MOBILE_KEYWORDS;
    private static final List<String> REQUIRED_DEVICE_IDS;
-   public static final String[] EMAIL_CLIENTS;
+   public static final List<String> EMAIL_CLIENTS;
 
    public EmailClientUserAgentMatcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
       super(userAgentNormalizer, wurflModel);
@@ -112,6 +114,6 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
       REQUIRED_DEVICE_IDS.add("airmail_ver1");
       REQUIRED_DEVICE_IDS.add("airmail_ios_ver1");
       REQUIRED_DEVICE_IDS.add("spark_ios_ver1");
-      EMAIL_CLIENTS = new String[]{"Thunderbird", "Outlook", "Lotus-Notes", "Eudora/", "Evolution/", "PocoMail/", "The Bat!", "Postbox/", "Airmail"};
+      EMAIL_CLIENTS = Collections.unmodifiableList(Arrays.asList("Thunderbird", "Outlook", "Lotus-Notes", "Eudora/", "Evolution/", "PocoMail/", "The Bat!", "Postbox/", "Airmail"));
    }
 }

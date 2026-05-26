@@ -70,6 +70,8 @@ public class XMLResource implements WURFLResource {
 
       try {
          SAX_PARSER_FACTORY.newSAXParser().parse(inputStream, handler);
+      } catch (RuntimeException e) {
+         throw e;
       } catch (Exception e) {
          throw new WURFLResourceException(this, e);
       }

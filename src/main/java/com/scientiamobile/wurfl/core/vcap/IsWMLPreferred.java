@@ -10,7 +10,7 @@ public class IsWMLPreferred implements VirtualCapabilityEvaluator, Serializable 
    public String eval(Device device, WURFLRequest request) {
       try {
          return Boolean.toString(device.getCapabilityAsInt("xhtml_support_level") <= 0);
-      } catch (Exception e) {
+      } catch (RuntimeException e) {
          return "false";
       }
    }

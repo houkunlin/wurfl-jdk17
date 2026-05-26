@@ -42,7 +42,7 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
       try {
          this.deviceById.put(device.getId(), device);
          this.deviceIdByUserAgent.put(userAgent, device.getId());
-      } catch (Exception e) {
+      } catch (RuntimeException e) {
          logger.error("Could not cache " + userAgent);
       }
    }

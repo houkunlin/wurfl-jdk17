@@ -79,7 +79,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
          if (request != null) {
             request.setUrlEncoded(true);
          }
-      } catch (Exception e) {
+      } catch (RuntimeException e) {
          this.log.warn("rawdecoding for user agent {} failed", userAgent, e);
       }
 

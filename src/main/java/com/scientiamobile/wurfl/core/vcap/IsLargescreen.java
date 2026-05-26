@@ -10,7 +10,7 @@ public class IsLargescreen implements VirtualCapabilityEvaluator, Serializable {
    public String eval(Device device, WURFLRequest request) {
       try {
          return Boolean.toString(device.getCapabilityAsInt("resolution_width") >= 480 && device.getCapabilityAsInt("resolution_height") >= 480);
-      } catch (Exception e) {
+      } catch (RuntimeException e) {
          return "false";
       }
    }

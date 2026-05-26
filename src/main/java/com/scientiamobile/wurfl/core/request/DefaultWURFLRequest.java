@@ -283,7 +283,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
    public boolean _internalIsEmailClient() {
       if (this.cachedIsEmailClient == null) {
-         this.cachedIsEmailClient = StringMatchUtils.containsAnyOf(this.cleanedDeviceUserAgent, EmailClientUserAgentMatcher.EMAIL_CLIENTS);
+         this.cachedIsEmailClient = StringMatchUtils.containsAnyOf(this.cleanedDeviceUserAgent, EmailClientUserAgentMatcher.EMAIL_CLIENTS.toArray(new String[0]));
       }
 
       return this.cachedIsEmailClient;

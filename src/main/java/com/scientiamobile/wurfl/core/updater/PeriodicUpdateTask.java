@@ -57,7 +57,7 @@ public class PeriodicUpdateTask implements Runnable {
             this.log.info("WURFL file update completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
          }
 
-      } catch (Exception e) {
+      } catch (RuntimeException e) {
          this.log.error("Unexpected exception performing periodic update", e);
       }
    }

@@ -340,7 +340,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                   Object checkConnectionInstance = checkConnectionClass.getDeclaredConstructor().newInstance();
                   checkConnectionClass.getDeclaredMethod("setup", WURFLEngine.class, WURFLModel.class).invoke(checkConnectionInstance, this, this.wurflModel);
                   checkConnectionClass.getDeclaredMethod("check").invoke(checkConnectionInstance);
-               } catch (Exception ignore) {
+               } catch (ReflectiveOperationException | RuntimeException ignore) {
                }
             }
 

@@ -1,5 +1,6 @@
 package com.scientiamobile.wurfl.core.resource;
 
+import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.helpers.DefaultHandler;
@@ -18,12 +19,14 @@ public class XmlFileLoader {
 
       try {
          SAXParserFactory.newInstance().newSAXParser().parse(inputStream, this.handler);
+      } catch (RuntimeException e) {
+         throw e;
       } catch (Exception e) {
          throw new RuntimeException(e);
       } finally {
          try {
             inputStream.close();
-         } catch (Exception e) {
+         } catch (IOException e) {
          }
       }
 

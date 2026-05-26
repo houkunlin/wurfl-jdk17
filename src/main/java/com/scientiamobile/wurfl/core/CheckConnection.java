@@ -3,6 +3,7 @@ package com.scientiamobile.wurfl.core;
 import com.scientiamobile.wurfl.core.resource.DefaultWURFLModel;
 import com.scientiamobile.wurfl.core.resource.ResourceUtils;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class CheckConnection {
    private static String getHostNameOrUnknown() {
       try {
          return InetAddress.getLocalHost().getHostName();
-      } catch (Exception e) {
+      } catch (IOException | RuntimeException e) {
          return "unknown";
       }
    }

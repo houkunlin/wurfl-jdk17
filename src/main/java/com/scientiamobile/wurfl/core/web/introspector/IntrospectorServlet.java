@@ -200,7 +200,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             }
 
             return true;
-         } catch (Exception e) {
+         } catch (ReflectiveOperationException | RuntimeException e) {
             log.debug("{} - {}", e.getClass().getSimpleName(), e.getMessage());
             return false;
          }
@@ -215,7 +215,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          String value = (String)field.get(target);
          field.setAccessible(originalAccess);
          return value;
-      } catch (Exception e) {
+      } catch (ReflectiveOperationException | RuntimeException e) {
          return null;
       }
    }
@@ -333,7 +333,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
       } finally {
          try {
             pomPropertiesStream.close();
-         } catch (Exception ignore) {
+         } catch (IOException | RuntimeException ignore) {
          }
 
       }

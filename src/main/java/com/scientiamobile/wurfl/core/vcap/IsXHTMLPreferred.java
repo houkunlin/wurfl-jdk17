@@ -10,7 +10,7 @@ public class IsXHTMLPreferred implements VirtualCapabilityEvaluator, Serializabl
    public String eval(Device device, WURFLRequest request) {
       try {
          return Boolean.toString(device.getCapabilityAsInt("xhtml_support_level") > 0 && !device.getCapability("preferred_markup").startsWith("html_web"));
-      } catch (Exception e) {
+      } catch (RuntimeException e) {
          return "false";
       }
    }
