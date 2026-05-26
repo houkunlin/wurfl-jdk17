@@ -38,7 +38,6 @@ final class WurflXmlHandler extends DefaultHandler {
    }
 
    public final void startDocument() {
-      super.startDocument();
       this.seenUserAgents = new HashSet();
       this.seenDeviceIds = new HashSet();
       this.devices = new ModelDevices();
@@ -258,4 +257,3 @@ final class WurflXmlHandler extends DefaultHandler {
       return this.devices;
    }
 }
-

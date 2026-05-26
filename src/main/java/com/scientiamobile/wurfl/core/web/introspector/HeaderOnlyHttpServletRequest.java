@@ -1,16 +1,27 @@
 package com.scientiamobile.wurfl.core.web.introspector;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Part;
+import jakarta.servlet.http.HttpUpgradeHandler;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
@@ -33,6 +44,10 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
 
    public final int getContentLength() {
       return 0;
+   }
+
+   public final long getContentLengthLong() {
+      return 0L;
    }
 
    public final String getContentType() {
@@ -60,6 +75,10 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
    }
 
    public final String getProtocol() {
+      return null;
+   }
+
+   public final String getProtocolRequestId() {
       return null;
    }
 
@@ -129,6 +148,38 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return 0;
    }
 
+   public final ServletContext getServletContext() {
+      return null;
+   }
+
+   public final AsyncContext startAsync() throws IllegalStateException {
+      return null;
+   }
+
+   public final AsyncContext startAsync(ServletRequest var1, ServletResponse var2) throws IllegalStateException {
+      return null;
+   }
+
+   public final boolean isAsyncStarted() {
+      return false;
+   }
+
+   public final boolean isAsyncSupported() {
+      return false;
+   }
+
+   public final AsyncContext getAsyncContext() {
+      return null;
+   }
+
+   public final DispatcherType getDispatcherType() {
+      return null;
+   }
+
+   public final ServletConnection getServletConnection() {
+      return null;
+   }
+
    public final String getAuthType() {
       return null;
    }
@@ -150,8 +201,9 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
    }
 
    public final void addHeaders(Map headers) {
-      for(Map.Entry var2 : headers.entrySet()) {
-         this.addHeader((String)var2.getKey(), (String)var2.getValue());
+      for(Object entryObj : headers.entrySet()) {
+         Map.Entry entry = (Map.Entry)entryObj;
+         this.addHeader((String)entry.getKey(), (String)entry.getValue());
       }
 
    }
@@ -163,8 +215,8 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
    public final Enumeration getHeaderNames() {
       Vector var1 = new Vector();
 
-      for(String var3 : this.headers.keySet()) {
-         var1.add(var3);
+      for(Object headerName : this.headers.keySet()) {
+         var1.add(headerName);
       }
 
       return var1.elements();
@@ -198,8 +250,26 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
       return null;
    }
 
+   public final String getRequestId() {
+      return null;
+   }
+
    public final boolean isUserInRole(String var1) {
       return false;
+   }
+
+   public final String changeSessionId() {
+      return null;
+   }
+
+   public final boolean authenticate(HttpServletResponse var1) throws IOException, ServletException {
+      return false;
+   }
+
+   public final void login(String var1, String var2) throws ServletException {
+   }
+
+   public final void logout() throws ServletException {
    }
 
    public final Principal getUserPrincipal() {
@@ -245,5 +315,16 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
    public final boolean isRequestedSessionIdFromUrl() {
       return false;
    }
-}
 
+   public final <T extends HttpUpgradeHandler> T upgrade(Class<T> var1) {
+      return null;
+   }
+
+   public final Part getPart(String var1) {
+      return null;
+   }
+
+   public final java.util.Collection<Part> getParts() {
+      return null;
+   }
+}

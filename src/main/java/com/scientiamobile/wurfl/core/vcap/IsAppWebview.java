@@ -11,8 +11,9 @@ public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements 
    public String eval(Device var1, WURFLRequest var2) {
       String var3 = var2.isUrlEncoded() ? var2.getCleanedDeviceUserAgent() : var2.getOriginalUserAgent();
 
-      for(String var5 : h) {
-         if (var3.contains(var5)) {
+      for(Object keywordObj : h) {
+         String keyword = (String)keywordObj;
+         if (var3.contains(keyword)) {
             return "false";
          }
       }

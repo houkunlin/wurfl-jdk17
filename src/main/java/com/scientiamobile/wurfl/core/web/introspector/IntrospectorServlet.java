@@ -24,7 +24,8 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
-import javax.servlet.ServletConfig;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -66,18 +67,18 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
       a = var0;
    }
 
-   public void init(ServletConfig var1) {
+   public void init(ServletConfig var1) throws ServletException {
       super.init(var1);
       this.getServletContext().getServerInfo();
       (new StringBuilder()).append(System.getProperty("os.name")).append(" ").append(System.getProperty("os.version"));
       (new StringBuilder()).append(System.getProperty("java.vendor")).append(" ").append(System.getProperty("java.version"));
    }
 
-   protected void doGet(HttpServletRequest var1, HttpServletResponse var2) {
+   protected void doGet(HttpServletRequest var1, HttpServletResponse var2) throws ServletException, IOException {
       this.doPost(var1, var2);
    }
 
-   protected void doPost(HttpServletRequest var1, HttpServletResponse var2) {
+   protected void doPost(HttpServletRequest var1, HttpServletResponse var2) throws ServletException, IOException {
       System.currentTimeMillis();
       String var5 = var1.getParameter("action");
       boolean var3 = false;
@@ -168,7 +169,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                d.info("BUCKETS (1/3): start matching...");
                long var33 = System.currentTimeMillis();
 
-               for(String var17 : var15) {
+               for(Object userAgentObj : var15) {
+                  String var17 = (String)userAgentObj;
                   DeviceInfo var31 = var14.matchRequest(var16.createRequest(var17, EngineTarget.accuracy));
                   String var20 = a((String)"matcherName", (Object)var31);
                   String var21 = a((String)"normalizedUserAgent", (Object)var31);
@@ -184,7 +186,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                d.info("BUCKETS (3/3): start building strings...");
                var33 = System.currentTimeMillis();
 
-               for(MatchResultRow var32 : var26) {
+               for(Object rowObj : var26) {
+                  MatchResultRow var32 = (MatchResultRow)rowObj;
                   var8.add(var32.toString());
                }
 
@@ -197,8 +200,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             var5.setAccessible(var6);
             var2.setAccessible(var3);
 
-            for(String var28 : var8) {
-               var1.println(var28);
+            for(Object lineObj : var8) {
+               var1.println((String)lineObj);
             }
 
             return true;
@@ -210,15 +213,19 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
    }
 
    private static String a(String var0, Object var1) {
-      Field var3;
-      boolean var2 = (var3 = var1.getClass().getDeclaredField(var0)).isAccessible();
-      var3.setAccessible(true);
-      String var4 = (String)var3.get(var1);
-      var3.setAccessible(var2);
-      return var4;
+      try {
+         Field var3;
+         boolean var2 = (var3 = var1.getClass().getDeclaredField(var0)).isAccessible();
+         var3.setAccessible(true);
+         String var4 = (String)var3.get(var1);
+         var3.setAccessible(var2);
+         return var4;
+      } catch (Exception var5) {
+         return null;
+      }
    }
 
-   private boolean a(HttpServletRequest var1, PrintWriter var2) {
+   private boolean a(HttpServletRequest var1, PrintWriter var2) throws IOException {
       if (a == null) {
          b(var2);
          return true;
@@ -261,11 +268,11 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             String var16;
             if ((var16 = var1.getParameter("headers")) != null && var16.trim().length() > 0) {
                var16 = var16.trim();
-               var11 = c.matcher(var16).replaceAll("|").split("\\|");
+               String[] var17 = c.matcher(var16).replaceAll("|").split("\\|");
 
-               for(int var8 = 0; var8 < ((Object[])var11).length; ++var8) {
+               for(int var8 = 0; var8 < var17.length; ++var8) {
                   String var9;
-                  if ((var9 = ((Object[])var11)[var8]).indexOf(":") >= 0) {
+                  if ((var9 = var17[var8]).indexOf(":") >= 0) {
                      String[] var10 = var9.split(":");
                      var5.addHeader(var10[0].trim(), var10[1].trim());
                   }

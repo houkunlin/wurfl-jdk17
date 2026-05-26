@@ -1,5 +1,6 @@
 package com.scientiamobile.wurfl.core.updater;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ public class UpdatePipeline {
       var1.put("API_USER_AGENT", this.e);
       var1.put("CONN_TIMEOUT", String.valueOf(this.f));
 
+      UpdateResult var7;
       try {
          Iterator var6 = this.a.iterator();
 
@@ -131,30 +133,29 @@ public class UpdatePipeline {
    }
 
    static int a(URL var0, String var1, int var2, String var3, ProxySettings var4) {
-      HttpsURLConnection var8;
-      (var8 = var4 != null ? (HttpsURLConnection)var0.openConnection(var4.getProxy()) : (HttpsURLConnection)var0.openConnection()).setRequestMethod("HEAD");
-      var8.setUseCaches(false);
-      if (StringUtils.isNotEmpty(var1)) {
-         var8.setRequestProperty("If-Modified-Since", var1);
-      }
-
-      if (StringUtils.isNotEmpty(var3)) {
-         var8.setRequestProperty("User-Agent", var3);
-      }
-
-      var8.setConnectTimeout(var2);
-      var8.setReadTimeout(var2);
-
+      HttpsURLConnection var8 = null;
       try {
+         (var8 = var4 != null ? (HttpsURLConnection)var0.openConnection(var4.getProxy()) : (HttpsURLConnection)var0.openConnection()).setRequestMethod("HEAD");
+         var8.setUseCaches(false);
+         if (StringUtils.isNotEmpty(var1)) {
+            var8.setRequestProperty("If-Modified-Since", var1);
+         }
+
+         if (StringUtils.isNotEmpty(var3)) {
+            var8.setRequestProperty("User-Agent", var3);
+         }
+
+         var8.setConnectTimeout(var2);
+         var8.setReadTimeout(var2);
          var8.connect();
-         var7 = var8.getResponseCode();
+         return var8.getResponseCode();
+      } catch (IOException var10) {
+         throw new RuntimeException(var10);
       } finally {
          if (var8 != null) {
             var8.disconnect();
          }
 
       }
-
-      return var7;
    }
 }

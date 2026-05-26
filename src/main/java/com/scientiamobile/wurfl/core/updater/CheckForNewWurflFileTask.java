@@ -2,7 +2,6 @@ package com.scientiamobile.wurfl.core.updater;
 
 import com.scientiamobile.wurfl.core.utils.ExceptionUtils;
 import java.io.File;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,11 +53,12 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
                var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
                var1.put("task_error_message", "Invalid HTTP response code " + var14);
             }
-         } catch (SocketTimeoutException var8) {
-            var1.put("task_error_message", "Error trying to check if a new WURFL file is available: connection timed out");
-            var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
          } catch (Exception var9) {
-            var1.put("task_error_message", "Error trying to check if a new WURFL file is available: " + ExceptionUtils.getFirstAvailableMessage(var9));
+            if (var9 instanceof java.net.SocketTimeoutException) {
+               var1.put("task_error_message", "Error trying to check if a new WURFL file is available: connection timed out");
+            } else {
+               var1.put("task_error_message", "Error trying to check if a new WURFL file is available: " + ExceptionUtils.getFirstAvailableMessage(var9));
+            }
             var1.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
          }
       } catch (Throwable var10) {

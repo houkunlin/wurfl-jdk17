@@ -63,26 +63,27 @@ final class FennecOnAndroidMatcher extends MatcherBase {
    }
 
    protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var2 = null;
-      int var3 = 0;
-      String var4;
-      String var5;
-      if ((var4 = UserAgentUtils.getAndroidVersion(var5 = var1.getNormalizedDeviceUserAgent(), false)) != null) {
-         var3 = ArrayUtils.isNotEmpty(var2 = var4.split("\\.")) ? Integer.parseInt(((Object[])var2)[0]) : 0;
-         var2 = "generic_android_ver" + var3 + "_0_fennec";
+      String deviceId = null;
+      int androidMajorVersion = 0;
+      String androidVersion;
+      String normalizedUserAgent;
+      if ((androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent = var1.getNormalizedDeviceUserAgent(), false)) != null) {
+         String[] versionParts = androidVersion.split("\\.");
+         androidMajorVersion = ArrayUtils.isNotEmpty(versionParts) ? Integer.parseInt(versionParts[0]) : 0;
+         deviceId = "generic_android_ver" + androidMajorVersion + "_0_fennec";
       }
 
-      if (var3 < 5) {
-         var2 = "generic_android_ver4_fennec";
+      if (androidMajorVersion < 5) {
+         deviceId = "generic_android_ver4_fennec";
       }
 
-      if (StringMatchUtils.containsAllOf(var5, "Firefox", "Tablet")) {
-         var2 = var2 + "_tablet";
-      } else if (StringMatchUtils.containsAllOf(var5, "Firefox", "Desktop")) {
-         var2 = var2 + "_desktop";
+      if (StringMatchUtils.containsAllOf(normalizedUserAgent, "Firefox", "Tablet")) {
+         deviceId = deviceId + "_tablet";
+      } else if (StringMatchUtils.containsAllOf(normalizedUserAgent, "Firefox", "Desktop")) {
+         deviceId = deviceId + "_desktop";
       }
 
-      return this.requiredDeviceIds.contains(var2) ? var2 : "generic_android_ver4_fennec";
+      return this.requiredDeviceIds.contains(deviceId) ? deviceId : "generic_android_ver4_fennec";
    }
 
    public final String getMatcherName() {

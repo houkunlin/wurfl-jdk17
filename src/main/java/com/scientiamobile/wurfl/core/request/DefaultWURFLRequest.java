@@ -296,15 +296,14 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    public boolean equals(Object var1) {
-      EqualsBuilder var2;
-      (var2 = new EqualsBuilder()).appendSuper(this.getClass().isInstance(var1));
-      if (var2.isEquals()) {
-         var1 = var1;
-         var2.append(this.b, var1.b);
-         var2.append(this.g, var1.g);
+      if (this == var1) {
+         return true;
+      } else if (!(var1 instanceof DefaultWURFLRequest)) {
+         return false;
+      } else {
+         DefaultWURFLRequest other = (DefaultWURFLRequest)var1;
+         return (new EqualsBuilder()).append(this.b, other.b).append(this.g, other.g).isEquals();
       }
-
-      return var2.isEquals();
    }
 
    public String toString() {

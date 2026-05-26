@@ -37,7 +37,9 @@ public class WURFLUtils {
    public Set getModelDevices(Set var1) {
       Validate.notNull(var1, "The ids must be not null Set");
       Validate.noNullElements(var1, "The ids must not containing null elements");
-      Validate.allElementsOfType(var1, String.class, "The ids must containing right devices id");
+      for(Object id : var1) {
+         Validate.isTrue(id instanceof String, "The ids must containing right devices id");
+      }
       return this.a.getDevices(var1);
    }
 
@@ -118,8 +120,9 @@ public class WURFLUtils {
       Set var1 = this.getAllDevicesId();
       HashSet var2 = new HashSet(var1.size());
 
-      for(String var3 : var1) {
-         Device var5 = this.getDeviceById(var3);
+      for(Object deviceIdObj : var1) {
+         String deviceId = (String)deviceIdObj;
+         Device var5 = this.getDeviceById(deviceId);
          var2.add(var5);
       }
 

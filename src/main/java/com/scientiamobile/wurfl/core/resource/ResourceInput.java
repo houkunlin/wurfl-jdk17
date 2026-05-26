@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 import org.apache.commons.lang3.StringUtils;
@@ -22,12 +21,7 @@ final class ResourceInput {
 
    public ResourceInput(String path) {
       Validate.notEmpty(path, "The path must be not empty");
-
-      try {
-         this.uri = parseUri(path);
-      } catch (URISyntaxException var2) {
-         throw new RuntimeException(var2);
-      }
+      this.uri = parseUri(path);
    }
 
    public ResourceInput(File file) {
@@ -127,9 +121,13 @@ final class ResourceInput {
    }
 
    private static InputStream unwrapZip(InputStream stream) {
-      ZipInputStream var1;
-      (var1 = new ZipInputStream(stream)).getNextEntry();
-      return var1;
+      try {
+         ZipInputStream var1;
+         (var1 = new ZipInputStream(stream)).getNextEntry();
+         return var1;
+      } catch (IOException var2) {
+         throw new RuntimeException(var2);
+      }
    }
 
    private void closeStream() {
@@ -175,4 +173,3 @@ final class ResourceInput {
       this.closeStream();
    }
 }
-

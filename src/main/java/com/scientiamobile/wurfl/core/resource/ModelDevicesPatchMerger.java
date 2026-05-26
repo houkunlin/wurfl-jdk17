@@ -16,7 +16,8 @@ final class ModelDevicesPatchMerger {
    public static ModelDevices merge(ModelDevices baseDevices, ModelDevices patchDevices) {
       ModelDevices var2 = new ModelDevices(baseDevices);
 
-      for(ModelDevice var3 : patchDevices) {
+      for(Object deviceObj : patchDevices) {
+         ModelDevice var3 = (ModelDevice)deviceObj;
          if (baseDevices.containsId(var3.getID())) {
             ModelDevice var4;
             ModelDevice var10000 = var4 = baseDevices.getById(var3.getID());
@@ -56,4 +57,3 @@ final class ModelDevicesPatchMerger {
       return var2;
    }
 }
-

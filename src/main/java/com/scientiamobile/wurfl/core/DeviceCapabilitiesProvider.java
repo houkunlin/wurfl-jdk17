@@ -23,7 +23,8 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
       HashMap capabilities = new HashMap(this.wurflModel.getAllCapabilities().size());
 
       try {
-         for(ModelDevice deviceInHierarchy : this.wurflModel.getDeviceHierarchy(this.modelDevice)) {
+         for(Object deviceObj : this.wurflModel.getDeviceHierarchy(this.modelDevice)) {
+            ModelDevice deviceInHierarchy = (ModelDevice)deviceObj;
             capabilities.putAll(deviceInHierarchy.getCapabilities());
          }
       } catch (DeviceNotInModelException e) {
@@ -55,4 +56,3 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
       }
    }
 }
-

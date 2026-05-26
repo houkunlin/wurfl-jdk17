@@ -144,7 +144,9 @@ public class DefaultWURFLModel implements WURFLModel {
    public Set getDevices(Set var1) {
       Validate.notNull(var1, "The devicesIds must be not null Set");
       Validate.noNullElements(var1, "The devicesIds must not containing null elements");
-      Validate.allElementsOfType(var1, String.class, "The devicesIds must containing right devicesById id");
+      for(Object id : var1) {
+         Validate.isTrue(id instanceof String, "The devicesIds must containing right devicesById id");
+      }
       HashSet var2 = new HashSet();
       Iterator var3 = var1.iterator();
 

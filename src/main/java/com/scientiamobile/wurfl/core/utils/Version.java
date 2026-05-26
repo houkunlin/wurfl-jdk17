@@ -2,7 +2,7 @@ package com.scientiamobile.wurfl.core.utils;
 
 import java.util.StringTokenizer;
 
-public class Version implements Comparable {
+public class Version implements Comparable<Version> {
    private int[] a;
    private final char b;
 

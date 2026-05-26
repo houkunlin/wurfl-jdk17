@@ -51,8 +51,9 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
       if (var1.containsKey("Accept-Encoding") && var2.contains("Trident/") && (var4 = (String)var1.get("Accept-Encoding")) != null && !var4.contains("deflate")) {
          return true;
       } else {
-         for(String var3 : b) {
-            if (var2.contains(var3)) {
+         for(Object keywordObj : b) {
+            String keyword = (String)keywordObj;
+            if (var2.contains(keyword)) {
                return false;
             }
          }
@@ -188,4 +189,3 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
       h.add("Firefox");
    }
 }
-

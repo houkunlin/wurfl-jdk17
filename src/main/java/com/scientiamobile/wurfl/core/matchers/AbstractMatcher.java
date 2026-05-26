@@ -33,9 +33,10 @@ abstract class AbstractMatcher implements Matcher {
       if (model != null) {
          Set var4 = model.getAllDevicesId();
 
-         for(String var3 : this.getRequiredDeviceIds()) {
-            if (!var4.contains(var3)) {
-               throw new MissingDeviceIdConsistencyException("wurfl.xml load error - Missing device id " + var3 + " you may need to update the wurfl.xml file to a more recent version");
+         for(Object deviceIdObj : this.getRequiredDeviceIds()) {
+            String deviceId = (String)deviceIdObj;
+            if (!var4.contains(deviceId)) {
+               throw new MissingDeviceIdConsistencyException("wurfl.xml load error - Missing device id " + deviceId + " you may need to update the wurfl.xml file to a more recent version");
             }
          }
       }

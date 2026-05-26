@@ -138,8 +138,9 @@ public class VirtualCapabilityDevice implements Serializable {
                }
 
                if (StringUtils.isNotEmpty(this.j.getName())) {
-                  for(String var2 : n) {
-                     if (this.j.getName().contains(var2)) {
+                  for(Object osNameObj : n) {
+                     String osName = (String)osNameObj;
+                     if (this.j.getName().contains(osName)) {
                         return;
                      }
                   }

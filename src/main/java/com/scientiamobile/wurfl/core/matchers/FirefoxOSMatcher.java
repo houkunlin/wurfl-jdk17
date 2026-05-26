@@ -44,9 +44,10 @@ final class FirefoxOSMatcher extends MatcherBase {
    }
 
    protected final String applyRecoveryMatch(WURFLRequest var1) {
+      String normalizedUserAgent = var1.getNormalizedDeviceUserAgent();
       String var10000;
       label24: {
-         String var2 = var3 = var1.getNormalizedDeviceUserAgent();
+         String var2 = normalizedUserAgent;
          Matcher var5;
          if ((var5 = VERSION_RV.matcher(var2)).find()) {
             String var6 = var5.group(1);
@@ -61,7 +62,7 @@ final class FirefoxOSMatcher extends MatcherBase {
 
       String var7 = var10000.replace(".", "_").replace("_0", "");
       var7 = "firefox_os_ver" + var7;
-      if (var3.contains("Tablet")) {
+      if (normalizedUserAgent.contains("Tablet")) {
          String var4 = var7 + "_tablet";
          return SUPPORTED_DEVICES.contains(var4) ? var4 : FALLBACK_TABLET;
       } else {

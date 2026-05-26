@@ -32,7 +32,8 @@ final class LGUPLUSMatcher extends MatcherBase {
    }
 
    protected final String applyRecoveryMatch(WURFLRequest var1) {
-      for(Map.Entry var3 : DEVICE_BY_TOKENS.entrySet()) {
+      for(Object entryObj : DEVICE_BY_TOKENS.entrySet()) {
+         Map.Entry var3 = (Map.Entry)entryObj;
          if (StringMatchUtils.containsAllOf(var1.getNormalizedDeviceUserAgent(), (String[])var3.getValue())) {
             return (String)var3.getKey();
          }

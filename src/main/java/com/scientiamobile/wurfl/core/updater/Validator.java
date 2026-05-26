@@ -48,6 +48,7 @@ public class Validator {
    }
 
    static void a(String var0, WURFLEngine var1, ProxySettings var2) {
+      int var6;
       try {
          var6 = UpdatePipeline.a(new URL(var0), (String)null, 10000, UserAgentUtils.createApiUserAgent(var1), var2);
       } catch (MalformedURLException var3) {

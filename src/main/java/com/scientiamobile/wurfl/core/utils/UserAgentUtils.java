@@ -452,7 +452,9 @@ public final class UserAgentUtils {
       if (var0 == null) {
          return "";
       } else {
-         for(int var1 = (var2 = new StringBuilder(var0)).length() - 1; var1 >= 0; --var1) {
+         StringBuilder var2 = new StringBuilder(var0);
+
+         for(int var1 = var2.length() - 1; var1 >= 0; --var1) {
             if (!CharUtils.isAsciiPrintable(var2.charAt(var1))) {
                var2.deleteCharAt(var1);
             }

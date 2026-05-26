@@ -33,7 +33,8 @@ class DefaultDeviceProvider implements DeviceProvider {
          Set mandatoryCapabilities = VirtualCapabilityHandler.getMandatoryCapabilities();
          StringBuilder missingCapabilities = new StringBuilder();
 
-         for(String capability : mandatoryCapabilities) {
+         for(Object capabilityObj : mandatoryCapabilities) {
+            String capability = (String)capabilityObj;
             if (!modelCapabilities.contains(capability)) {
                missingCapabilities.append(capability).append(", ");
             }
@@ -83,4 +84,3 @@ class DefaultDeviceProvider implements DeviceProvider {
       return new ModelDeviceWithAncestorId(modelDevice, ancestorId);
    }
 }
-

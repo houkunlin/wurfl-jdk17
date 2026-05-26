@@ -12,7 +12,6 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.resource.WURFLResource;
 import com.scientiamobile.wurfl.core.resource.WURFLResources;
 import com.scientiamobile.wurfl.core.resource.XmlFileLoader;
-import java.io.IOException;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.Validate;
@@ -41,14 +40,9 @@ class WURFLServiceImpl implements WURFLService {
       this.deviceProvider = deviceProvider;
       this.requestFactory = requestFactory;
       if (engineTarget == null) {
-         try {
-            if (!this.configLoaded) {
-               this.configFileLoader.parseFile();
-               this.configLoaded = true;
-            }
-         } catch (IOException e) {
-            this.log.error(e.getMessage(), e);
-            throw new WURFLRuntimeException(e);
+         if (!this.configLoaded) {
+            this.configFileLoader.parseFile();
+            this.configLoaded = true;
          }
       } else {
          this.engineTarget = engineTarget;

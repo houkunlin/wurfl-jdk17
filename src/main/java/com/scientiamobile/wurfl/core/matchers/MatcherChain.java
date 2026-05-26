@@ -73,8 +73,9 @@ class MatcherChain implements Matcher, MatcherFilter {
 
       while(var2.hasNext()) {
          MatcherFilter var3;
-         for(String var5 : (var3 = (MatcherFilter)var2.next()).getIndex().getUserAgents()) {
-            var1.put(var5, var3.getIndex().getDeviceIdByUserAgent(var5));
+         for(Object userAgentObj : (var3 = (MatcherFilter)var2.next()).getIndex().getUserAgents()) {
+            String userAgent = (String)userAgentObj;
+            var1.put(userAgent, var3.getIndex().getDeviceIdByUserAgent(userAgent));
          }
       }
 
@@ -95,4 +96,3 @@ class MatcherChain implements Matcher, MatcherFilter {
 
    }
 }
-

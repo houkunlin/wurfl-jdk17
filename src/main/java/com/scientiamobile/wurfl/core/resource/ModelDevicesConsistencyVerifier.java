@@ -106,9 +106,10 @@ final class ModelDevicesConsistencyVerifier {
          Set var2 = device.getGroups();
          Set var5 = var4.getGroups();
 
-         for(String var3 : var2) {
-            if (!var5.contains(var3)) {
-               throw new InexistentGroupException(device, var3);
+         for(Object groupObj : var2) {
+            String group = (String)groupObj;
+            if (!var5.contains(group)) {
+               throw new InexistentGroupException(device, group);
             }
          }
 
@@ -126,15 +127,16 @@ final class ModelDevicesConsistencyVerifier {
          ModelDevice var7;
          Map var2 = (var7 = devices.getById("generic")).getCapabilities();
 
-         for(String var4 : device.getCapabilities().keySet()) {
-            if (!var2.containsKey(var4)) {
-               throw new InexistentCapabilityException(device, var4);
+         for(Object capabilityNameObj : device.getCapabilities().keySet()) {
+            String capabilityName = (String)capabilityNameObj;
+            if (!var2.containsKey(capabilityName)) {
+               throw new InexistentCapabilityException(device, capabilityName);
             }
 
-            String var5 = device.getGroupForCapability(var4);
-            String var6 = var7.getGroupForCapability(var4);
+            String var5 = device.getGroupForCapability(capabilityName);
+            String var6 = var7.getGroupForCapability(capabilityName);
             if (!var5.equals(var6)) {
-               throw new BadCapabilityGroupException(device, var4, var5, var6);
+               throw new BadCapabilityGroupException(device, capabilityName, var5, var6);
             }
          }
 
@@ -173,4 +175,3 @@ final class ModelDevicesConsistencyVerifier {
       LoggerFactory.getLogger(ModelDevicesConsistencyVerifier.class);
    }
 }
-

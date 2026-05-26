@@ -23,7 +23,9 @@ public final class WURFLResources {
    public WURFLResources(Collection var1) {
       Validate.notNull(var1, "The resources is null");
       Validate.noNullElements(var1, "The resources contains null value");
-      Validate.allElementsOfType(var1, WURFLResource.class, "The resources contains value not instaceof WURFLResource");
+      for(Object value : var1) {
+         Validate.isTrue(value instanceof WURFLResource, "The resources contains value not instaceof WURFLResource");
+      }
       this.a.addAll(var1);
    }
 
@@ -79,14 +81,14 @@ public final class WURFLResources {
    }
 
    public final boolean equals(Object var1) {
-      EqualsBuilder var2;
-      (var2 = new EqualsBuilder()).appendSuper(this.getClass().isInstance(var1));
-      if (var2.isEquals()) {
-         var1 = var1;
-         var2.append(this.a, var1.a);
+      if (this == var1) {
+         return true;
+      } else if (!(var1 instanceof WURFLResources)) {
+         return false;
+      } else {
+         WURFLResources other = (WURFLResources)var1;
+         return (new EqualsBuilder()).append(this.a, other.a).isEquals();
       }
-
-      return var2.isEquals();
    }
 
    public final int hashCode() {

@@ -1,6 +1,7 @@
 package com.scientiamobile.wurfl.core;
 
 import com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -50,7 +51,7 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
       }
    }
 
-   private void writeObject(ObjectOutputStream oos) {
+   private void writeObject(ObjectOutputStream oos) throws IOException {
       if (this.capabilitiesCache == null) {
          this.capabilitiesCache = this.capabilitiesProvider.getAllCapabilities();
       }
@@ -58,4 +59,3 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
       oos.defaultWriteObject();
    }
 }
-

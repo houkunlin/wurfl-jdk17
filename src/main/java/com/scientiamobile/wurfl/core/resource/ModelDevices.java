@@ -15,7 +15,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class ModelDevices implements Serializable {
+public class ModelDevices implements Serializable, Iterable {
    private static final long serialVersionUID = 10L;
    private Map a;
    private LinkedList b;
@@ -46,8 +46,9 @@ public class ModelDevices implements Serializable {
       Validate.notNull(var1);
       Validate.noNullElements(var1);
 
-      for(ModelDevice var2 : var1) {
-         this.a.put(var2.getID(), var2);
+      for(Object deviceObj : var1) {
+         ModelDevice device = (ModelDevice)deviceObj;
+         this.a.put(device.getID(), device);
       }
 
    }
@@ -100,8 +101,9 @@ public class ModelDevices implements Serializable {
       Validate.notNull(var1);
       Validate.noNullElements(var1);
 
-      for(ModelDevice var2 : var1) {
-         this.a.put(var2.getID(), var2);
+      for(Object deviceObj : var1) {
+         ModelDevice device = (ModelDevice)deviceObj;
+         this.a.put(device.getID(), device);
       }
 
    }
@@ -115,15 +117,17 @@ public class ModelDevices implements Serializable {
    }
 
    public void removeAll(Collection var1) {
-      for(ModelDevice var2 : var1) {
-         this.a.remove(var2.getID());
+      for(Object deviceObj : var1) {
+         ModelDevice device = (ModelDevice)deviceObj;
+         this.a.remove(device.getID());
       }
 
    }
 
    public void removeAll(ModelDevices var1) {
-      for(ModelDevice var2 : var1) {
-         this.a.remove(var2.getID());
+      for(Object deviceObj : var1) {
+         ModelDevice device = (ModelDevice)deviceObj;
+         this.a.remove(device.getID());
       }
 
    }
@@ -139,13 +143,13 @@ public class ModelDevices implements Serializable {
    }
 
    public boolean equals(Object var1) {
-      EqualsBuilder var2;
-      (var2 = new EqualsBuilder()).appendSuper(this.getClass().isInstance(var1));
-      if (var2.isEquals()) {
-         var1 = var1;
-         var2.append(this.a, var1.a);
+      if (this == var1) {
+         return true;
+      } else if (!(var1 instanceof ModelDevices)) {
+         return false;
+      } else {
+         ModelDevices other = (ModelDevices)var1;
+         return (new EqualsBuilder()).append(this.a, other.a).isEquals();
       }
-
-      return var2.isEquals();
    }
 }

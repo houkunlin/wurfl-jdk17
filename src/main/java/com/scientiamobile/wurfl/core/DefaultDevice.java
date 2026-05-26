@@ -149,6 +149,6 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
    }
 
    static {
-      LoggerFactory.getLogger(h.class);
+      LoggerFactory.getLogger(DefaultDevice.class);
    }
 }

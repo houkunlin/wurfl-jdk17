@@ -4,6 +4,7 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.strategy.RISMatcher;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -173,8 +174,8 @@ public final class StringMatchUtils {
    public static String format(Set var0) {
       StringBuilder var1 = new StringBuilder(10);
 
-      for(String var2 : var0) {
-         var1.append(var2).append('\n');
+      for(Object lineObj : var0) {
+         var1.append((String)lineObj).append('\n');
       }
 
       return var1.toString();
@@ -226,7 +227,7 @@ public final class StringMatchUtils {
 
          }
 
-         return new String(var3.toByteArray(), var1);
+         return new String(var3.toByteArray(), Charset.forName(var1));
       }
    }
 

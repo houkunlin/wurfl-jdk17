@@ -48,7 +48,8 @@ final class KindleMatcher extends MatcherBase {
    protected final String applyRecoveryMatch(WURFLRequest var1) {
       String var4 = var1.getNormalizedDeviceUserAgent();
 
-      for(Map.Entry var3 : DEVICE_BY_TOKEN.entrySet()) {
+      for(Object entryObj : DEVICE_BY_TOKEN.entrySet()) {
+         Map.Entry var3 = (Map.Entry)entryObj;
          if (var4.contains((CharSequence)var3.getKey())) {
             return (String)var3.getValue();
          }

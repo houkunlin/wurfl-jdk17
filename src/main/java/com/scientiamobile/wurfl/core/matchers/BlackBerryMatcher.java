@@ -63,7 +63,8 @@ final class BlackBerryMatcher extends AbstractMatcher {
          return RIM_PLAYBOOK_VER1;
       } else {
          if (var2 != null) {
-            for(Map.Entry var3 : OS_VERSION_TO_DEVICE_ID.entrySet()) {
+            for(Object entryObj : OS_VERSION_TO_DEVICE_ID.entrySet()) {
+               Map.Entry var3 = (Map.Entry)entryObj;
                if (var2.contains((CharSequence)var3.getKey())) {
                   return (String)var3.getValue();
                }

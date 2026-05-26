@@ -35,10 +35,21 @@ public class ModelDevice implements Serializable {
       Validate.notNull(var6, "The groupsByCapability must be not null");
       Validate.noNullElements(var5.values(), "The capabilities can not contain null value");
       Validate.noNullElements(var6.values(), "The capabilities can not contain null value");
-      Validate.allElementsOfType(var5.values(), String.class, "The capabilities must be a <String,String> map");
-      Validate.allElementsOfType(var5.keySet(), String.class, "The capabilities must be a <String,String> map");
-      Validate.allElementsOfType(var6.values(), String.class, "The capabilities must be a <String,String> map");
-      Validate.allElementsOfType(var6.keySet(), String.class, "The capabilities must be a <String,String> map");
+      for(Object value : var5.values()) {
+         Validate.isTrue(value instanceof String, "The capabilities must be a <String,String> map");
+      }
+
+      for(Object key : var5.keySet()) {
+         Validate.isTrue(key instanceof String, "The capabilities must be a <String,String> map");
+      }
+
+      for(Object value : var6.values()) {
+         Validate.isTrue(value instanceof String, "The capabilities must be a <String,String> map");
+      }
+
+      for(Object key : var6.keySet()) {
+         Validate.isTrue(key instanceof String, "The capabilities must be a <String,String> map");
+      }
       Validate.isTrue(var5.keySet().equals(var6.keySet()), "The capabilities and groups must be same Set");
       this.a = var1;
       this.b = var2;
@@ -121,8 +132,8 @@ public class ModelDevice implements Serializable {
    public Map getCapabilitiesForGroup(String var1) {
       HashMap var2 = new HashMap();
 
-      for(String var3 : this.getCapabilitiesNamesForGroup(var1)) {
-         var2.put(var3, this.e.get(var3));
+      for(Object capabilityName : this.getCapabilitiesNamesForGroup(var1)) {
+         var2.put(capabilityName, this.e.get(capabilityName));
       }
 
       return var2;
@@ -143,15 +154,14 @@ public class ModelDevice implements Serializable {
    }
 
    public boolean equals(Object var1) {
-      EqualsBuilder var2 = new EqualsBuilder();
-      if (var1 instanceof ModelDevice) {
-         var1 = var1;
-         var2.append(this.b, var1.b);
+      if (this == var1) {
+         return true;
+      } else if (!(var1 instanceof ModelDevice)) {
+         return false;
       } else {
-         var2.append(true, false);
+         ModelDevice other = (ModelDevice)var1;
+         return (new EqualsBuilder()).append(this.b, other.b).isEquals();
       }
-
-      return var2.isEquals();
    }
 
    public String toString() {

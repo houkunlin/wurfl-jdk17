@@ -21,7 +21,10 @@ public class XmlFileLoader {
       } catch (Exception var5) {
          throw new RuntimeException(var5);
       } finally {
-         var1.close();
+         try {
+            var1.close();
+         } catch (Exception var4) {
+         }
       }
 
       return true;
