@@ -8,6 +8,7 @@ public final class MarkUp {
    private int value;
    private String name;
 
+   @Override
    public final String toString() {
       return this.name;
    }

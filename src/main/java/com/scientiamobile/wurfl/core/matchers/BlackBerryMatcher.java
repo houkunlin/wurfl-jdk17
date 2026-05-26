@@ -21,6 +21,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).addAll(OS_VERSION_TO_DEVICE_ID.values());
@@ -29,6 +30,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       boolean isBlackBerryUserAgent = cleanedDeviceUserAgent != null && (
@@ -38,6 +40,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
       return !request._internalIsDesktopBrowser() && isBlackBerryUserAgent;
    }
 
+   @Override
    protected final String risMatch(String normalizedUserAgent) {
       int matchLength;
       if (normalizedUserAgent.contains("BB10")) {
@@ -57,6 +60,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
          : StringMatchUtils.NULL_STRING;
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
       Matcher osVersionMatcher = BLACKBERRY_OS_VERSION.matcher(normalizedDeviceUserAgent);
@@ -78,10 +82,12 @@ final class BlackBerryMatcher extends AbstractMatcher {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "BlackBerryMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "BlackBerry";
    }

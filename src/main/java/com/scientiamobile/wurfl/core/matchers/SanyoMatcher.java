@@ -10,12 +10,14 @@ final class SanyoMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser()
          && (cleanedDeviceUserAgent.toLowerCase(Locale.US).startsWith("sanyo") || cleanedDeviceUserAgent.contains("MobilePhone"));
    }
 
+   @Override
    protected final String risMatch(String normalizedUserAgent) {
       if (normalizedUserAgent.contains("MobilePhone")) {
          int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "/", StringMatchUtils.indexOf(normalizedUserAgent, "MobilePhone"));
@@ -25,10 +27,12 @@ final class SanyoMatcher extends MatcherBase {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "SanyoMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Sanyo";
    }

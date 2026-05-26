@@ -60,22 +60,26 @@ public class HashMapCacheProvider implements CacheProvider {
       return this.concurrentWrites;
    }
 
+   @Override
    public void clear() {
       this.logger.info("Cache size: " + this.cache.size());
       this.cache.clear();
       this.logger.info("Cache erased");
    }
 
+   @Override
    public InternalDevice getDevice(String key) {
       Validate.notNull(key, "The key is null");
       return this.cache.get(key);
    }
 
+   @Override
    public void putDevice(String key, InternalDevice device) {
       Validate.notNull(key, "The key is null");
       this.cache.put(key, device);
    }
 
+   @Override
    public String toString() {
       return (new ToStringBuilder(this))
          .append("initialCapacity", this.initialCapacity)

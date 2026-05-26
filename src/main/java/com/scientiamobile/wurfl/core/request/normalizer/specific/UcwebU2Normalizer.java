@@ -13,6 +13,7 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
    private static final Pattern SEMICOLON_WITHOUT_SPACE_PATTERN = Pattern.compile(";(?! )");
    private static final Pattern NOKIA_RM_MODEL_PATTERN = Pattern.compile("(NOKIA.RM-.+?)_.*");
 
+   @Override
    public String normalize(String userAgent) {
       String ucBrowserVersion;
       if ((ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, true)) == null) {

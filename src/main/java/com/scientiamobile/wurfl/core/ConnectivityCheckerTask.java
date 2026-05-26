@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 final class ConnectivityCheckerTask implements Runnable {
+   private static final Logger log = LoggerFactory.getLogger(ConnectivityCheckerTask.class);
    private CheckConnection checkConnection;
 
    ConnectivityCheckerTask(CheckConnection checkConnection) {
       this.checkConnection = checkConnection;
    }
 
+   @Override
    public final void run() {
       try {
          HttpsURLConnection connection;
@@ -62,6 +66,7 @@ final class ConnectivityCheckerTask implements Runnable {
          connection.disconnect();
          output.close();
       } catch (Exception e) {
+         log.error("Connectivity check failed", e);
       }
    }
 }

@@ -16,6 +16,7 @@ final class LGUPLUSMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).addAll(DEVICE_BY_TOKENS.keySet());
@@ -23,14 +24,17 @@ final class LGUPLUSMatcher extends MatcherBase {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "lgtelecom", "LGUPLUS");
    }
 
+   @Override
    protected final String applyConclusiveMatch(WURFLRequest request) {
       return null;
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
       for(Map.Entry<String, String[]> entry : DEVICE_BY_TOKENS.entrySet()) {
@@ -42,10 +46,12 @@ final class LGUPLUSMatcher extends MatcherBase {
       return GENERIC_LGUPLUS;
    }
 
+   @Override
    public final String getMatcherName() {
       return "LGUPLUSMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "LGUPLUS";
    }

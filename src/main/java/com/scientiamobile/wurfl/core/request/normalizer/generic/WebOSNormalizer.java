@@ -9,6 +9,7 @@ public class WebOSNormalizer implements UserAgentNormalizer {
    private static final Pattern TRAILING_APP_NAME_AND_VERSION_PATTERN = Pattern.compile(" ([^/]+)/([\\d\\.]+)$", Pattern.COMMENTS);
    private static final Pattern WEBOS_MAJOR_VERSION_PATTERN = Pattern.compile("(?:hpw|web)OS.(\\d)\\.", Pattern.COMMENTS);
 
+   @Override
    public String normalize(String userAgent) {
       Matcher matcher;
       String webOsToken = (matcher = WEBOS_MAJOR_VERSION_PATTERN.matcher(userAgent)).find() ? "webOS".concat(matcher.group(1)) : null;

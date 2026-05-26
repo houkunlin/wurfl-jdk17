@@ -19,6 +19,7 @@ final class AndroidMatcher extends AbstractMatcher {
       super(normalizer, wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).addAll(SUPPORTED_MOBILE_DEVICE_IDS);
@@ -27,12 +28,14 @@ final class AndroidMatcher extends AbstractMatcher {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "like Android", "Symbian")
          && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Android", "android");
    }
 
+   @Override
    protected final String risMatch(String normalizedUserAgent) {
       int matchLength;
       if ((matchLength = normalizedUserAgent.indexOf("---")) >= 0) {
@@ -55,6 +58,7 @@ final class AndroidMatcher extends AbstractMatcher {
       }
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
       String androidVersion = UserAgentUtils.getAndroidVersion(normalizedDeviceUserAgent, true).replaceAll("\\.", "_");
@@ -71,10 +75,12 @@ final class AndroidMatcher extends AbstractMatcher {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "AndroidMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Android";
    }

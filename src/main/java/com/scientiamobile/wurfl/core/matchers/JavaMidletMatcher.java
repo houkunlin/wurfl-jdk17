@@ -12,24 +12,29 @@ final class JavaMidletMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(GENERIC_MIDP_MIDLET);
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("UNTRUSTED/1.0");
    }
 
+   @Override
    protected final String applyConclusiveMatch(WURFLRequest request) {
       return GENERIC_MIDP_MIDLET;
    }
 
+   @Override
    public final String getMatcherName() {
       return "JavaMidletMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "JavaMidlet";
    }

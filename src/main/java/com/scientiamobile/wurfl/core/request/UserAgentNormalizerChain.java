@@ -38,6 +38,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
       return new UserAgentNormalizerChain(newNormalizers);
    }
 
+   @Override
    public String normalize(String rawUserAgent) {
       UserAgentWithNeedleCount needleCount = UserAgentUtils.getAsciiPrintableStringWithNeedleCount(new StringBuilder(rawUserAgent));
       String userAgent = needleCount.getAsciiPrintableUserAgent();

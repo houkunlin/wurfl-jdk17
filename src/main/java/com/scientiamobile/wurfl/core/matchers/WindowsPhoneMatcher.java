@@ -22,6 +22,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
       super(userAgentNormalizer, wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.addAll(VERSION_TO_DEVICE_ID.values());
@@ -33,11 +34,13 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "WPDesktop", "ZuneWP7") || StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/") || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Windows Phone", "WindowsPhone", "NativeHost"));
    }
 
+   @Override
    protected final String applyConclusiveMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       boolean containsSeparator = normalizedUserAgent.contains("---");
@@ -48,11 +51,13 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
       }
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       int index;
       return (index = userAgent.indexOf("---")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, index + 3) : null;
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       boolean isDesktopMode = StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "WPDesktop", "ZuneWP7");
@@ -78,10 +83,12 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "WindowsPhoneMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "WindowsPhone";
    }

@@ -141,26 +141,32 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return userAgent != null && userAgent.length() > 255 ? userAgent.substring(0, 255) : userAgent;
    }
 
+   @Override
    public String getDeviceUserAgent() {
       return this.deviceUserAgent;
    }
 
+   @Override
    public String getCleanedDeviceUserAgent() {
       return this.cleanedDeviceUserAgent;
    }
 
+   @Override
    public String getNormalizedDeviceUserAgent() {
       return this.normalizedDeviceUserAgent;
    }
 
+   @Override
    public String getBrowserUserAgent() {
       return this.browserUserAgent;
    }
 
+   @Override
    public final String getOriginalUserAgent() {
       return this.userAgentPriority == UserAgentPriority.OverrideSideloadedBrowserUserAgent ? this.getDeviceUserAgent() : this.getBrowserUserAgent();
    }
 
+   @Override
    public void normalizeUserAgent(UserAgentNormalizer normalizer) {
       if (normalizer == null) {
          this.normalizedDeviceUserAgent = this.cleanedDeviceUserAgent;
@@ -169,14 +175,17 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       }
    }
 
+   @Override
    public boolean isUrlEncoded() {
       return this.urlEncoded;
    }
 
+   @Override
    public void setUrlEncoded(boolean urlEncoded) {
       this.urlEncoded = urlEncoded;
    }
 
+   @Override
    public void performGenericNormalization() {
       if (this.genericNormalizer != null) {
          this.cleanedDeviceUserAgent = this.genericNormalizer.normalize(this.getOriginalUserAgent());
@@ -184,22 +193,27 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
    }
 
+   @Override
    public String getUserAgentProfile() {
       return this.userAgentProfile;
    }
 
+   @Override
    public String getHeader(String headerName) {
       return this.headers.get(headerName);
    }
 
+   @Override
    public Map<String, String> getHeaders() {
       return Collections.unmodifiableMap(this.headers);
    }
 
+   @Override
    public EngineTarget getEngineTarget() {
       return this.engineTarget;
    }
 
+   @Override
    public boolean _internalIsMobileBrowser() {
       if (this.cachedIsMobileBrowser == null) {
          if (this._internalIsDesktopBrowser()) {
@@ -230,6 +244,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return this.cachedScreenSizeDetected;
    }
 
+   @Override
    public boolean _internalIsDesktopBrowser() {
       if (this.cachedIsDesktopBrowser == null) {
          this.cachedIsDesktopBrowser = UserAgentUtils.isDesktopBrowser(this.cleanedDeviceUserAgent);
@@ -238,6 +253,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return this.cachedIsDesktopBrowser;
    }
 
+   @Override
    public boolean _internalIsSmartTvBrowser() {
       if (this.cachedIsSmartTvBrowser == null) {
          this.cachedIsSmartTvBrowser = UserAgentUtils.isSmartTvBrowser(this.cleanedDeviceUserAgent);
@@ -246,6 +262,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return this.cachedIsSmartTvBrowser;
    }
 
+   @Override
    public boolean _internalIsBot() {
       if (this.cachedIsBot == null) {
          this.cachedIsBot = UserAgentUtils.isBot(this.getOriginalUserAgent());
@@ -254,6 +271,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return this.cachedIsBot;
    }
 
+   @Override
    public boolean _internalIsDesktopBrowserHeavyDutyAnalysis() {
       if (this.cachedIsDesktopBrowserHeavyDutyAnalysis == null) {
          if (this._internalIsSmartTvBrowser()) {
@@ -284,6 +302,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return this.cachedIsDesktopBrowserHeavyDutyAnalysis;
    }
 
+   @Override
    public boolean _internalIsEmailClient() {
       if (this.cachedIsEmailClient == null) {
          this.cachedIsEmailClient = StringMatchUtils.containsAnyOf(this.cleanedDeviceUserAgent, EmailClientUserAgentMatcher.EMAIL_CLIENTS.toArray(new String[0]));
@@ -292,12 +311,14 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return this.cachedIsEmailClient;
    }
 
+   @Override
    public int hashCode() {
       HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(35, 79);
       hashCodeBuilder.append(this.getClass()).append(this.deviceUserAgent).append(this.userAgentProfile).toHashCode();
       return hashCodeBuilder.toHashCode();
    }
 
+   @Override
    public boolean equals(Object obj) {
       if (this == obj) {
          return true;
@@ -309,6 +330,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       }
    }
 
+   @Override
    public String toString() {
       StringBuilder builder = new StringBuilder();
       builder.append("[userAgent: ").append(this.getOriginalUserAgent()).append(", userAgentProfile: ").append(this.userAgentProfile).append("]");

@@ -132,12 +132,14 @@ public class ModelDevice implements Serializable {
       this.ancestor = ancestor;
    }
 
+   @Override
    public int hashCode() {
       HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(11, 45);
       hashCodeBuilder.append(this.getClass()).append(this.id);
       return hashCodeBuilder.toHashCode();
    }
 
+   @Override
    public boolean equals(Object obj) {
       if (this == obj) {
          return true;
@@ -149,6 +151,7 @@ public class ModelDevice implements Serializable {
       }
    }
 
+   @Override
    public String toString() {
       ToStringBuilder toStringBuilder = new ToStringBuilder(this);
       toStringBuilder.append(this.id);

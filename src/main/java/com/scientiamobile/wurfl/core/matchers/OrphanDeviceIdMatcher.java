@@ -10,10 +10,12 @@ public class OrphanDeviceIdMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    public boolean canHandle(WURFLRequest request) {
       return false;
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add("opwv_v6_generic");

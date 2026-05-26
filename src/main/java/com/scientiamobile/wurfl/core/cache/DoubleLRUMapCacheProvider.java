@@ -23,6 +23,7 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
       this(10000, 2000);
    }
 
+   @Override
    public void clear() {
       logger.info("UA cache: size " + this.deviceIdByUserAgent.size());
       this.deviceIdByUserAgent.clear();
@@ -32,12 +33,14 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
       logger.info("device cache cleared: size " + this.deviceById.size());
    }
 
+   @Override
    public InternalDevice getDevice(String userAgent) {
       String deviceId;
       InternalDevice device;
       return (deviceId = this.deviceIdByUserAgent.get(userAgent)) != null && (device = this.deviceById.get(deviceId)) != null ? device : null;
    }
 
+   @Override
    public void putDevice(String userAgent, InternalDevice device) {
       try {
          this.deviceById.put(device.getId(), device);

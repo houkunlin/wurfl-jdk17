@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class IsWMLPreferred implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 4429460118740181952L;
 
+   @Override
    public String eval(Device device, WURFLRequest request) {
       try {
          return Boolean.toString(device.getCapabilityAsInt("xhtml_support_level") <= 0);
@@ -15,6 +16,7 @@ public class IsWMLPreferred implements VirtualCapabilityEvaluator, Serializable 
       }
    }
 
+   @Override
    public String getHandledVirtualCapabilityName() {
       return "is_wml_preferred";
    }

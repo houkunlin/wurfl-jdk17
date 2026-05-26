@@ -17,6 +17,7 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
    private static final Pattern IOS_CFNETWORK_APP_PATTERN = Pattern.compile("^([^/]+)/[\\d\\.-_]+ i(?:Phone|Pad|Pod)\\d+?,\\d+? iOS/[\\d_]+ CFNetwork/[\\d\\.]+");
    private static final Pattern WINDOWS_PHONE_APP_PATTERN = Pattern.compile("^([^/]+)/[0-9\\.-_]+ Windows Phone/[\\d\\.]+");
 
+   @Override
    public String eval(Device device, WURFLRequest request) {
       String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
 
@@ -43,6 +44,7 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
       }
    }
 
+   @Override
    public String getHandledVirtualCapabilityName() {
       return "advertised_app_name";
    }

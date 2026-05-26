@@ -16,12 +16,14 @@ final class SamsungMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add("generic");
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       if (request.getOriginalUserAgent().contains("SamsungBrowser")) {
@@ -31,11 +33,13 @@ final class SamsungMatcher extends MatcherBase {
       }
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       int matchLength = StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SLASH_PREFIXES) ? StringMatchUtils.firstSlash(userAgent) : (StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SPACE_PREFIXES) ? StringMatchUtils.firstSpace(userAgent) : StringMatchUtils.secondSlash(userAgent));
       return matchLength == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       int samsungIndex = StringMatchUtils.indexOf(normalizedUserAgent, "Samsung");
@@ -44,10 +48,12 @@ final class SamsungMatcher extends MatcherBase {
       return !StringUtils.isBlank(matchedUserAgent) ? this.getFilter().getIndex().getDeviceIdByUserAgent(matchedUserAgent) : "generic";
    }
 
+   @Override
    public final String getMatcherName() {
       return "SamsungMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Samsung";
    }

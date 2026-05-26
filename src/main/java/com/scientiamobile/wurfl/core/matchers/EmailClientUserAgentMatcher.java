@@ -26,19 +26,23 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
       super(userAgentNormalizer, wurflModel);
    }
 
+   @Override
    public boolean canHandle(WURFLRequest request) {
       String deviceUserAgent = request.getDeviceUserAgent();
       return request._internalIsEmailClient() && !StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office") || deviceUserAgent.contains("Spark/") && deviceUserAgent.contains("CFNetwork/");
    }
 
+   @Override
    public String getMatcherName() {
       return "EmailClientMatcher";
    }
 
+   @Override
    public String getBucketMatcherName() {
       return "EmailClient";
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       if (userAgent.contains("Thunderbird")) {
          userAgent = userAgent.substring(userAgent.indexOf("Thunderbird"));
@@ -56,10 +60,12 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
       return dotIndex != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, dotIndex) : "generic";
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       return new HashSet<>(REQUIRED_DEVICE_IDS);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String deviceUserAgent = request.getDeviceUserAgent();
       if (deviceUserAgent.contains("Thunderbird")) {

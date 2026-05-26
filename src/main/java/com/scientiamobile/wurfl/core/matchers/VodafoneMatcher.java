@@ -8,14 +8,17 @@ final class VodafoneMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("Vodafone");
    }
 
+   @Override
    public final String getMatcherName() {
       return "VodafoneMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Vodafone";
    }

@@ -9,6 +9,7 @@ class MarkupResolverImpl implements MarkupResolver, Serializable {
    private static final long serialVersionUID = 1L;
    private final transient Logger log = LoggerFactory.getLogger(MarkupResolverImpl.class);
 
+   @Override
    public MarkUp getMarkupForDevice(InternalDevice device) {
       String xhtmlSupportLevel;
       String preferredMarkup;

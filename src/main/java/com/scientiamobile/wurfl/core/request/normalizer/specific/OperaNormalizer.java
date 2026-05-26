@@ -8,6 +8,7 @@ public class OperaNormalizer implements UserAgentNormalizer {
    private static final Pattern OPERA_VERSION_PATTERN = Pattern.compile("Version/(\\d+\\.\\d+)");
    private static final Pattern OPERA_CHROMIUM_VERSION_PATTERN = Pattern.compile("OPR/(\\d+\\.\\d+)");
 
+   @Override
    public String normalize(String userAgent) {
       Matcher versionMatcher;
       if (userAgent.startsWith("Opera/9.80") && (versionMatcher = OPERA_VERSION_PATTERN.matcher(userAgent)).find()) {

@@ -4,6 +4,7 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import org.apache.commons.lang3.StringUtils;
 
 public class FirefoxNormalizer implements UserAgentNormalizer {
+   @Override
    public String normalize(String userAgent) {
       String normalizedUserAgent = userAgent;
       int firefoxIndex;

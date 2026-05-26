@@ -9,14 +9,17 @@ final class NecMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "NEC-", "KGT");
    }
 
+   @Override
    public final String getMatcherName() {
       return "NecMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Nec";
    }

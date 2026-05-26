@@ -10,10 +10,12 @@ public class HttpServletRequestHeaderProvider implements WURFLHeaderProvider {
       this.request = request;
    }
 
+   @Override
    public String getHeader(String headerName) {
       return this.request.getHeader(headerName);
    }
 
+   @Override
    public Enumeration<String> getHeaderNames() {
       return this.request.getHeaderNames();
    }

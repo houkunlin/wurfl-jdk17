@@ -19,20 +19,24 @@ final class SmartTvMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add("generic_smarttv_browser");
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return request._internalIsSmartTvBrowser();
    }
 
+   @Override
    protected final String applyConclusiveMatch(WURFLRequest request) {
       return null;
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       if (normalizedUserAgent.contains("Tizen 3.0")) {
@@ -56,10 +60,12 @@ final class SmartTvMatcher extends MatcherBase {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "SmartTvMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "SmartTV";
    }

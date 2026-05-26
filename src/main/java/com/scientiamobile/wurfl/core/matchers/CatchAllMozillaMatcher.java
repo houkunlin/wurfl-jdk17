@@ -11,16 +11,19 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add("generic");
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "Mozilla/3", "Mozilla/4", "Mozilla/5");
    }
 
+   @Override
    protected final String applyConclusiveMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       int matchLength = StringMatchUtils.firstCloseParenthesis(normalizedUserAgent);
@@ -39,10 +42,12 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
       return deviceId;
    }
 
+   @Override
    public final String getMatcherName() {
       return "CatchAllMozillaMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "CatchAllMozilla";
    }

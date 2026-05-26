@@ -3,6 +3,7 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 public class SafariNormalizer implements UserAgentNormalizer {
+   @Override
    public String normalize(String userAgent) {
       int versionTokenStart;
       if ((versionTokenStart = userAgent.indexOf("Version/")) != -1) {

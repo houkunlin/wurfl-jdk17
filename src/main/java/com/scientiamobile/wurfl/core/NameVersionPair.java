@@ -123,6 +123,7 @@ final class NameVersionPair implements Serializable {
       return this.lastRegexGroups == null ? null : this.lastRegexGroups[groupIndex];
    }
 
+   @Override
    public final String toString() {
       return "[name: " + this.name + " - version: " + this.version + "]";
    }

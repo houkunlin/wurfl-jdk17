@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class CompleteDeviceName implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = -65030764132400949L;
 
+   @Override
    public String eval(Device device, WURFLRequest request) {
       StringBuilder builder = new StringBuilder(device.getCapability("brand_name"));
       String namePart;
@@ -21,6 +22,7 @@ public class CompleteDeviceName implements VirtualCapabilityEvaluator, Serializa
       return builder.toString();
    }
 
+   @Override
    public String getHandledVirtualCapabilityName() {
       return "complete_device_name";
    }

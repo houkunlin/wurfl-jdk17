@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class IsLargescreen implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = -7518577459129144687L;
 
+   @Override
    public String eval(Device device, WURFLRequest request) {
       try {
          return Boolean.toString(device.getCapabilityAsInt("resolution_width") >= 480 && device.getCapabilityAsInt("resolution_height") >= 480);
@@ -15,6 +16,7 @@ public class IsLargescreen implements VirtualCapabilityEvaluator, Serializable {
       }
    }
 
+   @Override
    public String getHandledVirtualCapabilityName() {
       return "is_largescreen";
    }

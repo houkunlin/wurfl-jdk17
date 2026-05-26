@@ -28,6 +28,7 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
       this.capabilitiesCache = new HashMap<>(50);
    }
 
+   @Override
    public final String getCapability(String capabilityName) {
       String capabilityValue;
       if ((capabilityValue = this.capabilitiesProvider.getCapability(this.capabilitiesCache, capabilityName)) == null) {
@@ -37,6 +38,7 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
       }
    }
 
+   @Override
    public final Map<String, String> getCapabilities() {
       if (this.capabilitiesCache == null || this.capabilitiesCache.size() < this.minCacheSize) {
          if (this.capabilitiesProvider == null) {

@@ -41,6 +41,7 @@ final class FilteredDeviceIndex {
       this.userAgents.add(userAgent);
    }
 
+   @Override
    public final String toString() {
       return this.ownerFilter.getMatcherName() + this.userAgentToDeviceId.values();
    }

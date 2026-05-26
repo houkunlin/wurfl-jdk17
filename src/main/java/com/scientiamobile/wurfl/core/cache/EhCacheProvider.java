@@ -26,12 +26,14 @@ public class EhCacheProvider implements CacheProvider {
       this.cache = cache;
    }
 
+   @Override
    public void clear() {
       logger.info("Cache size: " + this.cache.getSize());
       this.cache.removeAll();
       logger.info("Cache erased. size: " + this.cache.getSize());
    }
 
+   @Override
    public InternalDevice getDevice(String key) {
       Element element = this.cache.get(key);
       InternalDevice device = null;
@@ -42,6 +44,7 @@ public class EhCacheProvider implements CacheProvider {
       return device;
    }
 
+   @Override
    public void putDevice(String key, InternalDevice device) {
       Element element = new Element(key, device);
       this.cache.put(element);

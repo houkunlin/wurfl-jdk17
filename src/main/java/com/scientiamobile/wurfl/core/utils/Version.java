@@ -52,6 +52,7 @@ public class Version implements Comparable<Version> {
       return this.digits[index];
    }
 
+   @Override
    public String toString() {
       StringBuilder builder;
       (builder = new StringBuilder()).append(this.digits[0]);
@@ -83,6 +84,7 @@ public class Version implements Comparable<Version> {
       }
    }
 
+   @Override
    public boolean equals(Object object) {
       if (object != null && object instanceof Version) {
          return this.compareTo((Version)object) == 0;
@@ -91,6 +93,7 @@ public class Version implements Comparable<Version> {
       }
    }
 
+   @Override
    public int hashCode() {
       return Arrays.hashCode(this.digits);
    }

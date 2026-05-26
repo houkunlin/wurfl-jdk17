@@ -33,14 +33,17 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
       this.capabilitiesHolder = capabilitiesHolder;
    }
 
+   @Override
    public String getId() {
       return this.id;
    }
 
+   @Override
    public String getWURFLUserAgent() {
       return this.wurflUserAgent;
    }
 
+   @Override
    public String getCapability(String capabilityName) {
       return this.capabilitiesHolder.getCapability(capabilityName);
    }
@@ -49,10 +52,12 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
       return this.ancestorModelDevice;
    }
 
+   @Override
    public int getCapabilityAsInt(String capabilityName) {
       return this.capabilitiesHolder.getCapabilityAsInt(capabilityName);
    }
 
+   @Override
    public boolean getCapabilityAsBool(String capabilityName) {
       String originalCapabilityName = capabilityName;
       if ((capabilityName = this.capabilitiesHolder.getCapability(capabilityName)) != null && capabilityName.toLowerCase(Locale.ENGLISH).equals("true")) {
@@ -65,6 +70,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
    }
 
 
+   @Override
    public Map<String, String> getCapabilities() {
       Map<String, String> allCapabilities = this.capabilitiesHolder.getCapabilities();
       HashMap<String, String> filteredCapabilities = new HashMap<>(allCapabilities.size());
@@ -80,10 +86,12 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
       return filteredCapabilities;
    }
 
+   @Override
    public boolean isActualDeviceRoot() {
       return this.actualDeviceRoot;
    }
 
+   @Override
    public String getDeviceRootId() {
       String rootId = this.deviceRootId;
       if (this.deviceRootId.equals("generic")) {
@@ -93,6 +101,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
       return rootId;
    }
 
+   @Override
    public boolean equals(Object other) {
       EqualsBuilder eb;
       (eb = new EqualsBuilder()).appendSuper(this.getClass().isInstance(other));
@@ -103,10 +112,12 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
       return eb.isEquals();
    }
 
+   @Override
    public int hashCode() {
       return (new HashCodeBuilder(63, 89)).append(this.getClass()).append(this.id).toHashCode();
    }
 
+   @Override
    public String toString() {
       return "[" + this.id + ", match=, matcher=]";
    }

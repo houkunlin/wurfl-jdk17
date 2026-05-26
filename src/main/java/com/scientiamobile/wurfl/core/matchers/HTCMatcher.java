@@ -15,6 +15,7 @@ final class HTCMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add("generic");
@@ -22,10 +23,12 @@ final class HTCMatcher extends MatcherBase {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "HTC", "XV6875");
    }
 
+   @Override
    protected final String risMatch(String normalizedUserAgent) {
       int matchLength = normalizedUserAgent.length();
       Matcher prefixMatcher;
@@ -36,14 +39,17 @@ final class HTCMatcher extends MatcherBase {
       return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       return request.getNormalizedDeviceUserAgent().contains("Windows CE;") ? "generic_ms_mobile" : "generic";
    }
 
+   @Override
    public final String getMatcherName() {
       return "HTCMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "HTC";
    }

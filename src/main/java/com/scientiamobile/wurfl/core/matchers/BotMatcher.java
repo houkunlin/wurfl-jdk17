@@ -13,6 +13,7 @@ final class BotMatcher extends AbstractMatcher {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(GOOGLE_IMAGE_PROXY);
@@ -20,10 +21,12 @@ final class BotMatcher extends AbstractMatcher {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return request._internalIsBot();
    }
 
+   @Override
    protected final String risMatch(String normalizedUserAgent) {
       int matchLength = normalizedUserAgent.startsWith("Mozilla")
          ? StringMatchUtils.firstCloseParenthesis(normalizedUserAgent)
@@ -33,18 +36,22 @@ final class BotMatcher extends AbstractMatcher {
          : StringMatchUtils.NULL_STRING;
    }
 
+   @Override
    protected final String applyConclusiveMatch(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("GoogleImageProxy") ? GOOGLE_IMAGE_PROXY : super.applyConclusiveMatch(request);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       return "generic_web_crawler";
    }
 
+   @Override
    public final String getMatcherName() {
       return "BotMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Bot";
    }

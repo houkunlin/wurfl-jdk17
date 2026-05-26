@@ -17,14 +17,17 @@ public class JSR107CacheProvider implements CacheProvider {
       this.cache = cache;
    }
 
+   @Override
    public InternalDevice getDevice(String deviceId) {
       return (InternalDevice)this.cache.get(deviceId);
    }
 
+   @Override
    public void putDevice(String deviceId, InternalDevice device) {
       this.cache.put(deviceId, device);
    }
 
+   @Override
    public void clear() {
       this.cache.clear();
    }

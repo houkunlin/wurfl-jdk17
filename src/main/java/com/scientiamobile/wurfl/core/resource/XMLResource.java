@@ -34,6 +34,7 @@ public class XMLResource implements WURFLResource {
       this.resourceInput = new ResourceInput(inputStream, originalPath);
    }
 
+   @Override
    public ModelDevicesSnapshot getData(String... includedCapabilities) {
       if (includedCapabilities != null) {
          this.includedCapabilities = new HashSet<>(includedCapabilities.length);
@@ -57,6 +58,7 @@ public class XMLResource implements WURFLResource {
       return this.resourceInput.getResourceName();
    }
 
+   @Override
    public String getVersion() {
       return this.version;
    }

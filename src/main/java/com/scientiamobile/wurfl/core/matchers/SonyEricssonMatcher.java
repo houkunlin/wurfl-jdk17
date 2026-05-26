@@ -9,10 +9,12 @@ final class SonyEricssonMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().contains("Sony");
    }
 
+   @Override
    protected final String risMatch(String normalizedUserAgent) {
       if (normalizedUserAgent.startsWith("SonyEricsson")) {
          int matchLength = StringMatchUtils.firstSlash(normalizedUserAgent);
@@ -25,10 +27,12 @@ final class SonyEricssonMatcher extends MatcherBase {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "SonyEricssonMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "SonyEricsson";
    }

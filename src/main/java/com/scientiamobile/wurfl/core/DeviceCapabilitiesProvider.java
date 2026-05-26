@@ -19,6 +19,7 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
       this.modelDevice = modelDevice;
    }
 
+   @Override
    public final Map<String, String> getAllCapabilities() {
       HashMap<String, String> capabilities = new HashMap<>(this.wurflModel.getAllCapabilities().size());
 
@@ -35,6 +36,7 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
       return capabilities;
    }
 
+   @Override
    public final String getCapability(Map<String, String> capabilities, String capabilityName) {
       Map<String, String> capabilitiesMap = capabilities;
       String capabilityValue;

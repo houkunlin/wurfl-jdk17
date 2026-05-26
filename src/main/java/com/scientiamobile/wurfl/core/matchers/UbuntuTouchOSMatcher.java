@@ -14,6 +14,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(GENERIC_UBUNTU_TOUCH_OS);
@@ -21,11 +22,13 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
       return requiredDeviceIds;
    }
 
+   @Override
    public boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return cleanedDeviceUserAgent.contains("Ubuntu") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Mobile", "Tablet");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       int matchLength;
       if ((matchLength = userAgent.indexOf("like Android")) >= 0) {
@@ -37,14 +40,17 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
       return matchLength >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength) : null;
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       return request.getNormalizedDeviceUserAgent().contains("Tablet") ? GENERIC_UBUNTU_TOUCH_OS_TABLET : GENERIC_UBUNTU_TOUCH_OS;
    }
 
+   @Override
    public String getMatcherName() {
       return "UbuntuTouchOSMatcher";
    }
 
+   @Override
    public String getBucketMatcherName() {
       return "UbuntuTouchOS";
    }

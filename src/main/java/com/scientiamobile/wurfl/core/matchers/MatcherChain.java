@@ -18,6 +18,7 @@ class MatcherChain implements Matcher, MatcherFilter {
       this.filters.add(matcher.getFilter());
    }
 
+   @Override
    public DeviceInfo match(WURFLRequest request) {
       Iterator<Matcher> matcherIterator = this.matchers.iterator();
 
@@ -36,10 +37,12 @@ class MatcherChain implements Matcher, MatcherFilter {
       return new DeviceInfo("generic", MatchType.none, this.getMatcherName(), "MatcherChain", request.getOriginalUserAgent(), "");
    }
 
+   @Override
    public boolean canHandle(WURFLRequest request) {
       return true;
    }
 
+   @Override
    public String normalize(String userAgent) {
       return userAgent;
    }
@@ -48,6 +51,7 @@ class MatcherChain implements Matcher, MatcherFilter {
       return this;
    }
 
+   @Override
    public String getMatcherName() {
       return "MatcherChain";
    }

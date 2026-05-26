@@ -41,12 +41,14 @@ final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevice
       return new ModelDevices(this.devices);
    }
 
+   @Override
    public final int hashCode() {
       HashCodeBuilder hashCodeBuilder;
       (hashCodeBuilder = new HashCodeBuilder(33, 55)).append(this.info).append(this.version);
       return hashCodeBuilder.toHashCode();
    }
 
+   @Override
    public final boolean equals(Object other) {
       if (!this.getClass().isInstance(other)) {
          return false;
@@ -58,6 +60,7 @@ final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevice
       return equalsBuilder.isEquals();
    }
 
+   @Override
    public final String toString() {
       ToStringBuilder toStringBuilder;
       (toStringBuilder = new ToStringBuilder(this)).append(this.info).append(this.version);

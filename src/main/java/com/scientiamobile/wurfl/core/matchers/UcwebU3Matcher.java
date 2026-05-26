@@ -27,15 +27,18 @@ final class UcwebU3Matcher extends MatcherBase {
       super(userAgentNormalizer, wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       return new HashSet<>(SUPPORTED_DEVICE_IDS);
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.startsWith("Mozilla") && cleanedDeviceUserAgent.contains("UCBrowser");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       if (UserAgentUtils.getUcBrowserVersion(userAgent, false) == null) {
          return null;
@@ -64,6 +67,7 @@ final class UcwebU3Matcher extends MatcherBase {
       }
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       if (normalizedUserAgent.contains("Windows Phone")) {
@@ -117,10 +121,12 @@ final class UcwebU3Matcher extends MatcherBase {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "UcwebU3Matcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "UcwebU3";
    }

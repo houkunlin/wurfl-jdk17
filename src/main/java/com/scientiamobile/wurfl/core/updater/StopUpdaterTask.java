@@ -9,6 +9,7 @@ public class StopUpdaterTask extends TimerTask {
       this.wurflUpdater = wurflUpdater;
    }
 
+   @Override
    public void run() {
       this.wurflUpdater.stopPeriodicUpdate();
    }

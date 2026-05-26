@@ -11,10 +11,12 @@ public class MapHeaderProvider implements WURFLHeaderProvider {
       this.headers = headers;
    }
 
+   @Override
    public String getHeader(String headerName) {
       return this.headers.get(headerName);
    }
 
+   @Override
    public Enumeration<String> getHeaderNames() {
       return new IteratorEnumeration<>(this.headers.keySet().iterator());
    }

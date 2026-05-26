@@ -62,6 +62,7 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
       this.userAgentPriority = userAgentPriority;
    }
 
+   @Override
    public WURFLRequest createRequest(HttpServletRequest request, EngineTarget engineTarget) {
       Validate.notNull(request, "The sourceRequest must be not null");
       String userAgent = StringUtils.trimToEmpty(this.userAgentResolver.resolve(request));
@@ -69,6 +70,7 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
       return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, UserAgentUtils.getHeaders(request), this.userAgentPriority, engineTarget);
    }
 
+   @Override
    public WURFLRequest createRequest(String userAgent, EngineTarget engineTarget) {
       userAgent = StringUtils.trimToEmpty(userAgent);
       return new DefaultWURFLRequest(userAgent, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
@@ -79,14 +81,17 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
       return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
    }
 
+   @Override
    public WURFLRequest createRequest(WURFLHeaderProvider headerProvider, EngineTarget engineTarget) {
       return new DefaultWURFLRequest(this.userAgentNormalizer, headerProvider, this.userAgentPriority, engineTarget);
    }
 
+   @Override
    public UserAgentPriority getUserAgentPriority() {
       return this.userAgentPriority;
    }
 
+   @Override
    public void setUserAgentPriority(UserAgentPriority userAgentPriority) {
       this.userAgentPriority = userAgentPriority;
    }

@@ -6,6 +6,7 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 public class FormFactor extends AbstractVirtualCapabilityEvaluator {
    private static final long serialVersionUID = -3936563826288495198L;
 
+   @Override
    public String eval(Device device, WURFLRequest request) {
       if (device.getVirtualCapabilityAsBool("is_robot")) {
          return "Robot";
@@ -24,6 +25,7 @@ public class FormFactor extends AbstractVirtualCapabilityEvaluator {
       }
    }
 
+   @Override
    public String getHandledVirtualCapabilityName() {
       return "form_factor";
    }

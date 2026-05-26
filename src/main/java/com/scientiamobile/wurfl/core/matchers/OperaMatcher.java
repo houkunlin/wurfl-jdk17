@@ -22,22 +22,26 @@ final class OperaMatcher extends MatcherBase {
       super(userAgentNormalizer, wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.addAll(MAJOR_VERSION_TO_DEVICE_ID.values());
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera", "OPR/");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       int operaIndex = StringMatchUtils.indexOf(userAgent, "Opera");
       int matchLength = StringMatchUtils.indexOfOrLength(userAgent, ".", operaIndex);
       return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       Matcher versionMatcher = OPERA_VERSION.matcher(request.getNormalizedDeviceUserAgent());
       if (!versionMatcher.find()) {
@@ -58,10 +62,12 @@ final class OperaMatcher extends MatcherBase {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "OperaMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Opera";
    }

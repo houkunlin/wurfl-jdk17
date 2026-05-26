@@ -13,6 +13,7 @@ final class DefaultMatcherFilter implements MatcherFilter {
       this.index = new FilteredDeviceIndex(this);
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return this.matcher.canHandle(request);
    }
@@ -26,6 +27,7 @@ final class DefaultMatcherFilter implements MatcherFilter {
       return this.index;
    }
 
+   @Override
    public final String getMatcherName() {
       return this.matcher.getMatcherName();
    }

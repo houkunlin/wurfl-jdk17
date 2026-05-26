@@ -9,6 +9,7 @@ public class UcwebU3Normalizer implements UserAgentNormalizer {
    public static final Pattern IPHONE = Pattern.compile("iPhone OS (\\d+)_(\\d+)(?:_\\d+)* like");
    public static final Pattern IPAD = Pattern.compile("CPU OS (\\d+)_(\\d+)?.+like Mac.+; iPad([0-9,]+)\\) AppleWebKit");
 
+   @Override
    public String normalize(String userAgent) {
       String ucBrowserVersion;
       if ((ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, false)) == null) {

@@ -17,11 +17,13 @@ class DefaultCapabilitiesHolderFactory implements CapabilitiesHolderFactory {
       }
    }
 
+   @Override
    public CapabilitiesHolder create(ModelDevice modelDevice) {
       Validate.notNull(modelDevice, "modelDevice is null");
       return new CachingCapabilitiesHolder(new DeviceCapabilitiesProvider(modelDevice, this.wurflModel), this.wurflModel.getCapabilityCount());
    }
 
+   @Override
    public Set<String> getModelCapabilities() {
       return this.wurflModel.getAllCapabilities();
    }

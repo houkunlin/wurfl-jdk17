@@ -62,6 +62,7 @@ public final class WURFLResources {
       return this.resources.iterator();
    }
 
+   @Override
    public final String toString() {
       StringBuilder builder = new StringBuilder("[");
 
@@ -77,6 +78,7 @@ public final class WURFLResources {
       return builder.toString();
    }
 
+   @Override
    public final boolean equals(Object object) {
       if (this == object) {
          return true;
@@ -88,6 +90,7 @@ public final class WURFLResources {
       }
    }
 
+   @Override
    public final int hashCode() {
       HashCodeBuilder hashCodeBuilder;
       (hashCodeBuilder = new HashCodeBuilder(53, 79)).append(this.getClass()).append(this.resources);

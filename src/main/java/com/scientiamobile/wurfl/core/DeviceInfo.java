@@ -31,6 +31,7 @@ public class DeviceInfo {
       return this.bucketMatcherName;
    }
 
+   @Override
    public String toString() {
       StringBuilder builder;
       (builder = new StringBuilder()).append("{id='").append(this.id).append('\'');

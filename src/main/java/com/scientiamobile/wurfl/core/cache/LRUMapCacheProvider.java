@@ -20,16 +20,19 @@ public class LRUMapCacheProvider implements CacheProvider {
       this.cache = MapUtils.synchronizedMap(new LRUMap<>());
    }
 
+   @Override
    public void clear() {
       logger.info("cache: size " + this.cache.size());
       this.cache.clear();
       logger.info("cache cleared: size " + this.cache.size());
    }
 
+   @Override
    public InternalDevice getDevice(String key) {
       return this.cache.get(key);
    }
 
+   @Override
    public void putDevice(String key, InternalDevice device) {
       this.cache.put(key, device);
    }

@@ -4,6 +4,7 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 
 public class OperaMobiOrTabletOnAndroidNormalizer implements UserAgentNormalizer {
+   @Override
    public String normalize(String userAgent) {
       StringBuilder normalizedUaBuilder;
       (normalizedUaBuilder = new StringBuilder()).append(userAgent.contains("Opera Mobi") ? "Opera Mobi" : "Opera Tablet").append(" ");

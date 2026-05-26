@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 public class MaemoNormalizer implements UserAgentNormalizer {
    private static final Pattern MAEMO_BROWSER_MODEL_PATTERN = Pattern.compile("Maemo [bB]rowser [\\d\\.]+ (.+)");
 
+   @Override
    public String normalize(String userAgent) {
       Matcher maemoMatcher;
       if ((maemoMatcher = MAEMO_BROWSER_MODEL_PATTERN.matcher(userAgent)).find()) {

@@ -9,16 +9,19 @@ final class PantechMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser()
          && StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, "Pantech", "PT-", "PANTECH", "PG-");
    }
 
+   @Override
    public final String getMatcherName() {
       return "PantechMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Pantech";
    }

@@ -16,6 +16,7 @@ final class MaemoMatcher extends MatcherBase {
       super(normalizer, wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(GENERIC_OPERA_MOBI_MAEMO);
@@ -24,10 +25,12 @@ final class MaemoMatcher extends MatcherBase {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("Maemo");
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedDeviceUserAgent;
       if ((normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent()).contains("Opera Mobi")) {
@@ -37,6 +40,7 @@ final class MaemoMatcher extends MatcherBase {
       }
    }
 
+   @Override
    protected final String risMatch(String normalizedUserAgent) {
       int matchLength;
       return (matchLength = normalizedUserAgent.indexOf("---")) >= 0
@@ -44,10 +48,12 @@ final class MaemoMatcher extends MatcherBase {
          : super.risMatch(normalizedUserAgent);
    }
 
+   @Override
    public final String getMatcherName() {
       return "MaemoMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Maemo";
    }

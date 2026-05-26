@@ -4,6 +4,7 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import org.apache.commons.lang3.Validate;
 
 public class UPLinkNormalizer implements UserAgentNormalizer {
+   @Override
    public String normalize(String userAgent) {
       Validate.notNull(userAgent, "The userAgent is null");
       int upLinkIndex;

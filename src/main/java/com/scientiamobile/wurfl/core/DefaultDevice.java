@@ -44,34 +44,42 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
       this.virtualCapabilityHandler = virtualCapabilityHandler;
    }
 
+   @Override
    public Map<String, String> getVirtualCapabilities() {
       return this.virtualCapabilityHandler.getAllVirtualCapabilities(this);
    }
 
+   @Override
    public String getVirtualCapability(String virtualCapabilityName) {
       return this.virtualCapabilityHandler.getVirtualCapability(virtualCapabilityName, this);
    }
 
+   @Override
    public int getVirtualCapabilityAsInt(String virtualCapabilityName) {
       return this.virtualCapabilityHandler.getVirtualCapabilityAsInt(virtualCapabilityName, this);
    }
 
+   @Override
    public boolean getVirtualCapabilityAsBool(String virtualCapabilityName) {
       return this.virtualCapabilityHandler.getVirtualCapabilityAsBool(virtualCapabilityName, this);
    }
 
+   @Override
    public MatchType getMatchType() {
       return this.matchType;
    }
 
+   @Override
    public String getBucketMatcherName() {
       return this.bucketMatcherName;
    }
 
+   @Override
    public String getMatcherName() {
       return this.matcherName;
    }
 
+   @Override
    public MarkUp getMarkUp() {
       if (this.markUp == null) {
          this.markUp = this.markupResolver.getMarkupForDevice(this);
@@ -80,10 +88,12 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
       return this.markUp;
    }
 
+   @Override
    public String toString() {
       return "[" + this.getId() + ", match=" + this.getMatchType() + ']';
    }
 
+   @Override
    public String getCapability(String capabilityName) {
       try {
          return this.internalDevice.getCapability(capabilityName);
@@ -96,14 +106,17 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
       }
    }
 
+   @Override
    public String getId() {
       return this.internalDevice.getId();
    }
 
+   @Override
    public String getWURFLUserAgent() {
       return this.internalDevice.getWURFLUserAgent();
    }
 
+   @Override
    public int getCapabilityAsInt(String capabilityName) {
       try {
          return this.internalDevice.getCapabilityAsInt(capabilityName);
@@ -116,6 +129,7 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
       }
    }
 
+   @Override
    public boolean getCapabilityAsBool(String capabilityName) {
       try {
          return this.internalDevice.getCapabilityAsBool(capabilityName);
@@ -128,14 +142,17 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
       }
    }
 
+   @Override
    public Map<String, String> getCapabilities() {
       return this.internalDevice.getCapabilities();
    }
 
+   @Override
    public boolean isActualDeviceRoot() {
       return this.internalDevice.isActualDeviceRoot();
    }
 
+   @Override
    public String getDeviceRootId() {
       return this.internalDevice.getDeviceRootId();
    }
@@ -144,6 +161,7 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
       return this.internalDevice;
    }
 
+   @Override
    public String getNormalizedUserAgent() {
       return this.normalizedUserAgent;
    }

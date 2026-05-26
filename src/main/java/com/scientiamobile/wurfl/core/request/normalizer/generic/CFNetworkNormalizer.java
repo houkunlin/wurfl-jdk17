@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 public class CFNetworkNormalizer implements UserAgentNormalizer {
    private static final Pattern CFNETWORK_VERSION_PATTERN = Pattern.compile("CFNetwork/(\\d+\\.?[0-9]*)");
 
+   @Override
    public String normalize(String userAgent) {
       Matcher cfNetworkMatcher;
       if ((cfNetworkMatcher = CFNETWORK_VERSION_PATTERN.matcher(userAgent)).find()) {

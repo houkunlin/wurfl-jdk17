@@ -80,6 +80,7 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
       return Collections.unmodifiableMap(this.devicesById);
    }
 
+   @Override
    public Iterator<ModelDevice> iterator() {
       return this.getDevicesById().values().iterator();
    }
@@ -136,12 +137,14 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
       this.devicesById.clear();
    }
 
+   @Override
    public int hashCode() {
       HashCodeBuilder hashCodeBuilder;
       (hashCodeBuilder = new HashCodeBuilder()).append(this.getClass()).append(this.devicesById);
       return hashCodeBuilder.toHashCode();
    }
 
+   @Override
    public boolean equals(Object object) {
       if (this == object) {
          return true;

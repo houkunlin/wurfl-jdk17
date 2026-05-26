@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 165298984131843694L;
 
+   @Override
    public String eval(Device device, WURFLRequest request) {
       String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
 
@@ -54,6 +55,7 @@ public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements 
       }
    }
 
+   @Override
    public String getHandledVirtualCapabilityName() {
       return "is_app_webview";
    }

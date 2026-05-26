@@ -15,6 +15,7 @@ final class NokiaMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(NOKIA_GENERIC_SERIES60);
@@ -24,11 +25,13 @@ final class NokiaMatcher extends MatcherBase {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Nokia") && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Android", "iPhone");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       int matchLength = StringMatchUtils.indexOfAnyOrLength(userAgent, new String[]{"/", " "}, userAgent.indexOf("Nokia"));
       if (StringMatchUtils.startsWithAnyOf(userAgent, "Nokia/", "Nokia ")) {
@@ -38,6 +41,7 @@ final class NokiaMatcher extends MatcherBase {
       return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       if (normalizedUserAgent.contains("Series60")) {
@@ -49,10 +53,12 @@ final class NokiaMatcher extends MatcherBase {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "NokiaMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Nokia";
    }

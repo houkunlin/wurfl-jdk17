@@ -14,6 +14,7 @@ final class XBoxMatcher extends AbstractMatcher {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(MICROSOFT_XBOXONE_VER1);
@@ -22,14 +23,17 @@ final class XBoxMatcher extends AbstractMatcher {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("Xbox");
    }
 
+   @Override
    protected final String applyConclusiveMatch(WURFLRequest request) {
       return null;
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       if (normalizedUserAgent.contains("MSIE 10.0")) {
@@ -39,10 +43,12 @@ final class XBoxMatcher extends AbstractMatcher {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "XBoxMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Xbox";
    }

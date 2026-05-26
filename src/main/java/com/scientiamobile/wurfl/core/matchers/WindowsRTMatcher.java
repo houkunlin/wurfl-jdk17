@@ -14,6 +14,7 @@ final class WindowsRTMatcher extends AbstractMatcher {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(GENERIC_WINDOWS_8_RT);
@@ -21,10 +22,12 @@ final class WindowsRTMatcher extends AbstractMatcher {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return StringMatchUtils.containsAllOf(request.getCleanedDeviceUserAgent(), "Windows NT ", " ARM;", "Trident/");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       if (userAgent.contains("like Gecko")) {
          int geckoIndex;
@@ -41,14 +44,17 @@ final class WindowsRTMatcher extends AbstractMatcher {
       return null;
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       return request.getNormalizedDeviceUserAgent().contains("like Gecko") ? WINDOWS_8_RT_VER1_SUBOS81 : GENERIC_WINDOWS_8_RT;
    }
 
+   @Override
    public final String getMatcherName() {
       return "WindowsRTMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "WindowsRT";
    }

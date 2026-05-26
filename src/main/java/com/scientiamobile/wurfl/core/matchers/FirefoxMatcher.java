@@ -14,12 +14,14 @@ final class FirefoxMatcher extends MatcherBase {
       super(normalizer, wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
       (requiredDeviceIds = new HashSet<>()).add(FIREFOX_DEVICE_ID);
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return !request._internalIsMobileBrowser()
@@ -27,6 +29,7 @@ final class FirefoxMatcher extends MatcherBase {
          && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Tablet", "Sony", "Novarra", "Opera");
    }
 
+   @Override
    protected final String risMatch(String normalizedUserAgent) {
       String firefoxUserAgent = normalizedUserAgent.substring(normalizedUserAgent.indexOf("Firefox"));
       int matchLength = StringMatchUtils.indexOfOrLength(firefoxUserAgent, ".");
@@ -35,14 +38,17 @@ final class FirefoxMatcher extends MatcherBase {
          : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), firefoxUserAgent, matchLength + 1);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       return FIREFOX_DEVICE_ID;
    }
 
+   @Override
    public final String getMatcherName() {
       return "FirefoxMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Firefox";
    }

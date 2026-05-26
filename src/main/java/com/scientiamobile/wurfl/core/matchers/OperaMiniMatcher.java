@@ -16,16 +16,19 @@ final class OperaMiniMatcher extends MatcherBase {
       super(userAgentNormalizer, wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.addAll(OPERA_MINI_VERSION_TO_DEVICE_ID.values());
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera Mini", "OperaMini", "Opera Mobi", "OperaMobi");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       int matchLength;
       if ((matchLength = userAgent.indexOf("---")) >= 0) {
@@ -37,6 +40,7 @@ final class OperaMiniMatcher extends MatcherBase {
       }
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
       for(String versionPrefix : OPERA_MINI_VERSION_TO_DEVICE_ID.keySet()) {
@@ -48,10 +52,12 @@ final class OperaMiniMatcher extends MatcherBase {
       return normalizedUserAgent.contains("Opera Mobi") ? "generic_opera_mini_version4" : "generic_opera_mini_version1";
    }
 
+   @Override
    public final String getMatcherName() {
       return "OperaMiniMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "OperaMini";
    }

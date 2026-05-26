@@ -20,6 +20,7 @@ abstract class AbstractMatcher implements Matcher {
    private final UserAgentNormalizer normalizer;
    private static boolean ASSERTIONS_DISABLED = !AbstractMatcher.class.desiredAssertionStatus();
 
+   @Override
    public String toString() {
       return this.getClass().getSimpleName();
    }
@@ -79,6 +80,7 @@ abstract class AbstractMatcher implements Matcher {
       return this.filter;
    }
 
+   @Override
    public final DeviceInfo match(WURFLRequest request) {
       String deviceId = "generic";
       request.normalizeUserAgent(this.normalizer);
@@ -162,6 +164,7 @@ abstract class AbstractMatcher implements Matcher {
       return StringUtils.isBlank(deviceId) || "generic".equals(deviceId);
    }
 
+   @Override
    public final String normalize(String value) {
       return this.normalizer == null ? value : this.normalizer.normalize(value);
    }
@@ -170,6 +173,7 @@ abstract class AbstractMatcher implements Matcher {
       return "Abstract";
    }
 
+   @Override
    public String getMatcherName() {
       return this.getClass().getSimpleName();
    }

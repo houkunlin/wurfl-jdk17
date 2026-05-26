@@ -20,16 +20,19 @@ public final class DesktopApplicationMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICE_IDS);
       requiredDeviceIds.add(GENERIC_WEB_BROWSER);
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Microsoft Office", "MSOffice", "office", "DesktopApp ");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       Matcher msOfficeMatcher = MSOFFICE_PATTERN.matcher(userAgent);
       Matcher microsoftOfficeMatcher = MICROSOFT_OFFICE_PATTERN.matcher(userAgent);
@@ -52,6 +55,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
       return "generic";
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String deviceUserAgent = request.getDeviceUserAgent();
       if (StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office")) {
@@ -61,10 +65,12 @@ public final class DesktopApplicationMatcher extends MatcherBase {
       }
    }
 
+   @Override
    public final String getMatcherName() {
       return "DesktopApplicationMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "DesktopApplication";
    }

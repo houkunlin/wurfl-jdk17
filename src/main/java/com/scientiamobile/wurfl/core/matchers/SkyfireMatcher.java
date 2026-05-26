@@ -14,6 +14,7 @@ final class SkyfireMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(GENERIC_SKYFIRE_VERSION1);
@@ -21,24 +22,29 @@ final class SkyfireMatcher extends MatcherBase {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       return request.getCleanedDeviceUserAgent().contains("Skyfire");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       int skyfireIndex = StringMatchUtils.indexOf(userAgent, "Skyfire");
       int matchLength = StringMatchUtils.indexOfOrLength(userAgent, ".", skyfireIndex);
       return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       return request.getNormalizedDeviceUserAgent().contains("Skyfire/2.") ? GENERIC_SKYFIRE_VERSION2 : GENERIC_SKYFIRE_VERSION1;
    }
 
+   @Override
    public final String getMatcherName() {
       return "SkyfireMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Skyfire";
    }

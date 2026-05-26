@@ -16,6 +16,7 @@ final class KindleMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.add(GENERIC_AMAZON_KINDLE);
@@ -23,11 +24,13 @@ final class KindleMatcher extends MatcherBase {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       return cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "/Kindle", "Silk") ? false : StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Kindle", "Silk");
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       int matchLength;
       if ((matchLength = userAgent.indexOf("Build/")) != -1) {
@@ -45,6 +48,7 @@ final class KindleMatcher extends MatcherBase {
       }
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
 
@@ -57,10 +61,12 @@ final class KindleMatcher extends MatcherBase {
       return GENERIC_AMAZON_KINDLE;
    }
 
+   @Override
    public final String getMatcherName() {
       return "KindleMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "Kindle";
    }

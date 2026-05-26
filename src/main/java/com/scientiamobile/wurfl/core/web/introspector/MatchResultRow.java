@@ -13,6 +13,7 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
       this.originalUserAgent = originalUserAgent;
    }
 
+   @Override
    public final String toString() {
       String matcherNameWithoutSuffix = this.matcherName;
       int matcherSuffixIndex;

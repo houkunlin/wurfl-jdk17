@@ -49,6 +49,7 @@ class DefaultDeviceProvider implements DeviceProvider {
       this(wurflModel, capabilitiesHolderFactory, new MarkupResolverImpl());
    }
 
+   @Override
    public InternalDevice getInternalDevice(String deviceId) {
       Validate.notNull(deviceId, "The deviceId must be not null");
       ModelDeviceWithAncestorId deviceWithAncestorId = this.getModelDeviceWithAncestorId(deviceId);
@@ -61,10 +62,12 @@ class DefaultDeviceProvider implements DeviceProvider {
       }
    }
 
+   @Override
    public Device buildDevice(InternalDevice internalDevice, String userAgent, MatchType matchType, String matcherName, String bucketMatcherName) {
       return this.buildDevice(internalDevice, (WURFLRequest)(new DefaultWURFLRequest(userAgent, (UserAgentNormalizer)null, UserAgentPriority.OverrideSideloadedBrowserUserAgent, EngineTarget.fastDesktopBrowserMatch)), matchType, matcherName, bucketMatcherName);
    }
 
+   @Override
    public Device buildDevice(InternalDevice internalDevice, WURFLRequest request, MatchType matchType, String matcherName, String bucketMatcherName) {
       Validate.notNull(internalDevice, "The internal device must be not null");
       String deviceId;

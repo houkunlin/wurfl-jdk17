@@ -22,6 +22,7 @@ final class MSIEMatcher extends MatcherBase {
       super(wurflModel);
    }
 
+   @Override
    protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds = new HashSet<>();
       requiredDeviceIds.addAll(DEVICE_BY_MAJOR_VERSION.values());
@@ -31,6 +32,7 @@ final class MSIEMatcher extends MatcherBase {
       return requiredDeviceIds;
    }
 
+   @Override
    public final boolean canHandle(WURFLRequest request) {
       String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       if (!request._internalIsMobileBrowser() && cleanedDeviceUserAgent.startsWith("Mozilla") && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Opera", "armv", "MOTO", "BREW")) {
@@ -40,6 +42,7 @@ final class MSIEMatcher extends MatcherBase {
       }
    }
 
+   @Override
    protected final String applyConclusiveMatch(WURFLRequest request) {
       String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(request.getNormalizedDeviceUserAgent()).replaceFirst("");
       Matcher[] matchers = new Matcher[]{EDGE.matcher(normalizedUserAgent), TRIDENT_RV.matcher(normalizedUserAgent), MSIE.matcher(normalizedUserAgent)};
@@ -77,21 +80,25 @@ final class MSIEMatcher extends MatcherBase {
       return super.applyConclusiveMatch(request);
    }
 
+   @Override
    protected final String risMatch(String userAgent) {
       String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(userAgent).replaceFirst("");
       int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "Trident");
       return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
    }
 
+   @Override
    protected final String applyRecoveryMatch(WURFLRequest request) {
       String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(request.getNormalizedDeviceUserAgent()).replaceFirst("");
       return StringMatchUtils.containsAnyOf(normalizedUserAgent, "SLCC1", "Media Center PC", ".NET CLR", "OfficeLiveConnector") ? "generic_web_browser" : "generic";
    }
 
+   @Override
    public final String getMatcherName() {
       return "MSIEMatcher";
    }
 
+   @Override
    public final String getBucketMatcherName() {
       return "MSIE";
    }
