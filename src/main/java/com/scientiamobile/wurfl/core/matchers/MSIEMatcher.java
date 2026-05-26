@@ -63,7 +63,7 @@ final class MSIEMatcher extends MatcherBase {
          } catch (NumberFormatException var7) {
          }
 
-         if ("5".equals(var9) && (new Integer(5)).equals(var11)) {
+         if ("5".equals(var9) && var11 == 5) {
             return "msie_5_5";
          }
 

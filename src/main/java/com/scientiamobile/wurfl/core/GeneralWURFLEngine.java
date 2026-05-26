@@ -49,7 +49,8 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    private UserAgentResolver m;
    private WURFLUtils n;
    private WURFLModel o;
-   private Boolean p;
+   private final Object p;
+   private volatile boolean initialized;
    private WURFLRequestFactoryWithPriority q;
    private EngineTarget r;
    private UserAgentPriority s;
@@ -70,7 +71,8 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       this.e = null;
       this.f = null;
       this.g = null;
-      this.p = false;
+      this.p = new Object();
+      this.initialized = false;
       this.q = null;
       this.r = null;
       this.s = UserAgentPriority.OverrideSideloadedBrowserUserAgent;
@@ -93,7 +95,8 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       this.e = null;
       this.f = null;
       this.g = null;
-      this.p = false;
+      this.p = new Object();
+      this.initialized = false;
       this.q = null;
       this.r = null;
       this.s = UserAgentPriority.OverrideSideloadedBrowserUserAgent;
@@ -255,9 +258,9 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    }
 
    private void a() {
-      if (!this.p) {
+      if (!this.initialized) {
          synchronized(this.p) {
-            if (!this.p) {
+            if (!this.initialized) {
                try {
                   GeneralWURFLEngine var2 = this;
 
@@ -321,7 +324,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                      }
 
                      VirtualCapabilityUserAgentTool.getInstance().assignProperties(var2.q.createRequest("", var2.r), var2.j.getInternalDevice("generic"));
-                     var2.p = true;
+                     var2.initialized = true;
                   } finally {
                      this.d.writeLock().unlock();
                   }

@@ -48,21 +48,26 @@ public class Validator {
    }
 
    static void a(String var0, WURFLEngine var1, ProxySettings var2) {
-      int var6;
+      URL var6;
       try {
-         var6 = UpdatePipeline.a(new URL(var0), (String)null, 10000, UserAgentUtils.createApiUserAgent(var1), var2);
+         var6 = new URL(var0);
       } catch (MalformedURLException var3) {
          throw new WURFLRuntimeException("An error occurred validating URL for WURFL file update, the URL is invalid", var3);
-      } catch (IOException var4) {
-         throw new WURFLRuntimeException("An error occurred validating URL for WURFL file update", var4);
-      } catch (ClassCastException var5) {
-         throw new WURFLRuntimeException("An class exception occurred validating URL for WURFL file update (using HTTPS is mandatory)", var5);
       }
 
-      if (var6 == 402) {
-         throw new WURFLRuntimeException("Invalid WURFL license, please check it on ScientiaMobile customer vault, response code " + var6);
-      } else if (var6 >= 400 && var6 < 500) {
-         throw new WURFLRuntimeException("Validation of http connection failed, response code " + var6);
+      int var7;
+      try {
+         var7 = UpdatePipeline.a(var6, (String)null, 10000, UserAgentUtils.createApiUserAgent(var1), var2);
+      } catch (ClassCastException var4) {
+         throw new WURFLRuntimeException("An class exception occurred validating URL for WURFL file update (using HTTPS is mandatory)", var4);
+      } catch (RuntimeException var5) {
+         throw new WURFLRuntimeException("An error occurred validating URL for WURFL file update", var5);
+      }
+
+      if (var7 == 402) {
+         throw new WURFLRuntimeException("Invalid WURFL license, please check it on ScientiaMobile customer vault, response code " + var7);
+      } else if (var7 >= 400 && var7 < 500) {
+         throw new WURFLRuntimeException("Validation of http connection failed, response code " + var7);
       }
    }
 }
