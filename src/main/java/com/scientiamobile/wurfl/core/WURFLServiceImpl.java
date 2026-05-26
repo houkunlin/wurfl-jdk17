@@ -212,11 +212,11 @@ class WURFLServiceImpl implements WURFLService {
       this.requestFactory = requestFactory;
    }
 
-   static EngineTarget a(WURFLServiceImpl service) {
+   static EngineTarget getEngineTarget(WURFLServiceImpl service) {
       return service.engineTarget;
    }
 
-   static EngineTarget a(WURFLServiceImpl service, EngineTarget engineTarget) {
+   static EngineTarget setEngineTarget(WURFLServiceImpl service, EngineTarget engineTarget) {
       return service.engineTarget = engineTarget;
    }
 }

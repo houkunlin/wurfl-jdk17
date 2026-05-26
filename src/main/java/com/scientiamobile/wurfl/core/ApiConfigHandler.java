@@ -13,13 +13,13 @@ final class ApiConfigHandler extends DefaultHandler {
    public final void startElement(String uri, String localName, String qName, Attributes attributes) {
       if (qName.equals("wurfl-api-config")) {
          String engineTarget = attributes.getValue("engine-target");
-         if (WURFLServiceImpl.a(this.wurflService) == null) {
+         if (WURFLServiceImpl.getEngineTarget(this.wurflService) == null) {
             if (engineTarget == null || "performance".equals(engineTarget) || "accuracy".equals(engineTarget)) {
-               WURFLServiceImpl.a(this.wurflService, EngineTarget.defaultTarget);
+               WURFLServiceImpl.setEngineTarget(this.wurflService, EngineTarget.defaultTarget);
                return;
             }
 
-            WURFLServiceImpl.a(this.wurflService, EngineTarget.fastDesktopBrowserMatch);
+            WURFLServiceImpl.setEngineTarget(this.wurflService, EngineTarget.fastDesktopBrowserMatch);
          }
       }
 
