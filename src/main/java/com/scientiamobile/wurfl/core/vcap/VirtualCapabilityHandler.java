@@ -8,82 +8,79 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VirtualCapabilityHandler {
-   private static final Map<String, VirtualCapabilityEvaluator> a;
-   private WURFLRequest b;
+   private static final Map<String, VirtualCapabilityEvaluator> EVALUATORS_BY_NAME;
+   private WURFLRequest request;
 
    private VirtualCapabilityHandler() {
    }
 
-   public VirtualCapabilityHandler(WURFLRequest var1) {
+   public VirtualCapabilityHandler(WURFLRequest request) {
       this();
-      this.b = var1;
+      this.request = request;
    }
 
-   public String getVirtualCapability(String var1, Device var2) {
-      VirtualCapabilityEvaluator var3;
-      if ((var3 = (VirtualCapabilityEvaluator)a.get(var1)) == null) {
-         throw new VirtualCapabilityNotDefinedException(var1);
+   public String getVirtualCapability(String virtualCapabilityName, Device device) {
+      VirtualCapabilityEvaluator evaluator;
+      if ((evaluator = (VirtualCapabilityEvaluator)EVALUATORS_BY_NAME.get(virtualCapabilityName)) == null) {
+         throw new VirtualCapabilityNotDefinedException(virtualCapabilityName);
       } else {
          synchronized(this) {
-            return a(var1, var3.eval(var2, this.b), var2);
+            return applyControlCapOverride(virtualCapabilityName, evaluator.eval(device, this.request), device);
          }
       }
    }
 
-   public int getVirtualCapabilityAsInt(String var1, Device var2) {
-      return Integer.parseInt(this.getVirtualCapability(var1, var2));
+   public int getVirtualCapabilityAsInt(String virtualCapabilityName, Device device) {
+      return Integer.parseInt(this.getVirtualCapability(virtualCapabilityName, device));
    }
 
-   public boolean getVirtualCapabilityAsBool(String var1, Device var2) {
-      return Boolean.parseBoolean(this.getVirtualCapability(var1, var2));
+   public boolean getVirtualCapabilityAsBool(String virtualCapabilityName, Device device) {
+      return Boolean.parseBoolean(this.getVirtualCapability(virtualCapabilityName, device));
    }
 
-   static String a(String var0, String var1, InternalDevice var2) {
-      String var3 = "controlcap_" + var0;
+   static String applyControlCapOverride(String virtualCapabilityName, String computedValue, InternalDevice device) {
+      String controlCapabilityName = "controlcap_" + virtualCapabilityName;
 
       try {
-         String var5;
-         if ((var5 = var2.getCapability(var3)) != null && !"default".equals(var5)) {
-            if ("force_true".equals(var5)) {
+         String overrideValue;
+         if ((overrideValue = device.getCapability(controlCapabilityName)) != null && !"default".equals(overrideValue)) {
+            if ("force_true".equals(overrideValue)) {
                return "true";
             }
 
-            if ("force_false".equals(var5)) {
+            if ("force_false".equals(overrideValue)) {
                return "false";
             }
 
-            return var5;
+            return overrideValue;
          }
-      } catch (CapabilityNotDefinedException var4) {
-         throw new VirtualCapabilityNotDefinedException(var0);
+      } catch (CapabilityNotDefinedException e) {
+         throw new VirtualCapabilityNotDefinedException(virtualCapabilityName);
       }
 
-      return var1 == null ? "" : var1;
+      return computedValue == null ? "" : computedValue;
    }
 
-   public Map<String, String> getAllVirtualCapabilities(Device var1) {
-      HashMap<String, String> var2 = new HashMap<>();
-      HashSet<VirtualCapabilityEvaluator> var3 = new HashSet<>(a.values());
-      Iterator<VirtualCapabilityEvaluator> var6 = var3.iterator();
+   public Map<String, String> getAllVirtualCapabilities(Device device) {
+      HashMap<String, String> virtualCapabilities = new HashMap<>();
+      HashSet<VirtualCapabilityEvaluator> evaluators = new HashSet<>(EVALUATORS_BY_NAME.values());
 
-      while(var6.hasNext()) {
-         VirtualCapabilityEvaluator var4;
-         String var5 = (var4 = var6.next()).getHandledVirtualCapabilityName();
-         var2.put(var5, a(var5, var4.eval(var1, this.b), var1));
+      for(VirtualCapabilityEvaluator evaluator : evaluators) {
+         String virtualCapabilityName = evaluator.getHandledVirtualCapabilityName();
+         virtualCapabilities.put(virtualCapabilityName, applyControlCapOverride(virtualCapabilityName, evaluator.eval(device, this.request), device));
       }
 
-      return var2;
+      return virtualCapabilities;
    }
 
    public static Set<String> getAllVirtualCapabilities() {
       new VirtualCapabilityHandler();
-      return a.keySet();
+      return EVALUATORS_BY_NAME.keySet();
    }
 
    public static Set<String> getMandatoryCapabilities() {
@@ -91,38 +88,38 @@ public class VirtualCapabilityHandler {
    }
 
    static {
-      (a = new ConcurrentHashMap<>()).put("is_android", new IsAndroidOs());
-      a.put("is_ios", new IsIOs());
-      a.put("is_windows_phone", new IsWindowsPhone());
-      a.put("is_full_desktop", new IsFullDesktop());
-      a.put("is_app", new IsApp());
-      a.put("advertised_device_os", new OsName());
-      a.put("advertised_device_os_version", new OsVersion());
-      a.put("advertised_browser", new BrowserName());
-      a.put("advertised_browser_version", new BrowserVersion());
-      a.put("is_wml_preferred", new IsWMLPreferred());
-      a.put("is_xhtmlmp_preferred", new IsXHTMLPreferred());
-      a.put("is_html_preferred", new IsHTMLPreferred());
-      a.put("form_factor", new FormFactor());
-      a.put("complete_device_name", new CompleteDeviceName());
-      a.put("is_phone", new IsPhone());
-      a.put("is_app_webview", new IsAppWebview());
-      a.put("device_name", new DeviceName());
-      a.put("is_largescreen", new IsLargescreen());
-      a.put("is_mobile", new IsMobile());
-      a.put("is_robot", new IsRobot());
-      a.put("is_smartphone", new IsSmartphone());
-      a.put("is_touchscreen", new IsTouchscreen());
-      a.put("advertised_app_name", new AppName());
+      (EVALUATORS_BY_NAME = new ConcurrentHashMap<>()).put("is_android", new IsAndroidOs());
+      EVALUATORS_BY_NAME.put("is_ios", new IsIOs());
+      EVALUATORS_BY_NAME.put("is_windows_phone", new IsWindowsPhone());
+      EVALUATORS_BY_NAME.put("is_full_desktop", new IsFullDesktop());
+      EVALUATORS_BY_NAME.put("is_app", new IsApp());
+      EVALUATORS_BY_NAME.put("advertised_device_os", new OsName());
+      EVALUATORS_BY_NAME.put("advertised_device_os_version", new OsVersion());
+      EVALUATORS_BY_NAME.put("advertised_browser", new BrowserName());
+      EVALUATORS_BY_NAME.put("advertised_browser_version", new BrowserVersion());
+      EVALUATORS_BY_NAME.put("is_wml_preferred", new IsWMLPreferred());
+      EVALUATORS_BY_NAME.put("is_xhtmlmp_preferred", new IsXHTMLPreferred());
+      EVALUATORS_BY_NAME.put("is_html_preferred", new IsHTMLPreferred());
+      EVALUATORS_BY_NAME.put("form_factor", new FormFactor());
+      EVALUATORS_BY_NAME.put("complete_device_name", new CompleteDeviceName());
+      EVALUATORS_BY_NAME.put("is_phone", new IsPhone());
+      EVALUATORS_BY_NAME.put("is_app_webview", new IsAppWebview());
+      EVALUATORS_BY_NAME.put("device_name", new DeviceName());
+      EVALUATORS_BY_NAME.put("is_largescreen", new IsLargescreen());
+      EVALUATORS_BY_NAME.put("is_mobile", new IsMobile());
+      EVALUATORS_BY_NAME.put("is_robot", new IsRobot());
+      EVALUATORS_BY_NAME.put("is_smartphone", new IsSmartphone());
+      EVALUATORS_BY_NAME.put("is_touchscreen", new IsTouchscreen());
+      EVALUATORS_BY_NAME.put("advertised_app_name", new AppName());
 
       try {
-         Class<?> var0;
-         Object var2;
-         if ((var0 = Class.forName("com.scientiamobile.wurfl.core.vcap.OsManufacturer")) != null && (var2 = var0.getDeclaredConstructor().newInstance()) != null) {
-            a.put("os_manufacturer", (VirtualCapabilityEvaluator)var2);
+         Class<?> evaluatorClass;
+         Object evaluatorInstance;
+         if ((evaluatorClass = Class.forName("com.scientiamobile.wurfl.core.vcap.OsManufacturer")) != null && (evaluatorInstance = evaluatorClass.getDeclaredConstructor().newInstance()) != null) {
+            EVALUATORS_BY_NAME.put("os_manufacturer", (VirtualCapabilityEvaluator)evaluatorInstance);
          }
 
-      } catch (Exception var1) {
+      } catch (Exception ignore) {
       }
    }
 }

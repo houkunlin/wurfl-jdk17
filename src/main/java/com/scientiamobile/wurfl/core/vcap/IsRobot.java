@@ -6,8 +6,8 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 public class IsRobot extends AbstractVirtualCapabilityEvaluator {
    private static final long serialVersionUID = 290928780375573277L;
 
-   public String eval(Device var1, WURFLRequest var2) {
-      return Boolean.toString(a(var2));
+   public String eval(Device device, WURFLRequest request) {
+      return Boolean.toString(isRobot(request));
    }
 
    public String getHandledVirtualCapabilityName() {

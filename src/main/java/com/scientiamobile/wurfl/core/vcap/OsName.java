@@ -9,9 +9,9 @@ import java.io.Serializable;
 public class OsName implements VirtualCapabilityEvaluator, Serializable {
    private static final long serialVersionUID = 2665195735628227650L;
 
-   public String eval(Device var1, WURFLRequest var2) {
-      VirtualCapabilityDevice var3 = VirtualCapabilityUserAgentTool.getInstance().assignProperties(var2, var1);
-      return VirtualCapabilityHandler.a("advertised_device_os", var3.getOsPairName(), var1);
+   public String eval(Device device, WURFLRequest request) {
+      VirtualCapabilityDevice virtualCapabilityDevice = VirtualCapabilityUserAgentTool.getInstance().assignProperties(request, device);
+      return VirtualCapabilityHandler.applyControlCapOverride("advertised_device_os", virtualCapabilityDevice.getOsPairName(), device);
    }
 
    public String getHandledVirtualCapabilityName() {
