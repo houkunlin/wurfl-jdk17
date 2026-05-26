@@ -16,32 +16,32 @@ public class TizenMatcher extends MatcherBase {
    private static final List<String> SUPPORTED_DEVICE_IDS = new ArrayList<>();
    private static final List<String> SUPPORTED_VERSIONS = new ArrayList<>();
 
-   public TizenMatcher(WURFLModel var1) {
-      super(var1);
+   public TizenMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(SUPPORTED_DEVICE_IDS);
-      var1.add(GENERIC_TIZEN);
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICE_IDS);
+      requiredDeviceIds.add(GENERIC_TIZEN);
+      return requiredDeviceIds;
    }
 
-   public boolean canHandle(WURFLRequest var1) {
-      return var1.getCleanedDeviceUserAgent().startsWith("Mozilla") && var1.getCleanedDeviceUserAgent().contains("Tizen");
+   public boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return cleanedDeviceUserAgent.startsWith("Mozilla") && cleanedDeviceUserAgent.contains("Tizen");
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      return (var2 = var1.indexOf("AppleWebKit/")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 12) : null;
+   protected final String risMatch(String userAgent) {
+      int appleWebKitIndex = userAgent.indexOf("AppleWebKit/");
+      return appleWebKitIndex >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, appleWebKitIndex + 12) : null;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      StringBuilder var10000 = new StringBuilder("generic_tizen_ver");
-      String var2 = var1.getNormalizedDeviceUserAgent();
-      Matcher var3;
-      var2 = var10000.append((var3 = TIZEN_VERSION_PATTERN.matcher(var2)).find() && SUPPORTED_VERSIONS.contains(var3.group(1)) ? var3.group(1).replace('.', '_') : "1_0").toString();
-      return SUPPORTED_DEVICE_IDS.contains(var2) ? var2 : GENERIC_TIZEN;
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+      Matcher versionMatcher = TIZEN_VERSION_PATTERN.matcher(normalizedUserAgent);
+      String deviceIdSuffix = versionMatcher.find() && SUPPORTED_VERSIONS.contains(versionMatcher.group(1)) ? versionMatcher.group(1).replace('.', '_') : "1_0";
+      String tizenDeviceId = (new StringBuilder("generic_tizen_ver")).append(deviceIdSuffix).toString();
+      return SUPPORTED_DEVICE_IDS.contains(tizenDeviceId) ? tizenDeviceId : GENERIC_TIZEN;
    }
 
    public String getMatcherName() {

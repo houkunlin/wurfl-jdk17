@@ -14,140 +14,134 @@ import org.apache.commons.lang3.StringUtils;
 
 public class VirtualCapabilityDevice implements Serializable {
    private static final long serialVersionUID = -9083698933173727805L;
-   private static final Pattern a = Pattern.compile("Windows NT ([0-9]+?\\.[0-9])");
-   private static final Pattern b = Pattern.compile("Windows [0-9\\.]+");
-   private static final Pattern c = Pattern.compile("PPC.+OS X ([0-9\\._]+)");
-   private static final Pattern d = Pattern.compile("PPC.+OS X ([0-9\\._]+)");
-   private static final Pattern e = Pattern.compile("Trident/([\\d\\.]+)");
-   private static final Pattern f = Pattern.compile("Intel Mac OS X ([0-9\\._]+)");
-   private static final Pattern g = Pattern.compile("MacOS X ([0-9\\._]+)");
-   private static final Pattern h = Pattern.compile("\\.");
-   private final NameVersionPair i;
-   private final NameVersionPair j;
-   private static Map<String, String> k = new HashMap<>();
-   private static Map<String, String> l = new HashMap<>();
-   private static Map<String, String> m = new HashMap<>();
-   private static Set<String> n = new HashSet<>(16);
-   private String o;
-   private String p;
-   private String q;
+   private static final Pattern WINDOWS_NT_VERSION_PATTERN = Pattern.compile("Windows NT ([0-9]+?\\.[0-9])");
+   private static final Pattern WINDOWS_VERSION_PATTERN = Pattern.compile("Windows [0-9\\.]+");
+   private static final Pattern PPC_OS_X_VERSION_PATTERN = Pattern.compile("PPC.+OS X ([0-9\\._]+)");
+   private static final Pattern PPC_OS_X_VERSION_PATTERN_ALT = Pattern.compile("PPC.+OS X ([0-9\\._]+)");
+   private static final Pattern TRIDENT_VERSION_PATTERN = Pattern.compile("Trident/([\\d\\.]+)");
+   private static final Pattern INTEL_MAC_OS_X_VERSION_PATTERN = Pattern.compile("Intel Mac OS X ([0-9\\._]+)");
+   private static final Pattern MAC_OS_X_VERSION_PATTERN = Pattern.compile("MacOS X ([0-9\\._]+)");
+   private static final Pattern DOT_SPLIT_PATTERN = Pattern.compile("\\.");
+   private final NameVersionPair browserPair;
+   private final NameVersionPair osPair;
+   private static Map<String, String> windowsNtVersionToName = new HashMap<>();
+   private static Map<String, String> tridentVersionToIeVersion = new HashMap<>();
+   private static Map<String, String> windowsPhoneVersionMapping = new HashMap<>();
+   private static Set<String> knownOsNames = new HashSet<>(16);
+   private String deviceUserAgent;
+   private String browserUserAgent;
+   private String cleanedDeviceUserAgent;
 
    public String getDeviceUserAgent() {
-      return this.o;
+      return this.deviceUserAgent;
    }
 
    public String getBrowserUserAgent() {
-      return this.p;
+      return this.browserUserAgent;
    }
 
    public String getCleanedDeviceUserAgent() {
-      return this.q;
+      return this.cleanedDeviceUserAgent;
    }
 
    public NameVersionPair getBrowserPair() {
-      return this.i;
+      return this.browserPair;
    }
 
    public String getOsPairName() {
-      return this.j.getName();
+      return this.osPair.getName();
    }
 
    public String getBrowserPairName() {
-      return this.i.getName();
+      return this.browserPair.getName();
    }
 
    public String getBrowserPairVersion() {
-      return this.i.getVersion();
+      return this.browserPair.getVersion();
    }
 
    public String getOsPairVersion() {
-      return this.j.getVersion();
+      return this.osPair.getVersion();
    }
 
    public NameVersionPair getOsPair() {
-      return this.j;
+      return this.osPair;
    }
 
-   public VirtualCapabilityDevice(WURFLRequest var1) {
-      if (var1.isUrlEncoded()) {
-         this.o = var1.getCleanedDeviceUserAgent();
-         this.p = this.o;
-         this.q = var1.getCleanedDeviceUserAgent();
+   public VirtualCapabilityDevice(WURFLRequest request) {
+      if (request.isUrlEncoded()) {
+         this.deviceUserAgent = request.getCleanedDeviceUserAgent();
+         this.browserUserAgent = this.deviceUserAgent;
+         this.cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       } else {
-         this.o = var1.getDeviceUserAgent();
-         this.p = var1.getBrowserUserAgent();
-         this.q = var1.getCleanedDeviceUserAgent();
+         this.deviceUserAgent = request.getDeviceUserAgent();
+         this.browserUserAgent = request.getBrowserUserAgent();
+         this.cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
       }
 
-      this.i = new NameVersionPair();
-      this.j = new NameVersionPair();
+      this.browserPair = new NameVersionPair();
+      this.osPair = new NameVersionPair();
    }
 
-   public VirtualCapabilityDevice(String var1, String var2, String var3, String var4) {
-      if (!UserAgentUtils.isRawUrlEncoded(var4) && !UserAgentUtils.hasIIsLoggingStyle(var4)) {
-         this.o = var1;
-         this.p = var2;
-         this.q = var3;
-      } else {
-         this.o = var1;
-         this.p = var2;
-         this.q = var3;
-      }
+   public VirtualCapabilityDevice(String deviceUserAgent, String browserUserAgent, String cleanedDeviceUserAgent, String rawUserAgent) {
+      this.deviceUserAgent = deviceUserAgent;
+      this.browserUserAgent = browserUserAgent;
+      this.cleanedDeviceUserAgent = cleanedDeviceUserAgent;
 
-      this.i = new NameVersionPair();
-      this.j = new NameVersionPair();
+      this.browserPair = new NameVersionPair();
+      this.osPair = new NameVersionPair();
    }
 
    public void normalizeOS() {
-      if (this.j.getName() != null && StringMatchUtils.indexOf(this.o, "Windows") >= 0) {
-         Matcher var1;
-         if ((var1 = a.matcher(this.j.getName())).find()) {
-            this.j.setName("Windows");
-            this.j.setVersion(k.containsKey(var1.group(1)) ? (String)k.get(var1.group(1)) : var1.group());
+      if (this.osPair.getName() != null && StringMatchUtils.indexOf(this.deviceUserAgent, "Windows") >= 0) {
+         Matcher ntVersionMatcher;
+         if ((ntVersionMatcher = WINDOWS_NT_VERSION_PATTERN.matcher(this.osPair.getName())).find()) {
+            this.osPair.setName("Windows");
+            this.osPair.setVersion(windowsNtVersionToName.containsKey(ntVersionMatcher.group(1)) ? (String)windowsNtVersionToName.get(ntVersionMatcher.group(1)) : ntVersionMatcher.group());
             return;
          }
 
-         if (b.matcher(this.j.getName()).find()) {
+         if (WINDOWS_VERSION_PATTERN.matcher(this.osPair.getName()).find()) {
             return;
          }
       }
 
-      if (StringMatchUtils.indexOf(this.j.getName(), "Windows Phone") >= 0 && this.j.getVersion() != null && m.containsKey(this.j.getVersion())) {
-         this.getOsPair().setVersion((String)m.get(this.j.getVersion()));
+      if (StringMatchUtils.indexOf(this.osPair.getName(), "Windows Phone") >= 0 && this.osPair.getVersion() != null && windowsPhoneVersionMapping.containsKey(this.osPair.getVersion())) {
+         this.getOsPair().setVersion((String)windowsPhoneVersionMapping.get(this.osPair.getVersion()));
       }
 
-      if (this.j.matchAndSetGroup(c, this.o, "Mac OS X", 1)) {
-         this.j.setVersion(this.j.getVersion().replaceAll("_", "."));
-      } else if (this.j.matchAndSetGroup(g, this.o, "Mac OS X", 1)) {
-         this.j.setVersion(this.j.getVersion().replaceAll("_", "."));
-      } else if (!this.j.matchAndSet(d, this.o, "Mac OS X", (String)null)) {
-         if (this.j.matchAndSetGroup(f, this.o, "Mac OS X", 1)) {
-            if (this.j.getVersion() != null) {
-               this.j.setVersion(this.j.getVersion().replaceAll("_", "."));
-               String[] var4;
-               if (StringUtils.isNotEmpty(this.j.getVersion()) && (var4 = h.split(this.j.getVersion())) != null && var4.length > 1 && StringUtils.isNumeric(var4[0]) && StringUtils.isNumeric(var4[1]) && Integer.parseInt(var4[0]) >= 10 && Integer.parseInt(var4[1]) >= 12) {
-                  this.j.setName("macOS");
+      if (this.osPair.matchAndSetGroup(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
+         this.osPair.setVersion(this.osPair.getVersion().replaceAll("_", "."));
+      } else if (this.osPair.matchAndSetGroup(MAC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
+         this.osPair.setVersion(this.osPair.getVersion().replaceAll("_", "."));
+      } else if (!this.osPair.matchAndSet(PPC_OS_X_VERSION_PATTERN_ALT, this.deviceUserAgent, "Mac OS X", (String)null)) {
+         if (this.osPair.matchAndSetGroup(INTEL_MAC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
+            if (this.osPair.getVersion() != null) {
+               this.osPair.setVersion(this.osPair.getVersion().replaceAll("_", "."));
+               String[] majorMinor;
+               if (StringUtils.isNotEmpty(this.osPair.getVersion()) && (majorMinor = DOT_SPLIT_PATTERN.split(this.osPair.getVersion())) != null && majorMinor.length > 1 && StringUtils.isNumeric(majorMinor[0]) && StringUtils.isNumeric(majorMinor[1]) && Integer.parseInt(majorMinor[0]) >= 10 && Integer.parseInt(majorMinor[1]) >= 12) {
+                  this.osPair.setName("macOS");
                   return;
                }
             }
 
-         } else if (!this.j.containsAndSetName(this.o, "Mac_PowerPC", "Mac OS X")) {
-            if (!this.j.containsAndSetName(this.o, "CrOS", "Chrome OS")) {
-               if (this.j.getName() != null && (this.j.getName().contains("Linux") || this.j.getName().contains("X11"))) {
-                  this.j.setName("Linux");
+         } else if (!this.osPair.containsAndSetName(this.deviceUserAgent, "Mac_PowerPC", "Mac OS X")) {
+            if (!this.osPair.containsAndSetName(this.deviceUserAgent, "CrOS", "Chrome OS")) {
+               if (this.osPair.getName() != null && (this.osPair.getName().contains("Linux") || this.osPair.getName().contains("X11"))) {
+                  this.osPair.setName("Linux");
                }
 
-               if (StringUtils.isNotEmpty(this.j.getName())) {
-                  for(String osName : n) {
-                     if (this.j.getName().contains(osName)) {
+               if (StringUtils.isNotEmpty(this.osPair.getName())) {
+                  for(String osName : knownOsNames) {
+                     if (this.osPair.getName().contains(osName)) {
                         return;
                      }
                   }
 
-                  this.j.setName("");
-                  this.j.setVersion("");
-                  if (StringMatchUtils.indexOf(this.o, "Linux") >= 0 || StringMatchUtils.indexOf(this.o, "X11") >= 0) {
-                     this.j.setName("Linux");
+                  this.osPair.setName("");
+                  this.osPair.setVersion("");
+                  if (StringMatchUtils.indexOf(this.deviceUserAgent, "Linux") >= 0 || StringMatchUtils.indexOf(this.deviceUserAgent, "X11") >= 0) {
+                     this.osPair.setName("Linux");
                      return;
                   }
                }
@@ -158,52 +152,52 @@ public class VirtualCapabilityDevice implements Serializable {
    }
 
    public void normalizeBrowser() {
-      Matcher var1 = e.matcher(this.o);
-      if ("IE".equals(this.i.getName()) && var1.find()) {
-         String var2 = var1.group(1);
-         if (l.containsKey(var2) && !(var2 = (String)l.get(var2)).equals(this.i.getVersion())) {
-            this.i.setVersion(var2 + "(Compatibility View)");
+      Matcher tridentMatcher = TRIDENT_VERSION_PATTERN.matcher(this.deviceUserAgent);
+      if ("IE".equals(this.browserPair.getName()) && tridentMatcher.find()) {
+         String tridentVersion = tridentMatcher.group(1);
+         if (tridentVersionToIeVersion.containsKey(tridentVersion) && !(tridentVersion = (String)tridentVersionToIeVersion.get(tridentVersion)).equals(this.browserPair.getVersion())) {
+            this.browserPair.setVersion(tridentVersion + "(Compatibility View)");
          }
       }
 
    }
 
    static {
-      k.put("4.0", "NT 4.0");
-      k.put("5.0", "2000");
-      k.put("5.1", "XP");
-      k.put("5.2", "XP");
-      k.put("6.0", "Vista");
-      k.put("6.1", "7");
-      k.put("6.2", "8");
-      k.put("6.3", "8.1");
-      k.put("6.4", "10");
-      k.put("10.0", "10");
-      l.put("4.0", "8.0");
-      l.put("5.0", "9.0");
-      l.put("6.0", "10.0");
-      l.put("7.0", "11.0");
-      m.put("7.10", "7.5");
-      m.put("8.10", "8.1");
-      m.put("8.15", "10");
-      n.add("Windows CE");
-      n.add("Windows Mobile");
-      n.add("Windows Phone");
-      n.add("Nintendo");
-      n.add("Android");
-      n.add("iOS");
-      n.add("Tizen");
-      n.add("Nokia Series 40");
-      n.add("Symbian");
-      n.add("BlackBerry");
-      n.add("RIM Tablet OS");
-      n.add("Bada");
-      n.add("webOS");
-      n.add("Linux");
-      n.add("X11");
-      n.add("Ubuntu");
-      n.add("Fedora");
-      n.add("Mac OS X");
-      n.add("Fire OS");
+      windowsNtVersionToName.put("4.0", "NT 4.0");
+      windowsNtVersionToName.put("5.0", "2000");
+      windowsNtVersionToName.put("5.1", "XP");
+      windowsNtVersionToName.put("5.2", "XP");
+      windowsNtVersionToName.put("6.0", "Vista");
+      windowsNtVersionToName.put("6.1", "7");
+      windowsNtVersionToName.put("6.2", "8");
+      windowsNtVersionToName.put("6.3", "8.1");
+      windowsNtVersionToName.put("6.4", "10");
+      windowsNtVersionToName.put("10.0", "10");
+      tridentVersionToIeVersion.put("4.0", "8.0");
+      tridentVersionToIeVersion.put("5.0", "9.0");
+      tridentVersionToIeVersion.put("6.0", "10.0");
+      tridentVersionToIeVersion.put("7.0", "11.0");
+      windowsPhoneVersionMapping.put("7.10", "7.5");
+      windowsPhoneVersionMapping.put("8.10", "8.1");
+      windowsPhoneVersionMapping.put("8.15", "10");
+      knownOsNames.add("Windows CE");
+      knownOsNames.add("Windows Mobile");
+      knownOsNames.add("Windows Phone");
+      knownOsNames.add("Nintendo");
+      knownOsNames.add("Android");
+      knownOsNames.add("iOS");
+      knownOsNames.add("Tizen");
+      knownOsNames.add("Nokia Series 40");
+      knownOsNames.add("Symbian");
+      knownOsNames.add("BlackBerry");
+      knownOsNames.add("RIM Tablet OS");
+      knownOsNames.add("Bada");
+      knownOsNames.add("webOS");
+      knownOsNames.add("Linux");
+      knownOsNames.add("X11");
+      knownOsNames.add("Ubuntu");
+      knownOsNames.add("Fedora");
+      knownOsNames.add("Mac OS X");
+      knownOsNames.add("Fire OS");
    }
 }

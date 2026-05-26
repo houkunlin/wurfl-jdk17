@@ -10,34 +10,35 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
    private static final String GENERIC_UBUNTU_TOUCH_OS = "generic_ubuntu_touch_os";
    private static final String GENERIC_UBUNTU_TOUCH_OS_TABLET = "generic_ubuntu_touch_os_tablet";
 
-   public UbuntuTouchOSMatcher(WURFLModel var1) {
-      super(var1);
+   public UbuntuTouchOSMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(GENERIC_UBUNTU_TOUCH_OS);
-      var1.add(GENERIC_UBUNTU_TOUCH_OS_TABLET);
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add(GENERIC_UBUNTU_TOUCH_OS);
+      requiredDeviceIds.add(GENERIC_UBUNTU_TOUCH_OS_TABLET);
+      return requiredDeviceIds;
    }
 
-   public boolean canHandle(WURFLRequest var1) {
-      return var1.getCleanedDeviceUserAgent().contains("Ubuntu") && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Mobile", "Tablet");
+   public boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return cleanedDeviceUserAgent.contains("Ubuntu") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Mobile", "Tablet");
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      if ((var2 = var1.indexOf("like Android")) >= 0) {
-         var2 += 12;
-      } else if ((var2 = var1.indexOf("WebKit/")) >= 0) {
-         var2 += 7;
+   protected final String risMatch(String userAgent) {
+      int matchLength;
+      if ((matchLength = userAgent.indexOf("like Android")) >= 0) {
+         matchLength += 12;
+      } else if ((matchLength = userAgent.indexOf("WebKit/")) >= 0) {
+         matchLength += 7;
       }
 
-      return var2 >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2) : null;
+      return matchLength >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength) : null;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      return var1.getNormalizedDeviceUserAgent().contains("Tablet") ? GENERIC_UBUNTU_TOUCH_OS_TABLET : GENERIC_UBUNTU_TOUCH_OS;
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      return request.getNormalizedDeviceUserAgent().contains("Tablet") ? GENERIC_UBUNTU_TOUCH_OS_TABLET : GENERIC_UBUNTU_TOUCH_OS;
    }
 
    public String getMatcherName() {
