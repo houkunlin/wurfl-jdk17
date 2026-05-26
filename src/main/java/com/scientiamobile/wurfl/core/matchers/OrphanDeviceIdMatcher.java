@@ -6,28 +6,28 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class OrphanDeviceIdMatcher extends MatcherBase {
-   public OrphanDeviceIdMatcher(WURFLModel var1) {
-      super(var1);
+   public OrphanDeviceIdMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
-   public boolean canHandle(WURFLRequest var1) {
+   public boolean canHandle(WURFLRequest request) {
       return false;
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add("opwv_v6_generic");
-      var1.add("opwv_v7_generic");
-      var1.add("opwv_v72_generic");
-      var1.add("upgui_generic");
-      var1.add("uptext_generic");
-      var1.add("generic_netfront_ver3");
-      var1.add("generic_netfront_ver3_1");
-      var1.add("generic_netfront_ver3_2");
-      var1.add("generic_netfront_ver3_3");
-      var1.add("generic_netfront_ver3_4");
-      var1.add("generic_netfront_ver3_5");
-      var1.add("generic_netfront_ver4_0");
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add("opwv_v6_generic");
+      requiredDeviceIds.add("opwv_v7_generic");
+      requiredDeviceIds.add("opwv_v72_generic");
+      requiredDeviceIds.add("upgui_generic");
+      requiredDeviceIds.add("uptext_generic");
+      requiredDeviceIds.add("generic_netfront_ver3");
+      requiredDeviceIds.add("generic_netfront_ver3_1");
+      requiredDeviceIds.add("generic_netfront_ver3_2");
+      requiredDeviceIds.add("generic_netfront_ver3_3");
+      requiredDeviceIds.add("generic_netfront_ver3_4");
+      requiredDeviceIds.add("generic_netfront_ver3_5");
+      requiredDeviceIds.add("generic_netfront_ver4_0");
+      return requiredDeviceIds;
    }
 }

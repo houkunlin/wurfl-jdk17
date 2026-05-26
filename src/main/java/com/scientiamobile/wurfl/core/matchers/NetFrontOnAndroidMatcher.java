@@ -13,29 +13,29 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
    private static final String GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER = "generic_android_ver2_0_netfrontlifebrowser";
    private static final Map<String, String> ANDROID_VERSION_TO_DEVICE_ID;
 
-   public NetFrontOnAndroidMatcher(WURFLModel var1) {
-      super(var1);
+   public NetFrontOnAndroidMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER);
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add(GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(var2, "Android", "NetFrontLifeBrowser/2.2");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Android", "NetFrontLifeBrowser/2.2");
    }
 
-   protected final String risMatch(String var1) {
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, StringMatchUtils.indexOfOrLength(var1, "NetFrontLifeBrowser/2.2"));
+   protected final String risMatch(String userAgent) {
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, StringMatchUtils.indexOfOrLength(userAgent, "NetFrontLifeBrowser/2.2"));
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var2 = UserAgentUtils.getAndroidVersion(var1.getNormalizedDeviceUserAgent(), true);
-      String var3;
-      return (var3 = ANDROID_VERSION_TO_DEVICE_ID.get(var2)) != null ? var3 : GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER;
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String androidVersion = UserAgentUtils.getAndroidVersion(request.getNormalizedDeviceUserAgent(), true);
+      String deviceId = ANDROID_VERSION_TO_DEVICE_ID.get(androidVersion);
+      return deviceId != null ? deviceId : GENERIC_ANDROID_VER2_0_NETFRONT_LIFEBROWSER;
    }
 
    public final String getMatcherName() {

@@ -6,23 +6,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class JavaMidletMatcher extends MatcherBase {
-   private static String GENERIC_MIDP_MIDLET = "generic_midp_midlet";
+   private static final String GENERIC_MIDP_MIDLET = "generic_midp_midlet";
 
-   public JavaMidletMatcher(WURFLModel var1) {
-      super(var1);
+   public JavaMidletMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(GENERIC_MIDP_MIDLET);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add(GENERIC_MIDP_MIDLET);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return var1.getCleanedDeviceUserAgent().contains("UNTRUSTED/1.0");
+   public final boolean canHandle(WURFLRequest request) {
+      return request.getCleanedDeviceUserAgent().contains("UNTRUSTED/1.0");
    }
 
-   protected final String applyConclusiveMatch(WURFLRequest var1) {
+   protected final String applyConclusiveMatch(WURFLRequest request) {
       return GENERIC_MIDP_MIDLET;
    }
 

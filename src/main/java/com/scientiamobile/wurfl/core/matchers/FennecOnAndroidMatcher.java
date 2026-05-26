@@ -12,63 +12,66 @@ import org.apache.commons.lang3.ArrayUtils;
 
 final class FennecOnAndroidMatcher extends MatcherBase {
    private static final Pattern VERSION_PREFIX = Pattern.compile("^.+?\\(.+?rv:\\d+(\\.)");
-   private static String GENERIC_ANDROID_FENNEC_2 = "generic_android_ver2_0_fennec";
-   private static String GENERIC_ANDROID_FENNEC_2_TABLET = "generic_android_ver2_0_fennec_tablet";
-   private static String GENERIC_ANDROID_FENNEC_2_DESKTOP = "generic_android_ver2_0_fennec_desktop";
+   private static final String GENERIC_ANDROID_FENNEC_2 = "generic_android_ver2_0_fennec";
+   private static final String GENERIC_ANDROID_FENNEC_2_TABLET = "generic_android_ver2_0_fennec_tablet";
+   private static final String GENERIC_ANDROID_FENNEC_2_DESKTOP = "generic_android_ver2_0_fennec_desktop";
    private Set<String> requiredDeviceIds = this.getRequiredDeviceIds();
 
-   public FennecOnAndroidMatcher(WURFLModel var1) {
-      super(var1);
+   public FennecOnAndroidMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
       if (this.requiredDeviceIds != null) {
          return this.requiredDeviceIds;
       } else {
-         HashSet<String> var1;
-         (var1 = new HashSet<>()).add("generic");
-         var1.add(GENERIC_ANDROID_FENNEC_2);
-         var1.add(GENERIC_ANDROID_FENNEC_2_TABLET);
-         var1.add(GENERIC_ANDROID_FENNEC_2_DESKTOP);
-         var1.add("generic_android_ver4_fennec");
-         var1.add("generic_android_ver4_fennec_tablet");
-         var1.add("generic_android_ver4_fennec_desktop");
-         var1.add("generic_android_ver5_0_fennec");
-         var1.add("generic_android_ver5_0_fennec_tablet");
-         var1.add("generic_android_ver5_0_fennec_desktop");
-         var1.add("generic_android_ver6_0_fennec");
-         var1.add("generic_android_ver6_0_fennec_tablet");
-         var1.add("generic_android_ver6_0_fennec_desktop");
-         var1.add("generic_android_ver7_0_fennec");
-         var1.add("generic_android_ver7_0_fennec_tablet");
-         var1.add("generic_android_ver7_0_fennec_desktop");
-         var1.add("generic_android_ver8_0_fennec");
-         var1.add("generic_android_ver8_0_fennec_tablet");
-         var1.add("generic_android_ver8_0_fennec_desktop");
-         var1.add("generic_android_ver9_0_fennec");
-         var1.add("generic_android_ver9_0_fennec_tablet");
-         var1.add("generic_android_ver9_0_fennec_desktop");
-         this.requiredDeviceIds = var1;
-         return var1;
+         HashSet<String> requiredDeviceIds;
+         (requiredDeviceIds = new HashSet<>()).add("generic");
+         requiredDeviceIds.add(GENERIC_ANDROID_FENNEC_2);
+         requiredDeviceIds.add(GENERIC_ANDROID_FENNEC_2_TABLET);
+         requiredDeviceIds.add(GENERIC_ANDROID_FENNEC_2_DESKTOP);
+         requiredDeviceIds.add("generic_android_ver4_fennec");
+         requiredDeviceIds.add("generic_android_ver4_fennec_tablet");
+         requiredDeviceIds.add("generic_android_ver4_fennec_desktop");
+         requiredDeviceIds.add("generic_android_ver5_0_fennec");
+         requiredDeviceIds.add("generic_android_ver5_0_fennec_tablet");
+         requiredDeviceIds.add("generic_android_ver5_0_fennec_desktop");
+         requiredDeviceIds.add("generic_android_ver6_0_fennec");
+         requiredDeviceIds.add("generic_android_ver6_0_fennec_tablet");
+         requiredDeviceIds.add("generic_android_ver6_0_fennec_desktop");
+         requiredDeviceIds.add("generic_android_ver7_0_fennec");
+         requiredDeviceIds.add("generic_android_ver7_0_fennec_tablet");
+         requiredDeviceIds.add("generic_android_ver7_0_fennec_desktop");
+         requiredDeviceIds.add("generic_android_ver8_0_fennec");
+         requiredDeviceIds.add("generic_android_ver8_0_fennec_tablet");
+         requiredDeviceIds.add("generic_android_ver8_0_fennec_desktop");
+         requiredDeviceIds.add("generic_android_ver9_0_fennec");
+         requiredDeviceIds.add("generic_android_ver9_0_fennec_tablet");
+         requiredDeviceIds.add("generic_android_ver9_0_fennec_desktop");
+         this.requiredDeviceIds = requiredDeviceIds;
+         return requiredDeviceIds;
       }
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().contains("Android") && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Fennec", "Firefox");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Fennec", "Firefox");
    }
 
-   protected final String risMatch(String var1) {
-      Matcher var2;
-      int var3;
-      return (var2 = VERSION_PREFIX.matcher(var1)).find() && (var3 = var2.end()) < var1.length() ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var3) : null;
+   protected final String risMatch(String normalizedUserAgent) {
+      Matcher versionPrefixMatcher = VERSION_PREFIX.matcher(normalizedUserAgent);
+      int matchLength;
+      return versionPrefixMatcher.find() && (matchLength = versionPrefixMatcher.end()) < normalizedUserAgent.length()
+         ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
+         : null;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
       String deviceId = null;
       int androidMajorVersion = 0;
       String androidVersion;
       String normalizedUserAgent;
-      if ((androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent = var1.getNormalizedDeviceUserAgent(), false)) != null) {
+      if ((androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent = request.getNormalizedDeviceUserAgent(), false)) != null) {
          String[] versionParts = androidVersion.split("\\.");
          androidMajorVersion = ArrayUtils.isNotEmpty(versionParts) ? Integer.parseInt(versionParts[0]) : 0;
          deviceId = "generic_android_ver" + androidMajorVersion + "_0_fennec";

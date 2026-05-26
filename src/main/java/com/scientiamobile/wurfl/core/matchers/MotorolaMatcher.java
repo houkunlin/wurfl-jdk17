@@ -9,24 +9,25 @@ import java.util.Set;
 final class MotorolaMatcher extends MatcherBase {
    private static final String MOT_MIB22_GENERIC = "mot_mib22_generic";
 
-   public MotorolaMatcher(WURFLModel var1) {
-      super(var1);
+   public MotorolaMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add("generic");
-      var1.add(MOT_MIB22_GENERIC);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add("generic");
+      requiredDeviceIds.add(MOT_MIB22_GENERIC);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(var2, "Mot-", "MOT-", "MOTO", "moto") || var2.contains("Motorola");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, "Mot-", "MOT-", "MOTO", "moto")
+         || cleanedDeviceUserAgent.contains("Motorola");
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      return StringMatchUtils.containsAnyOf(var1.getNormalizedDeviceUserAgent(), "MIB/2.2", "MIB/BER2.2") ? MOT_MIB22_GENERIC : "generic";
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      return StringMatchUtils.containsAnyOf(request.getNormalizedDeviceUserAgent(), "MIB/2.2", "MIB/BER2.2") ? MOT_MIB22_GENERIC : "generic";
    }
 
    public final String getMatcherName() {

@@ -17,73 +17,74 @@ final class MSIEMatcher extends MatcherBase {
    private static final Pattern UNIMPORTANT_TOKENS = Pattern.compile("( \\.NET CLR [\\d\\.]+;?| Media Center PC [\\d\\.]+;?| OfficeLive[a-zA-Z0-9\\.\\d]+;?| InfoPath[\\.\\d]+;?)");
    private static final Map<String, String> DEVICE_BY_MAJOR_VERSION;
 
-   public MSIEMatcher(WURFLModel var1) {
-      super(var1);
+   public MSIEMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(DEVICE_BY_MAJOR_VERSION.values());
-      var1.add("generic");
-      var1.add("generic_web_browser");
-      var1.add("msie_5_5");
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.addAll(DEVICE_BY_MAJOR_VERSION.values());
+      requiredDeviceIds.add("generic");
+      requiredDeviceIds.add("generic_web_browser");
+      requiredDeviceIds.add("msie_5_5");
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      if (!var1._internalIsMobileBrowser() && var2.startsWith("Mozilla") && !StringMatchUtils.containsAnyOf(var2, "Opera", "armv", "MOTO", "BREW")) {
-         return StringMatchUtils.containsAllOf(var2, "Trident", "rv:") || StringMatchUtils.containsAnyOf(var2, "MSIE", " Edge/");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      if (!request._internalIsMobileBrowser() && cleanedDeviceUserAgent.startsWith("Mozilla") && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Opera", "armv", "MOTO", "BREW")) {
+         return StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Trident", "rv:") || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "MSIE", " Edge/");
       } else {
          return false;
       }
    }
 
-   protected final String applyConclusiveMatch(WURFLRequest var1) {
-      String var2 = UNIMPORTANT_TOKENS.matcher(var1.getNormalizedDeviceUserAgent()).replaceFirst("");
-      Matcher[] var8 = new Matcher[]{EDGE.matcher(var2), TRIDENT_RV.matcher(var2), MSIE.matcher(var2)};
-      boolean var3 = false;
-      Matcher var4 = null;
+   protected final String applyConclusiveMatch(WURFLRequest request) {
+      String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(request.getNormalizedDeviceUserAgent()).replaceFirst("");
+      Matcher[] matchers = new Matcher[]{EDGE.matcher(normalizedUserAgent), TRIDENT_RV.matcher(normalizedUserAgent), MSIE.matcher(normalizedUserAgent)};
+      boolean matched = false;
+      Matcher matchedMatcher = null;
 
-      for(int var5 = 0; var5 < 3; ++var5) {
-         Matcher var6;
-         if (var3 = (var6 = var8[var5]).find()) {
-            var4 = var6;
+      for(int i = 0; i < 3; ++i) {
+         Matcher matcher = matchers[i];
+         if (matched = matcher.find()) {
+            matchedMatcher = matcher;
             break;
          }
       }
 
-      if (var3) {
-         String var9 = var4.group(1);
-         String var10 = var4.group(2);
-         Integer var11 = -1;
+      if (matched) {
+         String majorVersion = matchedMatcher.group(1);
+         String minorVersion = matchedMatcher.group(2);
+         Integer parsedMinorVersion = -1;
 
          try {
-            var11 = Integer.parseInt(var10);
-         } catch (NumberFormatException var7) {
+            parsedMinorVersion = Integer.parseInt(minorVersion);
+         } catch (NumberFormatException ignore) {
          }
 
-         if ("5".equals(var9) && var11 == 5) {
+         if ("5".equals(majorVersion) && parsedMinorVersion == 5) {
             return "msie_5_5";
          }
 
-         String var12;
-         if ((var12 = DEVICE_BY_MAJOR_VERSION.get(var9)) != null) {
-            return var12;
+         String deviceId;
+         if ((deviceId = DEVICE_BY_MAJOR_VERSION.get(majorVersion)) != null) {
+            return deviceId;
          }
       }
 
-      return super.applyConclusiveMatch(var1);
+      return super.applyConclusiveMatch(request);
    }
 
-   protected final String risMatch(String var1) {
-      String var3;
-      int var2 = StringMatchUtils.indexOfOrLength(var3 = UNIMPORTANT_TOKENS.matcher(var1).replaceFirst(""), "Trident");
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var3, var2);
+   protected final String risMatch(String userAgent) {
+      String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(userAgent).replaceFirst("");
+      int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "Trident");
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      return StringMatchUtils.containsAnyOf(UNIMPORTANT_TOKENS.matcher(var1.getNormalizedDeviceUserAgent()).replaceFirst(""), "SLCC1", "Media Center PC", ".NET CLR", "OfficeLiveConnector") ? "generic_web_browser" : "generic";
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(request.getNormalizedDeviceUserAgent()).replaceFirst("");
+      return StringMatchUtils.containsAnyOf(normalizedUserAgent, "SLCC1", "Media Center PC", ".NET CLR", "OfficeLiveConnector") ? "generic_web_browser" : "generic";
    }
 
    public final String getMatcherName() {

@@ -19,13 +19,13 @@ class MatcherChain implements Matcher, MatcherFilter {
    }
 
    public DeviceInfo match(WURFLRequest request) {
-      Iterator<Matcher> var2 = this.matchers.iterator();
+      Iterator<Matcher> matcherIterator = this.matchers.iterator();
 
-      while(var2.hasNext()) {
-         Matcher var3;
-         (var3 = var2.next()).getMatcherName();
-         if (var3.canHandle(request)) {
-            return var3.match(request);
+      while(matcherIterator.hasNext()) {
+         Matcher matcher;
+         (matcher = matcherIterator.next()).getMatcherName();
+         if (matcher.canHandle(request)) {
+            return matcher.match(request);
          }
       }
 
@@ -53,12 +53,12 @@ class MatcherChain implements Matcher, MatcherFilter {
    }
 
    public final boolean recordMatch(WURFLRequest request, String deviceId) {
-      Iterator<MatcherFilter> var3 = this.filters.iterator();
+      Iterator<MatcherFilter> filterIterator = this.filters.iterator();
 
-      while(var3.hasNext()) {
-         MatcherFilter var4;
-         if ((var4 = var3.next()).canHandle(request)) {
-            var4.recordMatch(request, deviceId);
+      while(filterIterator.hasNext()) {
+         MatcherFilter filter;
+         if ((filter = filterIterator.next()).canHandle(request)) {
+            filter.recordMatch(request, deviceId);
             return true;
          }
       }
@@ -68,29 +68,29 @@ class MatcherChain implements Matcher, MatcherFilter {
 
    public final FilteredDeviceIndex getIndex() {
       this.logger.warn("A Filter of type MatcherChain should never be asked for its FilteredDevices set.");
-      FilteredDeviceIndex var1 = new FilteredDeviceIndex(this);
-      Iterator<MatcherFilter> var2 = this.filters.iterator();
+      FilteredDeviceIndex filteredDeviceIndex = new FilteredDeviceIndex(this);
+      Iterator<MatcherFilter> filterIterator = this.filters.iterator();
 
-      while(var2.hasNext()) {
-         MatcherFilter var3;
-         for(Object userAgentObj : (var3 = var2.next()).getIndex().getUserAgents()) {
+      while(filterIterator.hasNext()) {
+         MatcherFilter filter = filterIterator.next();
+         for(Object userAgentObj : filter.getIndex().getUserAgents()) {
             String userAgent = (String)userAgentObj;
-            var1.put(userAgent, var3.getIndex().getDeviceIdByUserAgent(userAgent));
+            filteredDeviceIndex.put(userAgent, filter.getIndex().getDeviceIdByUserAgent(userAgent));
          }
       }
 
-      return var1;
+      return filteredDeviceIndex;
    }
 
    public final void sortAll() {
-      Iterator<MatcherFilter> var1 = this.filters.iterator();
+      Iterator<MatcherFilter> filterIterator = this.filters.iterator();
 
-      while(var1.hasNext()) {
-         MatcherFilter var2;
-         if ((var2 = var1.next()) instanceof MatcherChain) {
-            ((MatcherChain)var2).sortAll();
+      while(filterIterator.hasNext()) {
+         MatcherFilter filter;
+         if ((filter = filterIterator.next()) instanceof MatcherChain) {
+            ((MatcherChain)filter).sortAll();
          } else {
-            var2.getIndex().sortUserAgents();
+            filter.getIndex().sortUserAgents();
          }
       }
 

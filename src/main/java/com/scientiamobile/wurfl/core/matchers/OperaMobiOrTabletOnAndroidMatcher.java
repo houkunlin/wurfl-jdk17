@@ -13,33 +13,34 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
    private static final String GENERIC_ANDROID_VER2_1_OPERA_TABLET = "generic_android_ver2_1_opera_tablet";
    private static final Set<String> SUPPORTED_ANDROID_OPERA_DEVICE_IDS;
 
-   public OperaMobiOrTabletOnAndroidMatcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public OperaMobiOrTabletOnAndroidMatcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
+      super(userAgentNormalizer, wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
       return new HashSet<>(SUPPORTED_ANDROID_OPERA_DEVICE_IDS);
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().contains("Android") && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Opera Tablet", "Opera Mobi");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Opera Tablet", "Opera Mobi");
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      var2 = (var2 = var1.indexOf("---")) == -1 ? var1.length() : var2 + 3;
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+   protected final String risMatch(String userAgent) {
+      int matchLength;
+      matchLength = (matchLength = userAgent.indexOf("---")) == -1 ? userAgent.length() : matchLength + 3;
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var3;
-      boolean var2 = (var3 = var1.getNormalizedDeviceUserAgent()).contains("Opera Tablet");
-      String var4 = UserAgentUtils.getAndroidVersion(var3, true);
-      var4 = "generic_android_ver" + var4.replaceAll("\\.", "_") + "_opera_" + (var2 ? "tablet" : "mobi");
-      if (SUPPORTED_ANDROID_OPERA_DEVICE_IDS.contains(var4)) {
-         return var4;
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+      boolean isOperaTablet = normalizedUserAgent.contains("Opera Tablet");
+      String androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent, true);
+      String deviceId = "generic_android_ver" + androidVersion.replaceAll("\\.", "_") + "_opera_" + (isOperaTablet ? "tablet" : "mobi");
+      if (SUPPORTED_ANDROID_OPERA_DEVICE_IDS.contains(deviceId)) {
+         return deviceId;
       } else {
-         return var2 ? GENERIC_ANDROID_VER2_1_OPERA_TABLET : GENERIC_ANDROID_VER2_0_OPERA_MOBI;
+         return isOperaTablet ? GENERIC_ANDROID_VER2_1_OPERA_TABLET : GENERIC_ANDROID_VER2_0_OPERA_MOBI;
       }
    }
 

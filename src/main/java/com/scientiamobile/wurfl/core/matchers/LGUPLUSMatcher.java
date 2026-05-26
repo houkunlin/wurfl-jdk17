@@ -9,32 +9,33 @@ import java.util.Map;
 import java.util.Set;
 
 final class LGUPLUSMatcher extends MatcherBase {
-   private static String GENERIC_LGUPLUS = "generic_lguplus";
+   private static final String GENERIC_LGUPLUS = "generic_lguplus";
    private static final Map<String, String[]> DEVICE_BY_TOKENS;
 
-   public LGUPLUSMatcher(WURFLModel var1) {
-      super(var1);
+   public LGUPLUSMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(DEVICE_BY_TOKENS.keySet());
-      var1.add(GENERIC_LGUPLUS);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).addAll(DEVICE_BY_TOKENS.keySet());
+      requiredDeviceIds.add(GENERIC_LGUPLUS);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "lgtelecom", "LGUPLUS");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "lgtelecom", "LGUPLUS");
    }
 
-   protected final String applyConclusiveMatch(WURFLRequest var1) {
+   protected final String applyConclusiveMatch(WURFLRequest request) {
       return null;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      for(Map.Entry<String, String[]> var3 : DEVICE_BY_TOKENS.entrySet()) {
-         if (StringMatchUtils.containsAllOf(var1.getNormalizedDeviceUserAgent(), var3.getValue())) {
-            return var3.getKey();
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
+      for(Map.Entry<String, String[]> entry : DEVICE_BY_TOKENS.entrySet()) {
+         if (StringMatchUtils.containsAllOf(normalizedDeviceUserAgent, entry.getValue())) {
+            return entry.getKey();
          }
       }
 

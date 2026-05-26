@@ -11,40 +11,41 @@ final class NokiaMatcher extends MatcherBase {
    private static final String NOKIA_GENERIC_SERIES80 = "nokia_generic_series80";
    private static final String NOKIA_GENERIC_MEEGO = "nokia_generic_meego";
 
-   public NokiaMatcher(WURFLModel var1) {
-      super(var1);
+   public NokiaMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(NOKIA_GENERIC_SERIES60);
-      var1.add(NOKIA_GENERIC_SERIES80);
-      var1.add(NOKIA_GENERIC_MEEGO);
-      var1.add("generic_mobile");
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add(NOKIA_GENERIC_SERIES60);
+      requiredDeviceIds.add(NOKIA_GENERIC_SERIES80);
+      requiredDeviceIds.add(NOKIA_GENERIC_MEEGO);
+      requiredDeviceIds.add("generic_mobile");
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().contains("Nokia") && !StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Android", "iPhone");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Nokia") && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Android", "iPhone");
    }
 
-   protected final String risMatch(String var1) {
-      int var2 = StringMatchUtils.indexOfAnyOrLength(var1, new String[]{"/", " "}, var1.indexOf("Nokia"));
-      if (StringMatchUtils.startsWithAnyOf(var1, "Nokia/", "Nokia ")) {
-         var2 = var1.length();
+   protected final String risMatch(String userAgent) {
+      int matchLength = StringMatchUtils.indexOfAnyOrLength(userAgent, new String[]{"/", " "}, userAgent.indexOf("Nokia"));
+      if (StringMatchUtils.startsWithAnyOf(userAgent, "Nokia/", "Nokia ")) {
+         matchLength = userAgent.length();
       }
 
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var2;
-      if ((var2 = var1.getNormalizedDeviceUserAgent()).contains("Series60")) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+      if (normalizedUserAgent.contains("Series60")) {
          return NOKIA_GENERIC_SERIES60;
-      } else if (var2.contains("Series80")) {
+      } else if (normalizedUserAgent.contains("Series80")) {
          return NOKIA_GENERIC_SERIES80;
       } else {
-         return var2.contains("MeeGo") ? NOKIA_GENERIC_MEEGO : "generic";
+         return normalizedUserAgent.contains("MeeGo") ? NOKIA_GENERIC_MEEGO : "generic";
       }
    }
 

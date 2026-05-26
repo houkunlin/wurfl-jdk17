@@ -9,48 +9,48 @@ import java.util.Map;
 import java.util.Set;
 
 final class KindleMatcher extends MatcherBase {
-   private static String GENERIC_AMAZON_KINDLE = "generic_amazon_kindle";
+   private static final String GENERIC_AMAZON_KINDLE = "generic_amazon_kindle";
    private static final Map<String, String> DEVICE_BY_TOKEN;
 
-   public KindleMatcher(WURFLModel var1) {
-      super(var1);
+   public KindleMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(GENERIC_AMAZON_KINDLE);
-      var1.addAll(DEVICE_BY_TOKEN.values());
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.add(GENERIC_AMAZON_KINDLE);
+      requiredDeviceIds.addAll(DEVICE_BY_TOKEN.values());
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2;
-      return (var2 = var1.getCleanedDeviceUserAgent()).contains("Android") && StringMatchUtils.containsAnyOf(var2, "/Kindle", "Silk") ? false : StringMatchUtils.containsAnyOf(var2, "Kindle", "Silk");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "/Kindle", "Silk") ? false : StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Kindle", "Silk");
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      if ((var2 = var1.indexOf("Build/")) != -1) {
-         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+   protected final String risMatch(String userAgent) {
+      int matchLength;
+      if ((matchLength = userAgent.indexOf("Build/")) != -1) {
+         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
       } else {
-         if ((var2 = var1.indexOf("Kindle/")) >= 0) {
-            var2 += 7;
-            char var3;
-            if ((var3 = var1.charAt(var2)) >= '1' && var3 <= '3') {
-               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 1);
+         if ((matchLength = userAgent.indexOf("Kindle/")) >= 0) {
+            matchLength += 7;
+            char firstVersionChar;
+            if ((firstVersionChar = userAgent.charAt(matchLength)) >= '1' && firstVersionChar <= '3') {
+               return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 1);
             }
          }
 
-         return (var2 = var1.indexOf("PlayStation Vita")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 16 + 1) : null;
+         return (matchLength = userAgent.indexOf("PlayStation Vita")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 16 + 1) : null;
       }
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var4 = var1.getNormalizedDeviceUserAgent();
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
 
-      for(Map.Entry<String, String> var3 : DEVICE_BY_TOKEN.entrySet()) {
-         if (var4.contains(var3.getKey())) {
-            return var3.getValue();
+      for(Map.Entry<String, String> entry : DEVICE_BY_TOKEN.entrySet()) {
+         if (normalizedUserAgent.contains(entry.getKey())) {
+            return entry.getValue();
          }
       }
 

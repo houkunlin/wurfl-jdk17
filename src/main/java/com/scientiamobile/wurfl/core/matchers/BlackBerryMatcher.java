@@ -17,54 +17,59 @@ final class BlackBerryMatcher extends AbstractMatcher {
    private static final Map<String, String> OS_VERSION_TO_DEVICE_ID;
    private static final Pattern BLACKBERRY_OS_VERSION;
 
-   public BlackBerryMatcher(WURFLModel var1) {
-      super(var1);
+   public BlackBerryMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(OS_VERSION_TO_DEVICE_ID.values());
-      var1.add("generic_mobile");
-      var1.add(RIM_PLAYBOOK_VER1);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).addAll(OS_VERSION_TO_DEVICE_ID.values());
+      requiredDeviceIds.add("generic_mobile");
+      requiredDeviceIds.add(RIM_PLAYBOOK_VER1);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsDesktopBrowser() && var2 != null && (var2.toLowerCase().contains("blackberry") || StringMatchUtils.containsAnyOf(var2, "(BB10;", "(PlayBook"));
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      boolean isBlackBerryUserAgent = cleanedDeviceUserAgent != null && (
+         cleanedDeviceUserAgent.toLowerCase().contains("blackberry")
+            || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "(BB10;", "(PlayBook")
+      );
+      return !request._internalIsDesktopBrowser() && isBlackBerryUserAgent;
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      if (var1.contains("BB10")) {
-         var2 = StringMatchUtils.indexOfOrLength(var1, ")");
-      } else if (var1.startsWith("Mozilla/4")) {
-         var2 = StringMatchUtils.secondSlash(var1);
-      } else if (var1.startsWith("Mozilla/5")) {
-         var2 = StringMatchUtils.ordinalIndexOfOrNotFound(var1, ";", 3);
-      } else if (var1.contains("PlayBook")) {
-         var2 = StringMatchUtils.firstCloseParenthesis(var1);
+   protected final String risMatch(String normalizedUserAgent) {
+      int matchLength;
+      if (normalizedUserAgent.contains("BB10")) {
+         matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, ")");
+      } else if (normalizedUserAgent.startsWith("Mozilla/4")) {
+         matchLength = StringMatchUtils.secondSlash(normalizedUserAgent);
+      } else if (normalizedUserAgent.startsWith("Mozilla/5")) {
+         matchLength = StringMatchUtils.ordinalIndexOfOrNotFound(normalizedUserAgent, ";", 3);
+      } else if (normalizedUserAgent.contains("PlayBook")) {
+         matchLength = StringMatchUtils.firstCloseParenthesis(normalizedUserAgent);
       } else {
-         var2 = StringMatchUtils.firstSlash(var1);
+         matchLength = StringMatchUtils.firstSlash(normalizedUserAgent);
       }
 
-      return var2 != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2) : StringMatchUtils.NULL_STRING;
+      return matchLength != -1
+         ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
+         : StringMatchUtils.NULL_STRING;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var4;
-      String var2 = var4 = var1.getNormalizedDeviceUserAgent();
-      Matcher var6;
-      var2 = (var6 = BLACKBERRY_OS_VERSION.matcher(var2)).find() ? var6.group(1) : null;
-      if (var4.contains("BB10")) {
-         return var4.contains("Mobile") ? BLACKBERRY_GENERIC_VER10 : BLACKBERRY_GENERIC_VER10_TABLET;
-      } else if (var4.contains("PlayBook")) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
+      Matcher osVersionMatcher = BLACKBERRY_OS_VERSION.matcher(normalizedDeviceUserAgent);
+      String osVersion = osVersionMatcher.find() ? osVersionMatcher.group(1) : null;
+      if (normalizedDeviceUserAgent.contains("BB10")) {
+         return normalizedDeviceUserAgent.contains("Mobile") ? BLACKBERRY_GENERIC_VER10 : BLACKBERRY_GENERIC_VER10_TABLET;
+      } else if (normalizedDeviceUserAgent.contains("PlayBook")) {
          return RIM_PLAYBOOK_VER1;
       } else {
-         if (var2 != null) {
-            for(Map.Entry<String, String> var3 : OS_VERSION_TO_DEVICE_ID.entrySet()) {
-               if (var2.contains(var3.getKey())) {
-                  return var3.getValue();
+         if (osVersion != null) {
+            for(Map.Entry<String, String> entry : OS_VERSION_TO_DEVICE_ID.entrySet()) {
+               if (osVersion.contains(entry.getKey())) {
+                  return entry.getValue();
                }
             }
          }

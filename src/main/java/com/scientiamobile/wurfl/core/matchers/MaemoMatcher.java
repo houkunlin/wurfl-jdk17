@@ -8,38 +8,40 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class MaemoMatcher extends MatcherBase {
-   private static String GENERIC_OPERA_MOBI_MAEMO = "generic_opera_mobi_maemo";
-   private static String NOKIA_GENERIC_MAEMO_WITH_FIREFOX = "nokia_generic_maemo_with_firefox";
-   private static String NOKIA_GENERIC_MAEMO = "nokia_generic_maemo";
+   private static final String GENERIC_OPERA_MOBI_MAEMO = "generic_opera_mobi_maemo";
+   private static final String NOKIA_GENERIC_MAEMO_WITH_FIREFOX = "nokia_generic_maemo_with_firefox";
+   private static final String NOKIA_GENERIC_MAEMO = "nokia_generic_maemo";
 
-   public MaemoMatcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public MaemoMatcher(UserAgentNormalizer normalizer, WURFLModel wurflModel) {
+      super(normalizer, wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(GENERIC_OPERA_MOBI_MAEMO);
-      var1.add(NOKIA_GENERIC_MAEMO_WITH_FIREFOX);
-      var1.add(NOKIA_GENERIC_MAEMO);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add(GENERIC_OPERA_MOBI_MAEMO);
+      requiredDeviceIds.add(NOKIA_GENERIC_MAEMO_WITH_FIREFOX);
+      requiredDeviceIds.add(NOKIA_GENERIC_MAEMO);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return var1.getCleanedDeviceUserAgent().contains("Maemo");
+   public final boolean canHandle(WURFLRequest request) {
+      return request.getCleanedDeviceUserAgent().contains("Maemo");
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var2;
-      if ((var2 = var1.getNormalizedDeviceUserAgent()).contains("Opera Mobi")) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedDeviceUserAgent;
+      if ((normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent()).contains("Opera Mobi")) {
          return GENERIC_OPERA_MOBI_MAEMO;
       } else {
-         return var2.contains("Firefox") ? NOKIA_GENERIC_MAEMO_WITH_FIREFOX : NOKIA_GENERIC_MAEMO;
+         return normalizedDeviceUserAgent.contains("Firefox") ? NOKIA_GENERIC_MAEMO_WITH_FIREFOX : NOKIA_GENERIC_MAEMO;
       }
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      return (var2 = var1.indexOf("---")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 3) : super.risMatch(var1);
+   protected final String risMatch(String normalizedUserAgent) {
+      int matchLength;
+      return (matchLength = normalizedUserAgent.indexOf("---")) >= 0
+         ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength + 3)
+         : super.risMatch(normalizedUserAgent);
    }
 
    public final String getMatcherName() {

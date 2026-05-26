@@ -8,15 +8,15 @@ abstract class MatcherBase extends AbstractMatcher {
       super();
    }
 
-   public MatcherBase(WURFLModel var1) {
-      super(var1);
+   public MatcherBase(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
-   public MatcherBase(UserAgentNormalizer var1) {
-      super(var1);
+   public MatcherBase(UserAgentNormalizer normalizer) {
+      super(normalizer);
    }
 
-   public MatcherBase(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public MatcherBase(UserAgentNormalizer normalizer, WURFLModel wurflModel) {
+      super(normalizer, wurflModel);
    }
 }

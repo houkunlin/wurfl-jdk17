@@ -18,32 +18,44 @@ final class OperaMatcher extends MatcherBase {
    private static final Pattern OPERA_VERSION = Pattern.compile("Opera[ /]?(\\d+\\.\\d+)");
    private static final Map<String, String> MAJOR_VERSION_TO_DEVICE_ID;
 
-   public OperaMatcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public OperaMatcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
+      super(userAgentNormalizer, wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(MAJOR_VERSION_TO_DEVICE_ID.values());
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.addAll(MAJOR_VERSION_TO_DEVICE_ID.values());
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Opera", "OPR/");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera", "OPR/");
    }
 
-   protected final String risMatch(String var1) {
-      int var2 = StringMatchUtils.indexOf(var1, "Opera");
-      var2 = StringMatchUtils.indexOfOrLength(var1, ".", var2);
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+   protected final String risMatch(String userAgent) {
+      int operaIndex = StringMatchUtils.indexOf(userAgent, "Opera");
+      int matchLength = StringMatchUtils.indexOfOrLength(userAgent, ".", operaIndex);
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      Matcher var2;
-      String var3;
-      String[] var4;
-      String var5;
-      return (var2 = OPERA_VERSION.matcher(var1.getNormalizedDeviceUserAgent())).find() && StringUtils.isNotEmpty(var3 = var2.group(1)) && ArrayUtils.isNotEmpty(var4 = var3.split("\\.")) && StringUtils.isNotEmpty(var5 = MAJOR_VERSION_TO_DEVICE_ID.get(var4[0])) ? var5 : OPERA_GENERIC;
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      Matcher versionMatcher = OPERA_VERSION.matcher(request.getNormalizedDeviceUserAgent());
+      if (!versionMatcher.find()) {
+         return OPERA_GENERIC;
+      } else {
+         String version = versionMatcher.group(1);
+         if (StringUtils.isEmpty(version)) {
+            return OPERA_GENERIC;
+         } else {
+            String[] parts = version.split("\\.");
+            if (ArrayUtils.isEmpty(parts)) {
+               return OPERA_GENERIC;
+            } else {
+               String deviceId = MAJOR_VERSION_TO_DEVICE_ID.get(parts[0]);
+               return StringUtils.isNotEmpty(deviceId) ? deviceId : OPERA_GENERIC;
+            }
+         }
+      }
    }
 
    public final String getMatcherName() {

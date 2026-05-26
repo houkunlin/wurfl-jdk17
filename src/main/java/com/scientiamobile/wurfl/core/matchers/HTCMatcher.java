@@ -11,33 +11,33 @@ import java.util.regex.Pattern;
 final class HTCMatcher extends MatcherBase {
    private static final Pattern HTC_PREFIX = Pattern.compile("^.*?HTC.+?[/ ;]");
 
-   public HTCMatcher(WURFLModel var1) {
-      super(var1);
+   public HTCMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add("generic");
-      var1.add("generic_ms_mobile");
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add("generic");
+      requiredDeviceIds.add("generic_ms_mobile");
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "HTC", "XV6875");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "HTC", "XV6875");
    }
 
-   protected final String risMatch(String var1) {
-      int var2 = var1.length();
-      Matcher var3;
-      if ((var3 = HTC_PREFIX.matcher(var1)).find()) {
-         var2 = var3.group(0).length();
+   protected final String risMatch(String normalizedUserAgent) {
+      int matchLength = normalizedUserAgent.length();
+      Matcher prefixMatcher;
+      if ((prefixMatcher = HTC_PREFIX.matcher(normalizedUserAgent)).find()) {
+         matchLength = prefixMatcher.group(0).length();
       }
 
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      return var1.getNormalizedDeviceUserAgent().contains("Windows CE;") ? "generic_ms_mobile" : "generic";
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      return request.getNormalizedDeviceUserAgent().contains("Windows CE;") ? "generic_ms_mobile" : "generic";
    }
 
    public final String getMatcherName() {

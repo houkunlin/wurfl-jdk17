@@ -12,40 +12,40 @@ import java.util.TreeMap;
 final class OperaMiniMatcher extends MatcherBase {
    private static final SortedMap<String, String> OPERA_MINI_VERSION_TO_DEVICE_ID;
 
-   public OperaMiniMatcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public OperaMiniMatcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
+      super(userAgentNormalizer, wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(OPERA_MINI_VERSION_TO_DEVICE_ID.values());
-      return var1;
+      HashSet<String> requiredDeviceIds = new HashSet<>();
+      requiredDeviceIds.addAll(OPERA_MINI_VERSION_TO_DEVICE_ID.values());
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Opera Mini", "OperaMini", "Opera Mobi", "OperaMobi");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera Mini", "OperaMini", "Opera Mobi", "OperaMobi");
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      if ((var2 = var1.indexOf("---")) >= 0) {
-         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 3);
-      } else if ((var2 = StringMatchUtils.indexOf(var1, "Opera Mini")) >= 0 && (var2 = StringMatchUtils.indexOf(var1, ".", var2)) >= 0) {
-         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 1);
+   protected final String risMatch(String userAgent) {
+      int matchLength;
+      if ((matchLength = userAgent.indexOf("---")) >= 0) {
+         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 3);
+      } else if ((matchLength = StringMatchUtils.indexOf(userAgent, "Opera Mini")) >= 0 && (matchLength = StringMatchUtils.indexOf(userAgent, ".", matchLength)) >= 0) {
+         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 1);
       } else {
-         return (var2 = StringMatchUtils.firstSlash(var1)) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2) : StringMatchUtils.NULL_STRING;
+         return (matchLength = StringMatchUtils.firstSlash(userAgent)) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength) : StringMatchUtils.NULL_STRING;
       }
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var3 = var1.getNormalizedDeviceUserAgent();
-      for(String var2 : OPERA_MINI_VERSION_TO_DEVICE_ID.keySet()) {
-         if (var3.toLowerCase().contains(var2.toLowerCase())) {
-            return OPERA_MINI_VERSION_TO_DEVICE_ID.get(var2);
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+      for(String versionPrefix : OPERA_MINI_VERSION_TO_DEVICE_ID.keySet()) {
+         if (normalizedUserAgent.toLowerCase().contains(versionPrefix.toLowerCase())) {
+            return OPERA_MINI_VERSION_TO_DEVICE_ID.get(versionPrefix);
          }
       }
 
-      return var3.contains("Opera Mobi") ? "generic_opera_mini_version4" : "generic_opera_mini_version1";
+      return normalizedUserAgent.contains("Opera Mobi") ? "generic_opera_mini_version4" : "generic_opera_mini_version1";
    }
 
    public final String getMatcherName() {
