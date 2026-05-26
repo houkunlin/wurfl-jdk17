@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 public class UpdatePipeline {
    public static final String ENV_SCIENTIA_URL = "WURFL_UPDATE_URL";
@@ -128,6 +129,7 @@ public class UpdatePipeline {
    }
 
    static int headRequest(URL url, String ifModifiedSince, int timeoutMs, String userAgent, ProxySettings proxySettings) {
+      Validate.isTrue(url.getHost() != null && (url.getHost().endsWith(".scientiamobile.com") || url.getHost().equals("localhost") || url.getHost().equals("127.0.0.1")), "Invalid URL host: " + url.getHost());
       HttpsURLConnection connection = null;
       try {
          (connection = proxySettings != null ? (HttpsURLConnection)url.openConnection(proxySettings.getProxy()) : (HttpsURLConnection)url.openConnection()).setRequestMethod("HEAD");

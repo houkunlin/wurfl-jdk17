@@ -12,7 +12,7 @@ public class WurflBackupTask implements UpdatePipelineTask {
       String backupWurflPath = originalWurflPath + ".old";
 
       try {
-         FileUtils.copyFile(new File(originalWurflPath), new File(backupWurflPath));
+         FileUtils.copyFile(new File(originalWurflPath).getCanonicalFile(), new File(backupWurflPath).getCanonicalFile());
          context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
          context.put("backup_wurfl_path", backupWurflPath);
       } catch (IOException e) {

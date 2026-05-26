@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,11 +26,12 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
 
    public void execute(Map<String, Object> context) {
       String originalWurflPath = (String)context.get("original_wurfl_path");
-      File originalWurflFile = new File(originalWurflPath);
-      String ifModifiedSince = originalWurflFile.exists() ? LAST_MODIFIED_FORMAT.format(new Date(originalWurflFile.lastModified())) : "";
 
       try {
+         File originalWurflFile = new File(originalWurflPath).getCanonicalFile();
+         String ifModifiedSince = originalWurflFile.exists() ? LAST_MODIFIED_FORMAT.format(new Date(originalWurflFile.lastModified())) : "";
          URL newWurflUrl = URI.create((String)context.get("new_wurfl_url")).toURL();
+         Validate.isTrue(newWurflUrl.getHost() != null && (newWurflUrl.getHost().endsWith(".scientiamobile.com") || newWurflUrl.getHost().equals("localhost") || newWurflUrl.getHost().equals("127.0.0.1")), "Invalid URL host: " + newWurflUrl.getHost());
          Integer connectionTimeoutMs = UpdatePipeline.getConnectionTimeoutMsOrDefault(context);
          int responseCode = UpdatePipeline.headRequest(newWurflUrl, ifModifiedSince, connectionTimeoutMs, (String)context.get("API_USER_AGENT"), this.proxySettings);
          if (responseCode == 200) {

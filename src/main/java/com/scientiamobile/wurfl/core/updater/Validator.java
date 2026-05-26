@@ -23,7 +23,12 @@ public class Validator {
    }
 
    static void validateWritableFile(String localWurflPath) {
-      File wurflFile = new File(localWurflPath);
+      File wurflFile;
+      try {
+         wurflFile = new File(localWurflPath).getCanonicalFile();
+      } catch (IOException e) {
+         throw new WURFLRuntimeException("Cannot access WURFL file: " + localWurflPath, e);
+      }
       String errorMessage = "WURFL file at path " + wurflFile.getAbsolutePath() + " is not writable, please provide write permission for it and its enclosing directory";
       if (!wurflFile.canWrite()) {
          throw new WurflFilePermissionException(errorMessage);

@@ -174,7 +174,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
          if (StringUtils.isBlank(newRootPath)) {
             this.log.warn("Empty value has been provided for replacing root, skipping");
             return false;
-         } else if (!(new File(this.rootPath)).canWrite()) {
+         } else if (!(new File(this.rootPath).getCanonicalFile()).canWrite()) {
             this.log.error("Engine root at {}is not writable, cannot replace it", this.rootPath);
             return false;
          } else {
@@ -186,7 +186,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
             }
 
             newEngine.load();
-            FileUtils.copyFile(new File(newRootPath), new File(this.rootPath), true);
+            FileUtils.copyFile(new File(newRootPath).getCanonicalFile(), new File(this.rootPath).getCanonicalFile(), true);
             this.reload(this.rootPath);
             return true;
          }

@@ -67,7 +67,12 @@ final class ResourceInput {
       } else {
          File file;
          URI uri;
-         if ((file = new File(path)).exists() && file.isFile() && file.canRead()) {
+         try {
+            file = new File(path).getCanonicalFile();
+         } catch (IOException e) {
+            file = new File(path);
+         }
+         if (file.exists() && file.isFile() && file.canRead()) {
             uri = file.toURI();
          } else {
             String uriString = path.replace(" ", "%20");
@@ -97,6 +102,10 @@ final class ResourceInput {
             String resourcePath = uri.toString().replaceFirst("classpath:", "");
             inputStream = this.getClass().getResourceAsStream(resourcePath);
          } else {
+            if ("http".equals(uri.getScheme()) || "https".equals(uri.getScheme())) {
+               Validate.isTrue(uri.getHost() != null && (uri.getHost().endsWith(".scientiamobile.com") || uri.getHost().equals("localhost") || uri.getHost().equals("127.0.0.1")), "Invalid URL host: " + uri.getHost());
+            }
+
             inputStream = uri.toURL().openConnection().getInputStream();
          }
 

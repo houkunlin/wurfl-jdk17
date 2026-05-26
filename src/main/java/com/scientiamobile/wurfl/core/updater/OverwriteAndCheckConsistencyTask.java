@@ -27,8 +27,8 @@ public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
       String originalWurflPath = (String)context.get("original_wurfl_path");
 
       try {
-         (new File(originalWurflPath)).delete();
-         FileUtils.copyFile(new File(newWurflTempPath), new File(originalWurflPath), true);
+         (new File(originalWurflPath).getCanonicalFile()).delete();
+         FileUtils.copyFile(new File(newWurflTempPath).getCanonicalFile(), new File(originalWurflPath).getCanonicalFile(), true);
          context.put("original_wurfl_overwritten", "true");
          GeneralWURFLEngine newEngine;
          if (ArrayUtils.isEmpty(this.patchPaths)) {

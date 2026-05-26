@@ -18,10 +18,10 @@ public class RollbackTask implements UpdatePipelineTask {
          String originalWurflPath = (String)context.get("original_wurfl_path");
 
          try {
-            FileUtils.copyFile(new File(backupWurflPath), new File(originalWurflPath));
+            FileUtils.copyFile(new File(backupWurflPath).getCanonicalFile(), new File(originalWurflPath).getCanonicalFile());
             this.log.info("Update rollback: restored file {}", originalWurflPath);
-            FileUtils.deleteQuietly(new File((String)context.get("new_wurfl_temp_path")));
-            FileUtils.deleteQuietly(new File((String)context.get("backup_wurfl_path")));
+            FileUtils.deleteQuietly(new File((String)context.get("new_wurfl_temp_path")).getCanonicalFile());
+            FileUtils.deleteQuietly(new File((String)context.get("backup_wurfl_path")).getCanonicalFile());
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
          } catch (Throwable e) {
             String errorMessage = "An error occurred while performing WURFL update rollback task";

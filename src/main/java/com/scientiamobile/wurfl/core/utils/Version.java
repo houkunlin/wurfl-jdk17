@@ -1,5 +1,6 @@
 package com.scientiamobile.wurfl.core.utils;
 
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Version implements Comparable<Version> {
@@ -17,7 +18,7 @@ public class Version implements Comparable<Version> {
 
       for(int i = 0; i < minLength; ++i) {
          int comparison;
-         if ((comparison = Integer.valueOf(this.digits[i]).compareTo(otherVersion.digits[i])) != 0) {
+         if ((comparison = Integer.compare(this.digits[i], otherVersion.digits[i])) != 0) {
             return comparison;
          }
       }
@@ -73,7 +74,7 @@ public class Version implements Comparable<Version> {
          StringTokenizer tokenizer;
          int[] digits = new int[(tokenizer = new StringTokenizer(version, separatorValue)).countTokens()];
 
-         for(int index = 0; tokenizer.hasMoreTokens(); digits[index++] = Integer.valueOf(tokenizer.nextToken())) {
+         for(int index = 0; tokenizer.hasMoreTokens(); digits[index++] = Integer.parseInt(tokenizer.nextToken())) {
          }
 
          return new Version(digits, separator);
@@ -88,5 +89,9 @@ public class Version implements Comparable<Version> {
       } else {
          return false;
       }
+   }
+
+   public int hashCode() {
+      return Arrays.hashCode(this.digits);
    }
 }

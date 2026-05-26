@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,7 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
          String tempWurflPath = (String)context.get("original_wurfl_path") + ".wtmp";
          Integer connectionTimeoutMs = UpdatePipeline.getConnectionTimeoutMsOrDefault(context);
          URL newWurflUrl = URI.create((String)context.get("new_wurfl_url")).toURL();
+         Validate.isTrue(newWurflUrl.getHost() != null && (newWurflUrl.getHost().endsWith(".scientiamobile.com") || newWurflUrl.getHost().equals("localhost") || newWurflUrl.getHost().equals("127.0.0.1")), "Invalid URL host: " + newWurflUrl.getHost());
          HttpsURLConnection connection = this.proxySettings != null ? (HttpsURLConnection)newWurflUrl.openConnection(this.proxySettings.getProxy()) : (HttpsURLConnection)newWurflUrl.openConnection();
          connection.setRequestMethod("GET");
          connection.setUseCaches(false);
@@ -34,7 +36,7 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
          connection.connect();
          int responseCode = connection.getResponseCode();
          if (responseCode == 200) {
-            File tempWurflFile = new File(tempWurflPath);
+            File tempWurflFile = new File(tempWurflPath).getCanonicalFile();
             if (!tempWurflFile.exists()) {
                tempWurflFile.createNewFile();
             }
