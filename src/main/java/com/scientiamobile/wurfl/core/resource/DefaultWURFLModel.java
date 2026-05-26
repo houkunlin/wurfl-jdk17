@@ -22,51 +22,51 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DefaultWURFLModel implements WURFLModel {
-   private Map<String, ModelDevice> a;
-   private List<String> b;
-   private final Map<String, String> c;
-   private final Set<String> d;
-   private ModelDevice e;
-   private String f;
-   private String g;
-   private Integer h;
-   private final Logger i;
+   private Map<String, ModelDevice> devicesById;
+   private List<String> deviceIdsByInsertionOrder;
+   private final Map<String, String> deviceIdToAncestorIdCache;
+   private final Set<String> familyDeviceIds;
+   private ModelDevice genericDevice;
+   private String version;
+   private String smid;
+   private Integer capabilityCount;
+   private final Logger log;
 
    public DefaultWURFLModel(WURFLResource var1, String... var2) {
       this(var1, new WURFLResources(), var2);
    }
 
    public DefaultWURFLModel(WURFLResource var1, WURFLResources var2, String... var3) {
-      this.c = CollectionFactory.createConcurrentHashMap();
-      this.d = new HashSet<>();
-      this.i = LoggerFactory.getLogger(this.getClass());
-      this.a(var1, var2, var3);
+      this.deviceIdToAncestorIdCache = CollectionFactory.createConcurrentHashMap();
+      this.familyDeviceIds = new HashSet<>();
+      this.log = LoggerFactory.getLogger(this.getClass());
+      this.loadFromRootResource(var1, var2, var3);
    }
 
-   private final synchronized void a(WURFLResource var1, WURFLResources var2, String... var3) {
+   private final synchronized void loadFromRootResource(WURFLResource var1, WURFLResources var2, String... var3) {
       Validate.notNull(var1, "The root resource must be not null.");
       if (var2 == null) {
          var2 = new WURFLResources();
       }
 
-      this.c.clear();
-      this.e = null;
-      this.h = null;
+      this.deviceIdToAncestorIdCache.clear();
+      this.genericDevice = null;
+      this.capabilityCount = null;
       ModelDevicesSnapshot var5 = var1.getData(var3);
-      this.f = var5.getSnapshotKey();
-      this.g = var5.getSmid();
+      this.version = var5.getSnapshotKey();
+      this.smid = var5.getSmid();
       ModelDevices var6 = var5.copyDevices();
       ModelDevices var4 = new ModelDevices(var6);
-      this.b = var6.getDeviceIdsByInsertionOrder();
+      this.deviceIdsByInsertionOrder = var6.getDeviceIdsByInsertionOrder();
       ModelDevicesConsistencyVerifier.verifyModelDevices(var4);
-      this.a(var2, var4, var3);
+      this.applyPatchesAndRebuild(var2, var4, var3);
       if (var2.size() == 0) {
-         a(var4);
+         setAncestors(var4);
       }
 
    }
 
-   private final synchronized void a(WURFLResources var1, ModelDevices var2, String... var3) {
+   private final synchronized void applyPatchesAndRebuild(WURFLResources var1, ModelDevices var2, String... var3) {
       int var4 = 0;
       int var5 = 0;
 
@@ -74,18 +74,18 @@ public class DefaultWURFLModel implements WURFLModel {
          ModelDevices var7;
          ModelDevicesSnapshot var8;
          ModelDevicesConsistencyVerifier.verifyNoRedefinedDevices(var7 = (var8 = var1.get(var6).getData(var3)).copyDevices(), var2);
-         String var9 = new StringBuilder().append(StringUtils.defaultString(this.f)).append("; ").append(var8.getSnapshotKey()).toString();
+         String var9 = new StringBuilder().append(StringUtils.defaultString(this.version)).append("; ").append(var8.getSnapshotKey()).toString();
          var2 = ModelDevicesPatchMerger.merge(var2, var7);
-         this.b = var2.getDeviceIdsByInsertionOrder();
+         this.deviceIdsByInsertionOrder = var2.getDeviceIdsByInsertionOrder();
          ModelDevicesConsistencyVerifier.verifyModelDevices(var2);
-         this.f = var9;
+         this.version = var9;
       }
 
       ModelDevicesConsistencyVerifier.verifyModelDevices(var2);
-      this.a = CollectionFactory.createConcurrentHashMap();
-      this.a.putAll(var2.getDevicesById());
-      a(var2);
-      Iterator<ModelDevice> var10 = this.a.values().iterator();
+      this.devicesById = CollectionFactory.createConcurrentHashMap();
+      this.devicesById.putAll(var2.getDevicesById());
+      setAncestors(var2);
+      Iterator<ModelDevice> var10 = this.devicesById.values().iterator();
 
       while(var10.hasNext()) {
          ModelDevice var11;
@@ -94,7 +94,7 @@ public class DefaultWURFLModel implements WURFLModel {
          } else {
             String var12;
             if ((var12 = var11.getFallBack()).equals("generic") || var12.equals("generic_mobile")) {
-               this.d.add(var11.getID());
+               this.familyDeviceIds.add(var11.getID());
             }
          }
 
@@ -103,14 +103,14 @@ public class DefaultWURFLModel implements WURFLModel {
          }
       }
 
-      this.e = this.a.get("generic");
-      if (this.i.isInfoEnabled()) {
-         this.i.info("WURFLModel version: " + this.f + "; devices: " + this.a.size() + " root devices: " + var5 + "; families: " + this.d.size() + "; generic devices: " + var4);
+      this.genericDevice = this.devicesById.get("generic");
+      if (this.log.isInfoEnabled()) {
+         this.log.info("WURFLModel version: " + this.version + "; devices: " + this.devicesById.size() + " root devices: " + var5 + "; families: " + this.familyDeviceIds.size() + "; generic devices: " + var4);
       }
 
    }
 
-   private static void a(ModelDevices var0) {
+   private static void setAncestors(ModelDevices var0) {
       if (var0 != null) {
          Iterator var1 = var0.getDevices().iterator();
 
@@ -125,13 +125,13 @@ public class DefaultWURFLModel implements WURFLModel {
    }
 
    public String getVersion() {
-      return this.f;
+      return this.version;
    }
 
    public ModelDevice getDeviceById(String var1) {
       Validate.notEmpty(var1, "The id must be not null");
       ModelDevice var2;
-      if ((var2 = this.a.get(var1)) == null) {
+      if ((var2 = this.devicesById.get(var1)) == null) {
          throw new DeviceNotDefinedException(var1);
       } else {
          return var2;
@@ -156,16 +156,16 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public Set getAllDevices() {
       TreeSet<ModelDevice> var1;
-      (var1 = new TreeSet<>(ModelDeviceUserAgentComparator.INSTANCE)).addAll(this.a.values());
+      (var1 = new TreeSet<>(ModelDeviceUserAgentComparator.INSTANCE)).addAll(this.devicesById.values());
       return var1;
    }
 
    public List getAllDevicesAsList() {
-      ArrayList<ModelDevice> var1 = new ArrayList<>(this.b.size());
-      Iterator var2 = this.b.iterator();
+      ArrayList<ModelDevice> var1 = new ArrayList<>(this.deviceIdsByInsertionOrder.size());
+      Iterator var2 = this.deviceIdsByInsertionOrder.iterator();
 
       while(var2.hasNext()) {
-         var1.add(this.a.get(var2.next()));
+         var1.add(this.devicesById.get(var2.next()));
       }
 
       return var1;
@@ -173,7 +173,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public Set<String> getAllDevicesId() {
       HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(this.a.keySet());
+      (var1 = new HashSet<>()).addAll(this.devicesById.keySet());
       return var1;
    }
 
@@ -204,11 +204,11 @@ public class DefaultWURFLModel implements WURFLModel {
       Validate.notNull(var1, "The device must be not null");
       String var2 = var1.getID();
       String var3;
-      if ((var3 = (String)this.c.get(var2)) != null) {
+      if ((var3 = this.deviceIdToAncestorIdCache.get(var2)) != null) {
          return this.getDeviceById(var3);
       } else {
          ModelDevice var4 = var1;
-         ModelDevice var7 = this.a();
+         ModelDevice var7 = this.getGenericDevice();
          List<ModelDevice> var5 = this.getDeviceHierarchy(var1);
          for(int var6 = var5.size() - 1; var6 >= 0 && !var4.isActualDeviceRoot() && !var7.equals(var4); --var6) {
             var4 = var5.get(var6);
@@ -218,7 +218,7 @@ public class DefaultWURFLModel implements WURFLModel {
             throw new RuntimeException("Hierarchy is invalid");
          } else {
             String var8 = var4.getID();
-            this.c.put(var2, var8);
+            this.deviceIdToAncestorIdCache.put(var2, var8);
             return var4;
          }
       }
@@ -226,26 +226,26 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public boolean isDeviceDefined(String var1) {
       Validate.notEmpty(var1, "The deviceId must be not null");
-      return this.a.containsKey(var1);
+      return this.devicesById.containsKey(var1);
    }
 
    public int size() {
-      return this.a.size();
+      return this.devicesById.size();
    }
 
    public Set getAllGroups() {
-      return this.a().getGroups();
+      return this.getGenericDevice().getGroups();
    }
 
    public boolean isGroupDefined(String var1) {
       Validate.notEmpty(var1, "The groupId must be not null");
-      return this.a().defineGroup(var1);
+      return this.getGenericDevice().defineGroup(var1);
    }
 
    public String getGroupByCapability(String var1) {
       Validate.notEmpty(var1, "The capabilityName must be not null");
       ModelDevice var2;
-      if (!(var2 = this.a()).defineCapability(var1)) {
+      if (!(var2 = this.getGenericDevice()).defineCapability(var1)) {
          throw new CapabilityNotDefinedException(var1);
       } else {
          return var2.getGroupForCapability(var1);
@@ -253,36 +253,36 @@ public class DefaultWURFLModel implements WURFLModel {
    }
 
    public void reload(WURFLResource var1, WURFLResources var2, String... var3) {
-      this.i.info("about to reload the WURFL Model");
-      this.a(var1, var2, var3);
+      this.log.info("about to reload the WURFL Model");
+      this.loadFromRootResource(var1, var2, var3);
    }
 
    public void applyPatches(WURFLResources var1, String... var2) {
-      this.a(var1, new ModelDevices(this.a), var2);
+      this.applyPatchesAndRebuild(var1, new ModelDevices(this.devicesById), var2);
    }
 
    public Set getAllCapabilities() {
-      ModelDevice var1 = this.a();
+      ModelDevice var1 = this.getGenericDevice();
       return new HashSet<>(var1.getCapabilities().keySet());
    }
 
    public Integer getCapabilityCount() {
-      if (this.h == null || this.h == 0) {
-         this.h = this.getAllCapabilities().size();
+      if (this.capabilityCount == null || this.capabilityCount == 0) {
+         this.capabilityCount = this.getAllCapabilities().size();
       }
 
-      return this.h;
+      return this.capabilityCount;
    }
 
    public boolean isCapabilityDefined(String var1) {
       Validate.notEmpty(var1, "The capability must be not null");
-      return this.a().defineCapability(var1);
+      return this.getGenericDevice().defineCapability(var1);
    }
 
    public Set getCapabilitiesForGroup(String var1) {
       Validate.notEmpty(var1, "The groupId must be not null");
       ModelDevice var2;
-      if (!(var2 = this.a()).defineGroup(var1)) {
+      if (!(var2 = this.getGenericDevice()).defineGroup(var1)) {
          throw new GroupNotDefinedException(var1);
       } else {
          return var2.getCapabilitiesNamesForGroup(var1);
@@ -309,7 +309,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public Set getRootDevicesIds() {
       HashSet<String> var1 = new HashSet<>();
-      Iterator<ModelDevice> var2 = this.a.values().iterator();
+      Iterator<ModelDevice> var2 = this.devicesById.values().iterator();
 
       while(var2.hasNext()) {
          ModelDevice var3;
@@ -321,15 +321,15 @@ public class DefaultWURFLModel implements WURFLModel {
       return var1;
    }
 
-   private ModelDevice a() {
-      if (this.e != null) {
-         return this.e;
+   private ModelDevice getGenericDevice() {
+      if (this.genericDevice != null) {
+         return this.genericDevice;
       } else {
          ModelDevice var1;
-         if ((var1 = this.a.get("generic")) == null && this.a.size() > 0) {
+         if ((var1 = this.devicesById.get("generic")) == null && this.devicesById.size() > 0) {
             throw new RuntimeException(new GenericNotDefinedException());
          } else {
-            this.e = var1;
+            this.genericDevice = var1;
             return var1;
          }
       }
@@ -337,7 +337,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
    public String toString() {
       ToStringBuilder var1;
-      (var1 = new ToStringBuilder(this)).append(this.f);
+      (var1 = new ToStringBuilder(this)).append(this.version);
       return var1.toString();
    }
 }

@@ -10,69 +10,66 @@ import javax.xml.parsers.SAXParserFactory;
 import org.slf4j.LoggerFactory;
 
 public class XMLResource implements WURFLResource {
-   private final ResourceInput a;
-   private String b;
-   private Set<String> c;
-   private String d;
-   private static final SAXParserFactory e;
+   private final ResourceInput resourceInput;
+   private String version;
+   private Set<String> includedCapabilities;
+   private String originalPath;
+   private static final SAXParserFactory SAX_PARSER_FACTORY;
 
    public XMLResource(String var1) {
-      this.d = var1;
-      this.a = new ResourceInput(var1);
+      this.originalPath = var1;
+      this.resourceInput = new ResourceInput(var1);
    }
 
    public XMLResource(File var1) {
-      this.d = var1.getAbsolutePath();
-      this.a = new ResourceInput(var1);
+      this.originalPath = var1.getAbsolutePath();
+      this.resourceInput = new ResourceInput(var1);
    }
 
    public XMLResource(URI var1) {
-      this.a = new ResourceInput(var1);
+      this.resourceInput = new ResourceInput(var1);
    }
 
    public XMLResource(InputStream var1, String var2) {
-      this.a = new ResourceInput(var1, var2);
+      this.resourceInput = new ResourceInput(var1, var2);
    }
 
    public ModelDevicesSnapshot getData(String... var1) {
-      XMLResource var6 = this;
       if (var1 != null) {
-         this.c = new HashSet<>(var1.length);
-
-         String[] var8;
-         for(String var5 : var8 = var1) {
-            var6.c.add(var5);
+         this.includedCapabilities = new HashSet<>(var1.length);
+         for(String var5 : var1) {
+            this.includedCapabilities.add(var5);
          }
       } else {
-         this.c = new HashSet<>(0);
+         this.includedCapabilities = new HashSet<>(0);
       }
 
-      ModelDevicesSnapshot var7 = this.a(this.a.openInputStream());
-      this.a.reset();
+      ModelDevicesSnapshot var7 = this.parseSnapshot(this.resourceInput.openInputStream());
+      this.resourceInput.reset();
       return var7;
    }
 
    public String getOriginalPath() {
-      return this.d;
+      return this.originalPath;
    }
 
    public String getInfo() {
-      return this.a.getResourceName();
+      return this.resourceInput.getResourceName();
    }
 
    public String getVersion() {
-      return this.b;
+      return this.version;
    }
 
    public void release() {
-      this.a.close();
+      this.resourceInput.close();
    }
 
-   private ModelDevicesSnapshot a(InputStream var1) {
-      WurflXmlHandler var2 = new WurflXmlHandler(this.c);
+   private ModelDevicesSnapshot parseSnapshot(InputStream var1) {
+      WurflXmlHandler var2 = new WurflXmlHandler(this.includedCapabilities);
 
       try {
-         e.newSAXParser().parse(var1, var2);
+         SAX_PARSER_FACTORY.newSAXParser().parse(var1, var2);
       } catch (Exception var6) {
          throw new WURFLResourceException(this, var6);
       }
@@ -81,14 +78,14 @@ public class XMLResource implements WURFLResource {
       String var7 = var2.getWurflVersion();
       String var4 = var2.getWurflLastUpdated();
       String var5 = var2.getWurflSmid();
-      this.b = var7 != null && var7.length() != 0 ? var7 : (var4 != null && var4.length() != 0 ? var4 : "(no version info)");
+      this.version = var7 != null && var7.length() != 0 ? var7 : (var4 != null && var4.length() != 0 ? var4 : "(no version info)");
       boolean var8 = var2.isPatch();
       ModelDevices var9 = var2.getDevices();
-      return new ModelDevicesSnapshot(var3, this.b, var8, var9, var5);
+      return new ModelDevicesSnapshot(var3, this.version, var8, var9, var5);
    }
 
    static {
       LoggerFactory.getLogger(XMLResource.class);
-      e = SAXParserFactory.newInstance();
+      SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
    }
 }

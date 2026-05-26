@@ -30,35 +30,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class MatcherManager {
-   private MatcherChain a;
-   private final transient Logger b = LoggerFactory.getLogger(this.getClass());
-   private UserAgentNormalizer c;
-   private UserAgentNormalizer d;
-   private UserAgentNormalizer e;
-   private UserAgentNormalizer f;
-   private UserAgentNormalizer g;
-   private UserAgentNormalizer h;
-   private UserAgentNormalizer i;
-   private UserAgentNormalizer j;
-   private UserAgentNormalizer k;
-   private UserAgentNormalizer l;
+   private MatcherChain matcherChain;
+   private final transient Logger log = LoggerFactory.getLogger(this.getClass());
+   private UserAgentNormalizer windowsPhoneNormalizer;
+   private UserAgentNormalizer operaMobiOrTabletOnAndroidNormalizer;
+   private UserAgentNormalizer androidNormalizer;
+   private UserAgentNormalizer lgNormalizer;
+   private UserAgentNormalizer maemoNormalizer;
+   private UserAgentNormalizer firefoxNormalizer;
+   private UserAgentNormalizer safariNormalizer;
+   private UserAgentNormalizer htcMacNormalizer;
+   private UserAgentNormalizer webOSNormalizer;
+   private UserAgentNormalizer operaNormalizer;
 
    public MatcherManager(WURFLModel var1) {
-      this.a = this.a(var1);
+      this.matcherChain = this.buildMatcherChain(var1);
    }
 
-   private MatcherChain a(WURFLModel var1) {
+   private MatcherChain buildMatcherChain(WURFLModel var1) {
       MatcherChain var2 = new MatcherChain();
-      this.f = new LGNormalizer();
-      this.e = new AndroidNormalizer();
-      this.d = new OperaMobiOrTabletOnAndroidNormalizer();
-      this.h = new FirefoxNormalizer();
-      this.i = new SafariNormalizer();
-      this.c = new WindowsPhoneNormalizer();
-      this.g = new MaemoNormalizer();
-      this.j = new HTCMacNormalizer();
-      this.k = new WebOSNormalizer();
-      this.l = new OperaNormalizer();
+      this.lgNormalizer = new LGNormalizer();
+      this.androidNormalizer = new AndroidNormalizer();
+      this.operaMobiOrTabletOnAndroidNormalizer = new OperaMobiOrTabletOnAndroidNormalizer();
+      this.firefoxNormalizer = new FirefoxNormalizer();
+      this.safariNormalizer = new SafariNormalizer();
+      this.windowsPhoneNormalizer = new WindowsPhoneNormalizer();
+      this.maemoNormalizer = new MaemoNormalizer();
+      this.htcMacNormalizer = new HTCMacNormalizer();
+      this.webOSNormalizer = new WebOSNormalizer();
+      this.operaNormalizer = new OperaNormalizer();
       SiemensMatcher var3 = new SiemensMatcher();
       SagemMatcher var4 = new SagemMatcher();
       PanasonicMatcher var5 = new PanasonicMatcher();
@@ -75,22 +75,22 @@ public final class MatcherManager {
       KonquerorMatcher var16 = new KonquerorMatcher();
       CatchAllMozillaMatcher var17 = new CatchAllMozillaMatcher(var1);
       CatchAllRISMatcher var18 = new CatchAllRISMatcher();
-      FirefoxMatcher var19 = new FirefoxMatcher(this.h, var1);
+      FirefoxMatcher var19 = new FirefoxMatcher(this.firefoxNormalizer, var1);
       MSIEMatcher var21 = new MSIEMatcher(var1);
-      OperaMatcher var22 = new OperaMatcher(this.l, var1);
-      SafariMatcher var23 = new SafariMatcher(this.i, var1);
+      OperaMatcher var22 = new OperaMatcher(this.operaNormalizer, var1);
+      SafariMatcher var23 = new SafariMatcher(this.safariNormalizer, var1);
       var2.addMatcher(new SmartTvMatcher(var1));
       var2.addMatcher(new KindleMatcher(var1));
       var2.addMatcher(new UcwebU3Matcher(new UcwebU3Normalizer(), var1));
       var2.addMatcher(new UcwebU2Matcher(new UcwebU2Normalizer(), var1));
       var2.addMatcher(new EmailClientUserAgentMatcher(new ThunderbirdNormalizer(), var1));
-      var2.addMatcher(new WindowsPhoneMatcher(this.c, var1));
+      var2.addMatcher(new WindowsPhoneMatcher(this.windowsPhoneNormalizer, var1));
       var2.addMatcher(new OperaMiniOnAndroidMatcher(var1));
-      var2.addMatcher(new OperaMobiOrTabletOnAndroidMatcher(this.d, var1));
+      var2.addMatcher(new OperaMobiOrTabletOnAndroidMatcher(this.operaMobiOrTabletOnAndroidNormalizer, var1));
       var2.addMatcher(new FennecOnAndroidMatcher(var1));
       var2.addMatcher(new UCWEB7OnAndroidMatcher(var1));
       var2.addMatcher(new NetFrontOnAndroidMatcher(var1));
-      var2.addMatcher(new AndroidMatcher(this.e, var1));
+      var2.addMatcher(new AndroidMatcher(this.androidNormalizer, var1));
       var2.addMatcher(new UbuntuTouchOSMatcher(var1));
       var2.addMatcher(new TizenMatcher(var1));
       var2.addMatcher(new AppleMatcher(new AppleNormalizer(), var1));
@@ -104,13 +104,13 @@ public final class MatcherManager {
       var2.addMatcher(var12);
       var2.addMatcher(new DoCoMoMatcher(var1));
       var2.addMatcher(var14);
-      var2.addMatcher(new HTCMacMatcher(this.j, var1));
+      var2.addMatcher(new HTCMacMatcher(this.htcMacNormalizer, var1));
       var2.addMatcher(new HTCMatcher(var1));
       var2.addMatcher(new KDDIMatcher(var1));
       var2.addMatcher(var9);
-      var2.addMatcher(new LGMatcher(this.f, var1));
+      var2.addMatcher(new LGMatcher(this.lgNormalizer, var1));
       var2.addMatcher(new LGUPLUSMatcher(var1));
-      var2.addMatcher(new MaemoMatcher(this.g, var1));
+      var2.addMatcher(new MaemoMatcher(this.maemoNormalizer, var1));
       var2.addMatcher(var7);
       var2.addMatcher(new NecMatcher(var1));
       var2.addMatcher(new NintendoMatcher(var1));
@@ -128,7 +128,7 @@ public final class MatcherManager {
       var2.addMatcher(new SPVMatcher(var1));
       var2.addMatcher(var13);
       var2.addMatcher(new VodafoneMatcher(var1));
-      var2.addMatcher(new WebOSMatcher(this.k, var1));
+      var2.addMatcher(new WebOSMatcher(this.webOSNormalizer, var1));
       var2.addMatcher(new OperaMiniMatcher(new OperaMiniNormalizer(), var1));
       var2.addMatcher(new FirefoxOSMatcher(var1));
       var2.addMatcher(new JavaMidletMatcher(var1));
@@ -148,7 +148,7 @@ public final class MatcherManager {
       List var25 = var1.getAllDevicesAsList();
       MatcherChain var24 = var2;
       Validate.notNull(var25, "Model devices list is null");
-      this.b.info("model devices: " + var25.size());
+      this.log.info("model devices: " + var25.size());
       int var27 = 0;
 
       for(Iterator var26 = var25.iterator(); var26.hasNext(); ++var27) {
@@ -163,20 +163,20 @@ public final class MatcherManager {
       }
 
       var24.sortAll();
-      this.b.info("model devices filtered: " + var27);
+      this.log.info("model devices filtered: " + var27);
       return var2;
    }
 
    public final void reloadModel(WURFLModel var1) {
-      this.b.info("reloading the model");
+      this.log.info("reloading the model");
       if (var1 == null) {
          throw new IllegalArgumentException("no model defined for Matcher Manager");
       } else {
-         this.a = this.a(var1);
+         this.matcherChain = this.buildMatcherChain(var1);
       }
    }
 
    public final DeviceInfo matchRequest(WURFLRequest var1) {
-      return this.a.match(var1);
+      return this.matcherChain.match(var1);
    }
 }
