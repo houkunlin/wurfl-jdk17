@@ -16,6 +16,7 @@ public final class RISMatcher {
       return "RIS";
    }
 
+   @SuppressWarnings("rawtypes")
    public final String match(Collection candidates, String value, int threshold) {
       String matchedValue = null;
       int valueLength = value.length();

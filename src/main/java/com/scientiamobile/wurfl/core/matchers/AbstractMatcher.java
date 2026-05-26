@@ -24,16 +24,15 @@ abstract class AbstractMatcher implements Matcher {
       return this.getClass().getSimpleName();
    }
 
-   protected Set getRequiredDeviceIds() {
-      return new HashSet();
+   protected Set<String> getRequiredDeviceIds() {
+      return new HashSet<>();
    }
 
    private void validateRequiredDeviceIds(WURFLModel model) {
       if (model != null) {
-         Set allDeviceIds = model.getAllDevicesId();
+         Set<String> allDeviceIds = model.getAllDevicesId();
 
-         for(Object deviceIdObj : this.getRequiredDeviceIds()) {
-            String deviceId = (String)deviceIdObj;
+         for (String deviceId : this.getRequiredDeviceIds()) {
             if (!allDeviceIds.contains(deviceId)) {
                throw new MissingDeviceIdConsistencyException("wurfl.xml load error - Missing device id " + deviceId + " you may need to update the wurfl.xml file to a more recent version");
             }

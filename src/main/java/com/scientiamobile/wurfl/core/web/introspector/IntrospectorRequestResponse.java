@@ -6,6 +6,6 @@ final class IntrospectorRequestResponse {
    String deviceId;
    String userAgent;
    String requestType;
-   Map capabilities;
+   Map<String, String> capabilities;
 }
 

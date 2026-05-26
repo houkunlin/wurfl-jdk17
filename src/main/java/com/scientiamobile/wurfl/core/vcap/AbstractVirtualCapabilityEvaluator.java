@@ -45,10 +45,10 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
    }
 
    protected static boolean isRobot(WURFLRequest request) {
-      Map headers = request.getHeaders();
+      Map<String, String> headers = request.getHeaders();
       String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
       String acceptEncoding;
-      if (headers.containsKey("Accept-Encoding") && userAgent.contains("Trident/") && (acceptEncoding = (String)headers.get("Accept-Encoding")) != null && !acceptEncoding.contains("deflate")) {
+      if (headers.containsKey("Accept-Encoding") && userAgent.contains("Trident/") && (acceptEncoding = headers.get("Accept-Encoding")) != null && !acceptEncoding.contains("deflate")) {
          return true;
       } else {
          for(String keyword : BOT_EXCLUSION_KEYWORDS) {

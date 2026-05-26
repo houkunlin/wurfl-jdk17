@@ -153,6 +153,7 @@ final class WurflXmlHandler extends DefaultHandler {
                      }
                   }
                }
+         break;
          default:
       }
 
@@ -219,6 +220,7 @@ final class WurflXmlHandler extends DefaultHandler {
             if ("capability".equals(qName)) {
                this.parseState = WurflXmlParseState.GROUP;
             }
+         break;
          default:
       }
 

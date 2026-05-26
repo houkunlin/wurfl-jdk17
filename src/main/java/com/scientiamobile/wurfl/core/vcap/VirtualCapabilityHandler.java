@@ -26,7 +26,7 @@ public class VirtualCapabilityHandler {
 
    public String getVirtualCapability(String virtualCapabilityName, Device device) {
       VirtualCapabilityEvaluator evaluator;
-      if ((evaluator = (VirtualCapabilityEvaluator)EVALUATORS_BY_NAME.get(virtualCapabilityName)) == null) {
+      if ((evaluator = EVALUATORS_BY_NAME.get(virtualCapabilityName)) == null) {
          throw new VirtualCapabilityNotDefinedException(virtualCapabilityName);
       } else {
          synchronized(this) {

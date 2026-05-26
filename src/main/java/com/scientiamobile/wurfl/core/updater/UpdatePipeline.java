@@ -110,7 +110,7 @@ public class UpdatePipeline {
                return new UpdateResult(UpdateResultStatus.UPDATED, "Wurfl file update completed on " + (new SimpleDateFormat("yyyy/MM/dd hh:mm:ss")).format(Calendar.getInstance().getTime()));
             }
 
-            ((UpdatePipelineTask)taskIterator.next()).execute(this.context);
+            taskIterator.next().execute(this.context);
             taskResultStatus = (String)this.context.get("task_result_status");
          } while(StringUtils.isNotEmpty(taskResultStatus) && (taskResultStatus.equals(UpdateResultStatus.UPDATED.value()) || taskResultStatus.equals(UpdateResultStatus.PIPELINE_TASK_DONE.value())));
 

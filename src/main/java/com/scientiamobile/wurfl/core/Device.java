@@ -12,7 +12,7 @@ public interface Device extends InternalDevice {
 
    boolean getVirtualCapabilityAsBool(String capabilityName);
 
-   Map getVirtualCapabilities();
+   Map<String, String> getVirtualCapabilities();
 
    MarkUp getMarkUp();
 }

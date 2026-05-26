@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 public class IntrospectorServlet extends HttpServlet implements WurflWebConstants {
    private static final long serialVersionUID = 1L;
    private static WURFLEngine wurflEngine = null;
-   private final ObjectMapper objectMapper = new ObjectMapper();
+   private final transient ObjectMapper objectMapper = new ObjectMapper();
    public static final String ESCAPED_SPLIT_CHAR = "\\|";
    public static final String SPLIT_CHAR = "|";
    public static final String COLON = ":";
@@ -148,12 +148,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                boolean originalMatcherManagerAccess = (matcherManagerField = wurflHolder.getClass().getDeclaredField("matcherManager")).canAccess(wurflHolder);
                matcherManagerField.setAccessible(true);
                MatcherManager matcherManager = (MatcherManager)matcherManagerField.get(wurflHolder);
-               Set allDevices = wurflModel.getAllDevices();
+               Set<ModelDevice> allDevices = wurflModel.getAllDevices();
                ArrayList<String> userAgents = new ArrayList<>(allDevices.size());
-               Iterator deviceIterator = allDevices.iterator();
+               Iterator<ModelDevice> deviceIterator = allDevices.iterator();
 
                while(deviceIterator.hasNext()) {
-                  ModelDevice device = (ModelDevice)deviceIterator.next();
+                  ModelDevice device = deviceIterator.next();
                   if (!StringUtils.isEmpty(device.getUserAgent())) {
                      userAgents.add(device.getUserAgent());
                   }

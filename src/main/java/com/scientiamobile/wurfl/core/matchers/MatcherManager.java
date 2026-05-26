@@ -145,13 +145,12 @@ public final class MatcherManager {
       matcherChain.addMatcher(catchAllMozillaMatcher);
       matcherChain.addMatcher(catchAllRISMatcher);
       new OrphanDeviceIdMatcher(model);
-      List allDevices = model.getAllDevicesAsList();
+      List<ModelDevice> allDevices = model.getAllDevicesAsList();
       Validate.notNull(allDevices, "Model devices list is null");
       this.log.info("model devices: {}", allDevices.size());
       int filteredDevices = 0;
 
-      for(Iterator iterator = allDevices.iterator(); iterator.hasNext(); ++filteredDevices) {
-         ModelDevice device = (ModelDevice)iterator.next();
+      for (ModelDevice device : allDevices) {
          String userAgent = device.getUserAgent();
          String deviceId = device.getID();
          WURFLRequest request;

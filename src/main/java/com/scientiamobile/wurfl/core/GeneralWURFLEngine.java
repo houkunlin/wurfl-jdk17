@@ -61,7 +61,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    }
 
    public GeneralWURFLEngine(WURFLResource rootResource) {
-      this((WURFLResource)rootResource, (WURFLResources)null);
+      this(rootResource, (WURFLResources)null);
    }
 
    public GeneralWURFLEngine(String rootPath, String... patchPaths) {
@@ -111,7 +111,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
    public void reload(String rootPath) {
       WURFLResource rootResource = createXmlResource(rootPath);
-      this.reload((WURFLResource)rootResource, (WURFLResources)null);
+      this.reload(rootResource, (WURFLResources)null);
    }
 
    public void applyPatches(String... patchPaths) {
@@ -442,10 +442,9 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
       this.capabilityFilter = capabilities.toArray(new String[capabilities.size()]);
    }
 
-   @SuppressWarnings("unchecked")
-   public final void setCapabilityFilter(Collection capabilityFilter) {
+   public final void setCapabilityFilter(Collection<String> capabilityFilter) {
       if (capabilityFilter != null) {
-         ArrayList<String> capabilities = new ArrayList<>((Collection<String>)capabilityFilter);
+         ArrayList<String> capabilities = new ArrayList<>(capabilityFilter);
 
          for(String capability : ALWAYS_INCLUDED_CAPABILITIES) {
             if (!capabilities.contains(capability)) {
@@ -485,11 +484,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    public Set<String> getAllCapabilities() {
       this.ensureInitialized();
       HashSet<String> capabilities = new HashSet<>();
-      @SuppressWarnings("unchecked")
-      Iterator<String> iterator = ((Set<String>)this.wurflModel.getAllCapabilities()).iterator();
-
-      while(iterator.hasNext()) {
-         String capability = iterator.next();
+      for (String capability : this.wurflModel.getAllCapabilities()) {
          if (!capability.startsWith("controlcap_")) {
             capabilities.add(capability);
          }

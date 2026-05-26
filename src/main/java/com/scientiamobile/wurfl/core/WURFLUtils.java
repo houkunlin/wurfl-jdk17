@@ -34,24 +34,21 @@ public class WURFLUtils {
       return this.wurflModel.getDeviceById(deviceId);
    }
 
-   public Set getModelDevices(Set deviceIds) {
+   public Set<ModelDevice> getModelDevices(Set<String> deviceIds) {
       Validate.notNull(deviceIds, "The ids must be not null Set");
       Validate.noNullElements(deviceIds, "The ids must not containing null elements");
-      for(Object id : deviceIds) {
-         Validate.isTrue(id instanceof String, "The ids must containing right devices id");
-      }
       return this.wurflModel.getDevices(deviceIds);
    }
 
-   public Set getAllDevicesId() {
+   public Set<String> getAllDevicesId() {
       return this.wurflModel.getAllDevicesId();
    }
 
-   public Set getAllModelDevices() {
+   public Set<ModelDevice> getAllModelDevices() {
       return this.wurflModel.getAllDevices();
    }
 
-   public List getModelDeviceHierarchy(ModelDevice rootDevice) {
+   public List<ModelDevice> getModelDeviceHierarchy(ModelDevice rootDevice) {
       Validate.notNull(rootDevice, "The root ModelDevice must be not null");
       return this.wurflModel.getDeviceHierarchy(rootDevice);
    }
@@ -71,7 +68,7 @@ public class WURFLUtils {
       return this.wurflModel.isCapabilityDefined(capabilityName);
    }
 
-   public Set getAllCapabilities() {
+   public Set<String> getAllCapabilities() {
       return this.wurflModel.getAllCapabilities();
    }
 
@@ -91,11 +88,11 @@ public class WURFLUtils {
       return this.wurflModel.isGroupDefined(groupName);
    }
 
-   public Set getAllGroups() {
+   public Set<String> getAllGroups() {
       return this.wurflModel.getAllGroups();
    }
 
-   public Set getCapabilitiesForGroup(String groupName) {
+   public Set<String> getCapabilitiesForGroup(String groupName) {
       Validate.notEmpty(groupName, "The groupName must be not null");
       return this.wurflModel.getCapabilitiesForGroup(groupName);
    }
@@ -116,9 +113,8 @@ public class WURFLUtils {
       return this.wurflService.getDeviceById(deviceId, request);
    }
 
-   @SuppressWarnings("unchecked")
    public Set<Device> getAllDevices() {
-      Set<String> allDeviceIds = (Set<String>)this.getAllDevicesId();
+      Set<String> allDeviceIds = this.getAllDevicesId();
       HashSet<Device> devices = new HashSet<>(allDeviceIds.size());
 
       for(String deviceId : allDeviceIds) {

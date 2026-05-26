@@ -11,14 +11,14 @@ import org.slf4j.LoggerFactory;
 
 public class DefaultDevice implements EnrichedDevice, Serializable {
    private static final long serialVersionUID = 11L;
-   private InternalDevice internalDevice;
+   private transient InternalDevice internalDevice;
    private final MatchType matchType;
    private final String bucketMatcherName;
    private final String matcherName;
    private final String normalizedUserAgent;
-   private final MarkupResolver markupResolver;
+   private final transient MarkupResolver markupResolver;
    private transient MarkUp markUp;
-   private VirtualCapabilityHandler virtualCapabilityHandler;
+   private transient VirtualCapabilityHandler virtualCapabilityHandler;
 
    public DefaultDevice(InternalDevice internalDevice, VirtualCapabilityHandler virtualCapabilityHandler, MarkupResolver markupResolver, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent) {
       Validate.notNull(virtualCapabilityHandler, "The capabilitiesHandler must be not null");
@@ -44,7 +44,7 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
       this.virtualCapabilityHandler = virtualCapabilityHandler;
    }
 
-   public Map getVirtualCapabilities() {
+   public Map<String, String> getVirtualCapabilities() {
       return this.virtualCapabilityHandler.getAllVirtualCapabilities(this);
    }
 
@@ -128,7 +128,7 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
       }
    }
 
-   public Map getCapabilities() {
+   public Map<String, String> getCapabilities() {
       return this.internalDevice.getCapabilities();
    }
 

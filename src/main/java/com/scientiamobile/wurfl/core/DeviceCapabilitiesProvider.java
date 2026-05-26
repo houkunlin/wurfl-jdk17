@@ -19,12 +19,11 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
       this.modelDevice = modelDevice;
    }
 
-   @SuppressWarnings("unchecked")
-   public final Map getAllCapabilities() {
+   public final Map<String, String> getAllCapabilities() {
       HashMap<String, String> capabilities = new HashMap<>(this.wurflModel.getAllCapabilities().size());
 
       try {
-         for(ModelDevice deviceInHierarchy : (List<ModelDevice>)this.wurflModel.getDeviceHierarchy(this.modelDevice)) {
+         for(ModelDevice deviceInHierarchy : this.wurflModel.getDeviceHierarchy(this.modelDevice)) {
             capabilities.putAll(deviceInHierarchy.getCapabilities());
          }
       } catch (DeviceNotInModelException e) {
@@ -36,9 +35,8 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
       return capabilities;
    }
 
-   @SuppressWarnings("unchecked")
-   public final String getCapability(Map capabilities, String capabilityName) {
-      Map<String, String> capabilitiesMap = (Map<String, String>)capabilities;
+   public final String getCapability(Map<String, String> capabilities, String capabilityName) {
+      Map<String, String> capabilitiesMap = capabilities;
       String capabilityValue;
       if ((capabilityValue = capabilitiesMap.get(capabilityName)) != null) {
          return capabilityValue;

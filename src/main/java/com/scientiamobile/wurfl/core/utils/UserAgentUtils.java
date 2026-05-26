@@ -160,10 +160,10 @@ public final class UserAgentUtils {
 
    public static Map<String, String> getHeaders(HttpServletRequest request) {
       HashMap<String, String> headers = new HashMap<>();
-      Enumeration headerNames = request.getHeaderNames();
+      Enumeration<String> headerNames = request.getHeaderNames();
 
       while(headerNames.hasMoreElements()) {
-         String headerName = (String)headerNames.nextElement();
+         String headerName = headerNames.nextElement();
          headers.put(headerName, request.getHeader(headerName));
       }
 

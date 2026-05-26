@@ -13,7 +13,7 @@ public interface InternalDevice {
 
    boolean getCapabilityAsBool(String capabilityName);
 
-   Map getCapabilities();
+   Map<String, String> getCapabilities();
 
    boolean isActualDeviceRoot();
 

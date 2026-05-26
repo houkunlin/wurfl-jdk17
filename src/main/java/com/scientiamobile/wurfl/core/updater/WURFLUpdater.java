@@ -72,8 +72,8 @@ public class WURFLUpdater {
       this.frequency = frequency;
    }
 
-   public List getLastPeriodicUpdateResults() {
-      return (List)(this.periodicUpdateTask != null ? this.periodicUpdateTask.getLastResults() : new ArrayList(0));
+   public List<UpdateResult> getLastPeriodicUpdateResults() {
+      return this.periodicUpdateTask != null ? this.periodicUpdateTask.getLastResults() : new ArrayList<UpdateResult>(0);
    }
 
    public void setConnectionTimeoutMs(Integer connectionTimeoutMs) {

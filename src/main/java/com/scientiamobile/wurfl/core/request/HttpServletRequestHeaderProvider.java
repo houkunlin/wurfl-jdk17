@@ -14,7 +14,7 @@ public class HttpServletRequestHeaderProvider implements WURFLHeaderProvider {
       return this.request.getHeader(headerName);
    }
 
-   public Enumeration getHeaderNames() {
+   public Enumeration<String> getHeaderNames() {
       return this.request.getHeaderNames();
    }
 }

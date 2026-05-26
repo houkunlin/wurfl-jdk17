@@ -97,7 +97,7 @@ public class VirtualCapabilityDevice implements Serializable {
          Matcher ntVersionMatcher;
          if ((ntVersionMatcher = WINDOWS_NT_VERSION_PATTERN.matcher(this.osPair.getName())).find()) {
             this.osPair.setName("Windows");
-            this.osPair.setVersion(windowsNtVersionToName.containsKey(ntVersionMatcher.group(1)) ? (String)windowsNtVersionToName.get(ntVersionMatcher.group(1)) : ntVersionMatcher.group());
+            this.osPair.setVersion(windowsNtVersionToName.containsKey(ntVersionMatcher.group(1)) ? windowsNtVersionToName.get(ntVersionMatcher.group(1)) : ntVersionMatcher.group());
             return;
          }
 
@@ -107,7 +107,7 @@ public class VirtualCapabilityDevice implements Serializable {
       }
 
       if (StringMatchUtils.indexOf(this.osPair.getName(), "Windows Phone") >= 0 && this.osPair.getVersion() != null && windowsPhoneVersionMapping.containsKey(this.osPair.getVersion())) {
-         this.getOsPair().setVersion((String)windowsPhoneVersionMapping.get(this.osPair.getVersion()));
+         this.getOsPair().setVersion(windowsPhoneVersionMapping.get(this.osPair.getVersion()));
       }
 
       if (this.osPair.matchAndSetGroup(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
@@ -155,7 +155,7 @@ public class VirtualCapabilityDevice implements Serializable {
       Matcher tridentMatcher = TRIDENT_VERSION_PATTERN.matcher(this.deviceUserAgent);
       if ("IE".equals(this.browserPair.getName()) && tridentMatcher.find()) {
          String tridentVersion = tridentMatcher.group(1);
-         if (tridentVersionToIeVersion.containsKey(tridentVersion) && !(tridentVersion = (String)tridentVersionToIeVersion.get(tridentVersion)).equals(this.browserPair.getVersion())) {
+         if (tridentVersionToIeVersion.containsKey(tridentVersion) && !(tridentVersion = tridentVersionToIeVersion.get(tridentVersion)).equals(this.browserPair.getVersion())) {
             this.browserPair.setVersion(tridentVersion + "(Compatibility View)");
          }
       }

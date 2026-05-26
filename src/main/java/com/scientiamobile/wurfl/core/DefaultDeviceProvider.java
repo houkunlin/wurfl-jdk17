@@ -29,12 +29,11 @@ class DefaultDeviceProvider implements DeviceProvider {
          Validate.notNull(markupResolver, "markupResolver must be not null.");
          this.markupResolver = markupResolver;
          this.capabilitiesHolderFactory = capabilitiesHolderFactory;
-         Set modelCapabilities = this.capabilitiesHolderFactory.getModelCapabilities();
-         Set mandatoryCapabilities = VirtualCapabilityHandler.getMandatoryCapabilities();
+         Set<String> modelCapabilities = this.capabilitiesHolderFactory.getModelCapabilities();
+         Set<String> mandatoryCapabilities = VirtualCapabilityHandler.getMandatoryCapabilities();
          StringBuilder missingCapabilities = new StringBuilder();
 
-         for(Object capabilityObj : mandatoryCapabilities) {
-            String capability = (String)capabilityObj;
+         for (String capability : mandatoryCapabilities) {
             if (!modelCapabilities.contains(capability)) {
                missingCapabilities.append(capability).append(", ");
             }

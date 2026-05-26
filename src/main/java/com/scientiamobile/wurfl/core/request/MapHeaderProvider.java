@@ -15,7 +15,7 @@ public class MapHeaderProvider implements WURFLHeaderProvider {
       return this.headers.get(headerName);
    }
 
-   public Enumeration getHeaderNames() {
+   public Enumeration<String> getHeaderNames() {
       return new IteratorEnumeration<>(this.headers.keySet().iterator());
    }
 }

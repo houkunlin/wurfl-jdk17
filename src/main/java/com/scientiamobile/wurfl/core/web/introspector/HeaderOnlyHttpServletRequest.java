@@ -193,7 +193,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
    }
 
    public final String getHeader(String name) {
-      return (String)this.headers.get(name);
+      return this.headers.get(name);
    }
 
    public final void addHeader(String headerName, String headerValue) {

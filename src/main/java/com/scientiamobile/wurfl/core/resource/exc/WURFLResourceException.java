@@ -5,7 +5,7 @@ import com.scientiamobile.wurfl.core.resource.WURFLResource;
 
 public class WURFLResourceException extends WURFLRuntimeException {
    private static final long serialVersionUID = 10L;
-   private WURFLResource resource;
+   private transient WURFLResource resource;
 
    public WURFLResourceException(WURFLResource resource) {
       super((new StringBuilder("WURFL resource exception in: ")).append(resource.getInfo()).toString());

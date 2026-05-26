@@ -6,5 +6,5 @@ import java.util.Set;
 public interface CapabilitiesHolderFactory {
    CapabilitiesHolder create(ModelDevice modelDevice);
 
-   Set getModelCapabilities();
+   Set<String> getModelCapabilities();
 }

@@ -63,7 +63,7 @@ public interface WURFLEngine {
 
    WURFLUtils getWURFLUtils();
 
-   Set getAllVirtualCapabilities();
+   Set<String> getAllVirtualCapabilities();
 
    Device getDeviceById(String deviceId);
 
@@ -73,9 +73,9 @@ public interface WURFLEngine {
 
    String getAPIVersion();
 
-   Set getAllMandatoryCapabilities();
+   Set<String> getAllMandatoryCapabilities();
 
-   Set getAllCapabilities();
+   Set<String> getAllCapabilities();
 
    String getRootPath();
 }

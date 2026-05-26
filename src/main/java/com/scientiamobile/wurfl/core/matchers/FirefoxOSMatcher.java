@@ -49,7 +49,7 @@ final class FirefoxOSMatcher extends MatcherBase {
       if (rvMatcher.find()) {
          String rvVersion = rvMatcher.group(1);
          if (RV_TO_FIREFOX_OS_VERSION.containsKey(rvVersion)) {
-            firefoxOsVersion = (String)RV_TO_FIREFOX_OS_VERSION.get(rvVersion);
+            firefoxOsVersion = RV_TO_FIREFOX_OS_VERSION.get(rvVersion);
          }
       }
 

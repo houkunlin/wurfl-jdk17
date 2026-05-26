@@ -22,7 +22,7 @@ class DefaultCapabilitiesHolderFactory implements CapabilitiesHolderFactory {
       return new CachingCapabilitiesHolder(new DeviceCapabilitiesProvider(modelDevice, this.wurflModel), this.wurflModel.getCapabilityCount());
    }
 
-   public Set getModelCapabilities() {
+   public Set<String> getModelCapabilities() {
       return this.wurflModel.getAllCapabilities();
    }
 }

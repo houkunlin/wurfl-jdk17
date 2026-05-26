@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings("serial")
 public class ModelDevice implements Serializable {
    private static final long serialVersionUID = 10L;
    private String userAgent;

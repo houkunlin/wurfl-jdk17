@@ -36,6 +36,7 @@ public class DefaultWURFLModel implements WURFLModel {
       this(rootResource, new WURFLResources(), includedCapabilities);
    }
 
+   @SuppressWarnings("this-escape")
    public DefaultWURFLModel(WURFLResource rootResource, WURFLResources patchResources, String... includedCapabilities) {
       this.deviceIdToAncestorIdCache = CollectionFactory.createConcurrentHashMap();
       this.familyDeviceIds = new HashSet<>();
@@ -112,10 +113,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
    private static void setAncestors(ModelDevices devices) {
       if (devices != null) {
-         Iterator iterator = devices.getDevices().iterator();
-
-         while(iterator.hasNext()) {
-            ModelDevice device = (ModelDevice)iterator.next();
+         for (ModelDevice device : devices.getDevices()) {
             if (device.getFallBack() != null && devices.containsId(device.getFallBack())) {
                device.setAncestor(devices.getById(device.getFallBack()));
             }
@@ -138,34 +136,27 @@ public class DefaultWURFLModel implements WURFLModel {
       }
    }
 
-   public Set getDevices(Set deviceIds) {
+   public Set<ModelDevice> getDevices(Set<String> deviceIds) {
       Validate.notNull(deviceIds, "The devicesIds must be not null Set");
       Validate.noNullElements(deviceIds, "The devicesIds must not containing null elements");
-      for(Object id : deviceIds) {
-         Validate.isTrue(id instanceof String, "The devicesIds must containing right devicesById id");
-      }
       HashSet<ModelDevice> devices = new HashSet<>();
-      Iterator deviceIdIterator = deviceIds.iterator();
-
-      while(deviceIdIterator.hasNext()) {
-         devices.add(this.getDeviceById((String)deviceIdIterator.next()));
+      for (String id : deviceIds) {
+         devices.add(this.getDeviceById(id));
       }
 
       return devices;
    }
 
-   public Set getAllDevices() {
-      TreeSet<ModelDevice> devices;
-      (devices = new TreeSet<>(ModelDeviceUserAgentComparator.INSTANCE)).addAll(this.devicesById.values());
+   public Set<ModelDevice> getAllDevices() {
+      TreeSet<ModelDevice> devices = new TreeSet<>(ModelDeviceUserAgentComparator.INSTANCE);
+      devices.addAll(this.devicesById.values());
       return devices;
    }
 
-   public List getAllDevicesAsList() {
+   public List<ModelDevice> getAllDevicesAsList() {
       ArrayList<ModelDevice> devices = new ArrayList<>(this.deviceIdsByInsertionOrder.size());
-      Iterator deviceIdIterator = this.deviceIdsByInsertionOrder.iterator();
-
-      while(deviceIdIterator.hasNext()) {
-         devices.add(this.devicesById.get(deviceIdIterator.next()));
+      for (String id : this.deviceIdsByInsertionOrder) {
+         devices.add(this.devicesById.get(id));
       }
 
       return devices;
@@ -233,7 +224,7 @@ public class DefaultWURFLModel implements WURFLModel {
       return this.devicesById.size();
    }
 
-   public Set getAllGroups() {
+   public Set<String> getAllGroups() {
       return this.getGenericDevice().getGroups();
    }
 
@@ -261,7 +252,7 @@ public class DefaultWURFLModel implements WURFLModel {
       this.applyPatchesAndRebuild(patchResources, new ModelDevices(this.devicesById), includedCapabilities);
    }
 
-   public Set getAllCapabilities() {
+   public Set<String> getAllCapabilities() {
       ModelDevice genericDevice = this.getGenericDevice();
       return new HashSet<>(genericDevice.getCapabilities().keySet());
    }
@@ -279,7 +270,7 @@ public class DefaultWURFLModel implements WURFLModel {
       return this.getGenericDevice().defineCapability(capabilityName);
    }
 
-   public Set getCapabilitiesForGroup(String groupId) {
+   public Set<String> getCapabilitiesForGroup(String groupId) {
       Validate.notEmpty(groupId, "The groupId must be not null");
       ModelDevice genericDevice = this.getGenericDevice();
       if (!genericDevice.defineGroup(groupId)) {
@@ -292,9 +283,9 @@ public class DefaultWURFLModel implements WURFLModel {
    public ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice rootDevice, String capabilityName) {
       Validate.notNull(rootDevice, "The rootDevice must be not null");
       Validate.notEmpty(capabilityName, "The name must be not null");
-      List deviceHierarchy = this.getDeviceHierarchy(rootDevice);
+      List<ModelDevice> deviceHierarchy = this.getDeviceHierarchy(rootDevice);
       for(int i = deviceHierarchy.size() - 1; i >= 0; --i) {
-         ModelDevice device = (ModelDevice)deviceHierarchy.get(i);
+         ModelDevice device = deviceHierarchy.get(i);
          if (device.defineCapability(capabilityName)) {
             return device;
          }
@@ -307,7 +298,7 @@ public class DefaultWURFLModel implements WURFLModel {
       throw new RuntimeException(new OrphanHierarchyException(deviceHierarchy));
    }
 
-   public Set getRootDevicesIds() {
+   public Set<String> getRootDevicesIds() {
       HashSet<String> rootDeviceIds = new HashSet<>();
       Iterator<ModelDevice> iterator = this.devicesById.values().iterator();
 

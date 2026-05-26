@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -24,6 +26,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    private UserAgentPriority userAgentPriority;
    private String userAgentProfile;
    private final EngineTarget engineTarget;
+   @SuppressWarnings("serial")
    private final Map<String, String> headers;
    private Boolean cachedIsMobileBrowser;
    private Boolean cachedMobileKeywordsDetected;
@@ -33,7 +36,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    private Boolean cachedIsDesktopBrowserHeavyDutyAnalysis;
    private Boolean cachedIsSmartTvBrowser;
    private Boolean cachedIsEmailClient;
-   private UserAgentNormalizer genericNormalizer;
+   private transient UserAgentNormalizer genericNormalizer;
    private boolean urlEncoded;
 
    public DefaultWURFLRequest(String userAgent, UserAgentNormalizer genericNormalizer, UserAgentPriority userAgentPriority, EngineTarget engineTarget) {
@@ -68,7 +71,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       this.userAgentProfile = userAgentProfile;
       this.headers = headers;
       this.genericNormalizer = genericNormalizer;
-      this.cleanedDeviceUserAgent = this.getOriginalUserAgent();
+      this.cleanedDeviceUserAgent = this.userAgentPriority == UserAgentPriority.OverrideSideloadedBrowserUserAgent ? this.deviceUserAgent : this.browserUserAgent;
       this.urlEncoded = UserAgentUtils.isRawUrlEncoded(userAgent) || UserAgentUtils.hasIIsLoggingStyle(userAgent);
       this.applyUcBrowserDeviceUserAgentOverrideIfNeeded();
    }
@@ -92,15 +95,15 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
       this.userAgentProfile = UserAgentUtils.getUaProfile(headerProvider);
       this.headers = new HashMap<>();
-      Enumeration headerNames = headerProvider.getHeaderNames();
+      Enumeration<String> headerNames = headerProvider.getHeaderNames();
 
       while(headerNames.hasMoreElements()) {
-         String headerName = (String)headerNames.nextElement();
+         String headerName = headerNames.nextElement();
          this.headers.put(headerName, headerProvider.getHeader(headerName));
       }
 
       this.genericNormalizer = genericNormalizer;
-      this.cleanedDeviceUserAgent = this.getOriginalUserAgent();
+      this.cleanedDeviceUserAgent = this.userAgentPriority == UserAgentPriority.OverrideSideloadedBrowserUserAgent ? this.deviceUserAgent : this.browserUserAgent;
       this.urlEncoded = UserAgentUtils.isRawUrlEncoded(this.deviceUserAgent) || UserAgentUtils.hasIIsLoggingStyle(this.deviceUserAgent);
       this.applyUcBrowserDeviceUserAgentOverrideIfNeeded();
    }
@@ -154,7 +157,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return this.browserUserAgent;
    }
 
-   public String getOriginalUserAgent() {
+   public final String getOriginalUserAgent() {
       return this.userAgentPriority == UserAgentPriority.OverrideSideloadedBrowserUserAgent ? this.getDeviceUserAgent() : this.getBrowserUserAgent();
    }
 
@@ -189,7 +192,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return this.headers.get(headerName);
    }
 
-   public Map getHeaders() {
+   public Map<String, String> getHeaders() {
       return Collections.unmodifiableMap(this.headers);
    }
 

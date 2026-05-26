@@ -25,7 +25,7 @@ final class AcTrieNode {
 
       while(true) {
          AcTrieNode next;
-         if ((next = (AcTrieNode)current.transitions.get(pattern.charAt(0))) == null) {
+         if ((next = current.transitions.get(pattern.charAt(0))) == null) {
             if (pattern.length() == 1) {
                next = new AcTrieNode(true);
                current.transitions.put(pattern.charAt(0), next);
@@ -60,7 +60,7 @@ final class AcTrieNode {
    }
 
    public final AcTrieNode getOutgoingAt(int index) {
-      Iterator it = this.transitions.entrySet().iterator();
+      Iterator<Map.Entry<Character, AcTrieNode>> it = this.transitions.entrySet().iterator();
       int i = 0;
 
       while(it.hasNext()) {
@@ -76,7 +76,7 @@ final class AcTrieNode {
    }
 
    public final AcTrieNode getNext(char c) {
-      return (AcTrieNode)this.transitions.get(c);
+      return this.transitions.get(c);
    }
 
    public final Set<Character> getNextChars() {

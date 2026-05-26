@@ -2,6 +2,7 @@ package com.scientiamobile.wurfl.core.strategy;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Collection;
 import org.slf4j.LoggerFactory;
 
 public final class LDMatcher {
@@ -15,10 +16,12 @@ public final class LDMatcher {
       return "LD";
    }
 
+   @SuppressWarnings("rawtypes")
    public final String match(Collection candidates, String value, int maxDistance) {
       return this.match(candidates, value, maxDistance, 0);
    }
 
+   @SuppressWarnings("rawtypes")
    public final String match(Collection candidates, String value, int maxDistance, int commonPrefixLength) {
       String bestMatch = null;
       int bestDistance = maxDistance + 1;

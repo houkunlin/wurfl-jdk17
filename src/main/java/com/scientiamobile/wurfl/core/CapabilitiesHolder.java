@@ -15,6 +15,6 @@ abstract class CapabilitiesHolder {
       }
    }
 
-   public abstract Map getCapabilities();
+   public abstract Map<String, String> getCapabilities();
 }
 

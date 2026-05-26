@@ -17,7 +17,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
    private final boolean actualDeviceRoot;
    private final String deviceRootId;
    private ModelDevice ancestorModelDevice;
-   private final CapabilitiesHolder capabilitiesHolder;
+   private final transient CapabilitiesHolder capabilitiesHolder;
 
    protected InternalDeviceImpl(ModelDevice modelDevice, String ancestorId, CapabilitiesHolder capabilitiesHolder) {
       this(modelDevice.getID(), modelDevice.getUserAgent(), modelDevice.isActualDeviceRoot(), ancestorId, capabilitiesHolder);
@@ -64,9 +64,9 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
       }
    }
 
-   @SuppressWarnings("unchecked")
+
    public Map<String, String> getCapabilities() {
-      Map<String, String> allCapabilities = (Map<String, String>)this.capabilitiesHolder.getCapabilities();
+      Map<String, String> allCapabilities = this.capabilitiesHolder.getCapabilities();
       HashMap<String, String> filteredCapabilities = new HashMap<>(allCapabilities.size());
       Iterator<String> it = allCapabilities.keySet().iterator();
 

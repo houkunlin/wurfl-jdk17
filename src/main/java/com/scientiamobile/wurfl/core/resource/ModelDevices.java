@@ -11,12 +11,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+@SuppressWarnings("serial")
 public class ModelDevices implements Serializable, Iterable<ModelDevice> {
    private static final long serialVersionUID = 10L;
+   @SuppressWarnings("serial")
    private Map<String, ModelDevice> devicesById;
    private LinkedList<String> deviceIdsByInsertionOrder;
 
@@ -32,7 +35,7 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
       this.deviceIdsByInsertionOrder = new LinkedList<>(modelDevices.getDeviceIdsByInsertionOrder());
    }
 
-   @SuppressWarnings("unchecked")
+   @SuppressWarnings({"unchecked", "rawtypes"})
    public ModelDevices(Map devicesById) {
       this.devicesById = CollectionFactory.createConcurrentHashMap();
       this.deviceIdsByInsertionOrder = new LinkedList<>();

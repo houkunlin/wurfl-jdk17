@@ -5,5 +5,5 @@ import java.util.Enumeration;
 public interface WURFLHeaderProvider {
    String getHeader(String headerName);
 
-   Enumeration getHeaderNames();
+   Enumeration<String> getHeaderNames();
 }

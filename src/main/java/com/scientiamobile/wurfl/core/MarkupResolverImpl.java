@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 class MarkupResolverImpl implements MarkupResolver, Serializable {
    private static final long serialVersionUID = 1L;
-   private final Logger log = LoggerFactory.getLogger(MarkupResolverImpl.class);
+   private final transient Logger log = LoggerFactory.getLogger(MarkupResolverImpl.class);
 
    public MarkUp getMarkupForDevice(InternalDevice device) {
       String xhtmlSupportLevel;

@@ -84,16 +84,16 @@ public final class StringMatchUtils {
       }
    }
 
-   public static String risMatch(Collection userAgents, String userAgent, int userAgentLength) {
+   public static String risMatch(Collection<?> userAgents, String userAgent, int userAgentLength) {
       return RISMatcher.INSTANCE.match(userAgents, userAgent, userAgentLength);
    }
 
-   public static String hierarchyAsString(List devices) {
+   public static String hierarchyAsString(List<ModelDevice> devices) {
       StringBuilder out = new StringBuilder();
-      Iterator iterator = devices.iterator();
+      Iterator<ModelDevice> iterator = devices.iterator();
 
       while(iterator.hasNext()) {
-         out.append(((ModelDevice)iterator.next()).getID());
+         out.append(iterator.next().getID());
          if (iterator.hasNext()) {
             out.append(" -> ");
          }
@@ -162,9 +162,9 @@ public final class StringMatchUtils {
       return true;
    }
 
-   public static boolean containsAllOf(String value, List searches) {
+   public static boolean containsAllOf(String value, List<String> searches) {
       for(int i = 0; i < searches.size(); ++i) {
-         if (value.indexOf((String)searches.get(i)) == -1) {
+         if (value.indexOf(searches.get(i)) == -1) {
             return false;
          }
       }
@@ -172,11 +172,11 @@ public final class StringMatchUtils {
       return true;
    }
 
-   public static String format(Set lines) {
+   public static String format(Set<String> lines) {
       StringBuilder out = new StringBuilder(10);
 
-      for(Object lineObj : lines) {
-         out.append((String)lineObj).append('\n');
+      for (String line : lines) {
+         out.append(line).append('\n');
       }
 
       return out.toString();

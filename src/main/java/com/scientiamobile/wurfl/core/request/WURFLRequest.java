@@ -23,7 +23,7 @@ public interface WURFLRequest {
 
    String getHeader(String headerName);
 
-   Map getHeaders();
+   Map<String, String> getHeaders();
 
    EngineTarget getEngineTarget();
 

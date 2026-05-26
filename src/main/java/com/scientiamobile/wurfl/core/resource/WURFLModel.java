@@ -10,15 +10,15 @@ public interface WURFLModel {
 
    boolean isDeviceDefined(String deviceId);
 
-   Set getAllDevices();
+   Set<ModelDevice> getAllDevices();
 
-   List getAllDevicesAsList();
+   List<ModelDevice> getAllDevicesAsList();
 
-   Set getAllDevicesId();
+   Set<String> getAllDevicesId();
 
-   Set getDevices(Set deviceIds);
+   Set<ModelDevice> getDevices(Set<String> deviceIds);
 
-   List getDeviceHierarchy(ModelDevice device);
+   List<ModelDevice> getDeviceHierarchy(ModelDevice device);
 
    ModelDevice getDeviceFallback(ModelDevice device);
 
@@ -32,7 +32,7 @@ public interface WURFLModel {
 
    void applyPatches(WURFLResources resources, String... params);
 
-   Set getAllCapabilities();
+   Set<String> getAllCapabilities();
 
    boolean isCapabilityDefined(String capabilityName);
 
@@ -40,11 +40,11 @@ public interface WURFLModel {
 
    ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice device, String capabilityName);
 
-   Set getAllGroups();
+   Set<String> getAllGroups();
 
    boolean isGroupDefined(String groupId);
 
-   Set getCapabilitiesForGroup(String groupId);
+   Set<String> getCapabilitiesForGroup(String groupId);
 
-   Set getRootDevicesIds();
+   Set<String> getRootDevicesIds();
 }
