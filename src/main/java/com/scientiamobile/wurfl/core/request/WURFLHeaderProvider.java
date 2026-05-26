@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.request;
 import java.util.Enumeration;
 
 public interface WURFLHeaderProvider {
-   String getHeader(String var1);
+   String getHeader(String headerName);
 
    Enumeration getHeaderNames();
 }

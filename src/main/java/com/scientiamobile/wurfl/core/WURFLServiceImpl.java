@@ -91,7 +91,7 @@ class WURFLServiceImpl implements WURFLService {
          if (!assertionsDisabled && internalDevice == null) {
             throw new AssertionError();
          } else {
-            Device device = this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(), deviceInfo.a(), deviceInfo.b());
+            Device device = this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(), deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
             return device;
          }
       } finally {

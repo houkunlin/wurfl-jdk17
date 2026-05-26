@@ -7,30 +7,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WindowsPhoneNormalizer implements UserAgentNormalizer {
-   private static final Pattern a = Pattern.compile("Windows ?Phone ?Ad ?Client/[0-9\\.]+ ?\\(.+; ?Windows ?Phone(?: ?OS)? ?[0-9\\.]+; ?([^;\\)]+(; ?[^;\\)]+)?)");
-   private static final Pattern b = Pattern.compile("^[^/]+/[0-9\\.-_]+ Windows Phone/([\\d\\.]+) (.+)$");
+   private static final Pattern WINDOWS_PHONE_AD_CLIENT_MODEL_PATTERN = Pattern.compile("Windows ?Phone ?Ad ?Client/[0-9\\.]+ ?\\(.+; ?Windows ?Phone(?: ?OS)? ?[0-9\\.]+; ?([^;\\)]+(; ?[^;\\)]+)?)");
+   private static final Pattern WINDOWS_PHONE_APP_UA_PATTERN = Pattern.compile("^[^/]+/[0-9\\.-_]+ Windows Phone/([\\d\\.]+) (.+)$");
 
-   public String normalize(String var1) {
-      String var2 = null;
-      String var3 = null;
-      Matcher var4;
-      if ((var4 = b.matcher(var1)).find()) {
-         var1 = "Mozilla/5.0 (Mobile; Windows Phone " + var4.group(1) + "; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; " + var4.group(2) + ") like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537 " + var1;
+   public String normalize(String userAgent) {
+      String windowsPhoneModel = null;
+      String windowsPhoneVersion = null;
+      Matcher windowsPhoneAppUaMatcher;
+      if ((windowsPhoneAppUaMatcher = WINDOWS_PHONE_APP_UA_PATTERN.matcher(userAgent)).find()) {
+         userAgent = "Mozilla/5.0 (Mobile; Windows Phone " + windowsPhoneAppUaMatcher.group(1) + "; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; " + windowsPhoneAppUaMatcher.group(2) + ") like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537 " + userAgent;
       }
 
-      if (!StringMatchUtils.containsAnyOf(var1, "WPDesktop", "ZuneWP7") && !StringMatchUtils.containsAllOf(var1, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/")) {
-         if (UserAgentUtils.isWindowsPhoneAdClient(var1)) {
-            var2 = UserAgentUtils.cleanAndReplaceWindowsPhoneModel(var1, a);
-            var3 = UserAgentUtils.getWindowsPhoneVersion(var1);
-         } else if (!var1.contains("NativeHost")) {
-            var2 = UserAgentUtils.getWindowsPhoneModel(var1);
-            var3 = UserAgentUtils.getWindowsPhoneVersion(var1);
+      if (!StringMatchUtils.containsAnyOf(userAgent, "WPDesktop", "ZuneWP7") && !StringMatchUtils.containsAllOf(userAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/")) {
+         if (UserAgentUtils.isWindowsPhoneAdClient(userAgent)) {
+            windowsPhoneModel = UserAgentUtils.cleanAndReplaceWindowsPhoneModel(userAgent, WINDOWS_PHONE_AD_CLIENT_MODEL_PATTERN);
+            windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(userAgent);
+         } else if (!userAgent.contains("NativeHost")) {
+            windowsPhoneModel = UserAgentUtils.getWindowsPhoneModel(userAgent);
+            windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(userAgent);
          }
       } else {
-         var2 = UserAgentUtils.getWindowsPhoneDesktopModel(var1);
-         var3 = UserAgentUtils.getWindowsPhoneDesktopVersion(var1);
+         windowsPhoneModel = UserAgentUtils.getWindowsPhoneDesktopModel(userAgent);
+         windowsPhoneVersion = UserAgentUtils.getWindowsPhoneDesktopVersion(userAgent);
       }
 
-      return var2 != null && var3 != null ? "WP" + var3 + " " + var2 + "---" + var1 : var1;
+      return windowsPhoneModel != null && windowsPhoneVersion != null ? "WP" + windowsPhoneVersion + " " + windowsPhoneModel + "---" + userAgent : userAgent;
    }
 }

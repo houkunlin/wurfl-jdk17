@@ -8,11 +8,11 @@ public class DeviceInfo {
    private final String matcherName;
    private final String bucketMatcherName;
 
-   public DeviceInfo(String var1, MatchType var2, String var3, String var4, String var5, String var6) {
-      this.id = var1;
-      this.matchType = var2;
-      this.matcherName = var3;
-      this.bucketMatcherName = var4;
+   public DeviceInfo(String id, MatchType matchType, String matcherName, String bucketMatcherName, String var5, String var6) {
+      this.id = id;
+      this.matchType = matchType;
+      this.matcherName = matcherName;
+      this.bucketMatcherName = bucketMatcherName;
    }
 
    public String getId() {
@@ -31,20 +31,12 @@ public class DeviceInfo {
       return this.bucketMatcherName;
    }
 
-   final String a() {
-      return this.getMatcherName();
-   }
-
-   final String b() {
-      return this.getBucketMatcherName();
-   }
-
    public String toString() {
-      StringBuilder var1;
-      (var1 = new StringBuilder()).append("{id='").append(this.id).append('\'');
-      var1.append(", match=").append(this.matchType);
-      var1.append(", matcher=").append(this.matcherName);
-      var1.append('}');
-      return var1.toString();
+      StringBuilder builder;
+      (builder = new StringBuilder()).append("{id='").append(this.id).append('\'');
+      builder.append(", match=").append(this.matchType);
+      builder.append(", matcher=").append(this.matcherName);
+      builder.append('}');
+      return builder.toString();
    }
 }

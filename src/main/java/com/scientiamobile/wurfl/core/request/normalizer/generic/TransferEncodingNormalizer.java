@@ -3,9 +3,9 @@ package com.scientiamobile.wurfl.core.request.normalizer.generic;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 public class TransferEncodingNormalizer implements UserAgentNormalizer {
-   private static final CharSequence a = new String(",gzip(gfe)");
+   private static final CharSequence TRANSFER_ENCODING_TOKEN = new String(",gzip(gfe)");
 
-   public String normalize(String var1) {
-      return var1.replace(a, "");
+   public String normalize(String userAgent) {
+      return userAgent.replace(TRANSFER_ENCODING_TOKEN, "");
    }
 }

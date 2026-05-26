@@ -3,9 +3,9 @@ package com.scientiamobile.wurfl.core.request.normalizer.generic;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 public class EncriptionLevelNormalizer implements UserAgentNormalizer {
-   private static final CharSequence a = new String(" U;");
+   private static final CharSequence ENCRIPTION_LEVEL_TOKEN = new String(" U;");
 
-   public String normalize(String var1) {
-      return var1.replace(a, "");
+   public String normalize(String userAgent) {
+      return userAgent.replace(ENCRIPTION_LEVEL_TOKEN, "");
    }
 }

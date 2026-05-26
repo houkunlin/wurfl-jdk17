@@ -3,16 +3,16 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 public class SafariNormalizer implements UserAgentNormalizer {
-   public String normalize(String var1) {
-      int var2;
-      if ((var2 = var1.indexOf("Version/")) != -1) {
-         var2 += 8;
-         int var3;
-         if ((var3 = var1.indexOf(46, var2)) != -1) {
-            return "Safari " + var1.substring(var2, var3) + "---" + var1;
+   public String normalize(String userAgent) {
+      int versionTokenStart;
+      if ((versionTokenStart = userAgent.indexOf("Version/")) != -1) {
+         versionTokenStart += 8;
+         int majorVersionDotIndex;
+         if ((majorVersionDotIndex = userAgent.indexOf(46, versionTokenStart)) != -1) {
+            return "Safari " + userAgent.substring(versionTokenStart, majorVersionDotIndex) + "---" + userAgent;
          }
       }
 
-      return var1;
+      return userAgent;
    }
 }

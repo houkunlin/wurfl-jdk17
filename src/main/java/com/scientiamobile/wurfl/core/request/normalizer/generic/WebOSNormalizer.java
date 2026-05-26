@@ -5,13 +5,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WebOSNormalizer implements UserAgentNormalizer {
-   private static final Pattern a = Pattern.compile(" ([^/]+)/([\\d\\.]+)$");
-   private static final Pattern b = Pattern.compile("(?:hpw|web)OS.(\\d)\\.");
+   private static final Pattern TRAILING_APP_NAME_AND_VERSION_PATTERN = Pattern.compile(" ([^/]+)/([\\d\\.]+)$");
+   private static final Pattern WEBOS_MAJOR_VERSION_PATTERN = Pattern.compile("(?:hpw|web)OS.(\\d)\\.");
 
-   public String normalize(String var1) {
-      Matcher var3;
-      String var2 = (var3 = b.matcher(var1)).find() ? "webOS".concat(var3.group(1)) : null;
-      String var5 = (var3 = a.matcher(var1)).find() ? var3.group(1) + " " + var3.group(2) : null;
-      return var2 != null && var5 != null ? var5 + " " + var2 + "---" + var1 : var1;
+   public String normalize(String userAgent) {
+      Matcher matcher;
+      String webOsToken = (matcher = WEBOS_MAJOR_VERSION_PATTERN.matcher(userAgent)).find() ? "webOS".concat(matcher.group(1)) : null;
+      String appNameAndVersion = (matcher = TRAILING_APP_NAME_AND_VERSION_PATTERN.matcher(userAgent)).find() ? matcher.group(1) + " " + matcher.group(2) : null;
+      return webOsToken != null && appNameAndVersion != null ? appNameAndVersion + " " + webOsToken + "---" + userAgent : userAgent;
    }
 }

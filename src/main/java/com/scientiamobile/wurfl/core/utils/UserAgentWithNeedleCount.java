@@ -1,31 +1,31 @@
 package com.scientiamobile.wurfl.core.utils;
 
 public class UserAgentWithNeedleCount {
-   private String a;
-   private int b;
-   private int c;
-   private boolean d;
+   private String asciiPrintableUserAgent;
+   private int plusCharCount;
+   private int percentageCharCount;
+   private boolean hasSpaceChars;
 
-   UserAgentWithNeedleCount(String var1, int var2, int var3, boolean var4) {
-      this.a = var1;
-      this.b = var2;
-      this.c = var3;
-      this.d = var4;
+   UserAgentWithNeedleCount(String asciiPrintableUserAgent, int plusCharCount, int percentageCharCount, boolean hasSpaceChars) {
+      this.asciiPrintableUserAgent = asciiPrintableUserAgent;
+      this.plusCharCount = plusCharCount;
+      this.percentageCharCount = percentageCharCount;
+      this.hasSpaceChars = hasSpaceChars;
    }
 
    public String getAsciiPrintableUserAgent() {
-      return this.a;
+      return this.asciiPrintableUserAgent;
    }
 
    public int getPlusCharCount() {
-      return this.b;
+      return this.plusCharCount;
    }
 
    public int getPercentageCharCount() {
-      return this.c;
+      return this.percentageCharCount;
    }
 
    public boolean hasSpaceChars() {
-      return this.d;
+      return this.hasSpaceChars;
    }
 }

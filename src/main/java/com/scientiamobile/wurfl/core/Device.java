@@ -6,11 +6,11 @@ import java.util.Map;
 public interface Device extends InternalDevice {
    MatchType getMatchType();
 
-   String getVirtualCapability(String var1);
+   String getVirtualCapability(String capabilityName);
 
-   int getVirtualCapabilityAsInt(String var1);
+   int getVirtualCapabilityAsInt(String capabilityName);
 
-   boolean getVirtualCapabilityAsBool(String var1);
+   boolean getVirtualCapabilityAsBool(String capabilityName);
 
    Map getVirtualCapabilities();
 

@@ -4,9 +4,9 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Pattern;
 
 public class AsciiNormalizer implements UserAgentNormalizer {
-   private static final Pattern a = Pattern.compile("[^ -~]+");
+   private static final Pattern NON_ASCII_PATTERN = Pattern.compile("[^ -~]+");
 
-   public String normalize(String var1) {
-      return a.matcher(var1).replaceAll("");
+   public String normalize(String userAgent) {
+      return NON_ASCII_PATTERN.matcher(userAgent).replaceAll("");
    }
 }

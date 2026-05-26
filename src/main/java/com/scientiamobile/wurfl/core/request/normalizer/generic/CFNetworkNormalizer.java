@@ -7,22 +7,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CFNetworkNormalizer implements UserAgentNormalizer {
-   private static final Pattern a = Pattern.compile("CFNetwork/(\\d+\\.?[0-9]*)");
+   private static final Pattern CFNETWORK_VERSION_PATTERN = Pattern.compile("CFNetwork/(\\d+\\.?[0-9]*)");
 
-   public String normalize(String var1) {
-      Matcher var2;
-      if ((var2 = a.matcher(var1)).find()) {
-         String var4 = (new BigDecimal(var2.group(1))).setScale(2, RoundingMode.HALF_DOWN).toString();
-         StringBuilder var3 = new StringBuilder();
-         if (var1.contains("x86_64")) {
-            var3.append("CFNetworkDesktop/").append(var4).append(" ").append(var1);
+   public String normalize(String userAgent) {
+      Matcher cfNetworkMatcher;
+      if ((cfNetworkMatcher = CFNETWORK_VERSION_PATTERN.matcher(userAgent)).find()) {
+         String cfNetworkVersionNormalized = (new BigDecimal(cfNetworkMatcher.group(1))).setScale(2, RoundingMode.HALF_DOWN).toString();
+         StringBuilder normalizedUaBuilder = new StringBuilder();
+         if (userAgent.contains("x86_64")) {
+            normalizedUaBuilder.append("CFNetworkDesktop/").append(cfNetworkVersionNormalized).append(" ").append(userAgent);
          } else {
-            var3.append("CFNetwork/").append(var4).append(" ").append(var1);
+            normalizedUaBuilder.append("CFNetwork/").append(cfNetworkVersionNormalized).append(" ").append(userAgent);
          }
 
-         return var3.toString();
+         return normalizedUaBuilder.toString();
       } else {
-         return var1;
+         return userAgent;
       }
    }
 }

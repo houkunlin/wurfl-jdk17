@@ -5,7 +5,7 @@ import net.sf.ehcache.Cache;
 public interface EhCacheManager {
    Cache getDefaultCache();
 
-   Cache getCache(String var1);
+   Cache getCache(String cacheName);
 
    void shutdown();
 }

@@ -1,7 +1,7 @@
 package com.scientiamobile.wurfl.core.resource;
 
 public interface WURFLResource {
-   ModelDevicesSnapshot getData(String... var1);
+   ModelDevicesSnapshot getData(String... params);
 
    String getInfo();
 

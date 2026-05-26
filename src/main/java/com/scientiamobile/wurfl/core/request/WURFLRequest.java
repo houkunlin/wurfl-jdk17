@@ -15,13 +15,13 @@ public interface WURFLRequest {
 
    String getOriginalUserAgent();
 
-   void normalizeUserAgent(UserAgentNormalizer var1);
+   void normalizeUserAgent(UserAgentNormalizer normalizer);
 
    void performGenericNormalization();
 
    String getUserAgentProfile();
 
-   String getHeader(String var1);
+   String getHeader(String headerName);
 
    Map getHeaders();
 
@@ -41,5 +41,5 @@ public interface WURFLRequest {
 
    boolean isUrlEncoded();
 
-   void setUrlEncoded(boolean var1);
+   void setUrlEncoded(boolean urlEncoded);
 }

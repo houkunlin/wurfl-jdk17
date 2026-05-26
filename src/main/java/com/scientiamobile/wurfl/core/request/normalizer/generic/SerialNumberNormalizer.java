@@ -4,11 +4,11 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Pattern;
 
 public class SerialNumberNormalizer implements UserAgentNormalizer {
-   private static final Pattern a = Pattern.compile("/SN[\\dX]+");
-   private static final Pattern b = Pattern.compile("\\[(ST|TF|NT)[\\dX]+\\]");
+   private static final Pattern SN_PATTERN = Pattern.compile("/SN[\\dX]+");
+   private static final Pattern ST_TF_NT_PATTERN = Pattern.compile("\\[(ST|TF|NT)[\\dX]+\\]");
 
-   public String normalize(String var1) {
-      var1 = a.matcher(var1).replaceAll("/SNXXXXXXXXXXXXXXX");
-      return b.matcher(var1).replaceAll("TFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+   public String normalize(String userAgent) {
+      userAgent = SN_PATTERN.matcher(userAgent).replaceAll("/SNXXXXXXXXXXXXXXX");
+      return ST_TF_NT_PATTERN.matcher(userAgent).replaceAll("TFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
    }
 }

@@ -7,11 +7,11 @@ public interface InternalDevice {
 
    String getWURFLUserAgent();
 
-   String getCapability(String var1);
+   String getCapability(String capabilityName);
 
-   int getCapabilityAsInt(String var1);
+   int getCapabilityAsInt(String capabilityName);
 
-   boolean getCapabilityAsBool(String var1);
+   boolean getCapabilityAsBool(String capabilityName);
 
    Map getCapabilities();
 

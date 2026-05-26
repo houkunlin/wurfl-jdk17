@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 public interface CacheProvider {
    Logger logger = LoggerFactory.getLogger(CacheProvider.class);
 
-   InternalDevice getDevice(String var1);
+   InternalDevice getDevice(String deviceId);
 
-   InternalDevice getInternalDeviceFromDeviceId(String var1);
+   InternalDevice getInternalDeviceFromDeviceId(String deviceId);
 
-   void putDevice(String var1, InternalDevice var2);
+   void putDevice(String deviceId, InternalDevice device);
 
    void clear();
 }

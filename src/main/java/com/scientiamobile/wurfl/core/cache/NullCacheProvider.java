@@ -6,14 +6,14 @@ public class NullCacheProvider implements CacheProvider {
    public void clear() {
    }
 
-   public void putDevice(String var1, InternalDevice var2) {
+   public void putDevice(String deviceId, InternalDevice device) {
    }
 
-   public InternalDevice getDevice(String var1) {
+   public InternalDevice getDevice(String deviceId) {
       return null;
    }
 
-   public InternalDevice getInternalDeviceFromDeviceId(String var1) {
+   public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
       return null;
    }
 }

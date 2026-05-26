@@ -4,32 +4,32 @@ import com.scientiamobile.wurfl.core.InternalDevice;
 import net.sf.jsr107cache.Cache;
 
 public class JSR107CacheProvider implements CacheProvider {
-   private Cache a;
+   private Cache cache;
 
    public JSR107CacheProvider() {
    }
 
-   public JSR107CacheProvider(Cache var1) {
-      this.a = var1;
+   public JSR107CacheProvider(Cache cache) {
+      this.cache = cache;
    }
 
-   public void setCache(Cache var1) {
-      this.a = var1;
+   public void setCache(Cache cache) {
+      this.cache = cache;
    }
 
-   public InternalDevice getDevice(String var1) {
-      return (InternalDevice)this.a.get(var1);
+   public InternalDevice getDevice(String deviceId) {
+      return (InternalDevice)this.cache.get(deviceId);
    }
 
-   public void putDevice(String var1, InternalDevice var2) {
-      this.a.put(var1, var2);
+   public void putDevice(String deviceId, InternalDevice device) {
+      this.cache.put(deviceId, device);
    }
 
    public void clear() {
-      this.a.clear();
+      this.cache.clear();
    }
 
-   public InternalDevice getInternalDeviceFromDeviceId(String var1) {
+   public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
       return null;
    }
 }

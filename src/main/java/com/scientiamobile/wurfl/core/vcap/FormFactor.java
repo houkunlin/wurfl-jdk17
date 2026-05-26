@@ -6,21 +6,21 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 public class FormFactor extends AbstractVirtualCapabilityEvaluator {
    private static final long serialVersionUID = -3936563826288495198L;
 
-   public String eval(Device var1, WURFLRequest var2) {
-      if (var1.getVirtualCapabilityAsBool("is_robot")) {
+   public String eval(Device device, WURFLRequest request) {
+      if (device.getVirtualCapabilityAsBool("is_robot")) {
          return "Robot";
-      } else if (var1.getCapabilityAsBool("ux_full_desktop")) {
+      } else if (device.getCapabilityAsBool("ux_full_desktop")) {
          return "Desktop";
-      } else if (var1.getCapabilityAsBool("is_smarttv")) {
+      } else if (device.getCapabilityAsBool("is_smarttv")) {
          return "Smart-TV";
-      } else if (!var1.getCapabilityAsBool("is_wireless_device")) {
+      } else if (!device.getCapabilityAsBool("is_wireless_device")) {
          return "Other Non-Mobile";
-      } else if (var1.getCapabilityAsBool("is_tablet")) {
+      } else if (device.getCapabilityAsBool("is_tablet")) {
          return "Tablet";
-      } else if (var1.getVirtualCapabilityAsBool("is_smartphone")) {
+      } else if (device.getVirtualCapabilityAsBool("is_smartphone")) {
          return "Smartphone";
       } else {
-         return var1.getCapabilityAsBool("can_assign_phone_number") ? "Feature Phone" : "Other Mobile";
+         return device.getCapabilityAsBool("can_assign_phone_number") ? "Feature Phone" : "Other Mobile";
       }
    }
 
