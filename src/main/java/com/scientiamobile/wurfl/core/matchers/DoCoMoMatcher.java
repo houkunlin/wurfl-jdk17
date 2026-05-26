@@ -7,35 +7,37 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class DoCoMoMatcher extends MatcherBase {
-   private static String DOCOMO_VER2 = "docomo_generic_jap_ver2";
-   private static String DOCOMO_VER1 = "docomo_generic_jap_ver1";
+   private static final String DOCOMO_VER2 = "docomo_generic_jap_ver2";
+   private static final String DOCOMO_VER1 = "docomo_generic_jap_ver1";
 
-   public DoCoMoMatcher(WURFLModel var1) {
-      super(var1);
+   public DoCoMoMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(DOCOMO_VER1);
-      var1.add(DOCOMO_VER2);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add(DOCOMO_VER1);
+      requiredDeviceIds.add(DOCOMO_VER2);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().startsWith("DoCoMo");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("DoCoMo");
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      if ((var2 = StringMatchUtils.secondSlash(var1)) == -1) {
-         var2 = StringMatchUtils.firstOpenParenthesis(var1);
+   protected final String risMatch(String normalizedUserAgent) {
+      int matchLength;
+      if ((matchLength = StringMatchUtils.secondSlash(normalizedUserAgent)) == -1) {
+         matchLength = StringMatchUtils.firstOpenParenthesis(normalizedUserAgent);
       }
 
-      return var2 != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2) : StringMatchUtils.NULL_STRING;
+      return matchLength != -1
+         ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
+         : StringMatchUtils.NULL_STRING;
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
-      return var1.getNormalizedDeviceUserAgent().startsWith("DoCoMo/2") ? DOCOMO_VER2 : DOCOMO_VER1;
+   protected final String applyRecoveryMatch(WURFLRequest request) {
+      return request.getNormalizedDeviceUserAgent().startsWith("DoCoMo/2") ? DOCOMO_VER2 : DOCOMO_VER1;
    }
 
    public final String getMatcherName() {

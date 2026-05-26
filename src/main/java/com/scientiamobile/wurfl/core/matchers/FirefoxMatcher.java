@@ -8,30 +8,34 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class FirefoxMatcher extends MatcherBase {
-   private static String FIREFOX_DEVICE_ID = "firefox";
+   private static final String FIREFOX_DEVICE_ID = "firefox";
 
-   public FirefoxMatcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public FirefoxMatcher(UserAgentNormalizer normalizer, WURFLModel wurflModel) {
+      super(normalizer, wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(FIREFOX_DEVICE_ID);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add(FIREFOX_DEVICE_ID);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsMobileBrowser() && var2.contains("Firefox") && !StringMatchUtils.containsAnyOf(var2, "Tablet", "Sony", "Novarra", "Opera");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsMobileBrowser()
+         && cleanedDeviceUserAgent.contains("Firefox")
+         && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Tablet", "Sony", "Novarra", "Opera");
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      String var3;
-      return (var2 = StringMatchUtils.indexOfOrLength(var3 = var1.substring(var1.indexOf("Firefox")), ".")) == -1 ? null : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var3, var2 + 1);
+   protected final String risMatch(String normalizedUserAgent) {
+      String firefoxUserAgent = normalizedUserAgent.substring(normalizedUserAgent.indexOf("Firefox"));
+      int matchLength = StringMatchUtils.indexOfOrLength(firefoxUserAgent, ".");
+      return matchLength == -1
+         ? null
+         : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), firefoxUserAgent, matchLength + 1);
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
       return FIREFOX_DEVICE_ID;
    }
 

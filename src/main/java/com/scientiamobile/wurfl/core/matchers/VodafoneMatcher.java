@@ -4,12 +4,12 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 
 final class VodafoneMatcher extends MatcherBase {
-   public VodafoneMatcher(WURFLModel var1) {
-      super(var1);
+   public VodafoneMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().startsWith("Vodafone");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("Vodafone");
    }
 
    public final String getMatcherName() {

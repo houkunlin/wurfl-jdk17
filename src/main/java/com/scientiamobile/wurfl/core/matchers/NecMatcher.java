@@ -5,12 +5,12 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 final class NecMatcher extends MatcherBase {
-   public NecMatcher(WURFLModel var1) {
-      super(var1);
+   public NecMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(var1.getCleanedDeviceUserAgent(), "NEC-", "KGT");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "NEC-", "KGT");
    }
 
    public final String getMatcherName() {

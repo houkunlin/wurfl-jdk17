@@ -8,29 +8,29 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class HTCMacMatcher extends MatcherBase {
-   private static String GENERIC_HTC_ANDROID_DISGUISED_AS_MAC = "generic_android_htc_disguised_as_mac";
+   private static final String GENERIC_HTC_ANDROID_DISGUISED_AS_MAC = "generic_android_htc_disguised_as_mac";
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(GENERIC_HTC_ANDROID_DISGUISED_AS_MAC);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add(GENERIC_HTC_ANDROID_DISGUISED_AS_MAC);
+      return requiredDeviceIds;
    }
 
-   public HTCMacMatcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public HTCMacMatcher(UserAgentNormalizer normalizer, WURFLModel wurflModel) {
+      super(normalizer, wurflModel);
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2;
-      return (var2 = var1.getCleanedDeviceUserAgent()).startsWith("Mozilla/5.0 (Macintosh") && var2.contains("HTC");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return cleanedDeviceUserAgent.startsWith("Mozilla/5.0 (Macintosh") && cleanedDeviceUserAgent.contains("HTC");
    }
 
-   protected final String risMatch(String var1) {
-      int var2 = StringMatchUtils.indexOfOrLength(var1, "---");
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2);
+   protected final String risMatch(String normalizedUserAgent) {
+      int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "---");
+      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
       return GENERIC_HTC_ANDROID_DISGUISED_AS_MAC;
    }
 

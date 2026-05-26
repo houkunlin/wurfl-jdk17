@@ -4,8 +4,8 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.util.Locale;
 
 final class AlcatelMatcher extends MatcherBase {
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().toLowerCase(Locale.US).startsWith("alcatel");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().toLowerCase(Locale.US).startsWith("alcatel");
    }
 
    public final String getMatcherName() {

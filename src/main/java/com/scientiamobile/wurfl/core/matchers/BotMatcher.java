@@ -9,31 +9,35 @@ import java.util.Set;
 final class BotMatcher extends AbstractMatcher {
    private static final String GOOGLE_IMAGE_PROXY = "google_image_proxy";
 
-   public BotMatcher(WURFLModel var1) {
-      super(var1);
+   public BotMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(GOOGLE_IMAGE_PROXY);
-      var1.add("generic_web_crawler");
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add(GOOGLE_IMAGE_PROXY);
+      requiredDeviceIds.add("generic_web_crawler");
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return var1._internalIsBot();
+   public final boolean canHandle(WURFLRequest request) {
+      return request._internalIsBot();
    }
 
-   protected final String risMatch(String var1) {
-      int var2;
-      return (var2 = var1.startsWith("Mozilla") ? StringMatchUtils.firstCloseParenthesis(var1) : StringMatchUtils.firstSlash(var1)) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2) : StringMatchUtils.NULL_STRING;
+   protected final String risMatch(String normalizedUserAgent) {
+      int matchLength = normalizedUserAgent.startsWith("Mozilla")
+         ? StringMatchUtils.firstCloseParenthesis(normalizedUserAgent)
+         : StringMatchUtils.firstSlash(normalizedUserAgent);
+      return matchLength != -1
+         ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
+         : StringMatchUtils.NULL_STRING;
    }
 
-   protected final String applyConclusiveMatch(WURFLRequest var1) {
-      return var1.getCleanedDeviceUserAgent().contains("GoogleImageProxy") ? GOOGLE_IMAGE_PROXY : super.applyConclusiveMatch(var1);
+   protected final String applyConclusiveMatch(WURFLRequest request) {
+      return request.getCleanedDeviceUserAgent().contains("GoogleImageProxy") ? GOOGLE_IMAGE_PROXY : super.applyConclusiveMatch(request);
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
       return "generic_web_crawler";
    }
 

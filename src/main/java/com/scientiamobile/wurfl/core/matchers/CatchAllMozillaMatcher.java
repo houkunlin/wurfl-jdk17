@@ -7,34 +7,36 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class CatchAllMozillaMatcher extends AbstractMatcher {
-   public CatchAllMozillaMatcher(WURFLModel var1) {
-      super(var1);
+   public CatchAllMozillaMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add("generic");
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add("generic");
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return StringMatchUtils.startsWithAnyOf(var1.getCleanedDeviceUserAgent(), "Mozilla/3", "Mozilla/4", "Mozilla/5");
+   public final boolean canHandle(WURFLRequest request) {
+      return StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "Mozilla/3", "Mozilla/4", "Mozilla/5");
    }
 
-   protected final String applyConclusiveMatch(WURFLRequest var1) {
-      String var4 = var1.getNormalizedDeviceUserAgent();
-      int var3;
-      var4 = (var3 = StringMatchUtils.firstCloseParenthesis(var4)) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var4, var3) : StringMatchUtils.NULL_STRING;
-      String var2 = "generic";
-      if (var4 != null) {
-         var2 = this.getFilter().getIndex().getDeviceIdByUserAgent(var4);
+   protected final String applyConclusiveMatch(WURFLRequest request) {
+      String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+      int matchLength = StringMatchUtils.firstCloseParenthesis(normalizedUserAgent);
+      String matchedUserAgent = matchLength != -1
+         ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
+         : StringMatchUtils.NULL_STRING;
+      String deviceId = "generic";
+      if (matchedUserAgent != null) {
+         deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(matchedUserAgent);
       }
 
-      if (var2 == null) {
-         var2 = "generic";
+      if (deviceId == null) {
+         deviceId = "generic";
       }
 
-      return var2;
+      return deviceId;
    }
 
    public final String getMatcherName() {

@@ -5,21 +5,21 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Collection;
 
 final class CatchAllRISMatcher extends AbstractMatcher {
-   public final boolean canHandle(WURFLRequest var1) {
+   public final boolean canHandle(WURFLRequest request) {
       return true;
    }
 
-   protected final String risMatch(String var1) {
-      Collection var2 = this.getFilter().getIndex().getUserAgents();
-      if (var1 != null && var1.startsWith("CFNetwork")) {
-         int var3;
-         if ((var3 = StringMatchUtils.firstSpace(var1)) != -1) {
-            return StringMatchUtils.risMatch(var2, var1, var3);
+   protected final String risMatch(String normalizedUserAgent) {
+      Collection<?> userAgents = this.getFilter().getIndex().getUserAgents();
+      if (normalizedUserAgent != null && normalizedUserAgent.startsWith("CFNetwork")) {
+         int matchLength = StringMatchUtils.firstSpace(normalizedUserAgent);
+         if (matchLength != -1) {
+            return StringMatchUtils.risMatch(userAgents, normalizedUserAgent, matchLength);
          }
       } else {
-         int var4;
-         if ((var4 = StringMatchUtils.firstSlash(var1)) != -1) {
-            return StringMatchUtils.risMatch(var2, var1, var4);
+         int matchLength = StringMatchUtils.firstSlash(normalizedUserAgent);
+         if (matchLength != -1) {
+            return StringMatchUtils.risMatch(userAgents, normalizedUserAgent, matchLength);
          }
       }
 

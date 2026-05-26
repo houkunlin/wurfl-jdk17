@@ -5,21 +5,23 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 final class SonyEricssonMatcher extends MatcherBase {
-   public SonyEricssonMatcher(WURFLModel var1) {
-      super(var1);
+   public SonyEricssonMatcher(WURFLModel wurflModel) {
+      super(wurflModel);
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().contains("Sony");
+   public final boolean canHandle(WURFLRequest request) {
+      return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().contains("Sony");
    }
 
-   protected final String risMatch(String var1) {
-      if (var1.startsWith("SonyEricsson")) {
-         int var3 = StringMatchUtils.firstSlash(var1);
-         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var3 - 2);
+   protected final String risMatch(String normalizedUserAgent) {
+      if (normalizedUserAgent.startsWith("SonyEricsson")) {
+         int matchLength = StringMatchUtils.firstSlash(normalizedUserAgent);
+         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength - 2);
       } else {
-         int var2;
-         return (var2 = StringMatchUtils.secondSlash(var1)) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2) : StringMatchUtils.NULL_STRING;
+         int matchLength = StringMatchUtils.secondSlash(normalizedUserAgent);
+         return matchLength != -1
+            ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
+            : StringMatchUtils.NULL_STRING;
       }
    }
 

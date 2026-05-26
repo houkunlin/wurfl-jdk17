@@ -8,28 +8,32 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class ChromeMatcher extends MatcherBase {
-   private static String CHROME_DEVICE_ID = "google_chrome";
+   private static final String CHROME_DEVICE_ID = "google_chrome";
 
-   public ChromeMatcher(UserAgentNormalizer var1, WURFLModel var2) {
-      super(var1, var2);
+   public ChromeMatcher(UserAgentNormalizer normalizer, WURFLModel wurflModel) {
+      super(normalizer, wurflModel);
    }
 
    protected final Set<String> getRequiredDeviceIds() {
-      HashSet<String> var1;
-      (var1 = new HashSet<>()).add(CHROME_DEVICE_ID);
-      return var1;
+      HashSet<String> requiredDeviceIds;
+      (requiredDeviceIds = new HashSet<>()).add(CHROME_DEVICE_ID);
+      return requiredDeviceIds;
    }
 
-   public final boolean canHandle(WURFLRequest var1) {
-      String var2 = var1.getCleanedDeviceUserAgent();
-      return !var1._internalIsMobileBrowser() && var2 != null && var2.contains("Chrome");
+   public final boolean canHandle(WURFLRequest request) {
+      String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+      return !request._internalIsMobileBrowser() && cleanedDeviceUserAgent != null && cleanedDeviceUserAgent.contains("Chrome");
    }
 
-   protected final String risMatch(String var1) {
-      return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, StringMatchUtils.indexOfOrLength(var1, "."));
+   protected final String risMatch(String normalizedUserAgent) {
+      return StringMatchUtils.risMatch(
+         this.getFilter().getIndex().getUserAgents(),
+         normalizedUserAgent,
+         StringMatchUtils.indexOfOrLength(normalizedUserAgent, ".")
+      );
    }
 
-   protected final String applyRecoveryMatch(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest request) {
       return CHROME_DEVICE_ID;
    }
 
