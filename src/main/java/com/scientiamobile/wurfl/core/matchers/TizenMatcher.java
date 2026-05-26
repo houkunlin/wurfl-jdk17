@@ -11,18 +11,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TizenMatcher extends MatcherBase {
-   private static final Pattern b = Pattern.compile("Tizen (\\d+?\\.\\d+?)");
-   private static final List<String> c = new ArrayList<>();
-   private static final List<String> d = new ArrayList<>();
+   private static final String GENERIC_TIZEN = "generic_tizen";
+   private static final Pattern TIZEN_VERSION_PATTERN = Pattern.compile("Tizen (\\d+?\\.\\d+?)");
+   private static final List<String> SUPPORTED_DEVICE_IDS = new ArrayList<>();
+   private static final List<String> SUPPORTED_VERSIONS = new ArrayList<>();
 
    public TizenMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set<String> a() {
+   protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(c);
-      var1.add("generic_tizen");
+      (var1 = new HashSet<>()).addAll(SUPPORTED_DEVICE_IDS);
+      var1.add(GENERIC_TIZEN);
       return var1;
    }
 
@@ -30,17 +31,17 @@ public class TizenMatcher extends MatcherBase {
       return var1.getCleanedDeviceUserAgent().startsWith("Mozilla") && var1.getCleanedDeviceUserAgent().contains("Tizen");
    }
 
-   protected final String a(String var1) {
+   protected final String risMatch(String var1) {
       int var2;
-      return (var2 = var1.indexOf("AppleWebKit/")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().a().a(), var1, var2 + 12) : null;
+      return (var2 = var1.indexOf("AppleWebKit/")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var1, var2 + 12) : null;
    }
 
-   protected final String b(WURFLRequest var1) {
+   protected final String applyRecoveryMatch(WURFLRequest var1) {
       StringBuilder var10000 = new StringBuilder("generic_tizen_ver");
       String var2 = var1.getNormalizedDeviceUserAgent();
       Matcher var3;
-      var2 = var10000.append((var3 = b.matcher(var2)).find() && d.contains(var3.group(1)) ? var3.group(1).replace('.', '_') : "1_0").toString();
-      return c.contains(var2) ? var2 : "generic_tizen";
+      var2 = var10000.append((var3 = TIZEN_VERSION_PATTERN.matcher(var2)).find() && SUPPORTED_VERSIONS.contains(var3.group(1)) ? var3.group(1).replace('.', '_') : "1_0").toString();
+      return SUPPORTED_DEVICE_IDS.contains(var2) ? var2 : GENERIC_TIZEN;
    }
 
    public String getMatcherName() {
@@ -52,19 +53,19 @@ public class TizenMatcher extends MatcherBase {
    }
 
    static {
-      c.add("generic_tizen_ver1_0");
-      c.add("generic_tizen_ver2_0");
-      c.add("generic_tizen_ver2_1");
-      c.add("generic_tizen_ver2_2");
-      c.add("generic_tizen_ver2_3");
-      c.add("generic_tizen_ver2_4");
-      c.add("generic_tizen_ver3_0");
-      d.add("1.0");
-      d.add("2.0");
-      d.add("2.1");
-      d.add("2.2");
-      d.add("2.3");
-      d.add("2.4");
-      d.add("3.0");
+      SUPPORTED_DEVICE_IDS.add("generic_tizen_ver1_0");
+      SUPPORTED_DEVICE_IDS.add("generic_tizen_ver2_0");
+      SUPPORTED_DEVICE_IDS.add("generic_tizen_ver2_1");
+      SUPPORTED_DEVICE_IDS.add("generic_tizen_ver2_2");
+      SUPPORTED_DEVICE_IDS.add("generic_tizen_ver2_3");
+      SUPPORTED_DEVICE_IDS.add("generic_tizen_ver2_4");
+      SUPPORTED_DEVICE_IDS.add("generic_tizen_ver3_0");
+      SUPPORTED_VERSIONS.add("1.0");
+      SUPPORTED_VERSIONS.add("2.0");
+      SUPPORTED_VERSIONS.add("2.1");
+      SUPPORTED_VERSIONS.add("2.2");
+      SUPPORTED_VERSIONS.add("2.3");
+      SUPPORTED_VERSIONS.add("2.4");
+      SUPPORTED_VERSIONS.add("3.0");
    }
 }

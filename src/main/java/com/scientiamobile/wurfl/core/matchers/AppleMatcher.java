@@ -12,102 +12,103 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 
 final class AppleMatcher extends AbstractMatcher {
-   private static String b = "apple_iphone_coremedia_ver1";
-   private static final String c = "apple_iphone_ver".concat("1");
-   private static final String[] d = new String[]{"iPhone", "iPod", "iPad"};
-   private static final Pattern e = Pattern.compile(" (\\d+)_\\d+[ _]");
-   private static final Pattern f = Pattern.compile("(?:iPhone|iPad|iPod) ?(\\d+,\\d+)");
-   private static final List<String> g = new ArrayList<>();
-   private static final Map<String, String> h = new HashMap<>();
-   private static final Map<String, String> i = new HashMap<>();
-   private static final Map<String, String> j = new HashMap<>();
-   private static final List<String> k = new ArrayList<>();
+   private static final String COREMEDIA_DEVICE_ID = "apple_iphone_coremedia_ver1";
+   private static final String DEFAULT_IPHONE_DEVICE_ID = "apple_iphone_ver".concat("1");
+   private static final String[] APPLE_DEVICE_KEYWORDS = new String[]{"iPhone", "iPod", "iPad"};
+   private static final Pattern IOS_MAJOR_VERSION_PATTERN = Pattern.compile(" (\\d+)_\\d+[ _]");
+   private static final Pattern APPLE_HARDWARE_ID_PATTERN = Pattern.compile("(?:iPhone|iPad|iPod) ?(\\d+,\\d+)");
+   private static final List<String> SUPPORTED_DEVICE_IDS = new ArrayList<>();
+   private static final Map<String, String> IPHONE_HW_TO_SUBHW = new HashMap<>();
+   private static final Map<String, String> IPAD_HW_TO_SUBHW = new HashMap<>();
+   private static final Map<String, String> IPOD_HW_TO_SUBHW = new HashMap<>();
+   private static final List<String> SUPPORTED_SUBHW_DEVICE_IDS = new ArrayList<>();
+   private static final List<String> k = SUPPORTED_SUBHW_DEVICE_IDS;
 
    public AppleMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
+   protected final Set<String> getRequiredDeviceIds() {
       HashSet<String> var1;
-      (var1 = new HashSet<>()).addAll(g);
-      var1.addAll(k);
-      var1.add(b);
+      (var1 = new HashSet<>()).addAll(SUPPORTED_DEVICE_IDS);
+      var1.addAll(SUPPORTED_SUBHW_DEVICE_IDS);
+      var1.add(COREMEDIA_DEVICE_ID);
       return var1;
    }
 
    public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), d) && !StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Symbian", "Nintendo");
+      return !var1._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), APPLE_DEVICE_KEYWORDS) && !StringMatchUtils.containsAnyOf(var1.getCleanedDeviceUserAgent(), "Symbian", "Nintendo");
    }
 
    protected final String applyConclusiveMatch(WURFLRequest var1) {
-      String var4 = var1.getNormalizedDeviceUserAgent();
-      String var2 = null;
-      Matcher var3;
-      if ((var3 = f.matcher(var4)).find()) {
-         String var8 = var3.group(1);
-         if (var4.contains("iPod")) {
-            var2 = (String)j.get(var8);
-         } else if (var4.contains("iPad")) {
-            var2 = (String)i.get(var8);
-         } else if (var4.contains("iPhone")) {
-            var2 = (String)h.get(var8);
+      String userAgent = var1.getNormalizedDeviceUserAgent();
+      String subHw = null;
+      Matcher hwMatcher;
+      if ((hwMatcher = APPLE_HARDWARE_ID_PATTERN.matcher(userAgent)).find()) {
+         String hwId = hwMatcher.group(1);
+         if (userAgent.contains("iPod")) {
+            subHw = IPOD_HW_TO_SUBHW.get(hwId);
+         } else if (userAgent.contains("iPad")) {
+            subHw = IPAD_HW_TO_SUBHW.get(hwId);
+         } else if (userAgent.contains("iPhone")) {
+            subHw = IPHONE_HW_TO_SUBHW.get(hwId);
          }
       }
 
       int var9;
-      if ((var9 = StringMatchUtils.firstChar(var4, '_')) < 0) {
-         if ((var9 = var4.indexOf("like Mac OS X;")) >= 0) {
+      if ((var9 = StringMatchUtils.firstChar(userAgent, '_')) < 0) {
+         if ((var9 = userAgent.indexOf("like Mac OS X;")) >= 0) {
             var9 += 14;
          } else {
-            var9 = var4.length();
+            var9 = userAgent.length();
          }
       } else {
          ++var9;
       }
 
-      if ((var4 = StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), var4, var9)) != null) {
-         var4 = this.getFilter().getIndex().getDeviceIdByUserAgent(var4);
-         if (var2 != null && var4 != null) {
-            var2 = var4 + "_subhw" + var2;
-            if (k.contains(var2)) {
-               return var2;
+      String matchedUserAgent = StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, var9);
+      if (matchedUserAgent != null) {
+         String matchedDeviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(matchedUserAgent);
+         if (subHw != null && matchedDeviceId != null) {
+            String subHwDeviceId = matchedDeviceId + "_subhw" + subHw;
+            if (SUPPORTED_SUBHW_DEVICE_IDS.contains(subHwDeviceId)) {
+               return subHwDeviceId;
             }
          }
 
-         return var4;
+         return matchedDeviceId;
       } else {
          return null;
       }
    }
 
    protected final String applyRecoveryMatch(WURFLRequest var1) {
-      String var4 = var1.getNormalizedDeviceUserAgent();
-      Matcher var2 = e.matcher(var4);
-      String var3 = "-1";
-      if (var2.find()) {
-         var3 = var2.group(1);
+      String userAgent = var1.getNormalizedDeviceUserAgent();
+      Matcher versionMatcher = IOS_MAJOR_VERSION_PATTERN.matcher(userAgent);
+      String majorVersion = "-1";
+      if (versionMatcher.find()) {
+         majorVersion = versionMatcher.group(1);
       }
 
-      if (var4.contains("CoreMedia")) {
-         return b;
-      } else if (var4.contains("iPod")) {
-         var4 = "apple_ipod_touch_ver".concat(var3);
-         return g.contains(var4) ? var4 : "apple_ipod_touch_ver".concat("1");
-      } else if (var4.contains("iPad")) {
-         if ("3".equals(var3)) {
+      if (userAgent.contains("CoreMedia")) {
+         return COREMEDIA_DEVICE_ID;
+      } else if (userAgent.contains("iPod")) {
+         userAgent = "apple_ipod_touch_ver".concat(majorVersion);
+         return SUPPORTED_DEVICE_IDS.contains(userAgent) ? userAgent : "apple_ipod_touch_ver".concat("1");
+      } else if (userAgent.contains("iPad")) {
+         if ("3".equals(majorVersion)) {
             return "apple_ipad_ver1".concat("_subua32");
-         } else if ("4".equals(var3)) {
+         } else if ("4".equals(majorVersion)) {
             return "apple_ipad_ver1".concat("_sub42");
          } else {
-            var4 = "apple_ipad_ver1".concat("_sub").concat(var3);
-            return g.contains(var4) ? var4 : "apple_ipad_ver1";
+            userAgent = "apple_ipad_ver1".concat("_sub").concat(majorVersion);
+            return SUPPORTED_DEVICE_IDS.contains(userAgent) ? userAgent : "apple_ipad_ver1";
          }
       } else {
-         var4 = "apple_iphone_ver".concat(var3);
-         return g.contains(var4) ? var4 : c;
+         userAgent = "apple_iphone_ver".concat(majorVersion);
+         return SUPPORTED_DEVICE_IDS.contains(userAgent) ? userAgent : DEFAULT_IPHONE_DEVICE_ID;
       }
    }
 
@@ -120,144 +121,144 @@ final class AppleMatcher extends AbstractMatcher {
    }
 
    static {
-      g.add("apple_ipod_touch_ver1");
-      g.add("apple_ipod_touch_ver2");
-      g.add("apple_ipod_touch_ver3");
-      g.add("apple_ipod_touch_ver4");
-      g.add("apple_ipod_touch_ver5");
-      g.add("apple_ipod_touch_ver6");
-      g.add("apple_ipod_touch_ver7");
-      g.add("apple_ipod_touch_ver8");
-      g.add("apple_ipod_touch_ver9");
-      g.add("apple_ipod_touch_ver10");
-      g.add("apple_ipod_touch_ver11");
-      g.add("apple_ipad_ver1");
-      g.add("apple_ipad_ver1_subua32");
-      g.add("apple_ipad_ver1_sub42");
-      g.add("apple_ipad_ver1_sub5");
-      g.add("apple_ipad_ver1_sub6");
-      g.add("apple_ipad_ver1_sub7");
-      g.add("apple_ipad_ver1_sub8");
-      g.add("apple_ipad_ver1_sub9");
-      g.add("apple_ipad_ver1_sub10");
-      g.add("apple_ipad_ver1_sub11");
-      g.add(c);
-      g.add("apple_iphone_ver2");
-      g.add("apple_iphone_ver3");
-      g.add("apple_iphone_ver4");
-      g.add("apple_iphone_ver5");
-      g.add("apple_iphone_ver6");
-      g.add("apple_iphone_ver7");
-      g.add("apple_iphone_ver8");
-      g.add("apple_iphone_ver9");
-      g.add("apple_iphone_ver10");
-      g.add("apple_iphone_ver11");
-      h.put("1,1", "2g");
-      h.put("1,2", "3g");
-      h.put("2,1", "3gs");
-      h.put("3,1", "4");
-      h.put("3,2", "4");
-      h.put("3,3", "4");
-      h.put("4,1", "4s");
-      h.put("5,1", "5");
-      h.put("5,2", "5");
-      h.put("5,3", "5c");
-      h.put("5,4", "5c");
-      h.put("6,1", "5s");
-      h.put("6,2", "5s");
-      h.put("7,1", "6plus");
-      h.put("7,2", "6");
-      h.put("8,2", "6splus");
-      h.put("8,1", "6s");
-      h.put("8,4", "se");
-      h.put("9,1", "7");
-      h.put("9,2", "7plus");
-      h.put("9,3", "7");
-      h.put("9,4", "7plus");
-      h.put("10,1", "8");
-      h.put("10,2", "8plus");
-      h.put("10,3", "x");
-      h.put("10,4", "8");
-      h.put("10,5", "8plus");
-      h.put("10,6", "x");
-      i.put("1,1", "1");
-      i.put("2,1", "2");
-      i.put("2,2", "2");
-      i.put("2,3", "2");
-      i.put("2,4", "2");
-      i.put("2,5", "mini1");
-      i.put("2,6", "mini1");
-      i.put("2,7", "mini1");
-      i.put("3,1", "3");
-      i.put("3,2", "3");
-      i.put("3,3", "3");
-      i.put("3,4", "4");
-      i.put("3,5", "4");
-      i.put("3,6", "4");
-      i.put("4,1", "air");
-      i.put("4,2", "air");
-      i.put("4,3", "air");
-      i.put("4,4", "mini2");
-      i.put("4,5", "mini2");
-      i.put("4,6", "mini2");
-      i.put("4,7", "mini3");
-      i.put("4,8", "mini3");
-      i.put("4,9", "mini3");
-      i.put("5,3", "air2");
-      i.put("5,4", "air2");
-      i.put("5,1", "mini4");
-      i.put("5,2", "mini4");
-      i.put("6,7", "pro");
-      i.put("6,8", "pro");
-      i.put("6,3", "pro97");
-      i.put("6,4", "pro97");
-      i.put("6,11", "5");
-      i.put("6,12", "5");
-      i.put("7,1", "pro2");
-      i.put("7,2", "pro2");
-      i.put("7,3", "pro2105");
-      i.put("7,4", "pro2105");
-      j.put("1,1", "1");
-      j.put("2,1", "2");
-      j.put("3,1", "3");
-      j.put("4,1", "4");
-      j.put("5,1", "5");
-      j.put("7,1", "6");
-      k.add("apple_ipad_ver1_subhw1");
-      k.add("apple_ipad_ver1_sub42_subhw1");
-      k.add("apple_ipad_ver1_sub43_subhw1");
-      k.add("apple_ipad_ver1_sub43_subhw2");
-      k.add("apple_ipad_ver1_sub5_subhw1");
-      k.add("apple_ipad_ver1_sub5_subhw2");
-      k.add("apple_ipad_ver1_sub51_subhw1");
-      k.add("apple_ipad_ver1_sub51_subhw2");
-      k.add("apple_ipad_ver1_sub51_subhw3");
-      k.add("apple_ipad_ver1_sub6_subhw2");
-      k.add("apple_ipad_ver1_sub6_subhw3");
-      k.add("apple_ipad_ver1_sub6_subhw4");
-      k.add("apple_ipad_ver1_sub6_subhwmini1");
-      k.add("apple_ipad_ver1_sub61_subhw2");
-      k.add("apple_ipad_ver1_sub61_subhw3");
-      k.add("apple_ipad_ver1_sub61_subhw4");
-      k.add("apple_ipad_ver1_sub61_subhwmini1");
-      k.add("apple_ipad_ver1_sub7_subhw2");
-      k.add("apple_ipad_ver1_sub7_subhw3");
-      k.add("apple_ipad_ver1_sub7_subhw4");
-      k.add("apple_ipad_ver1_sub7_subhwmini1");
-      k.add("apple_ipad_ver1_sub7_subhwmini2");
-      k.add("apple_ipad_ver1_sub7_subhwair");
-      k.add("apple_ipad_ver1_sub71_subhw2");
-      k.add("apple_ipad_ver1_sub71_subhw3");
-      k.add("apple_ipad_ver1_sub71_subhw4");
-      k.add("apple_ipad_ver1_sub71_subhwmini1");
-      k.add("apple_ipad_ver1_sub71_subhwmini2");
-      k.add("apple_ipad_ver1_sub71_subhwair");
-      k.add("apple_ipad_ver1_sub8_subhw2");
-      k.add("apple_ipad_ver1_sub8_subhw3");
-      k.add("apple_ipad_ver1_sub8_subhw4");
-      k.add("apple_ipad_ver1_sub8_subhwmini1");
-      k.add("apple_ipad_ver1_sub8_subhwmini2");
-      k.add("apple_ipad_ver1_sub8_subhwair");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver1");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver2");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver3");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver4");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver5");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver6");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver7");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver8");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver9");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver10");
+      SUPPORTED_DEVICE_IDS.add("apple_ipod_touch_ver11");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_subua32");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub42");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub5");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub6");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub7");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub8");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub9");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub10");
+      SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub11");
+      SUPPORTED_DEVICE_IDS.add(DEFAULT_IPHONE_DEVICE_ID);
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver2");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver3");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver4");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver5");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver6");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver7");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver8");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver9");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver10");
+      SUPPORTED_DEVICE_IDS.add("apple_iphone_ver11");
+      IPHONE_HW_TO_SUBHW.put("1,1", "2g");
+      IPHONE_HW_TO_SUBHW.put("1,2", "3g");
+      IPHONE_HW_TO_SUBHW.put("2,1", "3gs");
+      IPHONE_HW_TO_SUBHW.put("3,1", "4");
+      IPHONE_HW_TO_SUBHW.put("3,2", "4");
+      IPHONE_HW_TO_SUBHW.put("3,3", "4");
+      IPHONE_HW_TO_SUBHW.put("4,1", "4s");
+      IPHONE_HW_TO_SUBHW.put("5,1", "5");
+      IPHONE_HW_TO_SUBHW.put("5,2", "5");
+      IPHONE_HW_TO_SUBHW.put("5,3", "5c");
+      IPHONE_HW_TO_SUBHW.put("5,4", "5c");
+      IPHONE_HW_TO_SUBHW.put("6,1", "5s");
+      IPHONE_HW_TO_SUBHW.put("6,2", "5s");
+      IPHONE_HW_TO_SUBHW.put("7,1", "6plus");
+      IPHONE_HW_TO_SUBHW.put("7,2", "6");
+      IPHONE_HW_TO_SUBHW.put("8,2", "6splus");
+      IPHONE_HW_TO_SUBHW.put("8,1", "6s");
+      IPHONE_HW_TO_SUBHW.put("8,4", "se");
+      IPHONE_HW_TO_SUBHW.put("9,1", "7");
+      IPHONE_HW_TO_SUBHW.put("9,2", "7plus");
+      IPHONE_HW_TO_SUBHW.put("9,3", "7");
+      IPHONE_HW_TO_SUBHW.put("9,4", "7plus");
+      IPHONE_HW_TO_SUBHW.put("10,1", "8");
+      IPHONE_HW_TO_SUBHW.put("10,2", "8plus");
+      IPHONE_HW_TO_SUBHW.put("10,3", "x");
+      IPHONE_HW_TO_SUBHW.put("10,4", "8");
+      IPHONE_HW_TO_SUBHW.put("10,5", "8plus");
+      IPHONE_HW_TO_SUBHW.put("10,6", "x");
+      IPAD_HW_TO_SUBHW.put("1,1", "1");
+      IPAD_HW_TO_SUBHW.put("2,1", "2");
+      IPAD_HW_TO_SUBHW.put("2,2", "2");
+      IPAD_HW_TO_SUBHW.put("2,3", "2");
+      IPAD_HW_TO_SUBHW.put("2,4", "2");
+      IPAD_HW_TO_SUBHW.put("2,5", "mini1");
+      IPAD_HW_TO_SUBHW.put("2,6", "mini1");
+      IPAD_HW_TO_SUBHW.put("2,7", "mini1");
+      IPAD_HW_TO_SUBHW.put("3,1", "3");
+      IPAD_HW_TO_SUBHW.put("3,2", "3");
+      IPAD_HW_TO_SUBHW.put("3,3", "3");
+      IPAD_HW_TO_SUBHW.put("3,4", "4");
+      IPAD_HW_TO_SUBHW.put("3,5", "4");
+      IPAD_HW_TO_SUBHW.put("3,6", "4");
+      IPAD_HW_TO_SUBHW.put("4,1", "air");
+      IPAD_HW_TO_SUBHW.put("4,2", "air");
+      IPAD_HW_TO_SUBHW.put("4,3", "air");
+      IPAD_HW_TO_SUBHW.put("4,4", "mini2");
+      IPAD_HW_TO_SUBHW.put("4,5", "mini2");
+      IPAD_HW_TO_SUBHW.put("4,6", "mini2");
+      IPAD_HW_TO_SUBHW.put("4,7", "mini3");
+      IPAD_HW_TO_SUBHW.put("4,8", "mini3");
+      IPAD_HW_TO_SUBHW.put("4,9", "mini3");
+      IPAD_HW_TO_SUBHW.put("5,3", "air2");
+      IPAD_HW_TO_SUBHW.put("5,4", "air2");
+      IPAD_HW_TO_SUBHW.put("5,1", "mini4");
+      IPAD_HW_TO_SUBHW.put("5,2", "mini4");
+      IPAD_HW_TO_SUBHW.put("6,7", "pro");
+      IPAD_HW_TO_SUBHW.put("6,8", "pro");
+      IPAD_HW_TO_SUBHW.put("6,3", "pro97");
+      IPAD_HW_TO_SUBHW.put("6,4", "pro97");
+      IPAD_HW_TO_SUBHW.put("6,11", "5");
+      IPAD_HW_TO_SUBHW.put("6,12", "5");
+      IPAD_HW_TO_SUBHW.put("7,1", "pro2");
+      IPAD_HW_TO_SUBHW.put("7,2", "pro2");
+      IPAD_HW_TO_SUBHW.put("7,3", "pro2105");
+      IPAD_HW_TO_SUBHW.put("7,4", "pro2105");
+      IPOD_HW_TO_SUBHW.put("1,1", "1");
+      IPOD_HW_TO_SUBHW.put("2,1", "2");
+      IPOD_HW_TO_SUBHW.put("3,1", "3");
+      IPOD_HW_TO_SUBHW.put("4,1", "4");
+      IPOD_HW_TO_SUBHW.put("5,1", "5");
+      IPOD_HW_TO_SUBHW.put("7,1", "6");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_subhw1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub42_subhw1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub43_subhw1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub43_subhw2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub5_subhw1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub5_subhw2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub51_subhw1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub51_subhw2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub51_subhw3");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub6_subhw2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub6_subhw3");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub6_subhw4");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub6_subhwmini1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub61_subhw2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub61_subhw3");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub61_subhw4");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub61_subhwmini1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub7_subhw2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub7_subhw3");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub7_subhw4");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub7_subhwmini1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub7_subhwmini2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub7_subhwair");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub71_subhw2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub71_subhw3");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub71_subhw4");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub71_subhwmini1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub71_subhwmini2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub71_subhwair");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub8_subhw2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub8_subhw3");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub8_subhw4");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub8_subhwmini1");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub8_subhwmini2");
+      SUPPORTED_SUBHW_DEVICE_IDS.add("apple_ipad_ver1_sub8_subhwair");
       k.add("apple_ipad_ver1_sub8_1_subhw2");
       k.add("apple_ipad_ver1_sub8_1_subhw3");
       k.add("apple_ipad_ver1_sub8_1_subhw4");

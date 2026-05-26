@@ -35,7 +35,7 @@ final class ModelDevicesPatchMerger {
                   throw new UserAgentOverrideException(var3, var5.getUserAgent(), var3.getUserAgent());
                }
 
-               var10000 = (new ModelDevice$Builder(var3.getID(), var3.getUserAgent(), var5.getFallBack())).setActualDeviceRoot(var5.isActualDeviceRoot()).setCapabilitiesByGroup(var9).setCapabilities(var6).build();
+               var10000 = (new ModelDeviceBuilder(var3.getID(), var3.getUserAgent(), var5.getFallBack())).setActualDeviceRoot(var5.isActualDeviceRoot()).setCapabilitiesByGroup(var9).setCapabilities(var6).build();
             } else {
                LOG.error("invalid patching device, not patched");
                var10000 = var3;

@@ -181,7 +181,7 @@ final class WurflXmlHandler extends DefaultHandler {
             break;
          case 5:
             if ("device".equals(var3)) {
-               ModelDevice var4 = (new ModelDevice$Builder(this.currentDeviceId, this.currentUserAgent, this.currentFallback)).setActualDeviceRoot(this.currentActualDeviceRoot).setCapabilities(this.currentCapabilities).setCapabilitiesByGroup(this.currentCapabilitiesByGroup).build();
+               ModelDevice var4 = (new ModelDeviceBuilder(this.currentDeviceId, this.currentUserAgent, this.currentFallback)).setActualDeviceRoot(this.currentActualDeviceRoot).setCapabilities(this.currentCapabilities).setCapabilitiesByGroup(this.currentCapabilitiesByGroup).build();
                this.devices.add(var4);
                if (var4.isActualDeviceRoot()) {
                   this.actualDeviceRootsById.put(this.currentDeviceId, var4);

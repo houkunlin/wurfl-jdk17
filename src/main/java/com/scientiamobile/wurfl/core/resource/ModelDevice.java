@@ -14,15 +14,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ModelDevice implements Serializable {
    private static final long serialVersionUID = 10L;
-   private String a;
-   private String b;
-   private String c;
-   private boolean d;
-   private Map<String, String> e;
-   private Map<String, String> f;
-   private ModelDevice g;
-   // $FF: synthetic field
-   private static boolean h = !ModelDevice.class.desiredAssertionStatus();
+   private String userAgent;
+   private String id;
+   private String fallBack;
+   private boolean actualDeviceRoot;
+   private Map<String, String> capabilities;
+   private Map<String, String> groupsByCapability;
+   private ModelDevice ancestor;
+   private static boolean ASSERTIONS_DISABLED = !ModelDevice.class.desiredAssertionStatus();
 
    protected ModelDevice() {
    }
@@ -36,72 +35,72 @@ public class ModelDevice implements Serializable {
       Validate.noNullElements(var5.values(), "The capabilities can not contain null value");
       Validate.noNullElements(var6.values(), "The capabilities can not contain null value");
       Validate.isTrue(var5.keySet().equals(var6.keySet()), "The capabilities and groups must be same Set");
-      this.a = var1;
-      this.b = var2;
-      this.c = var3;
-      this.d = var4;
-      this.e = Collections.unmodifiableMap(var5);
-      this.f = Collections.unmodifiableMap(var6);
+      this.userAgent = var1;
+      this.id = var2;
+      this.fallBack = var3;
+      this.actualDeviceRoot = var4;
+      this.capabilities = Collections.unmodifiableMap(var5);
+      this.groupsByCapability = Collections.unmodifiableMap(var6);
    }
 
    public String getUserAgent() {
-      return this.a;
+      return this.userAgent;
    }
 
    public String getID() {
-      return this.b;
+      return this.id;
    }
 
    public String getFallBack() {
-      return this.c;
+      return this.fallBack;
    }
 
    public boolean isActualDeviceRoot() {
-      return this.d;
+      return this.actualDeviceRoot;
    }
 
    public Map<String, String> getCapabilities() {
-      return this.e;
+      return this.capabilities;
    }
 
    public Map<String, String> getGroupsByCapability() {
-      return this.f;
+      return this.groupsByCapability;
    }
 
    public boolean defineCapability(String var1) {
-      return this.e.containsKey(var1);
+      return this.capabilities.containsKey(var1);
    }
 
    public String getCapability(String var1) {
-      if (!h && !this.defineCapability(var1)) {
-         throw new AssertionError(this.b + " do not define " + var1);
+      if (!ASSERTIONS_DISABLED && !this.defineCapability(var1)) {
+         throw new AssertionError(this.id + " do not define " + var1);
       } else {
-         return (String)this.e.get(var1);
+         return this.capabilities.get(var1);
       }
    }
 
    public boolean defineGroup(String var1) {
-      return this.f.containsValue(var1);
+      return this.groupsByCapability.containsValue(var1);
    }
 
    public Set<String> getGroups() {
-      return new HashSet<>(this.f.values());
+      return new HashSet<>(this.groupsByCapability.values());
    }
 
    public String getGroupForCapability(String var1) {
-      if (!h && !this.defineCapability(var1)) {
+      if (!ASSERTIONS_DISABLED && !this.defineCapability(var1)) {
          throw new AssertionError();
       } else {
-         return (String)this.f.get(var1);
+         return this.groupsByCapability.get(var1);
       }
    }
 
    public Set<String> getCapabilitiesNamesForGroup(String var1) {
-      if (!h && !this.defineGroup(var1)) {
+      if (!ASSERTIONS_DISABLED && !this.defineGroup(var1)) {
          throw new AssertionError();
       } else {
          HashSet<String> var2 = new HashSet<>();
-         Iterator<Map.Entry<String, String>> var3 = this.f.entrySet().iterator();
+         Iterator<Map.Entry<String, String>> var3 = this.groupsByCapability.entrySet().iterator();
 
          while(var3.hasNext()) {
             Map.Entry<String, String> var4;
@@ -118,23 +117,23 @@ public class ModelDevice implements Serializable {
       HashMap<String, String> var2 = new HashMap<>();
 
       for(String capabilityName : this.getCapabilitiesNamesForGroup(var1)) {
-         var2.put(capabilityName, this.e.get(capabilityName));
+         var2.put(capabilityName, this.capabilities.get(capabilityName));
       }
 
       return var2;
    }
 
    public ModelDevice getAncestor() {
-      return this.g;
+      return this.ancestor;
    }
 
    public void setAncestor(ModelDevice var1) {
-      this.g = var1;
+      this.ancestor = var1;
    }
 
    public int hashCode() {
       HashCodeBuilder var1;
-      (var1 = new HashCodeBuilder(11, 45)).append(this.getClass()).append(this.b);
+      (var1 = new HashCodeBuilder(11, 45)).append(this.getClass()).append(this.id);
       return var1.toHashCode();
    }
 
@@ -145,48 +144,37 @@ public class ModelDevice implements Serializable {
          return false;
       } else {
          ModelDevice other = (ModelDevice)var1;
-         return (new EqualsBuilder()).append(this.b, other.b).isEquals();
+         return (new EqualsBuilder()).append(this.id, other.id).isEquals();
       }
    }
 
    public String toString() {
       ToStringBuilder var1;
-      (var1 = new ToStringBuilder(this)).append(this.b);
+      (var1 = new ToStringBuilder(this)).append(this.id);
       return var1.toString();
    }
 
-   // $FF: synthetic method
-   static String a(ModelDevice var0, String var1) {
-      return var0.b = var1;
+   final void setUserAgent(String var1) {
+      this.userAgent = var1;
    }
 
-   // $FF: synthetic method
-   static String b(ModelDevice var0, String var1) {
-      return var0.a = var1;
+   final void setId(String var1) {
+      this.id = var1;
    }
 
-   // $FF: synthetic method
-   static String c(ModelDevice var0, String var1) {
-      return var0.c = var1;
+   final void setFallBack(String var1) {
+      this.fallBack = var1;
    }
 
-   // $FF: synthetic method
-   static boolean a(ModelDevice var0, boolean var1) {
-      return var0.d = var1;
+   final void setActualDeviceRoot(boolean var1) {
+      this.actualDeviceRoot = var1;
    }
 
-   // $FF: synthetic method
-   static Map<String, String> a(ModelDevice var0, Map<String, String> var1) {
-      return var0.e = var1;
+   final void setCapabilities(Map<String, String> var1) {
+      this.capabilities = var1;
    }
 
-   // $FF: synthetic method
-   static Map<String, String> b(ModelDevice var0, Map<String, String> var1) {
-      return var0.f = var1;
-   }
-
-   // $FF: synthetic method
-   static ModelDevice a(ModelDevice var0, ModelDevice var1) {
-      return var0.g = var1;
+   final void setGroupsByCapability(Map<String, String> var1) {
+      this.groupsByCapability = var1;
    }
 }

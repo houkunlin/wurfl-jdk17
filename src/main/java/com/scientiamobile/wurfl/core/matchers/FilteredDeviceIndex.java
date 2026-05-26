@@ -41,22 +41,6 @@ final class FilteredDeviceIndex {
       this.userAgents.add(userAgent);
    }
 
-   public final Collection<String> a() {
-      return this.getUserAgents();
-   }
-
-   public final void b() {
-      this.sortUserAgents();
-   }
-
-   public final String a(String var1) {
-      return this.getDeviceIdByUserAgent(var1);
-   }
-
-   public final void a(String var1, String var2) {
-      this.put(var1, var2);
-   }
-
    public final String toString() {
       return this.ownerFilter.getMatcherName() + this.userAgentToDeviceId.values();
    }

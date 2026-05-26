@@ -10,8 +10,4 @@ interface MatcherFilter {
    FilteredDeviceIndex getIndex();
 
    String getMatcherName();
-
-   default FilteredDeviceIndex a() {
-      return this.getIndex();
-   }
 }
