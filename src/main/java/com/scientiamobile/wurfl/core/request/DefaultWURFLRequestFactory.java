@@ -18,76 +18,76 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
 
 public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriority {
-   private final UserAgentResolver a;
-   private UserAgentNormalizer b;
-   private UserAgentPriority c;
+   private final UserAgentResolver userAgentResolver;
+   private UserAgentNormalizer userAgentNormalizer;
+   private UserAgentPriority userAgentPriority;
 
-   private static UserAgentNormalizerChain a() {
+   private static UserAgentNormalizerChain createDefaultNormalizerChain() {
       return new UserAgentNormalizerChain(new UserAgentNormalizer[]{new UCWebNormalizer(), new UPLinkNormalizer(), new SerialNumberNormalizer(), new LocaleNormalizer(), new CFNetworkNormalizer(), new BlackBerryNormalizer(), new GenericAndroidNormalizer(), new TransferEncodingNormalizer()});
    }
 
    public DefaultWURFLRequestFactory() {
-      this((UserAgentNormalizer)a());
+      this(createDefaultNormalizerChain());
    }
 
-   public DefaultWURFLRequestFactory(UserAgentResolver var1) {
-      this((UserAgentResolver)var1, (UserAgentNormalizer)a());
+   public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver) {
+      this(userAgentResolver, createDefaultNormalizerChain());
    }
 
-   public DefaultWURFLRequestFactory(UserAgentNormalizer var1) {
-      this((UserAgentResolver)(new HttpServletRequestUserAgentResolver()), (UserAgentNormalizer)var1);
+   public DefaultWURFLRequestFactory(UserAgentNormalizer userAgentNormalizer) {
+      this(new HttpServletRequestUserAgentResolver(), userAgentNormalizer);
    }
 
-   public DefaultWURFLRequestFactory(UserAgentResolver var1, UserAgentNormalizer var2) {
-      this(var1, var2, UserAgentPriority.OverrideSideloadedBrowserUserAgent);
+   public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentNormalizer userAgentNormalizer) {
+      this(userAgentResolver, userAgentNormalizer, UserAgentPriority.OverrideSideloadedBrowserUserAgent);
    }
 
-   public DefaultWURFLRequestFactory(UserAgentPriority var1) {
-      this((UserAgentNormalizer)a(), (UserAgentPriority)var1);
+   public DefaultWURFLRequestFactory(UserAgentPriority userAgentPriority) {
+      this(createDefaultNormalizerChain(), userAgentPriority);
    }
 
-   public DefaultWURFLRequestFactory(UserAgentResolver var1, UserAgentPriority var2) {
-      this(var1, a(), var2);
+   public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentPriority userAgentPriority) {
+      this(userAgentResolver, createDefaultNormalizerChain(), userAgentPriority);
    }
 
-   public DefaultWURFLRequestFactory(UserAgentNormalizer var1, UserAgentPriority var2) {
-      this(new HttpServletRequestUserAgentResolver(), var1, var2);
+   public DefaultWURFLRequestFactory(UserAgentNormalizer userAgentNormalizer, UserAgentPriority userAgentPriority) {
+      this(new HttpServletRequestUserAgentResolver(), userAgentNormalizer, userAgentPriority);
    }
 
-   public DefaultWURFLRequestFactory(UserAgentResolver var1, UserAgentNormalizer var2, UserAgentPriority var3) {
+   public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentNormalizer userAgentNormalizer, UserAgentPriority userAgentPriority) {
       LoggerFactory.getLogger(DefaultWURFLRequestFactory.class);
-      Validate.notNull(var1, "userAgentResolver is null");
-      this.a = var1;
-      this.b = var2;
-      this.c = var3;
+      Validate.notNull(userAgentResolver, "userAgentResolver is null");
+      this.userAgentResolver = userAgentResolver;
+      this.userAgentNormalizer = userAgentNormalizer;
+      this.userAgentPriority = userAgentPriority;
    }
 
-   public WURFLRequest createRequest(HttpServletRequest var1, EngineTarget var2) {
-      Validate.notNull(var1, "The sourceRequest must be not null");
-      String var3 = StringUtils.trimToEmpty(this.a.resolve(var1));
-      String var4 = UserAgentUtils.getUaProfile(var1);
-      return new DefaultWURFLRequest(var3, var4, this.b, UserAgentUtils.getHeaders(var1), this.c, var2);
+   public WURFLRequest createRequest(HttpServletRequest request, EngineTarget engineTarget) {
+      Validate.notNull(request, "The sourceRequest must be not null");
+      String userAgent = StringUtils.trimToEmpty(this.userAgentResolver.resolve(request));
+      String uaProfile = UserAgentUtils.getUaProfile(request);
+      return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, UserAgentUtils.getHeaders(request), this.userAgentPriority, engineTarget);
    }
 
-   public WURFLRequest createRequest(String var1, EngineTarget var2) {
-      var1 = StringUtils.trimToEmpty(var1);
-      return new DefaultWURFLRequest(var1, this.b, this.c, var2);
+   public WURFLRequest createRequest(String userAgent, EngineTarget engineTarget) {
+      userAgent = StringUtils.trimToEmpty(userAgent);
+      return new DefaultWURFLRequest(userAgent, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
    }
 
-   public WURFLRequest createRequest(String var1, String var2, EngineTarget var3) {
-      var1 = StringUtils.trimToEmpty(var1);
-      return new DefaultWURFLRequest(var1, var2, this.b, this.c, var3);
+   public WURFLRequest createRequest(String userAgent, String uaProfile, EngineTarget engineTarget) {
+      userAgent = StringUtils.trimToEmpty(userAgent);
+      return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
    }
 
-   public WURFLRequest createRequest(WURFLHeaderProvider var1, EngineTarget var2) {
-      return new DefaultWURFLRequest(this.b, var1, this.c, var2);
+   public WURFLRequest createRequest(WURFLHeaderProvider headerProvider, EngineTarget engineTarget) {
+      return new DefaultWURFLRequest(this.userAgentNormalizer, headerProvider, this.userAgentPriority, engineTarget);
    }
 
    public UserAgentPriority getUserAgentPriority() {
-      return this.c;
+      return this.userAgentPriority;
    }
 
-   public void setUserAgentPriority(UserAgentPriority var1) {
-      this.c = var1;
+   public void setUserAgentPriority(UserAgentPriority userAgentPriority) {
+      this.userAgentPriority = userAgentPriority;
    }
 }

@@ -5,17 +5,17 @@ import java.util.Map;
 import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
 public class MapHeaderProvider implements WURFLHeaderProvider {
-   private final Map<String, String> a;
+   private final Map<String, String> headers;
 
-   public MapHeaderProvider(Map<String, String> var1) {
-      this.a = var1;
+   public MapHeaderProvider(Map<String, String> headers) {
+      this.headers = headers;
    }
 
-   public String getHeader(String var1) {
-      return (String)this.a.get(var1);
+   public String getHeader(String headerName) {
+      return this.headers.get(headerName);
    }
 
    public Enumeration getHeaderNames() {
-      return new IteratorEnumeration<>(this.a.keySet().iterator());
+      return new IteratorEnumeration<>(this.headers.keySet().iterator());
    }
 }

@@ -4,17 +4,17 @@ import java.util.Enumeration;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class HttpServletRequestHeaderProvider implements WURFLHeaderProvider {
-   private final HttpServletRequest a;
+   private final HttpServletRequest request;
 
-   public HttpServletRequestHeaderProvider(HttpServletRequest var1) {
-      this.a = var1;
+   public HttpServletRequestHeaderProvider(HttpServletRequest request) {
+      this.request = request;
    }
 
-   public String getHeader(String var1) {
-      return this.a.getHeader(var1);
+   public String getHeader(String headerName) {
+      return this.request.getHeader(headerName);
    }
 
    public Enumeration getHeaderNames() {
-      return this.a.getHeaderNames();
+      return this.request.getHeaderNames();
    }
 }
