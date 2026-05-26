@@ -10,9 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class UcwebU2Matcher extends MatcherBase {
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add("generic_ucweb");
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add("generic_ucweb");
       return var1;
    }
 

@@ -21,15 +21,15 @@ final class UcwebU3Matcher extends MatcherBase {
    private static final String APPLE_IPAD_VER1_SUBUAWCWEB = "apple_ipad_ver1_subuaucweb";
    private static final Pattern IPHONE_IOS_VERSION = Pattern.compile("iPhone OS (\\d+)(?:_\\d+)?.+ like");
    private static final Pattern IPAD_IOS_VERSION = Pattern.compile("CPU OS (\\d+)(?:_\\d+)?.+like Mac");
-   private static final List SUPPORTED_DEVICE_IDS;
+   private static final List<String> SUPPORTED_DEVICE_IDS;
 
    public UcwebU3Matcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(SUPPORTED_DEVICE_IDS);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(SUPPORTED_DEVICE_IDS);
       return var1;
    }
 
@@ -128,7 +128,7 @@ final class UcwebU3Matcher extends MatcherBase {
    }
 
    static {
-      (SUPPORTED_DEVICE_IDS = new ArrayList()).add("generic_ucweb");
+      (SUPPORTED_DEVICE_IDS = new ArrayList<>()).add("generic_ucweb");
       SUPPORTED_DEVICE_IDS.add(GENERIC_UCWEB_ANDROID_VER1);
       SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver2");
       SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver3");

@@ -20,19 +20,19 @@ final class AppleMatcher extends AbstractMatcher {
    private static final String[] d = new String[]{"iPhone", "iPod", "iPad"};
    private static final Pattern e = Pattern.compile(" (\\d+)_\\d+[ _]");
    private static final Pattern f = Pattern.compile("(?:iPhone|iPad|iPod) ?(\\d+,\\d+)");
-   private static final List g = new ArrayList();
-   private static final Map h = new HashMap();
-   private static final Map i = new HashMap();
-   private static final Map j = new HashMap();
-   private static final List k = new ArrayList();
+   private static final List<String> g = new ArrayList<>();
+   private static final Map<String, String> h = new HashMap<>();
+   private static final Map<String, String> i = new HashMap<>();
+   private static final Map<String, String> j = new HashMap<>();
+   private static final List<String> k = new ArrayList<>();
 
    public AppleMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
    protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(g);
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(g);
       var1.addAll(k);
       var1.add(b);
       return var1;
@@ -59,7 +59,7 @@ final class AppleMatcher extends AbstractMatcher {
 
       int var9;
       if ((var9 = StringMatchUtils.firstChar(var4, '_')) < 0) {
-         if ((var9 = StringUtils.indexOf(var4, "like Mac OS X;")) >= 0) {
+         if ((var9 = var4.indexOf("like Mac OS X;")) >= 0) {
             var9 += 14;
          } else {
             var9 = var4.length();
@@ -93,10 +93,10 @@ final class AppleMatcher extends AbstractMatcher {
 
       if (var4.contains("CoreMedia")) {
          return b;
-      } else if (StringUtils.contains(var4, "iPod")) {
+      } else if (var4.contains("iPod")) {
          var4 = "apple_ipod_touch_ver".concat(var3);
          return g.contains(var4) ? var4 : "apple_ipod_touch_ver".concat("1");
-      } else if (StringUtils.contains(var4, "iPad")) {
+      } else if (var4.contains("iPad")) {
          if ("3".equals(var3)) {
             return "apple_ipad_ver1".concat("_subua32");
          } else if ("4".equals(var3)) {

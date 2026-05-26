@@ -3,7 +3,6 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
-import org.apache.commons.lang3.StringUtils;
 
 final class SPVMatcher extends MatcherBase {
    public SPVMatcher(WURFLModel var1) {
@@ -11,7 +10,7 @@ final class SPVMatcher extends MatcherBase {
    }
 
    public final boolean canHandle(WURFLRequest var1) {
-      return !var1._internalIsDesktopBrowser() && StringUtils.contains(var1.getCleanedDeviceUserAgent(), "SPV");
+      return !var1._internalIsDesktopBrowser() && var1.getCleanedDeviceUserAgent().contains("SPV");
    }
 
    protected final String risMatch(String var1) {

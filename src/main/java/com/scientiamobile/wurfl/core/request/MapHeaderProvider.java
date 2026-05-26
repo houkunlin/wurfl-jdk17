@@ -5,9 +5,9 @@ import java.util.Map;
 import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
 public class MapHeaderProvider implements WURFLHeaderProvider {
-   private final Map a;
+   private final Map<String, String> a;
 
-   public MapHeaderProvider(Map var1) {
+   public MapHeaderProvider(Map<String, String> var1) {
       this.a = var1;
    }
 
@@ -16,6 +16,6 @@ public class MapHeaderProvider implements WURFLHeaderProvider {
    }
 
    public Enumeration getHeaderNames() {
-      return new IteratorEnumeration(this.a.keySet().iterator());
+      return new IteratorEnumeration<>(this.a.keySet().iterator());
    }
 }

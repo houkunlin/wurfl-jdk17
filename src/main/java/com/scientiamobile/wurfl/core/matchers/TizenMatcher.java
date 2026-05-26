@@ -12,16 +12,16 @@ import java.util.regex.Pattern;
 
 public class TizenMatcher extends MatcherBase {
    private static final Pattern b = Pattern.compile("Tizen (\\d+?\\.\\d+?)");
-   private static final List c = new ArrayList();
-   private static final List d = new ArrayList();
+   private static final List<String> c = new ArrayList<>();
+   private static final List<String> d = new ArrayList<>();
 
    public TizenMatcher(WURFLModel var1) {
       super(var1);
    }
 
-   protected final Set a() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(c);
+   protected final Set<String> a() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(c);
       var1.add("generic_tizen");
       return var1;
    }

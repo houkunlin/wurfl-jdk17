@@ -1,7 +1,6 @@
 package com.scientiamobile.wurfl.core.resource.exc;
 
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
-import org.apache.commons.lang3.text.StrBuilder;
 
 public abstract class DeviceConsistencyException extends WURFLConsistencyException {
    private static final long serialVersionUID = 10L;
@@ -13,7 +12,7 @@ public abstract class DeviceConsistencyException extends WURFLConsistencyExcepti
    }
 
    public DeviceConsistencyException(ModelDevice var1) {
-      super((new StrBuilder("Device: ")).append(var1.getID()).append(" consistency error").toString());
+      super((new StringBuilder("Device: ")).append(var1.getID()).append(" consistency error").toString());
       this.a = var1;
    }
 

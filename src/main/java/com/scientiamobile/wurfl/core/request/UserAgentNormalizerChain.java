@@ -15,16 +15,16 @@ import org.slf4j.LoggerFactory;
 
 public class UserAgentNormalizerChain implements UserAgentNormalizer {
    private final transient Logger a;
-   private final List b;
+   private final List<UserAgentNormalizer> b;
 
    public UserAgentNormalizerChain() {
       this.a = LoggerFactory.getLogger(this.getClass());
-      this.b = new ArrayList();
+      this.b = new ArrayList<>();
    }
 
-   public UserAgentNormalizerChain(List var1) {
+   public UserAgentNormalizerChain(List<UserAgentNormalizer> var1) {
       this.a = LoggerFactory.getLogger(this.getClass());
-      this.b = new ArrayList();
+      this.b = new ArrayList<>();
       this.b.addAll(var1);
    }
 
@@ -33,8 +33,8 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
    }
 
    public UserAgentNormalizerChain add(UserAgentNormalizer var1) {
-      ArrayList var2;
-      (var2 = new ArrayList(this.b)).add(var1);
+      ArrayList<UserAgentNormalizer> var2;
+      (var2 = new ArrayList<>(this.b)).add(var1);
       return new UserAgentNormalizerChain(var2);
    }
 
@@ -67,7 +67,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
    }
 
    private String a(String var1) {
-      for(Iterator var2 = this.b.iterator(); var2.hasNext(); var1 = ((UserAgentNormalizer)var2.next()).normalize(var1)) {
+      for(Iterator<UserAgentNormalizer> var2 = this.b.iterator(); var2.hasNext(); var1 = var2.next().normalize(var1)) {
       }
 
       return var1;
@@ -91,10 +91,10 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
          var1.setUrlEncoded(true);
       }
 
-      return StringUtils.replace(var0, "+", " ");
+      return var0.replace("+", " ");
    }
 
-   public List getAllNormalizers() {
+   public List<UserAgentNormalizer> getAllNormalizers() {
       return Collections.unmodifiableList(this.b);
    }
 }

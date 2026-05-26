@@ -15,9 +15,9 @@ final class WebOSMatcher extends AbstractMatcher {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(HP_TABLET_WEBOS_GENERIC);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(HP_TABLET_WEBOS_GENERIC);
       var1.add(HP_WEBOS_GENERIC);
       return var1;
    }

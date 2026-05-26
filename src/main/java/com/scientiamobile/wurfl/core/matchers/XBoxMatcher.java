@@ -14,9 +14,9 @@ final class XBoxMatcher extends AbstractMatcher {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(MICROSOFT_XBOXONE_VER1);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(MICROSOFT_XBOXONE_VER1);
       var1.add(MICROSOFT_XBOX360_VER1_SUBIE10);
       var1.add(MICROSOFT_XBOX360_VER1);
       return var1;

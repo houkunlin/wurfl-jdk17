@@ -14,9 +14,9 @@ final class SkyfireMatcher extends MatcherBase {
       super(var1);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).add(GENERIC_SKYFIRE_VERSION1);
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(GENERIC_SKYFIRE_VERSION1);
       var1.add(GENERIC_SKYFIRE_VERSION2);
       return var1;
    }

@@ -16,15 +16,15 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
    private static final String GENERIC_MS_PHONE_OS7_5_DESKTOPMODE = "generic_ms_phone_os7_5_desktopmode";
    private static final String GENERIC_MS_PHONE_OS8_DESKTOPMODE = "generic_ms_phone_os8_desktopmode";
    private static final String GENERIC_MS_PHONE_OS10_DESKTOPMODE = "generic_ms_phone_os10_desktopmode";
-   private static final Map VERSION_TO_DEVICE_ID;
+   private static final Map<String, String> VERSION_TO_DEVICE_ID;
 
    public WindowsPhoneMatcher(UserAgentNormalizer var1, WURFLModel var2) {
       super(var1, var2);
    }
 
-   protected final Set getRequiredDeviceIds() {
-      HashSet var1;
-      (var1 = new HashSet()).addAll(VERSION_TO_DEVICE_ID.values());
+   protected final Set<String> getRequiredDeviceIds() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).addAll(VERSION_TO_DEVICE_ID.values());
       var1.add(GENERIC_MS_PHONE_OS7_DESKTOPMODE);
       var1.add(GENERIC_MS_PHONE_OS7_5_DESKTOPMODE);
       var1.add(GENERIC_MS_PHONE_OS8_DESKTOPMODE);
@@ -63,7 +63,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
 
       if (!var2 && !var3) {
          String var5 = UserAgentUtils.getWindowsPhoneVersion(var4);
-         if ((var5 = (String)VERSION_TO_DEVICE_ID.get(var5)) != null) {
+         if ((var5 = VERSION_TO_DEVICE_ID.get(var5)) != null) {
             return var5;
          } else {
             return UserAgentUtils.isWindowsPhoneAdClient(var4) ? GENERIC_MS_PHONE_OS7 : "generic";
@@ -86,7 +86,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
    }
 
    static {
-      (VERSION_TO_DEVICE_ID = new HashMap()).put("10.0", "generic_ms_phone_os10");
+      (VERSION_TO_DEVICE_ID = new HashMap<>()).put("10.0", "generic_ms_phone_os10");
       VERSION_TO_DEVICE_ID.put("8.1", "generic_ms_phone_os8_1");
       VERSION_TO_DEVICE_ID.put("8.0", "generic_ms_phone_os8");
       VERSION_TO_DEVICE_ID.put("7.8", "generic_ms_phone_os7_8");

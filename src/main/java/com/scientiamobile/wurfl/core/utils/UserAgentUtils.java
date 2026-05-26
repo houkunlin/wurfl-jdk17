@@ -161,8 +161,8 @@ public final class UserAgentUtils {
       return Pattern.compile(var0.toString(), 2);
    }
 
-   public static Map getHeaders(HttpServletRequest var0) {
-      HashMap var1 = new HashMap();
+   public static Map<String, String> getHeaders(HttpServletRequest var0) {
+      HashMap<String, String> var1 = new HashMap<>();
       Enumeration var2 = var0.getHeaderNames();
 
       while(var2.hasMoreElements()) {

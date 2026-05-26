@@ -14,9 +14,9 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
       super(var1);
    }
 
-   protected final Set a() {
-      HashSet var1;
-      (var1 = new HashSet()).add(b);
+   protected final Set<String> a() {
+      HashSet<String> var1;
+      (var1 = new HashSet<>()).add(b);
       var1.add(c);
       return var1;
    }

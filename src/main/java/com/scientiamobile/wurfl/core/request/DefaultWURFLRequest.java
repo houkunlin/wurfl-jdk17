@@ -24,7 +24,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    private UserAgentPriority f;
    private String g;
    private final EngineTarget engineTarget;
-   private final Map h;
+   private final Map<String, String> h;
    private Boolean i;
    private Boolean j;
    private Boolean k;
@@ -41,10 +41,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    public DefaultWURFLRequest(String var1, String var2, UserAgentNormalizer var3, UserAgentPriority var4, EngineTarget var5) {
-      this(var1, var2, var3, new HashMap(), var4, var5);
+      this(var1, var2, var3, new HashMap<>(), var4, var5);
    }
 
-   public DefaultWURFLRequest(String var1, String var2, UserAgentNormalizer var3, Map var4, UserAgentPriority var5, EngineTarget var6) {
+   public DefaultWURFLRequest(String var1, String var2, UserAgentNormalizer var3, Map<String, String> var4, UserAgentPriority var5, EngineTarget var6) {
       this.i = null;
       this.j = null;
       this.k = null;
@@ -91,7 +91,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       }
 
       this.g = UserAgentUtils.getUaProfile(var2);
-      this.h = new HashMap();
+      this.h = new HashMap<>();
       Enumeration var5 = var2.getHeaderNames();
 
       while(var5.hasMoreElements()) {
@@ -123,10 +123,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
       return null;
    }
 
-   private static String a(Map var0) {
+   private static String a(Map<String, String> var0) {
       for(int var1 = 0; var1 < 4; ++var1) {
          String var2;
-         if ((var2 = (String)var0.get(a[var1])) != null) {
+         if ((var2 = var0.get(a[var1])) != null) {
             return a(var2);
          }
       }
@@ -186,7 +186,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    public String getHeader(String var1) {
-      return (String)this.h.get(var1);
+      return this.h.get(var1);
    }
 
    public Map getHeaders() {
