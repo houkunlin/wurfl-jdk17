@@ -153,7 +153,8 @@ final class WurflXmlHandler extends DefaultHandler {
                      }
                   }
                }
-         }
+         default:
+      }
 
       }
    }
@@ -218,6 +219,7 @@ final class WurflXmlHandler extends DefaultHandler {
             if ("capability".equals(qName)) {
                this.parseState = WurflXmlParseState.GROUP;
             }
+         default:
       }
 
    }
@@ -232,6 +234,7 @@ final class WurflXmlHandler extends DefaultHandler {
             return;
          case WurflXmlParseState.VERSION_SMID:
             this.wurflSmid = (new StringBuilder()).append(ch, start, length).toString();
+            break;
          default:
       }
    }

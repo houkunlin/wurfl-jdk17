@@ -11,12 +11,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static java.util.regex.Pattern.COMMENTS;
 
 final class FirefoxOSMatcher extends MatcherBase {
    private static final String FALLBACK_TABLET = "firefox_os_ver1_3_tablet";
    private static final String FALLBACK_GENERIC = "generic_firefox_os";
-   private static final Pattern VERSION_RV_PREFIX = Pattern.compile("\\brv:\\d+\\.\\d+(.)");
-   private static final Pattern VERSION_RV = Pattern.compile("\\brv:(\\d+\\.\\d+)");
+   private static final Pattern VERSION_RV_PREFIX = Pattern.compile("\\brv:\\d+\\.\\d+(.)", Pattern.COMMENTS);
+   private static final Pattern VERSION_RV = Pattern.compile("\\brv:(\\d+\\.\\d+)", Pattern.COMMENTS);
    private static final Map<String, String> RV_TO_FIREFOX_OS_VERSION = new HashMap<>();
    private static final List<String> SUPPORTED_DEVICES = new ArrayList<>();
 

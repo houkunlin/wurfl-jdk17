@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.ArrayUtils;
@@ -125,7 +126,7 @@ public final class StringMatchUtils {
    }
 
    public static boolean containsAnyOfIgnoreCase(String value, String... searches) {
-      return containsAnyOf(value.toLowerCase(), searches);
+      return containsAnyOf(value.toLowerCase(Locale.ENGLISH), searches);
    }
 
    public static boolean startsWithAnyOf(String value, String... prefixes) {

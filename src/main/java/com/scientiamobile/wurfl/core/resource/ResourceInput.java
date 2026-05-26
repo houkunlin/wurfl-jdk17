@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 import org.apache.commons.lang3.StringUtils;
@@ -38,9 +39,9 @@ final class ResourceInput {
       Validate.notNull(fileName, "The fileName must be not null");
       if (!(stream instanceof ZipInputStream) && !(stream instanceof GZIPInputStream)) {
          try {
-            if (fileName.toLowerCase().endsWith(".zip")) {
+            if (fileName.toLowerCase(Locale.ENGLISH).endsWith(".zip")) {
                this.stream = unwrapZip(stream);
-            } else if (fileName.toLowerCase().endsWith(".gz")) {
+            } else if (fileName.toLowerCase(Locale.ENGLISH).endsWith(".gz")) {
                this.stream = new GZIPInputStream(stream);
             } else {
                this.stream = stream;
@@ -109,9 +110,9 @@ final class ResourceInput {
             inputStream = uri.toURL().openConnection().getInputStream();
          }
 
-         if (uri.getPath().toLowerCase().endsWith(".zip")) {
+         if (uri.getPath().toLowerCase(Locale.ENGLISH).endsWith(".zip")) {
             inputStream = unwrapZip(inputStream);
-         } else if (uri.getPath().toLowerCase().endsWith(".gz")) {
+         } else if (uri.getPath().toLowerCase(Locale.ENGLISH).endsWith(".gz")) {
             inputStream = new GZIPInputStream(inputStream);
          }
 

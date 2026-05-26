@@ -38,7 +38,9 @@ public class Validator {
          try {
             File backupFile = new File(backupPath);
             FileUtils.copyFile(wurflFile, backupFile);
-            backupFile.delete();
+            if (!backupFile.delete()) {
+               throw new WurflFilePermissionException("Failed to delete backup file at " + backupFile.getAbsolutePath());
+            }
          } catch (IOException e) {
             throw new WurflFilePermissionException(errorMessage, e);
          }

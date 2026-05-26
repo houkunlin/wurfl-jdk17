@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -79,7 +80,7 @@ final class AhoCorasickKeywordMatcher {
    }
 
    public final boolean matchesAny(String input) {
-      char[] chars = input.toLowerCase().toCharArray();
+      char[] chars = input.toLowerCase(Locale.ENGLISH).toCharArray();
       int state = 0;
 
       label34:

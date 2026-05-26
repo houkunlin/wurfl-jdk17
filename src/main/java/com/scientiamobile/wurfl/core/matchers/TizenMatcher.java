@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static java.util.regex.Pattern.COMMENTS;
 
 public class TizenMatcher extends MatcherBase {
    private static final String GENERIC_TIZEN = "generic_tizen";
-   private static final Pattern TIZEN_VERSION_PATTERN = Pattern.compile("Tizen (\\d+?\\.\\d+?)");
+   private static final Pattern TIZEN_VERSION_PATTERN = Pattern.compile("Tizen (\\d+?\\.\\d+?)", Pattern.COMMENTS);
    private static final List<String> SUPPORTED_DEVICE_IDS = new ArrayList<>();
    private static final List<String> SUPPORTED_VERSIONS = new ArrayList<>();
 

@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +34,7 @@ public class CheckConnection {
          ? "JBoss/WildFly"
          : (StringUtils.isNotEmpty(System.getProperty("oracle.j2ee.home"))
             ? "OC4j/Oracle AS"
-            : (!(classPathLowerCase = System.getProperty("java.class.path").toLowerCase()).contains("websphere") && !classPathLowerCase.contains("web sphere")
+            : (!(classPathLowerCase = System.getProperty("java.class.path").toLowerCase(Locale.ENGLISH)).contains("websphere") && !classPathLowerCase.contains("web sphere")
                ? (!classPathLowerCase.contains("tomcat") && !classPathLowerCase.contains("juli")
                   ? (classPathLowerCase.contains("jetty") ? "Jetty" : "Command line")
                   : "Tomcat")
@@ -140,7 +141,7 @@ public class CheckConnection {
       this.observers.add(observer);
    }
 
-   public void notifyObservers(Object argument) {
+   public synchronized void notifyObservers(Object argument) {
       Iterator<CheckConnectionObserver> iterator = this.observers.iterator();
 
       while(iterator.hasNext()) {

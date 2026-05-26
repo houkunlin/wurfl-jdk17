@@ -3,10 +3,11 @@ package com.scientiamobile.wurfl.core.request.normalizer.generic;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static java.util.regex.Pattern.COMMENTS;
 
 public class WebOSNormalizer implements UserAgentNormalizer {
-   private static final Pattern TRAILING_APP_NAME_AND_VERSION_PATTERN = Pattern.compile(" ([^/]+)/([\\d\\.]+)$");
-   private static final Pattern WEBOS_MAJOR_VERSION_PATTERN = Pattern.compile("(?:hpw|web)OS.(\\d)\\.");
+   private static final Pattern TRAILING_APP_NAME_AND_VERSION_PATTERN = Pattern.compile(" ([^/]+)/([\\d\\.]+)$", Pattern.COMMENTS);
+   private static final Pattern WEBOS_MAJOR_VERSION_PATTERN = Pattern.compile("(?:hpw|web)OS.(\\d)\\.", Pattern.COMMENTS);
 
    public String normalize(String userAgent) {
       Matcher matcher;

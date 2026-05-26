@@ -2,6 +2,7 @@ package com.scientiamobile.wurfl.core;
 
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,9 +55,9 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
    public boolean getCapabilityAsBool(String capabilityName) {
       String originalCapabilityName = capabilityName;
-      if ((capabilityName = this.capabilitiesHolder.getCapability(capabilityName)) != null && capabilityName.toLowerCase().equals("true")) {
+      if ((capabilityName = this.capabilitiesHolder.getCapability(capabilityName)) != null && capabilityName.toLowerCase(Locale.ENGLISH).equals("true")) {
          return true;
-      } else if (capabilityName != null && capabilityName.toLowerCase().equals("false")) {
+      } else if (capabilityName != null && capabilityName.toLowerCase(Locale.ENGLISH).equals("false")) {
          return false;
       } else {
          throw new NumberFormatException("WURFL invalid capability value: " + originalCapabilityName + " expected \"true\" or \"false\", received: \"" + capabilityName + "\"");

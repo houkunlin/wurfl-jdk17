@@ -37,12 +37,14 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
          int responseCode = connection.getResponseCode();
          if (responseCode == 200) {
             File tempWurflFile = new File(tempWurflPath).getCanonicalFile();
-            if (!tempWurflFile.exists()) {
-               tempWurflFile.createNewFile();
+            if (!tempWurflFile.exists() && !tempWurflFile.createNewFile()) {
+               this.log.warn("Failed to create temp WURFL file: {}", tempWurflFile.getAbsolutePath());
             }
 
             FileUtils.copyInputStreamToFile(connection.getInputStream(), tempWurflFile);
-            tempWurflFile.setLastModified(connection.getLastModified());
+            if (!tempWurflFile.setLastModified(connection.getLastModified())) {
+               this.log.warn("Failed to set last modified time on temp WURFL file");
+            }
             this.log.info("WURFL updater: new WURFL file download completed");
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_DONE.value());
             context.put("new_wurfl_temp_path", tempWurflPath);

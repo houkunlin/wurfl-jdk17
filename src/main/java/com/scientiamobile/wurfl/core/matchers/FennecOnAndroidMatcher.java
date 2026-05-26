@@ -8,10 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static java.util.regex.Pattern.COMMENTS;
 import org.apache.commons.lang3.ArrayUtils;
 
 final class FennecOnAndroidMatcher extends MatcherBase {
-   private static final Pattern VERSION_PREFIX = Pattern.compile("^.+?\\(.+?rv:\\d+(\\.)");
+   private static final Pattern VERSION_PREFIX = Pattern.compile("^.+?\\(.+?rv:\\d+(\\.)", Pattern.COMMENTS);
    private static final String GENERIC_ANDROID_FENNEC_2 = "generic_android_ver2_0_fennec";
    private static final String GENERIC_ANDROID_FENNEC_2_TABLET = "generic_android_ver2_0_fennec_tablet";
    private static final String GENERIC_ANDROID_FENNEC_2_DESKTOP = "generic_android_ver2_0_fennec_desktop";
