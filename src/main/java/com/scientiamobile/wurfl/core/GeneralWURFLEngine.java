@@ -43,7 +43,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
     private UserAgentPriority userAgentPriority;
 
     public GeneralWURFLEngine(String rootPath) {
-        this((WURFLResource) (new XMLResource(rootPath)));
+        this(new XMLResource(rootPath));
         this.rootPath = rootPath;
     }
 
@@ -52,23 +52,8 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
     }
 
     public GeneralWURFLEngine(String rootPath, String... patchPaths) {
-
-        this.capabilityFilter = null;
-        this.lock = new ReentrantReadWriteLock();
-        this.rootResource = null;
-        this.patchResources = null;
-        this.rootPath = null;
-        this.initLock = new Object();
-        this.initialized = false;
-        this.requestFactory = null;
-        this.engineTarget = null;
-        this.userAgentPriority = UserAgentPriority.OverrideSideloadedBrowserUserAgent;
-        WURFLResource resolvedRootResource = createXmlResource(rootPath);
-        WURFLResources resolvedPatchResources = createXmlResources(patchPaths);
-        Validate.notNull(resolvedRootResource, "The root resource is null");
-        this.rootResource = resolvedRootResource;
+        this(createXmlResource(rootPath), createXmlResources(patchPaths));
         this.rootPath = rootPath;
-        this.patchResources = resolvedPatchResources;
     }
 
     public GeneralWURFLEngine(WURFLResource rootResource, WURFLResource... patchResources) {
@@ -76,23 +61,14 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
     }
 
     public GeneralWURFLEngine(WURFLResource rootResource, WURFLResources patchResources) {
-
         this.capabilityFilter = null;
         this.lock = new ReentrantReadWriteLock();
-        this.rootResource = null;
-        this.patchResources = null;
-        this.rootPath = null;
         this.initLock = new Object();
         this.initialized = false;
-        this.requestFactory = null;
-        this.engineTarget = null;
         this.userAgentPriority = UserAgentPriority.OverrideSideloadedBrowserUserAgent;
         Validate.notNull(rootResource, "The root resource is null");
         this.rootResource = rootResource;
-        if (rootResource != null) {
-            this.rootPath = rootResource.getOriginalPath();
-        }
-
+        this.rootPath = rootResource.getOriginalPath();
         this.patchResources = patchResources;
     }
 
@@ -113,8 +89,8 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
     @Override
     public void reload(String rootPath) {
-        WURFLResource rootResource = createXmlResource(rootPath);
-        this.reload(rootResource, (WURFLResources) null);
+        WURFLResource wurflResource = createXmlResource(rootPath);
+        this.reload(wurflResource, (WURFLResources) null);
     }
 
     @Override
@@ -150,9 +126,9 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
     @Override
     public void reload(String rootPath, String[] patchPaths) {
-        WURFLResource rootResource = createXmlResource(rootPath);
-        WURFLResources patchResources = createXmlResources(patchPaths);
-        this.reload(rootResource, patchResources);
+        WURFLResource wurflResource = createXmlResource(rootPath);
+        WURFLResources wurflResources = createXmlResources(patchPaths);
+        this.reload(wurflResource, wurflResources);
     }
 
     @Override
@@ -279,93 +255,88 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
     }
 
     private void ensureInitialized() {
-        if (!this.initialized) {
-            synchronized (this.initLock) {
-                if (!this.initialized) {
-                    try {
-                        try {
-                            this.lock.writeLock().lock();
-                            if (this.wurflModel == null) {
-                                this.wurflModel = new DefaultWURFLModel(this.rootResource, this.patchResources, this.capabilityFilter);
-                            }
-
-                            this.rootResource = null;
-                            this.patchResources = null;
-                            if (this.wurflService == null) {
-                                MatcherManager matcherManager = new MatcherManager(this.wurflModel);
-                                if (this.markupResolver != null && log.isInfoEnabled()) {
-                                    log.info("markupResolver is custom: {}", this.markupResolver.getClass().getName());
-                                }
-
-                                if (this.capabilitiesHolderFactory != null && log.isInfoEnabled()) {
-                                    log.info("capabilitiesHolderFactory is custom: {}", this.capabilitiesHolderFactory.getClass().getName());
-                                }
-
-                                this.ensureDeviceProviderInitialized();
-                                if (this.cacheProvider != null && log.isInfoEnabled()) {
-                                    log.info("cacheProvider is custom: {}", this.cacheProvider.getClass().getName());
-                                }
-
-                                if (this.requestFactory == null) {
-                                    if (this.userAgentResolver != null) {
-                                        if (log.isInfoEnabled()) {
-                                            log.info("userAgentResolver is custom: {}", this.userAgentResolver.getClass().getName());
-                                        }
-
-                                        this.requestFactory = new DefaultWURFLRequestFactory(this.userAgentResolver, this.userAgentPriority);
-                                    } else {
-                                        this.requestFactory = new DefaultWURFLRequestFactory(this.userAgentPriority);
-                                    }
-                                } else if (log.isInfoEnabled()) {
-                                    log.info("wurflRequestFactory is custom: {}", this.requestFactory.getClass().getName());
-                                }
-
-                                if (this.engineTarget != null) {
-                                    this.wurflService = new WURFLServiceImpl(this.wurflModel, matcherManager, this.deviceProvider, this.requestFactory, this.engineTarget);
-                                } else {
-                                    this.wurflService = new WURFLServiceImpl(this.wurflModel, matcherManager, this.deviceProvider, this.requestFactory);
-                                }
-                            } else if (log.isInfoEnabled()) {
-                                log.info("wurflService is fed: {}", this.wurflService.getClass().getName());
-                            }
-
-                            this.ensureDeviceProviderInitialized();
-                            if (this.cacheProvider != null) {
-                                if (log.isInfoEnabled()) {
-                                    log.info("cacheProvider is fed: {}", this.cacheProvider.getClass().getName());
-                                }
-
-                                this.wurflService.setCacheProvider(this.cacheProvider);
-                            }
-
-                            if (this.wurflUtils == null) {
-                                this.wurflUtils = new WURFLUtils(this.wurflModel, this.deviceProvider, this.wurflService);
-                            }
-
-                            VirtualCapabilityUserAgentTool.getInstance().assignProperties(this.requestFactory.createRequest("", this.engineTarget), this.deviceProvider.getInternalDevice("generic"));
-                            this.initialized = true;
-                        } finally {
-                            this.lock.writeLock().unlock();
-                        }
-                    } catch (Exception e) {
-                        log.error("cannot initialize: {}", e);
-                        if (e instanceof WURFLRuntimeException) {
-                            throw (WURFLRuntimeException) e;
-                        }
-
-                        throw new WURFLRuntimeException(e);
-                    }
-
-                    try {
-                        Class<?> checkConnectionClass = Class.forName("com.scientiamobile.wurfl.core.CheckConnection");
-                        Object checkConnectionInstance = checkConnectionClass.getDeclaredConstructor().newInstance();
-                        checkConnectionClass.getDeclaredMethod("setup", WURFLEngine.class, WURFLModel.class).invoke(checkConnectionInstance, this, this.wurflModel);
-                        checkConnectionClass.getDeclaredMethod("check").invoke(checkConnectionInstance);
-                    } catch (ReflectiveOperationException | RuntimeException ignore) {
-                    }
-                }
-
+        if (this.initialized) return;
+        synchronized (this.initLock) {
+            if (this.initialized) return;
+            this.lock.writeLock().lock();
+            try {
+                initModel();
+                initService();
+                initUtils();
+                VirtualCapabilityUserAgentTool.getInstance()
+                        .assignProperties(this.requestFactory.createRequest("", this.engineTarget),
+                                this.deviceProvider.getInternalDevice("generic"));
+                this.initialized = true;
+            } catch (WURFLRuntimeException e) {
+                log.error("cannot initialize: {}", e.getMessage(), e);
+                throw e;
+            } catch (Exception e) {
+                log.error("cannot initialize: {}", e.getMessage(), e);
+                throw new WURFLRuntimeException(e);
+            } finally {
+                this.lock.writeLock().unlock();
             }
+            initCheckConnection();
+        }
+    }
+
+    private void initModel() {
+        if (this.wurflModel != null) return;
+        this.wurflModel = new DefaultWURFLModel(this.rootResource, this.patchResources, this.capabilityFilter);
+        this.rootResource = null;
+        this.patchResources = null;
+    }
+
+    private void initService() {
+        if (this.wurflService != null) {
+            log.info("wurflService is fed: {}", this.wurflService.getClass().getName());
+            this.ensureDeviceProviderInitialized();
+            return;
+        }
+        logIfInfo(this.markupResolver != null, "markupResolver is custom: {}", this.markupResolver);
+        logIfInfo(this.capabilitiesHolderFactory != null, "capabilitiesHolderFactory is custom: {}", this.capabilitiesHolderFactory);
+        logIfInfo(this.cacheProvider != null, "cacheProvider is custom: {}", this.cacheProvider);
+        this.ensureDeviceProviderInitialized();
+        initRequestFactory();
+        MatcherManager matcherManager = new MatcherManager(this.wurflModel);
+        this.wurflService = this.engineTarget != null
+                ? new WURFLServiceImpl(this.wurflModel, matcherManager, this.deviceProvider, this.requestFactory, this.engineTarget)
+                : new WURFLServiceImpl(this.wurflModel, matcherManager, this.deviceProvider, this.requestFactory);
+        if (this.cacheProvider != null) {
+            this.wurflService.setCacheProvider(this.cacheProvider);
+        }
+    }
+
+    private void initRequestFactory() {
+        if (this.requestFactory != null) {
+            log.info("wurflRequestFactory is custom: {}", this.requestFactory.getClass().getName());
+            return;
+        }
+        if (this.userAgentResolver != null) {
+            log.info("userAgentResolver is custom: {}", this.userAgentResolver.getClass().getName());
+            this.requestFactory = new DefaultWURFLRequestFactory(this.userAgentResolver, this.userAgentPriority);
+        } else {
+            this.requestFactory = new DefaultWURFLRequestFactory(this.userAgentPriority);
+        }
+    }
+
+    private void initUtils() {
+        if (this.wurflUtils != null) return;
+        this.wurflUtils = new WURFLUtils(this.wurflModel, this.deviceProvider, this.wurflService);
+    }
+
+    private void initCheckConnection() {
+        try {
+            CheckConnection checkConnection = new CheckConnection();
+            checkConnection.setup(this, this.wurflModel);
+            checkConnection.check();
+        } catch (RuntimeException ignore) {
+        }
+    }
+
+    private static void logIfInfo(boolean condition, String message, Object arg) {
+        if (condition && log.isInfoEnabled()) {
+            log.info(message, arg);
         }
     }
 
@@ -461,31 +432,24 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
 
     @Override
     public void setCapabilityFilter(String... capabilityFilter) {
-        ArrayList<String> capabilities = new ArrayList<>(Arrays.asList(capabilityFilter));
-
-        for (String capability : ALWAYS_INCLUDED_CAPABILITIES) {
-            if (!capabilities.contains(capability)) {
-                capabilities.add(capability);
-            }
-        }
-
-        this.capabilityFilter = capabilities.toArray(new String[capabilities.size()]);
+        this.capabilityFilter = buildCapabilityFilter(Arrays.asList(capabilityFilter));
     }
 
     @Override
     public void setCapabilityFilter(Collection<String> capabilityFilter) {
         if (capabilityFilter != null) {
-            ArrayList<String> capabilities = new ArrayList<>(capabilityFilter);
-
-            for (String capability : ALWAYS_INCLUDED_CAPABILITIES) {
-                if (!capabilities.contains(capability)) {
-                    capabilities.add(capability);
-                }
-            }
-
-            this.capabilityFilter = capabilities.toArray(new String[capabilities.size()]);
+            this.capabilityFilter = buildCapabilityFilter(capabilityFilter);
         }
+    }
 
+    private static String[] buildCapabilityFilter(Collection<String> input) {
+        ArrayList<String> capabilities = new ArrayList<>(input);
+        for (String capability : ALWAYS_INCLUDED_CAPABILITIES) {
+            if (!capabilities.contains(capability)) {
+                capabilities.add(capability);
+            }
+        }
+        return capabilities.toArray(new String[0]);
     }
 
     @Override
