@@ -46,7 +46,8 @@ final class NameVersionPair implements Serializable {
 
    public final boolean matchAndSetNameFromGroup(Pattern pattern, String input, int nameGroupIndex) {
       Matcher matcher;
-      if ((matcher = this.find(pattern, input)) != null) {
+      matcher = this.find(pattern, input);
+      if (matcher != null) {
          this.name = matcher.group(nameGroupIndex) == null ? "" : matcher.group(nameGroupIndex).trim();
          return true;
       } else {
@@ -57,7 +58,8 @@ final class NameVersionPair implements Serializable {
 
    public final boolean matchAndSetVersionFromGroup(Pattern pattern, String input, int versionGroupIndex) {
       Matcher matcher;
-      if ((matcher = this.find(pattern, input)) != null) {
+      matcher = this.find(pattern, input);
+      if (matcher != null) {
          this.version = matcher.group(versionGroupIndex) == null ? "" : matcher.group(versionGroupIndex).trim();
          return true;
       } else {
@@ -68,7 +70,8 @@ final class NameVersionPair implements Serializable {
 
    public final boolean matchAndSetGroup(Pattern pattern, String input, String matchedName, int versionGroupIndex) {
       Matcher matcher;
-      if ((matcher = this.find(pattern, input)) != null) {
+      matcher = this.find(pattern, input);
+      if (matcher != null) {
          if (matchedName != null) {
             this.name = matchedName.trim();
          }
@@ -84,7 +87,8 @@ final class NameVersionPair implements Serializable {
 
    public final boolean matchAndSetNameAndGroup(Pattern pattern, String input, int nameGroupIndex) {
       Matcher matcher;
-      if ((matcher = this.find(pattern, input)) != null) {
+      matcher = this.find(pattern, input);
+      if (matcher != null) {
          this.name = matcher.group(1) == null ? "" : matcher.group(1).trim();
          this.version = matcher.group(nameGroupIndex) == null ? "" : matcher.group(nameGroupIndex).trim();
          return true;

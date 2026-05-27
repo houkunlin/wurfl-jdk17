@@ -130,8 +130,8 @@ public class DefaultWURFLModel implements WURFLModel {
    @Override
    public ModelDevice getDeviceById(String deviceId) {
       Validate.notEmpty(deviceId, "The id must be not null");
-      ModelDevice device;
-      if ((device = this.devicesById.get(deviceId)) == null) {
+      ModelDevice device = this.devicesById.get(deviceId);
+      if (device == null) {
          throw new DeviceNotDefinedException(deviceId);
       } else {
          return device;
@@ -203,8 +203,8 @@ public class DefaultWURFLModel implements WURFLModel {
    public ModelDevice getDeviceAncestor(ModelDevice device) {
       Validate.notNull(device, "The device must be not null");
       String deviceId = device.getID();
-      String ancestorId;
-      if ((ancestorId = this.deviceIdToAncestorIdCache.get(deviceId)) != null) {
+      String ancestorId = this.deviceIdToAncestorIdCache.get(deviceId);
+      if (ancestorId != null) {
          return this.getDeviceById(ancestorId);
       } else {
          ModelDevice deviceOrAncestor = device;

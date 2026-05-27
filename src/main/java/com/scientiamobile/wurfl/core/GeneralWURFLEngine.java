@@ -162,7 +162,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    public void reload(WURFLResource rootResource, WURFLResources patchResources) {
       this.rootPath = rootResource.getOriginalPath();
       this.ensureInitialized();
-      if ((patchResources = patchResources) == null) {
+      if (patchResources == null) {
          patchResources = new WURFLResources();
       }
 

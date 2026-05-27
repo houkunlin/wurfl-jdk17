@@ -30,8 +30,8 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
 
    @Override
    public String getCapability(String capabilityName) {
-      String capabilityValue;
-      if ((capabilityValue = this.capabilitiesProvider.getCapability(this.capabilitiesCache, capabilityName)) == null) {
+      String capabilityValue = this.capabilitiesProvider.getCapability(this.capabilitiesCache, capabilityName);
+      if (capabilityValue == null) {
          throw new CapabilityNotDefinedException(capabilityName);
       } else {
          return capabilityValue;

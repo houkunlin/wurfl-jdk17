@@ -11,11 +11,11 @@ public class ResourceUtils {
    }
 
    public static String getBuildId() {
-      String fullBuildId;
-      String result = fullBuildId = getFullBuildId();
+      String fullBuildId = getFullBuildId();
+      String result = fullBuildId;
       if (fullBuildId != null && !"unknown".equals(fullBuildId)) {
-         int colonIndex;
-         result = (colonIndex = fullBuildId.indexOf(":")) != -1 ? fullBuildId.substring(colonIndex + 1) : fullBuildId;
+         int colonIndex = fullBuildId.indexOf(":");
+         result = colonIndex != -1 ? fullBuildId.substring(colonIndex + 1) : fullBuildId;
       }
 
       return result;
@@ -23,13 +23,16 @@ public class ResourceUtils {
 
    public static String getFullBuildId() {
       String buildId = "unknown";
-      InputStream inputStream;
-      if ((inputStream = ResourceUtils.class.getResourceAsStream("/ca")) != null) {
+      InputStream inputStream = ResourceUtils.class.getResourceAsStream("/ca");
+      if (inputStream != null) {
          BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
          try {
-            String line = (buildId = reader.readLine()) != null ? buildId : "unknown";
-            return line;
+            String line = reader.readLine();
+            if (line != null) {
+               buildId = line;
+            }
+            return buildId;
          } catch (IOException e) {
             // silently ignore read failure
          } finally {

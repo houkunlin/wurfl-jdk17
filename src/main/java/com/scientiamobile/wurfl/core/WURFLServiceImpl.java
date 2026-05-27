@@ -71,7 +71,8 @@ class WURFLServiceImpl implements WURFLService {
          this.ensureCacheProvider();
          InternalDevice internalDevice;
          DeviceInfo deviceInfo;
-         if ((internalDevice = this.cacheProvider.getDevice(request.getOriginalUserAgent())) != null) {
+         internalDevice = this.cacheProvider.getDevice(request.getOriginalUserAgent());
+         if (internalDevice != null) {
             deviceInfo = new DeviceInfo(internalDevice.getId(), MatchType.cached, "Cache", "Cache", request.getOriginalUserAgent(), "");
          } else {
             request.performGenericNormalization();
@@ -83,7 +84,8 @@ class WURFLServiceImpl implements WURFLService {
             }
 
             deviceInfo = this.matcherManager.matchRequest(request);
-            if ((internalDevice = this.cacheProvider.getInternalDeviceFromDeviceId(deviceInfo.getId())) == null) {
+            internalDevice = this.cacheProvider.getInternalDeviceFromDeviceId(deviceInfo.getId());
+            if (internalDevice == null) {
                internalDevice = this.deviceProvider.getInternalDevice(deviceInfo.getId());
             }
 

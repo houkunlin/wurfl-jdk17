@@ -35,7 +35,8 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
       String[] wurflPatchPaths = StringUtils.split(StringUtils.defaultString(servletContext.getInitParameter("wurflPatch")), " ,");
       URI wurflResourceUri;
       XMLResource wurflResource;
-      if ((wurflResourceUri = resolveResourceUri(servletContext, wurflPath)) != null) {
+      wurflResourceUri = resolveResourceUri(servletContext, wurflPath);
+      if (wurflResourceUri != null) {
          wurflResource = new XMLResource(wurflResourceUri);
       } else {
          wurflResource = new XMLResource(wurflPath);
@@ -46,7 +47,8 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
       for(int i = 0; i < wurflPatchPaths.length; ++i) {
          URI patchUri;
          XMLResource patchResource;
-         if ((patchUri = resolveResourceUri(servletContext, wurflPatchPaths[i])) != null) {
+         patchUri = resolveResourceUri(servletContext, wurflPatchPaths[i]);
+         if (patchUri != null) {
             patchResource = new XMLResource(patchUri);
          } else {
             patchResource = new XMLResource(wurflPatchPaths[i]);
@@ -57,7 +59,8 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
 
       GeneralWURFLEngine wurflEngine = new GeneralWURFLEngine(wurflResource, patchResources);
       String capabilityFilterValue;
-      if ((capabilityFilterValue = servletContext.getInitParameter("capability-filter")) != null) {
+      capabilityFilterValue = servletContext.getInitParameter("capability-filter");
+      if (capabilityFilterValue != null) {
          String[] capabilityFilter = capabilityFilterValue.split("\n");
 
          for(int i = 0; i < capabilityFilter.length; ++i) {
@@ -70,7 +73,8 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
       }
 
       String engineTargetValue;
-      if ((engineTargetValue = servletContext.getInitParameter("wurflEngineTarget")) != null) {
+      engineTargetValue = servletContext.getInitParameter("wurflEngineTarget");
+      if (engineTargetValue != null) {
          try {
             wurflEngine.setEngineTarget(EngineTarget.valueOf(engineTargetValue));
          } catch (IllegalArgumentException e) {
@@ -79,7 +83,8 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
       }
 
       String userAgentPriorityValue;
-      if ((userAgentPriorityValue = servletContext.getInitParameter("wurflUserAgentPriority")) != null) {
+      userAgentPriorityValue = servletContext.getInitParameter("wurflUserAgentPriority");
+      if (userAgentPriorityValue != null) {
          try {
             wurflEngine.setUserAgentPriority(UserAgentPriority.valueOf(userAgentPriorityValue));
          } catch (IllegalArgumentException e) {
@@ -93,7 +98,8 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
    private static URI resolveResourceUri(ServletContext servletContext, String resourcePath) {
       try {
          URL resourceUrl;
-         if ((resourceUrl = servletContext.getResource(resourcePath)) == null) {
+         resourceUrl = servletContext.getResource(resourcePath);
+         if (resourceUrl == null) {
             return null;
          } else {
             URI resourceUri = resourceUrl.toURI();

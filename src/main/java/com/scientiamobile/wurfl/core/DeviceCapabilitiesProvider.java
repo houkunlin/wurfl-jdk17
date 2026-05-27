@@ -39,8 +39,8 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
    @Override
    public String getCapability(Map<String, String> capabilities, String capabilityName) {
       Map<String, String> capabilitiesMap = capabilities;
-      String capabilityValue;
-      if ((capabilityValue = capabilitiesMap.get(capabilityName)) != null) {
+      String capabilityValue = capabilitiesMap.get(capabilityName);
+      if (capabilityValue != null) {
          return capabilityValue;
       } else {
          ModelDevice currentDevice;
