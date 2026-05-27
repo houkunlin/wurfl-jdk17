@@ -70,9 +70,9 @@ public class VirtualCapabilityDevice implements Serializable {
 
     private final NameVersionPair browserPair;
     private final NameVersionPair osPair;
-    private String deviceUserAgent;
-    private String browserUserAgent;
-    private String cleanedDeviceUserAgent;
+    private final String deviceUserAgent;
+    private final String browserUserAgent;
+    private final String cleanedDeviceUserAgent;
 
     public VirtualCapabilityDevice(WURFLRequest request) {
         if (request.isUrlEncoded()) {
@@ -89,7 +89,7 @@ public class VirtualCapabilityDevice implements Serializable {
         this.osPair = new NameVersionPair();
     }
 
-    public VirtualCapabilityDevice(String deviceUserAgent, String browserUserAgent, String cleanedDeviceUserAgent, String rawUserAgent) {
+    public VirtualCapabilityDevice(String deviceUserAgent, String browserUserAgent, String cleanedDeviceUserAgent) {
         this.deviceUserAgent = deviceUserAgent;
         this.browserUserAgent = browserUserAgent;
         this.cleanedDeviceUserAgent = cleanedDeviceUserAgent;

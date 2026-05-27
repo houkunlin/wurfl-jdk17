@@ -10,7 +10,6 @@ final class ModelDevicesConsistencyVerifier {
     }
 
     public static void verifyModelDevices(ModelDevices devices) {
-        assert devices != null : "devices is null";
         if (!devices.containsId("generic")) {
             throw new GenericNotDefinedException();
         }

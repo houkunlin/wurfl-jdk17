@@ -88,7 +88,7 @@ public final class StringMatchUtils {
         }
     }
 
-    public static String risMatch(Collection<?> userAgents, String userAgent, int userAgentLength) {
+    public static String risMatch(Collection<String> userAgents, String userAgent, int userAgentLength) {
         return RISMatcher.INSTANCE.match(userAgents, userAgent, userAgentLength);
     }
 

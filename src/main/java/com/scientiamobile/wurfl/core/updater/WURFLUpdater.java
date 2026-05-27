@@ -28,13 +28,7 @@ public class WURFLUpdater {
     private Calendar firstExecution;
     private ProxySettings proxySettings;
 
-    public WURFLUpdater(WURFLEngine wurflEngine, String unused, String updateUrl) {
-        this(wurflEngine, updateUrl);
-        this.validateSetup();
-    }
-
     public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl) {
-
         this.frequency = Frequency.DAILY;
         log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
         this.wurflEngine = wurflEngine;
@@ -44,13 +38,7 @@ public class WURFLUpdater {
         this.validateSetup();
     }
 
-    public WURFLUpdater(WURFLEngine wurflEngine, String unused, String updateUrl, ProxySettings proxySettings) {
-        this(wurflEngine, updateUrl);
-        this.proxySettings = proxySettings;
-    }
-
     public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl, ProxySettings proxySettings) {
-
         this.frequency = Frequency.DAILY;
         log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
         this.wurflEngine = wurflEngine;
