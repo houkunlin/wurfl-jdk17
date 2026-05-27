@@ -16,48 +16,38 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 class WURFLServiceImpl implements WURFLService {
     private static final Logger log = LoggerFactory.getLogger(WURFLServiceImpl.class);
-    private static boolean assertionsDisabled = !WURFLServiceImpl.class.desiredAssertionStatus();
-    private final XmlFileLoader configFileLoader;
-    private WURFLModel wurflModel;
+    private final WURFLModel wurflModel;
     private ReentrantReadWriteLock modelLock;
-    private CacheProvider cacheProvider;
-    private MatcherManager matcherManager;
-    private DeviceProvider deviceProvider;
+    private volatile CacheProvider cacheProvider;
+    private final MatcherManager matcherManager;
+    private final DeviceProvider deviceProvider;
     private WURFLRequestFactoryWithPriority requestFactory;
     private EngineTarget engineTarget;
-    private boolean configLoaded;
 
     public WURFLServiceImpl(WURFLModel wurflModel, MatcherManager matcherManager, DeviceProvider deviceProvider, WURFLRequestFactoryWithPriority requestFactory, EngineTarget engineTarget) {
-
-        this.configFileLoader = new XmlFileLoader("classpath:/META-INF/wurfl-config.xml", new ApiConfigHandler(this, (byte) 0));
-        this.configLoaded = false;
+        XmlFileLoader configFileLoader = new XmlFileLoader("classpath:/META-INF/wurfl-config.xml", new ApiConfigHandler(this, (byte) 0));
+        configFileLoader.parseFile();
         this.wurflModel = wurflModel;
         this.matcherManager = matcherManager;
         this.deviceProvider = deviceProvider;
         this.requestFactory = requestFactory;
-        if (engineTarget == null) {
-            if (!this.configLoaded) {
-                this.configFileLoader.parseFile();
-                this.configLoaded = true;
-            }
-        } else {
+        if (engineTarget != null) {
             this.engineTarget = engineTarget;
         }
-
         this.modelLock = new ReentrantReadWriteLock();
         log.info("{} created", this.getClass().getSimpleName());
     }
 
     public WURFLServiceImpl(WURFLModel wurflModel, MatcherManager matcherManager, DeviceProvider deviceProvider, WURFLRequestFactoryWithPriority requestFactory) {
-        this(wurflModel, matcherManager, deviceProvider, requestFactory, (EngineTarget) null);
+        this(wurflModel, matcherManager, deviceProvider, requestFactory, null);
     }
 
     static EngineTarget getEngineTarget(WURFLServiceImpl service) {
         return service.engineTarget;
     }
 
-    static EngineTarget setEngineTarget(WURFLServiceImpl service, EngineTarget engineTarget) {
-        return service.engineTarget = engineTarget;
+    static void setEngineTarget(WURFLServiceImpl service, EngineTarget engineTarget) {
+        service.engineTarget = engineTarget;
     }
 
     @Override
@@ -74,42 +64,43 @@ class WURFLServiceImpl implements WURFLService {
     @Override
     public Device getDevice(WURFLRequest request) {
         this.modelLock.readLock().lock();
-
         try {
             Validate.notNull(request, "The request is null");
             this.ensureCacheProvider();
-            InternalDevice internalDevice;
-            DeviceInfo deviceInfo;
-            internalDevice = this.cacheProvider.getDevice(request.getOriginalUserAgent());
+            InternalDevice internalDevice = this.cacheProvider.getDevice(request.getOriginalUserAgent());
             if (internalDevice != null) {
-                deviceInfo = new DeviceInfo(internalDevice.getId(), MatchType.cached, "Cache", "Cache", request.getOriginalUserAgent(), "");
-            } else {
-                request.performGenericNormalization();
-                if (EngineTarget.fastDesktopBrowserMatch.equals(request.getEngineTarget()) && request._internalIsDesktopBrowserHeavyDutyAnalysis()) {
-                    internalDevice = this.deviceProvider.getInternalDevice("generic_web_browser");
-                    this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
-                    Device fastMatched = this.deviceProvider.buildDevice(internalDevice, request, MatchType.fastDesktopBrowser, "", "");
-                    return fastMatched;
-                }
-
-                deviceInfo = this.matcherManager.matchRequest(request);
-                internalDevice = this.cacheProvider.getInternalDeviceFromDeviceId(deviceInfo.getId());
-                if (internalDevice == null) {
-                    internalDevice = this.deviceProvider.getInternalDevice(deviceInfo.getId());
-                }
-
-                this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
+                return buildCachedDevice(internalDevice, request);
             }
-
-            if (!assertionsDisabled && internalDevice == null) {
-                throw new AssertionError();
-            } else {
-                Device device = this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(), deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
-                return device;
-            }
+            return matchAndCacheDevice(request);
         } finally {
             this.modelLock.readLock().unlock();
         }
+    }
+
+    private Device buildCachedDevice(InternalDevice internalDevice, WURFLRequest request) {
+        DeviceInfo deviceInfo = new DeviceInfo(internalDevice.getId(), MatchType.cached, "Cache", "Cache",
+                request.getOriginalUserAgent(), "");
+        return this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(),
+                deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
+    }
+
+    private Device matchAndCacheDevice(WURFLRequest request) {
+        request.performGenericNormalization();
+        if (EngineTarget.fastDesktopBrowserMatch.equals(request.getEngineTarget())
+                && request._internalIsDesktopBrowserHeavyDutyAnalysis()) {
+            InternalDevice internalDevice = this.deviceProvider.getInternalDevice("generic_web_browser");
+            this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
+            return this.deviceProvider.buildDevice(internalDevice, request, MatchType.fastDesktopBrowser, "", "");
+        }
+        DeviceInfo deviceInfo = this.matcherManager.matchRequest(request);
+        InternalDevice internalDevice = this.cacheProvider.getInternalDeviceFromDeviceId(deviceInfo.getId());
+        if (internalDevice == null) {
+            internalDevice = this.deviceProvider.getInternalDevice(deviceInfo.getId());
+        }
+        this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
+        assert internalDevice != null;
+        return this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(),
+                deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
     }
 
     @Override
@@ -165,21 +156,21 @@ class WURFLServiceImpl implements WURFLService {
     @Override
     public Device getDeviceById(String deviceId) {
         InternalDevice internalDevice = this.deviceProvider.getInternalDevice(deviceId);
-        String userAgentFromModel;
-        String userAgent;
-        userAgentFromModel = internalDevice.getWURFLUserAgent();
-        if (!userAgentFromModel.startsWith("DO_NOT_MATCH")) {
-            userAgent = userAgentFromModel;
-        } else {
-            ModelDevice ancestor;
-            for (ancestor = ((InternalDeviceImpl) internalDevice).getAncestorModelDevice(); ancestor != null && ancestor.getUserAgent().contains("DO_NOT_MATCH"); ancestor = ancestor.getAncestor()) {
-            }
-
-            userAgent = ancestor != null && ancestor.getUserAgent() != null ? ancestor.getUserAgent() : "";
-        }
-
+        String userAgent = resolveUserAgent(internalDevice);
         WURFLRequest request = this.requestFactory.createRequest(userAgent, this.engineTarget);
         return this.getDeviceById(deviceId, request);
+    }
+
+    private static String resolveUserAgent(InternalDevice internalDevice) {
+        String userAgentFromModel = internalDevice.getWURFLUserAgent();
+        if (!userAgentFromModel.startsWith("DO_NOT_MATCH")) {
+            return userAgentFromModel;
+        }
+        ModelDevice ancestor = ((InternalDeviceImpl) internalDevice).getAncestorModelDevice();
+        while (ancestor != null && ancestor.getUserAgent() != null && ancestor.getUserAgent().contains("DO_NOT_MATCH")) {
+            ancestor = ancestor.getAncestor();
+        }
+        return ancestor != null && ancestor.getUserAgent() != null ? ancestor.getUserAgent() : "";
     }
 
     @Override

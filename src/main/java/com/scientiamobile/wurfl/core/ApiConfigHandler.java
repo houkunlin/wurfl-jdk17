@@ -4,7 +4,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 final class ApiConfigHandler extends DefaultHandler {
-    private WURFLServiceImpl wurflService;
+    private final WURFLServiceImpl wurflService;
 
     private ApiConfigHandler(WURFLServiceImpl wurflService) {
         this.wurflService = wurflService;
@@ -14,7 +14,8 @@ final class ApiConfigHandler extends DefaultHandler {
         this(wurflService);
     }
 
-    public final void startElement(String uri, String localName, String qName, Attributes attributes) {
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
         if (qName.equals("wurfl-api-config")) {
             String engineTarget = attributes.getValue("engine-target");
             if (WURFLServiceImpl.getEngineTarget(this.wurflService) == null) {

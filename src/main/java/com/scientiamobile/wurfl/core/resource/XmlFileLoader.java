@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class XmlFileLoader {
     private final ResourceInput resourceInput;
-    private DefaultHandler handler;
+    private final DefaultHandler handler;
 
     public XmlFileLoader(String path, DefaultHandler handler) {
         this.resourceInput = new ResourceInput(path);
