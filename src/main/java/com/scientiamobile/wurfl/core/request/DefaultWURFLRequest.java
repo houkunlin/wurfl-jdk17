@@ -272,33 +272,41 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
     @Override
     public boolean _internalIsDesktopBrowserHeavyDutyAnalysis() {
-        if (this.cachedIsDesktopBrowserHeavyDutyAnalysis == null) {
-            if (this._internalIsSmartTvBrowser()) {
-                this.cachedIsDesktopBrowserHeavyDutyAnalysis = false;
-            } else if (StringMatchUtils.containsAllOf(this.cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/")) {
-                this.cachedIsDesktopBrowserHeavyDutyAnalysis = false;
-            } else if (this.cleanedDeviceUserAgent.contains("Chrome") && !StringMatchUtils.containsAnyOf(this.cleanedDeviceUserAgent, "Android", "Ventana", "android", "Tizen")) {
-                this.cachedIsDesktopBrowserHeavyDutyAnalysis = true;
-            } else if (this.mobileKeywordsDetected()) {
-                this.cachedIsDesktopBrowserHeavyDutyAnalysis = false;
-            } else if (this.cleanedDeviceUserAgent.contains("PPC")) {
-                this.cachedIsDesktopBrowserHeavyDutyAnalysis = false;
-            } else if (this.cleanedDeviceUserAgent.contains("Firefox") && !this.cleanedDeviceUserAgent.contains("Tablet")) {
-                this.cachedIsDesktopBrowserHeavyDutyAnalysis = true;
-            } else if (UserAgentUtils.isDesktopPattern(this.cleanedDeviceUserAgent)) {
-                this.cachedIsDesktopBrowserHeavyDutyAnalysis = true;
-            } else if (!this.cleanedDeviceUserAgent.startsWith("Opera/9.80 (Windows NT") && !this.cleanedDeviceUserAgent.startsWith("Opera/9.80 (Macintosh")) {
-                if (this._internalIsDesktopBrowser()) {
-                    this.cachedIsDesktopBrowserHeavyDutyAnalysis = true;
-                } else {
-                    this.cachedIsDesktopBrowserHeavyDutyAnalysis = UserAgentUtils.isIEPattern(this.cleanedDeviceUserAgent);
-                }
-            } else {
-                this.cachedIsDesktopBrowserHeavyDutyAnalysis = true;
-            }
+        if (this.cachedIsDesktopBrowserHeavyDutyAnalysis != null) {
+            return this.cachedIsDesktopBrowserHeavyDutyAnalysis;
         }
+        if (this._internalIsSmartTvBrowser()) {
+            return cacheDesktopHeavyDuty(false);
+        }
+        String ua = this.cleanedDeviceUserAgent;
+        if (StringMatchUtils.containsAllOf(ua, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/")) {
+            return cacheDesktopHeavyDuty(false);
+        }
+        if (ua.contains("Chrome") && !StringMatchUtils.containsAnyOf(ua, "Android", "Ventana", "android", "Tizen")) {
+            return cacheDesktopHeavyDuty(true);
+        }
+        if (this.mobileKeywordsDetected() || ua.contains("PPC")) {
+            return cacheDesktopHeavyDuty(false);
+        }
+        if (ua.contains("Firefox") && !ua.contains("Tablet")) {
+            return cacheDesktopHeavyDuty(true);
+        }
+        if (UserAgentUtils.isDesktopPattern(ua)) {
+            return cacheDesktopHeavyDuty(true);
+        }
+        boolean isOperaOnDesktop = ua.startsWith("Opera/9.80 (Windows NT") || ua.startsWith("Opera/9.80 (Macintosh");
+        if (isOperaOnDesktop) {
+            return cacheDesktopHeavyDuty(true);
+        }
+        if (this._internalIsDesktopBrowser()) {
+            return cacheDesktopHeavyDuty(true);
+        }
+        return cacheDesktopHeavyDuty(UserAgentUtils.isIEPattern(ua));
+    }
 
-        return this.cachedIsDesktopBrowserHeavyDutyAnalysis;
+    private boolean cacheDesktopHeavyDuty(boolean value) {
+        this.cachedIsDesktopBrowserHeavyDutyAnalysis = value;
+        return value;
     }
 
     @Override
