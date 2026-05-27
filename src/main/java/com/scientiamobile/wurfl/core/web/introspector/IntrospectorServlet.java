@@ -160,70 +160,76 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         if (wurflEngine == null) {
             writeMissingEngineError(out);
             return true;
-        } else {
-            try {
-                out.println("WURFL Java API " + apiVersion);
-                if (wurflEngine instanceof GeneralWURFLEngine engine) {
-                    WURFLModel wurflModel = engine.getWurflModel();
-                    WURFLService wurflService = engine.getWurflService();
-                    ArrayList<String> resultLines = null;
-                    if (wurflModel != null && wurflService != null) {
-                        EngineTarget originalEngineTarget = wurflService.getEngineTarget();
-                        MatcherManager matcherManager = wurflService.getMatcherManager();
-                        Set<ModelDevice> allDevices = wurflModel.getAllDevices();
-                        ArrayList<String> userAgents = new ArrayList<>(allDevices.size());
+        }
+        if (!(wurflEngine instanceof GeneralWURFLEngine engine)) {
+            return false;
+        }
+        try {
+            out.println("WURFL Java API " + apiVersion);
+            WURFLModel wurflModel = engine.getWurflModel();
+            WURFLService wurflService = engine.getWurflService();
+            List<String> resultLines = runBucketMatching(wurflModel, wurflService);
+            for (String lineObj : resultLines) {
+                out.println(lineObj);
+            }
+            return true;
+        } catch (RuntimeException e) {
+            log.debug("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+            return false;
+        }
+    }
 
-                        for (ModelDevice device : allDevices) {
-                            if (!StringUtils.isEmpty(device.getUserAgent())) {
-                                userAgents.add(device.getUserAgent());
-                            }
-                        }
+    private static List<String> runBucketMatching(WURFLModel wurflModel, WURFLService wurflService) {
+        if (wurflModel == null || wurflService == null) {
+            return Collections.emptyList();
+        }
+        EngineTarget originalEngineTarget = wurflService.getEngineTarget();
+        MatcherManager matcherManager = wurflService.getMatcherManager();
+        ArrayList<String> userAgents = collectUserAgents(wurflModel);
+        wurflService.setEngineTarget(EngineTarget.accuracy);
+        ArrayList<MatchResultRow> matchResults = matchUserAgents(userAgents, matcherManager);
+        log.info("BUCKETS (2/3): start sorting...");
+        long start = System.currentTimeMillis();
+        Collections.sort(matchResults);
+        log.info("BUCKETS (2/3): finished sorting. Took {} ms", System.currentTimeMillis() - start);
+        log.info("BUCKETS (3/3): start building strings...");
+        start = System.currentTimeMillis();
+        List<String> resultLines = new ArrayList<>(matchResults.size());
+        for (MatchResultRow row : matchResults) {
+            resultLines.add(row.toString());
+        }
+        log.info("BUCKETS (3/3): finished building strings. Took {} ms", System.currentTimeMillis() - start);
+        wurflService.setEngineTarget(originalEngineTarget);
+        return resultLines;
+    }
 
-                        wurflService.setEngineTarget(EngineTarget.accuracy);
-                        resultLines = new ArrayList<>(userAgents.size());
-                        ArrayList<MatchResultRow> matchResults = new ArrayList<>(userAgents.size());
-                        DefaultWURFLRequestFactory requestFactory = new DefaultWURFLRequestFactory();
-                        log.info("BUCKETS (1/3): start matching...");
-                        long start = System.currentTimeMillis();
-
-                        for (String ua : userAgents) {
-                            DeviceInfo deviceInfo = matcherManager.matchRequest(requestFactory.createRequest(ua, EngineTarget.accuracy));
-                            String matcherName = deviceInfo.getMatcherName();
-                            String normalizedUserAgent = deviceInfo.getNormalizedUserAgent();
-                            String originalUserAgent = deviceInfo.getOriginalUserAgent();
-                            matchResults.add(new MatchResultRow(matcherName, deviceInfo.getId(), normalizedUserAgent, originalUserAgent));
-                        }
-
-                        log.info("BUCKETS (1/3): finished matching. Took {} ms", System.currentTimeMillis() - start);
-                        log.info("BUCKETS (2/3): start sorting...");
-                        start = System.currentTimeMillis();
-                        Collections.sort(matchResults);
-                        log.info("BUCKETS (2/3): finished sorting. Took {} ms", System.currentTimeMillis() - start);
-                        log.info("BUCKETS (3/3): start building strings...");
-                        start = System.currentTimeMillis();
-
-                        for (MatchResultRow row : matchResults) {
-                            resultLines.add(row.toString());
-                        }
-
-                        log.info("BUCKETS (3/3): finished building strings. Took {} ms", System.currentTimeMillis() - start);
-                        wurflService.setEngineTarget(originalEngineTarget);
-                    }
-
-                    if (resultLines != null) {
-                        for (String lineObj : resultLines) {
-                            out.println(lineObj);
-                        }
-                    }
-
-                    return true;
-                }
-                return false;
-            } catch (RuntimeException e) {
-                log.debug("{} - {}", e.getClass().getSimpleName(), e.getMessage());
-                return false;
+    private static ArrayList<String> collectUserAgents(WURFLModel wurflModel) {
+        Set<ModelDevice> allDevices = wurflModel.getAllDevices();
+        ArrayList<String> userAgents = new ArrayList<>(allDevices.size());
+        for (ModelDevice device : allDevices) {
+            if (!StringUtils.isEmpty(device.getUserAgent())) {
+                userAgents.add(device.getUserAgent());
             }
         }
+        return userAgents;
+    }
+
+    private static ArrayList<MatchResultRow> matchUserAgents(ArrayList<String> userAgents, MatcherManager matcherManager) {
+        ArrayList<MatchResultRow> matchResults = new ArrayList<>(userAgents.size());
+        DefaultWURFLRequestFactory requestFactory = new DefaultWURFLRequestFactory();
+        log.info("BUCKETS (1/3): start matching...");
+        long start = System.currentTimeMillis();
+        for (String ua : userAgents) {
+            DeviceInfo deviceInfo = matcherManager.matchRequest(requestFactory.createRequest(ua, EngineTarget.accuracy));
+            matchResults.add(new MatchResultRow(
+                    deviceInfo.getMatcherName(),
+                    deviceInfo.getId(),
+                    deviceInfo.getNormalizedUserAgent(),
+                    deviceInfo.getOriginalUserAgent()
+            ));
+        }
+        log.info("BUCKETS (1/3): finished matching. Took {} ms", System.currentTimeMillis() - start);
+        return matchResults;
     }
 
     private boolean handleRequest(HttpServletRequest request, PrintWriter out) {
@@ -239,7 +245,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         responseBody.deviceId = device.getId();
         responseBody.userAgent = headerOnlyRequest.getHeader("User-Agent");
         responseBody.requestType = request.getParameter("form") == null ? "request" : "form";
-        if (capabilities != null && capabilities.length > 0) {
+        if (capabilities.length > 0) {
             HashMap<String, String> capabilityMap = new HashMap<>();
             for (String capability : capabilities) {
                 capabilityMap.put(capability.trim(), device.getCapability(capability.trim()));
@@ -321,7 +327,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
     private static String[] parseCapabilities(String rawCapabilities) {
         if (rawCapabilities == null || rawCapabilities.trim().isEmpty()) {
-            return null;
+            return new String[0];
         }
         return LINE_BREAK_PATTERN.matcher(rawCapabilities.trim()).replaceAll("|").split("\\|");
     }
