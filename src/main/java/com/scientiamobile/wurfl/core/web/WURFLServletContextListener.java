@@ -41,77 +41,86 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
         }
     }
 
+    @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
-        String wurflEngineKey;
-        wurflEngineKey = servletContextEvent.getServletContext().getInitParameter("wurflEngineKey");
+        resolveEngineKey(servletContext);
+        String wurflPath = servletContext.getInitParameter("wurfl");
+        Validate.notEmpty(wurflPath, "Please Specify a Valid Location for wurfl context parameter");
+        String[] wurflPatchPaths = StringUtils.split(
+                StringUtils.defaultString(servletContext.getInitParameter("wurflPatch")), " ,");
+        XMLResource wurflResource = createXmlResource(servletContext, wurflPath);
+        WURFLResources patchResources = createPatchResources(servletContext, wurflPatchPaths);
+        GeneralWURFLEngine wurflEngine = new GeneralWURFLEngine(wurflResource, patchResources);
+        configureCapabilityFilter(servletContext, wurflEngine);
+        configureEngineTarget(servletContext, wurflEngine);
+        configureUserAgentPriority(servletContext, wurflEngine);
+        servletContext.setAttribute(this.engineKeyAttributeName, wurflEngine);
+    }
+
+    private void resolveEngineKey(ServletContext servletContext) {
+        String wurflEngineKey = servletContext.getInitParameter("wurflEngineKey");
         if (!StringUtils.isEmpty(wurflEngineKey)) {
             this.engineKeyAttributeName = wurflEngineKey;
         }
+    }
 
-        String wurflPath = servletContext.getInitParameter("wurfl");
-        Validate.notEmpty(wurflPath, "Please Specify a Valid Location for wurfl context parameter");
-        String[] wurflPatchPaths = StringUtils.split(StringUtils.defaultString(servletContext.getInitParameter("wurflPatch")), " ,");
-        URI wurflResourceUri;
-        XMLResource wurflResource;
-        wurflResourceUri = resolveResourceUri(servletContext, wurflPath);
-        if (wurflResourceUri != null) {
-            wurflResource = new XMLResource(wurflResourceUri);
-        } else {
-            wurflResource = new XMLResource(wurflPath);
+    private static XMLResource createXmlResource(ServletContext servletContext, String path) {
+        URI uri = resolveResourceUri(servletContext, path);
+        return uri != null ? new XMLResource(uri) : new XMLResource(path);
+    }
+
+    private static WURFLResources createPatchResources(ServletContext servletContext, String[] patchPaths) {
+        WURFLResources resources = new WURFLResources();
+        for (String patchPath : patchPaths) {
+            URI uri = resolveResourceUri(servletContext, patchPath);
+            XMLResource resource = uri != null ? new XMLResource(uri) : new XMLResource(patchPath);
+            resources.add(resource);
         }
+        return resources;
+    }
 
-        WURFLResources patchResources = new WURFLResources();
-
-        for (int i = 0; i < wurflPatchPaths.length; ++i) {
-            URI patchUri;
-            XMLResource patchResource;
-            patchUri = resolveResourceUri(servletContext, wurflPatchPaths[i]);
-            if (patchUri != null) {
-                patchResource = new XMLResource(patchUri);
-            } else {
-                patchResource = new XMLResource(wurflPatchPaths[i]);
-            }
-
-            patchResources.add(patchResource);
+    private static void configureCapabilityFilter(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
+        String filterValue = servletContext.getInitParameter("capability-filter");
+        if (filterValue == null) {
+            return;
         }
-
-        GeneralWURFLEngine wurflEngine = new GeneralWURFLEngine(wurflResource, patchResources);
-        String capabilityFilterValue;
-        capabilityFilterValue = servletContext.getInitParameter("capability-filter");
-        if (capabilityFilterValue != null) {
-            String[] capabilityFilter = capabilityFilterValue.split("\n");
-
-            for (int i = 0; i < capabilityFilter.length; ++i) {
-                if (capabilityFilter[i] != null) {
-                    capabilityFilter[i] = capabilityFilter[i].trim();
-                }
-            }
-
-            wurflEngine.setCapabilityFilter(capabilityFilter);
-        }
-
-        String engineTargetValue;
-        engineTargetValue = servletContext.getInitParameter("wurflEngineTarget");
-        if (engineTargetValue != null) {
-            try {
-                wurflEngine.setEngineTarget(EngineTarget.valueOf(engineTargetValue));
-            } catch (IllegalArgumentException e) {
-                throw new WURFLRuntimeException("Invalid value for wurflEngineTarget; accepted values are: " + EngineTarget.performance.toString() + " (default) and " + EngineTarget.accuracy.toString(), e);
+        String[] capabilityFilter = filterValue.split("\n");
+        for (int i = 0; i < capabilityFilter.length; i++) {
+            if (capabilityFilter[i] != null) {
+                capabilityFilter[i] = capabilityFilter[i].trim();
             }
         }
+        wurflEngine.setCapabilityFilter(capabilityFilter);
+    }
 
-        String userAgentPriorityValue;
-        userAgentPriorityValue = servletContext.getInitParameter("wurflUserAgentPriority");
-        if (userAgentPriorityValue != null) {
-            try {
-                wurflEngine.setUserAgentPriority(UserAgentPriority.valueOf(userAgentPriorityValue));
-            } catch (IllegalArgumentException e) {
-                throw new WURFLRuntimeException("Invalid value for wurflUserAgentPriority; accepted values are: " + UserAgentPriority.OverrideSideloadedBrowserUserAgent.toString() + " (default) and " + UserAgentPriority.UsePlainUserAgent.toString(), e);
-            }
+    private static void configureEngineTarget(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
+        String value = servletContext.getInitParameter("wurflEngineTarget");
+        if (value == null) {
+            return;
         }
+        try {
+            wurflEngine.setEngineTarget(EngineTarget.valueOf(value));
+        } catch (IllegalArgumentException e) {
+            throw new WURFLRuntimeException(
+                    "Invalid value for wurflEngineTarget; accepted values are: "
+                            + EngineTarget.performance + " (default) and " + EngineTarget.accuracy, e);
+        }
+    }
 
-        servletContext.setAttribute(this.engineKeyAttributeName, wurflEngine);
+    private static void configureUserAgentPriority(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
+        String value = servletContext.getInitParameter("wurflUserAgentPriority");
+        if (value == null) {
+            return;
+        }
+        try {
+            wurflEngine.setUserAgentPriority(UserAgentPriority.valueOf(value));
+        } catch (IllegalArgumentException e) {
+            throw new WURFLRuntimeException(
+                    "Invalid value for wurflUserAgentPriority; accepted values are: "
+                            + UserAgentPriority.OverrideSideloadedBrowserUserAgent + " (default) and "
+                            + UserAgentPriority.UsePlainUserAgent, e);
+        }
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

@@ -113,61 +113,54 @@ abstract class AbstractMatcher implements Matcher {
 
     @Override
     public DeviceInfo match(WURFLRequest request) {
-        String deviceId = "generic";
         request.normalizeUserAgent(this.normalizer);
-        String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
-        MatchType matchType = MatchType.none;
+        String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         String matcherName = this.getMatcherName();
         String bucketMatcherName = this.getBucketMatcherName();
-        if (!StringUtils.isBlank(normalizedDeviceUserAgent)) {
-            deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(normalizedDeviceUserAgent);
-            if (isBlankOrGeneric(deviceId)) {
-                deviceId = this.applyConclusiveMatch(request);
-                if (isBlankOrGeneric(deviceId)) {
-                    deviceId = this.applyRecoveryMatch(request);
-                    if (isBlankOrGeneric(deviceId)) {
-                        this.getFilter().getIndex();
-                        String fallbackDeviceId;
-                        if (request._internalIsDesktopBrowserHeavyDutyAnalysis()) {
-                            fallbackDeviceId = "generic_web_browser";
-                        } else {
-                            String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
-                            fallbackDeviceId = null;
+        if (StringUtils.isBlank(normalizedUserAgent)) {
+            return new DeviceInfo("generic", MatchType.none, matcherName, bucketMatcherName,
+                    request.getOriginalUserAgent(), normalizedUserAgent);
+        }
 
-                            for (UserAgentFallbackRule fallbackRule : CATCH_ALL_FALLBACKS) {
-                                if (cleanedDeviceUserAgent.contains(fallbackRule.keyword)) {
-                                    fallbackDeviceId = fallbackRule.deviceId;
-                                    break;
-                                }
-                            }
+        String deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(normalizedUserAgent);
+        if (!isBlankOrGeneric(deviceId)) {
+            return new DeviceInfo(deviceId, MatchType.exact, matcherName, bucketMatcherName,
+                    request.getOriginalUserAgent(), normalizedUserAgent);
+        }
 
-                            if (fallbackDeviceId == null) {
-                                if (cleanedDeviceUserAgent.indexOf("Mozilla/") <= 0 && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Obigo", "AU-MIC/2", "AU-MIC-", "AU-OBIGO/", "Teleca Q03B1")) {
-                                    fallbackDeviceId = StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, "DoCoMo", "KDDI") ? "docomo_generic_jap_ver1" : (request._internalIsMobileBrowser() ? "generic_mobile" : "generic");
-                                } else {
-                                    fallbackDeviceId = "generic_xhtml";
-                                }
-                            }
-                        }
+        deviceId = this.applyConclusiveMatch(request);
+        if (!isBlankOrGeneric(deviceId)) {
+            return new DeviceInfo(deviceId, MatchType.conclusive, matcherName, bucketMatcherName,
+                    request.getOriginalUserAgent(), normalizedUserAgent);
+        }
 
-                        deviceId = fallbackDeviceId;
-                        matchType = MatchType.catchAll;
-                    } else {
-                        matchType = MatchType.recovery;
-                    }
-                } else {
-                    matchType = MatchType.conclusive;
-                }
-            } else {
-                matchType = MatchType.exact;
+        deviceId = this.applyRecoveryMatch(request);
+        if (!isBlankOrGeneric(deviceId)) {
+            return new DeviceInfo(deviceId, MatchType.recovery, matcherName, bucketMatcherName,
+                    request.getOriginalUserAgent(), normalizedUserAgent);
+        }
+
+        deviceId = resolveFallbackDevice(request);
+        return new DeviceInfo(deviceId, MatchType.catchAll, matcherName, bucketMatcherName,
+                request.getOriginalUserAgent(), normalizedUserAgent);
+    }
+
+    private static String resolveFallbackDevice(WURFLRequest request) {
+        if (request._internalIsDesktopBrowserHeavyDutyAnalysis()) {
+            return "generic_web_browser";
+        }
+        String cleanedUa = request.getCleanedDeviceUserAgent();
+        for (UserAgentFallbackRule fallbackRule : CATCH_ALL_FALLBACKS) {
+            if (cleanedUa.contains(fallbackRule.keyword)) {
+                return fallbackRule.deviceId;
             }
         }
-
-        if (!ASSERTIONS_DISABLED && deviceId == null) {
-            throw new AssertionError();
-        } else {
-            return new DeviceInfo(deviceId, matchType, matcherName, bucketMatcherName, request.getOriginalUserAgent(), normalizedDeviceUserAgent);
+        if (cleanedUa.indexOf("Mozilla/") <= 0 && !StringMatchUtils.containsAnyOf(cleanedUa, "Obigo", "AU-MIC/2", "AU-MIC-", "AU-OBIGO/", "Teleca Q03B1")) {
+            return StringMatchUtils.startsWithAnyOf(cleanedUa, "DoCoMo", "KDDI")
+                    ? "docomo_generic_jap_ver1"
+                    : (request._internalIsMobileBrowser() ? "generic_mobile" : "generic");
         }
+        return "generic_xhtml";
     }
 
     protected String applyConclusiveMatch(WURFLRequest request) {

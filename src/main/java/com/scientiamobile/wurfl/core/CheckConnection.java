@@ -69,61 +69,48 @@ public class CheckConnection {
     }
 
     public void setup(WURFLEngine wurflEngine, WURFLModel wurflModel) {
-        if (this.enabled) {
-            String wurflSmid;
-            if (wurflModel instanceof DefaultWURFLModel defaultWURFLModel) {
+        if (!this.enabled || !(wurflModel instanceof DefaultWURFLModel defaultWURFLModel)) {
+            return;
+        }
+        String wurflSmid = StringUtils.defaultIfEmpty(defaultWURFLModel.getSmid(), "unknown");
+        String wurflVersion = extractVersionInfo(wurflEngine);
+        this.payloadJson = buildPayload(wurflSmid, wurflVersion);
+    }
 
-                wurflSmid = defaultWURFLModel.getSmid();
-                wurflSmid = StringUtils.isEmpty(wurflSmid) ? "unknown" : wurflSmid;
+    private static String extractVersionInfo(WURFLEngine wurflEngine) {
+        String wurflVersion = wurflEngine.getWURFLUtils().getVersion();
+        int versionIndex = wurflVersion.indexOf("for WURFL");
+        if (versionIndex == -1) {
+            return wurflVersion;
+        }
+        int versionEnd = wurflVersion.indexOf(";");
+        return versionEnd != -1 ? wurflVersion.substring(versionIndex, versionEnd) : wurflVersion.substring(versionIndex);
+    }
 
-                String wurflVersion = wurflEngine.getWURFLUtils().getVersion();
-                int versionIndex = wurflVersion.indexOf("for WURFL");
-                if (versionIndex != -1) {
-                    int versionEnd = wurflVersion.indexOf(";");
-                    wurflVersion = versionEnd != -1 ? wurflVersion.substring(versionIndex, versionEnd) : wurflVersion.substring(versionIndex);
-                }
-
-                StringBuilder payloadBuilder;
-                payloadBuilder = appendJsonField(
+    private String buildPayload(String wurflSmid, String wurflVersion) {
+        StringBuilder payloadBuilder = appendJsonField(
+                appendJsonField(
                         appendJsonField(
                                 appendJsonField(
                                         appendJsonField(
                                                 appendJsonField(
                                                         appendJsonField(
-                                                                appendJsonField(
-                                                                        appendJsonField(new StringBuilder("{ "), "api-smid", ResourceUtils.getBuildId(), true),
-                                                                        "wurfl-smid",
-                                                                        wurflSmid,
-                                                                        true
-                                                                ),
-                                                                "api",
-                                                                this.getApiName(),
-                                                                true
+                                                                appendJsonField(new StringBuilder("{ "), "api-smid", ResourceUtils.getBuildId(), true),
+                                                                "wurfl-smid", wurflSmid, true
                                                         ),
-                                                        "api_ver",
-                                                        "1.9.1.0",
-                                                        true
+                                                        "api", this.getApiName(), true
                                                 ),
-                                                "wurfl",
-                                                wurflVersion,
-                                                true
+                                                "api_ver", "1.9.1.0", true
                                         ),
-                                        "host",
-                                        getHostNameOrUnknown(),
-                                        true
+                                        "wurfl", wurflVersion, true
                                 ),
-                                "os",
-                                this.osNameAndVersion,
-                                true
+                                "host", getHostNameOrUnknown(), true
                         ),
-                        "platform",
-                        this.platformName,
-                        false
-                ).append(" }");
-                this.payloadJson = payloadBuilder.toString();
-            }
-
-        }
+                        "os", this.osNameAndVersion, true
+                ),
+                "platform", this.platformName, false
+        ).append(" }");
+        return payloadBuilder.toString();
     }
 
     public void check() {
