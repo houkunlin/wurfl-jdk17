@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 class MarkupResolverImpl implements MarkupResolver, Serializable {
    private static final long serialVersionUID = 1L;
-   private final transient Logger log = LoggerFactory.getLogger(MarkupResolverImpl.class);
+   private static final Logger log = LoggerFactory.getLogger(MarkupResolverImpl.class);
 
    @Override
    public MarkUp getMarkupForDevice(InternalDevice device) {
@@ -18,7 +18,7 @@ class MarkupResolverImpl implements MarkupResolver, Serializable {
          xhtmlSupportLevel = device.getCapability("xhtml_support_level");
          preferredMarkup = device.getCapability("preferred_markup");
       } catch (CapabilityNotDefinedException e) {
-         this.log.error("It is not possible getting markUp from capabilities: {}", e.getLocalizedMessage());
+         log.error("It is not possible getting markUp from capabilities: {}", e.getLocalizedMessage());
          throw new RuntimeException(e.getLocalizedMessage(), e);
       }
 

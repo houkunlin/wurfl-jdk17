@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
-   private final transient Logger log;
+   private static final Logger log = LoggerFactory.getLogger(GeneralWURFLEngine.class);
    private static final List<String> ALWAYS_INCLUDED_CAPABILITIES = Arrays.asList("device_os", "device_os_version", "is_tablet", "is_wireless_device", "pointing_method", "preferred_markup", "resolution_height", "resolution_width", "ux_full_desktop", "xhtml_support_level", "is_smarttv", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "mobile_browser_version");
    private String[] capabilityFilter;
    private final ReadWriteLock lock;
@@ -65,7 +65,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    }
 
    public GeneralWURFLEngine(String rootPath, String... patchPaths) {
-      this.log = LoggerFactory.getLogger(this.getClass());
+      
       this.capabilityFilter = null;
       this.lock = new ReentrantReadWriteLock();
       this.rootResource = null;
@@ -89,7 +89,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    }
 
    public GeneralWURFLEngine(WURFLResource rootResource, WURFLResources patchResources) {
-      this.log = LoggerFactory.getLogger(this.getClass());
+      
       this.capabilityFilter = null;
       this.lock = new ReentrantReadWriteLock();
       this.rootResource = null;
@@ -118,7 +118,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    @Override
    public void applyPatches(String... patchPaths) {
       if (patchPaths == null) {
-         this.log.warn("null patches, do nothing...");
+         log.warn("null patches, do nothing...");
       } else {
          this.applyPatches(createXmlResources(patchPaths));
       }
@@ -132,7 +132,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    @Override
    public void applyPatches(WURFLResources patchResources) {
       if (patchResources == null) {
-         this.log.warn("null patches, do nothing...");
+         log.warn("null patches, do nothing...");
       } else {
          this.lock.writeLock().lock();
 
@@ -180,10 +180,10 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
    public boolean replaceRoot(String newRootPath) {
       try {
          if (StringUtils.isBlank(newRootPath)) {
-            this.log.warn("Empty value has been provided for replacing root, skipping");
+            log.warn("Empty value has been provided for replacing root, skipping");
             return false;
          } else if (!(new File(this.rootPath).getCanonicalFile()).canWrite()) {
-            this.log.error("Engine root at {}is not writable, cannot replace it", this.rootPath);
+            log.error("Engine root at {}is not writable, cannot replace it", this.rootPath);
             return false;
          } else {
             GeneralWURFLEngine newEngine;
@@ -199,7 +199,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
             return true;
          }
       } catch (Exception e) {
-         this.log.error("An error has occurred replacing {}root with {}", this.rootPath, newRootPath, e);
+         log.error("An error has occurred replacing {}root with {}", this.rootPath, newRootPath, e);
          return false;
       }
    }
@@ -291,31 +291,31 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                      this.patchResources = null;
                      if (this.wurflService == null) {
                         MatcherManager matcherManager = new MatcherManager(this.wurflModel);
-                        if (this.markupResolver != null && this.log.isInfoEnabled()) {
-                           this.log.info("markupResolver is custom: {}", this.markupResolver.getClass().getName());
+                        if (this.markupResolver != null && log.isInfoEnabled()) {
+                           log.info("markupResolver is custom: {}", this.markupResolver.getClass().getName());
                         }
 
-                        if (this.capabilitiesHolderFactory != null && this.log.isInfoEnabled()) {
-                           this.log.info("capabilitiesHolderFactory is custom: {}", this.capabilitiesHolderFactory.getClass().getName());
+                        if (this.capabilitiesHolderFactory != null && log.isInfoEnabled()) {
+                           log.info("capabilitiesHolderFactory is custom: {}", this.capabilitiesHolderFactory.getClass().getName());
                         }
 
                         this.ensureDeviceProviderInitialized();
-                        if (this.cacheProvider != null && this.log.isInfoEnabled()) {
-                           this.log.info("cacheProvider is custom: {}", this.cacheProvider.getClass().getName());
+                        if (this.cacheProvider != null && log.isInfoEnabled()) {
+                           log.info("cacheProvider is custom: {}", this.cacheProvider.getClass().getName());
                         }
 
                         if (this.requestFactory == null) {
                            if (this.userAgentResolver != null) {
-                              if (this.log.isInfoEnabled()) {
-                                 this.log.info("userAgentResolver is custom: {}", this.userAgentResolver.getClass().getName());
+                              if (log.isInfoEnabled()) {
+                                 log.info("userAgentResolver is custom: {}", this.userAgentResolver.getClass().getName());
                               }
 
                               this.requestFactory = new DefaultWURFLRequestFactory(this.userAgentResolver, this.userAgentPriority);
                            } else {
                               this.requestFactory = new DefaultWURFLRequestFactory(this.userAgentPriority);
                            }
-                        } else if (this.log.isInfoEnabled()) {
-                           this.log.info("wurflRequestFactory is custom: {}", this.requestFactory.getClass().getName());
+                        } else if (log.isInfoEnabled()) {
+                           log.info("wurflRequestFactory is custom: {}", this.requestFactory.getClass().getName());
                         }
 
                         if (this.engineTarget != null) {
@@ -323,14 +323,14 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                         } else {
                            this.wurflService = new WURFLServiceImpl(this.wurflModel, matcherManager, this.deviceProvider, this.requestFactory);
                         }
-                     } else if (this.log.isInfoEnabled()) {
-                        this.log.info("wurflService is fed: {}", this.wurflService.getClass().getName());
+                     } else if (log.isInfoEnabled()) {
+                        log.info("wurflService is fed: {}", this.wurflService.getClass().getName());
                      }
 
                      this.ensureDeviceProviderInitialized();
                      if (this.cacheProvider != null) {
-                        if (this.log.isInfoEnabled()) {
-                           this.log.info("cacheProvider is fed: {}", this.cacheProvider.getClass().getName());
+                        if (log.isInfoEnabled()) {
+                           log.info("cacheProvider is fed: {}", this.cacheProvider.getClass().getName());
                         }
 
                         this.wurflService.setCacheProvider(this.cacheProvider);
@@ -346,7 +346,7 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
                      this.lock.writeLock().unlock();
                   }
                } catch (Exception e) {
-                  this.log.error("cannot initialize: {}", e);
+                  log.error("cannot initialize: {}", e);
                   if (e instanceof WURFLRuntimeException) {
                      throw (WURFLRuntimeException)e;
                   }
@@ -379,8 +379,8 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
             this.deviceProvider = new DefaultDeviceProvider(this.wurflModel, this.capabilitiesHolderFactory);
          }
       } else {
-         if (this.log.isInfoEnabled()) {
-            this.log.info("Device Provider is fed: {}", this.deviceProvider.getClass().getName());
+         if (log.isInfoEnabled()) {
+            log.info("Device Provider is fed: {}", this.deviceProvider.getClass().getName());
          }
 
       }

@@ -14,16 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UserAgentNormalizerChain implements UserAgentNormalizer {
-   private final transient Logger log;
+   private static final Logger log = LoggerFactory.getLogger(UserAgentNormalizerChain.class);
    private final List<UserAgentNormalizer> normalizers;
 
    public UserAgentNormalizerChain() {
-      this.log = LoggerFactory.getLogger(this.getClass());
+      
       this.normalizers = new ArrayList<>();
    }
 
    public UserAgentNormalizerChain(List<UserAgentNormalizer> normalizers) {
-      this.log = LoggerFactory.getLogger(this.getClass());
+      
       this.normalizers = new ArrayList<>();
       this.normalizers.addAll(normalizers);
    }
@@ -81,7 +81,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
             request.setUrlEncoded(true);
          }
       } catch (RuntimeException e) {
-         this.log.warn("rawdecoding for user agent {} failed", userAgent, e);
+         log.warn("rawdecoding for user agent {} failed", userAgent, e);
       }
 
       return userAgent;

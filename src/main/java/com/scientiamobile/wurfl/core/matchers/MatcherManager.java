@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 public final class MatcherManager {
    private MatcherChain matcherChain;
-   private final transient Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger log = LoggerFactory.getLogger(MatcherManager.class);
    private UserAgentNormalizer windowsPhoneNormalizer;
    private UserAgentNormalizer operaMobiOrTabletOnAndroidNormalizer;
    private UserAgentNormalizer androidNormalizer;
@@ -147,7 +147,7 @@ public final class MatcherManager {
       new OrphanDeviceIdMatcher(model);
       List<ModelDevice> allDevices = model.getAllDevicesAsList();
       Validate.notNull(allDevices, "Model devices list is null");
-      this.log.info("model devices: {}", allDevices.size());
+      log.info("model devices: {}", allDevices.size());
       int filteredDevices = 0;
 
       for (ModelDevice device : allDevices) {
@@ -161,12 +161,12 @@ public final class MatcherManager {
       }
 
       matcherChain.sortAll();
-      this.log.info("model devices filtered: {}", filteredDevices);
+      log.info("model devices filtered: {}", filteredDevices);
       return matcherChain;
    }
 
    public final void reloadModel(WURFLModel model) {
-      this.log.info("reloading the model");
+      log.info("reloading the model");
       if (model == null) {
          throw new IllegalArgumentException("no model defined for Matcher Manager");
       } else {

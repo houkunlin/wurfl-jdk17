@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CheckConnection {
-   private final transient Logger logger = LoggerFactory.getLogger(this.getClass());
+   private static final Logger logger = LoggerFactory.getLogger(CheckConnection.class);
    private final List<CheckConnectionObserver> observers = new ArrayList<>();
    private String payloadJson;
    private String osNameAndVersion = System.getProperty("os.name") + " " + System.getProperty("os.version");
@@ -52,7 +52,7 @@ public class CheckConnection {
                (smidField = DefaultWURFLModel.class.getDeclaredField("g")).setAccessible(true);
                wurflSmid = StringUtils.isEmpty(wurflSmid = (String)smidField.get(wurflModel)) ? "unknown" : wurflSmid;
             } catch (Exception e) {
-               this.logger.error("Unable to get data from model class " + e.getMessage());
+               logger.error("Unable to get data from model class " + e.getMessage());
             }
 
             String wurflVersion = wurflEngine.getWURFLUtils().getVersion();
@@ -146,7 +146,7 @@ public class CheckConnection {
 
       while(iterator.hasNext()) {
          iterator.next().update(this, argument);
-         this.logger.info("observer notified");
+         logger.info("observer notified");
       }
 
    }

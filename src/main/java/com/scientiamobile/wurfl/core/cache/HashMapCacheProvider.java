@@ -13,7 +13,7 @@ public class HashMapCacheProvider implements CacheProvider {
    private int initialCapacity;
    private float loadFactor;
    private int concurrentWrites;
-   private final transient Logger logger;
+   private static final Logger logger = LoggerFactory.getLogger(HashMapCacheProvider.class);
 
    public HashMapCacheProvider() {
       this(60000);
@@ -31,19 +31,19 @@ public class HashMapCacheProvider implements CacheProvider {
       this.initialCapacity = 6000;
       this.loadFactor = 0.75F;
       this.concurrentWrites = 16;
-      this.logger = LoggerFactory.getLogger(this.getClass());
+      
       this.initialCapacity = initialCapacity;
       this.loadFactor = loadFactor;
       this.concurrentWrites = concurrentWrites;
       this.cache = CollectionFactory.createConcurrentHashMap(initialCapacity, loadFactor, concurrentWrites);
-      if (this.logger.isInfoEnabled()) {
+      if (logger.isInfoEnabled()) {
          StringBuffer builder;
          (builder = new StringBuffer("Created HashMapCacheProvider with initial capacity: ")).append(initialCapacity);
          builder.append(" load factor: ");
          builder.append(loadFactor);
          builder.append(" concurrent writes: ");
          builder.append(concurrentWrites);
-         this.logger.info(builder.toString());
+         logger.info(builder.toString());
       }
 
    }
@@ -62,9 +62,9 @@ public class HashMapCacheProvider implements CacheProvider {
 
    @Override
    public void clear() {
-      this.logger.info("Cache size: " + this.cache.size());
+      logger.info("Cache size: " + this.cache.size());
       this.cache.clear();
-      this.logger.info("Cache erased");
+      logger.info("Cache erased");
    }
 
    @Override
