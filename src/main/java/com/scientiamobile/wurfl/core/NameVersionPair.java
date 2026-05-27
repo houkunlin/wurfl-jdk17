@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class NameVersionPair implements Serializable {
+public final class NameVersionPair implements Serializable {
     private static final long serialVersionUID = 4934582187956400034L;
     private String name = null;
     private String version = null;
