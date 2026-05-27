@@ -27,11 +27,10 @@ public final class RISMatcher {
         return "RIS";
     }
 
-    @SuppressWarnings("rawtypes")
-    public String match(Collection candidates, String value, int threshold) {
-        String matchedValue = null;
+    @SuppressWarnings({"unchecked"})
+    public String match(Collection<?> candidates, String value, int threshold) {
         int valueLength = value.length();
-        ArrayList candidatesList = (ArrayList) candidates;
+        ArrayList<String> candidatesList = (ArrayList<String>) candidates;
         int bestIndex = -1;
         int bestMatchLength = -1;
         int low = 0;
@@ -39,44 +38,40 @@ public final class RISMatcher {
 
         while (low <= high && bestMatchLength < valueLength) {
             int middle = (low + high) / 2;
-            String middleValue = (String) candidatesList.get(middle);
-            int matchLength;
-            matchLength = commonPrefixLength(value, middleValue);
+            String middleValue = candidatesList.get(middle);
+            int matchLength = commonPrefixLength(value, middleValue);
             if (matchLength > bestMatchLength) {
                 bestIndex = middle;
                 bestMatchLength = matchLength;
             }
 
-            int compareResult;
-            compareResult = middleValue.compareTo(value);
+            int compareResult = middleValue.compareTo(value);
             if (compareResult < 0) {
                 low = middle + 1;
+            } else if (compareResult == 0) {
+                break;
             } else {
-                if (compareResult <= 0) {
-                    break;
-                }
-
                 high = middle - 1;
             }
         }
 
-        if (bestMatchLength >= threshold) {
-            int leftMostIndex = bestIndex;
-            int currentMatchLength = bestMatchLength;
-            ListIterator iterator = candidatesList.listIterator(bestIndex);
-
-            while (iterator.hasPrevious() && currentMatchLength == bestMatchLength) {
-                String previousCandidate = (String) iterator.previous();
-                currentMatchLength = commonPrefixLength(value, previousCandidate);
-                if (currentMatchLength == bestMatchLength) {
-                    --leftMostIndex;
-                }
-            }
-
-            matchedValue = (String) candidatesList.get(leftMostIndex);
+        if (bestMatchLength < threshold) {
+            return null;
         }
 
-        return matchedValue;
+        int leftMostIndex = bestIndex;
+        int currentMatchLength = bestMatchLength;
+        ListIterator<String> iterator = candidatesList.listIterator(bestIndex);
+
+        while (iterator.hasPrevious() && currentMatchLength == bestMatchLength) {
+            String previousCandidate = iterator.previous();
+            currentMatchLength = commonPrefixLength(value, previousCandidate);
+            if (currentMatchLength == bestMatchLength) {
+                leftMostIndex--;
+            }
+        }
+
+        return candidatesList.get(leftMostIndex);
     }
 
     @Override
