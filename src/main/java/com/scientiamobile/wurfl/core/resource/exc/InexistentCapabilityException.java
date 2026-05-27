@@ -6,6 +6,6 @@ public class InexistentCapabilityException extends CapabilityConsistencyExceptio
    private static final long serialVersionUID = 10L;
 
    public InexistentCapabilityException(ModelDevice device, String capabilityName) {
-      super(device, capabilityName, (new StringBuilder("Device: ")).append(device.getID()).append(" define unknown capability: ").append(capabilityName).toString());
+      super(device, capabilityName, "Device: " + device.getID() + " define unknown capability: " + capabilityName);
    }
 }

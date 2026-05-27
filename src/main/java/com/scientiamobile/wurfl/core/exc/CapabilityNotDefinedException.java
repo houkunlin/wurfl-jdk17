@@ -9,7 +9,7 @@ public class CapabilityNotDefinedException extends WURFLRuntimeException {
    }
 
    public CapabilityNotDefinedException(String capabilityName, String message) {
-      super((new StringBuilder("Capability: ")).append(capabilityName).append(" - ").append(message).toString());
+      super("Capability: " + capabilityName + " - " + message);
       this.capabilityName = capabilityName;
    }
 

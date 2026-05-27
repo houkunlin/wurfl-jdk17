@@ -9,7 +9,7 @@ public class MandatoryCapabilityMissing extends WURFLRuntimeException {
    }
 
    public MandatoryCapabilityMissing(String messagePrefix, String missingMandatoryCapabilities) {
-      super((new StringBuilder(messagePrefix)).append(missingMandatoryCapabilities).toString());
+      super(messagePrefix + missingMandatoryCapabilities);
       this.missingMandatoryCapabilities = missingMandatoryCapabilities;
    }
 

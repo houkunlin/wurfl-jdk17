@@ -12,7 +12,7 @@ public abstract class UserAgentConsistencyException extends DeviceConsistencyExc
    }
 
    public UserAgentConsistencyException(ModelDevice device, String userAgent) {
-      super(device, (new StringBuilder("Device: ")).append(device.getID()).append(" user-agent: ").append(userAgent).append(" consistency exception").toString());
+      super(device, "Device: " + device.getID() + " user-agent: " + userAgent + " consistency exception");
       this.userAgent = userAgent;
    }
 

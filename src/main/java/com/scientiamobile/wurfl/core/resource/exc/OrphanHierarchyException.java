@@ -8,6 +8,6 @@ public class OrphanHierarchyException extends HierarchyConsistencyException {
    private static final long serialVersionUID = 10L;
 
    public OrphanHierarchyException(List<ModelDevice> hierarchy) {
-      super(hierarchy, (new StringBuilder("Orphan exception in hierarchy: [")).append(StringMatchUtils.hierarchyAsString(hierarchy)).append("]").toString());
+      super(hierarchy, "Orphan exception in hierarchy: [" + StringMatchUtils.hierarchyAsString(hierarchy) + "]");
    }
 }

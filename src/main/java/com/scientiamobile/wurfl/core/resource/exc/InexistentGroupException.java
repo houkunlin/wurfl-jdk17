@@ -6,6 +6,6 @@ public class InexistentGroupException extends GroupConsistencyException {
    private static final long serialVersionUID = 10L;
 
    public InexistentGroupException(ModelDevice device, String groupId) {
-      super(device, groupId, (new StringBuilder("Device: ")).append(device.getID()).append(" define unknow group: ").append(groupId).toString());
+      super(device, groupId, "Device: " + device.getID() + " define unknow group: " + groupId);
    }
 }

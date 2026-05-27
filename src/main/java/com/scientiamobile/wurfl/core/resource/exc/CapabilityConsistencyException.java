@@ -7,7 +7,7 @@ public abstract class CapabilityConsistencyException extends DeviceConsistencyEx
    private String capabilityName;
 
    public CapabilityConsistencyException(ModelDevice device, String capabilityName) {
-      super(device, (new StringBuilder("Device: ")).append(device.getID()).append(" Capability: ").append(capabilityName).append(" consistency error").toString());
+      super(device, "Device: " + device.getID() + " Capability: " + capabilityName + " consistency error");
       this.capabilityName = capabilityName;
    }
 

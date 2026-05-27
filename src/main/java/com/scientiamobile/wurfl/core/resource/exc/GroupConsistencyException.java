@@ -7,7 +7,7 @@ public abstract class GroupConsistencyException extends DeviceConsistencyExcepti
    private String groupId;
 
    public GroupConsistencyException(ModelDevice device, String groupId) {
-      super(device, (new StringBuilder("Group: ")).append(groupId).append(" in device: ").append(device.getID()).append(" consistency exception").toString());
+      super(device, "Group: " + groupId + " in device: " + device.getID() + " consistency exception");
       this.groupId = groupId;
    }
 

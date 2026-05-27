@@ -8,7 +8,7 @@ public class BadCapabilityGroupException extends CapabilityConsistencyException 
    private String expectedGroupId;
 
    public BadCapabilityGroupException(ModelDevice device, String capabilityName, String actualGroupId, String expectedGroupId) {
-      super(device, capabilityName, (new StringBuilder("Capability: ")).append(capabilityName).append(" is defined in group: ").append(actualGroupId).append(" istead in group:").append(expectedGroupId).append(" in Device: ").append(device.getID()).toString());
+      super(device, capabilityName, "Capability: " + capabilityName + " is defined in group: " + actualGroupId + " istead in group:" + expectedGroupId + " in Device: " + device.getID());
       this.expectedGroupId = expectedGroupId;
       this.actualGroupId = actualGroupId;
    }

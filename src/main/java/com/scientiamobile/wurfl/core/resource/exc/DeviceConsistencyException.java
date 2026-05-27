@@ -12,7 +12,7 @@ public abstract class DeviceConsistencyException extends WURFLConsistencyExcepti
    }
 
    public DeviceConsistencyException(ModelDevice device) {
-      super((new StringBuilder("Device: ")).append(device.getID()).append(" consistency error").toString());
+      super("Device: " + device.getID() + " consistency error");
       this.device = device;
    }
 

@@ -8,7 +8,7 @@ public class WURFLResourceException extends WURFLRuntimeException {
    private transient WURFLResource resource;
 
    public WURFLResourceException(WURFLResource resource) {
-      super((new StringBuilder("WURFL resource exception in: ")).append(resource.getInfo()).toString());
+      super("WURFL resource exception in: " + resource.getInfo());
       this.resource = resource;
    }
 

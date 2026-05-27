@@ -8,6 +8,6 @@ public class CircularHierarchyException extends HierarchyConsistencyException {
    private static final long serialVersionUID = 10L;
 
    public CircularHierarchyException(List<ModelDevice> hierarchy) {
-      super(hierarchy, (new StringBuilder("Circular hierarchy detected: [ ")).append(StringMatchUtils.hierarchyAsString(hierarchy)).append("]").toString());
+      super(hierarchy, "Circular hierarchy detected: [ " + StringMatchUtils.hierarchyAsString(hierarchy) + "]");
    }
 }

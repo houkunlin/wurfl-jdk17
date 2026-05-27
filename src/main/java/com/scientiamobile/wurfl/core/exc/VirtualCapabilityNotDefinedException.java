@@ -9,7 +9,7 @@ public class VirtualCapabilityNotDefinedException extends WURFLRuntimeException 
    }
 
    public VirtualCapabilityNotDefinedException(String capabilityName, String message) {
-      super((new StringBuilder("Virtual Capability: ")).append(capabilityName).append(" - ").append(message).toString());
+      super("Virtual Capability: " + capabilityName + " - " + message);
       this.capabilityName = capabilityName;
    }
 
