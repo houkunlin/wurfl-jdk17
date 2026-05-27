@@ -6,8 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -19,54 +17,29 @@ public class VirtualCapabilityDevice implements Serializable {
     private static final Pattern WINDOWS_NT_VERSION_PATTERN = Pattern.compile("Windows NT ([0-9]+?\\.[0-9])");
     private static final Pattern WINDOWS_VERSION_PATTERN = Pattern.compile("Windows [0-9\\.]+");
     private static final Pattern PPC_OS_X_VERSION_PATTERN = Pattern.compile("PPC.+OS X ([0-9\\._]+)");
-    private static final Pattern PPC_OS_X_VERSION_PATTERN_ALT = Pattern.compile("PPC.+OS X ([0-9\\._]+)");
     private static final Pattern TRIDENT_VERSION_PATTERN = Pattern.compile("Trident/([\\d\\.]+)");
     private static final Pattern INTEL_MAC_OS_X_VERSION_PATTERN = Pattern.compile("Intel Mac OS X ([0-9\\._]+)");
     private static final Pattern MAC_OS_X_VERSION_PATTERN = Pattern.compile("MacOS X ([0-9\\._]+)");
     private static final Pattern DOT_SPLIT_PATTERN = Pattern.compile("\\.");
-    private static final Map<String, String> windowsNtVersionToName = new HashMap<>();
-    private static final Map<String, String> tridentVersionToIeVersion = new HashMap<>();
-    private static final Map<String, String> windowsPhoneVersionMapping = new HashMap<>();
-    private static final Set<String> knownOsNames = new HashSet<>(16);
-
-    static {
-        windowsNtVersionToName.put("4.0", "NT 4.0");
-        windowsNtVersionToName.put("5.0", "2000");
-        windowsNtVersionToName.put("5.1", "XP");
-        windowsNtVersionToName.put("5.2", "XP");
-        windowsNtVersionToName.put("6.0", "Vista");
-        windowsNtVersionToName.put("6.1", "7");
-        windowsNtVersionToName.put("6.2", "8");
-        windowsNtVersionToName.put("6.3", "8.1");
-        windowsNtVersionToName.put("6.4", "10");
-        windowsNtVersionToName.put("10.0", "10");
-        tridentVersionToIeVersion.put("4.0", "8.0");
-        tridentVersionToIeVersion.put("5.0", "9.0");
-        tridentVersionToIeVersion.put("6.0", "10.0");
-        tridentVersionToIeVersion.put("7.0", "11.0");
-        windowsPhoneVersionMapping.put("7.10", "7.5");
-        windowsPhoneVersionMapping.put("8.10", "8.1");
-        windowsPhoneVersionMapping.put("8.15", "10");
-        knownOsNames.add("Windows CE");
-        knownOsNames.add("Windows Mobile");
-        knownOsNames.add("Windows Phone");
-        knownOsNames.add("Nintendo");
-        knownOsNames.add("Android");
-        knownOsNames.add("iOS");
-        knownOsNames.add("Tizen");
-        knownOsNames.add("Nokia Series 40");
-        knownOsNames.add("Symbian");
-        knownOsNames.add("BlackBerry");
-        knownOsNames.add("RIM Tablet OS");
-        knownOsNames.add("Bada");
-        knownOsNames.add("webOS");
-        knownOsNames.add("Linux");
-        knownOsNames.add("X11");
-        knownOsNames.add("Ubuntu");
-        knownOsNames.add("Fedora");
-        knownOsNames.add("Mac OS X");
-        knownOsNames.add("Fire OS");
-    }
+    private static final Map<String, String> windowsNtVersionToName = Map.ofEntries(
+            Map.entry("4.0", "NT 4.0"), Map.entry("5.0", "2000"),
+            Map.entry("5.1", "XP"), Map.entry("5.2", "XP"),
+            Map.entry("6.0", "Vista"), Map.entry("6.1", "7"),
+            Map.entry("6.2", "8"), Map.entry("6.3", "8.1"),
+            Map.entry("6.4", "10"), Map.entry("10.0", "10")
+    );
+    private static final Map<String, String> tridentVersionToIeVersion = Map.of(
+            "4.0", "8.0", "5.0", "9.0", "6.0", "10.0", "7.0", "11.0"
+    );
+    private static final Map<String, String> windowsPhoneVersionMapping = Map.of(
+            "7.10", "7.5", "8.10", "8.1", "8.15", "10"
+    );
+    private static final Set<String> knownOsNames = Set.of(
+            "Windows CE", "Windows Mobile", "Windows Phone", "Nintendo",
+            "Android", "iOS", "Tizen", "Nokia Series 40", "Symbian",
+            "BlackBerry", "RIM Tablet OS", "Bada", "webOS", "Linux",
+            "X11", "Ubuntu", "Fedora", "Mac OS X", "Fire OS"
+    );
 
     private final NameVersionPair browserPair;
     private final NameVersionPair osPair;
@@ -75,16 +48,14 @@ public class VirtualCapabilityDevice implements Serializable {
     private final String cleanedDeviceUserAgent;
 
     public VirtualCapabilityDevice(WURFLRequest request) {
+        this.cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         if (request.isUrlEncoded()) {
-            this.deviceUserAgent = request.getCleanedDeviceUserAgent();
-            this.browserUserAgent = this.deviceUserAgent;
-            this.cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+            this.deviceUserAgent = this.cleanedDeviceUserAgent;
+            this.browserUserAgent = this.cleanedDeviceUserAgent;
         } else {
             this.deviceUserAgent = request.getDeviceUserAgent();
             this.browserUserAgent = request.getBrowserUserAgent();
-            this.cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         }
-
         this.browserPair = new NameVersionPair();
         this.osPair = new NameVersionPair();
     }
@@ -178,12 +149,12 @@ public class VirtualCapabilityDevice implements Serializable {
         if (this.osPair.matchAndSetGroup(MAC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
             return replaceUnderscoreInVersion();
         }
-        if (this.osPair.matchAndSet(PPC_OS_X_VERSION_PATTERN_ALT, this.deviceUserAgent, "Mac OS X", (String) null)) {
+        if (this.osPair.matchAndSet(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", null)) {
             return true;
         }
         if (this.osPair.matchAndSetGroup(INTEL_MAC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
             if (this.osPair.getVersion() != null) {
-                this.osPair.setVersion(this.osPair.getVersion().replaceAll("_", "."));
+                this.osPair.setVersion(this.osPair.getVersion().replace("_", "."));
                 if (isMacOS10OrLater()) {
                     this.osPair.setName("macOS");
                 }
@@ -195,7 +166,7 @@ public class VirtualCapabilityDevice implements Serializable {
 
     private boolean replaceUnderscoreInVersion() {
         if (this.osPair.getVersion() != null) {
-            this.osPair.setVersion(this.osPair.getVersion().replaceAll("_", "."));
+            this.osPair.setVersion(this.osPair.getVersion().replace("_", "."));
         }
         return true;
     }
