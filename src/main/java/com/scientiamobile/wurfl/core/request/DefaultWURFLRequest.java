@@ -321,18 +321,15 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
-        } else if (!(obj instanceof DefaultWURFLRequest)) {
+        } else if (!(obj instanceof DefaultWURFLRequest other)) {
             return false;
         } else {
-            DefaultWURFLRequest other = (DefaultWURFLRequest) obj;
             return (new EqualsBuilder()).append(this.deviceUserAgent, other.deviceUserAgent).append(this.userAgentProfile, other.userAgentProfile).isEquals();
         }
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("[userAgent: ").append(this.getOriginalUserAgent()).append(", userAgentProfile: ").append(this.userAgentProfile).append("]");
-        return builder.toString();
+        return "[userAgent: " + this.getOriginalUserAgent() + ", userAgentProfile: " + this.userAgentProfile + "]";
     }
 }
