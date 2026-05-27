@@ -32,9 +32,6 @@ final class ModelDevicesConsistencyVerifier {
     }
 
     private static void verifyHierarchy(ModelDevice device, ModelDevices devices, Set<String> visited) {
-        assert device != null : "device is null";
-        assert devices != null : "devices is null";
-
         String currentDeviceId = device.getID();
         assert !StringUtils.isEmpty(currentDeviceId);
 
@@ -62,9 +59,6 @@ final class ModelDevicesConsistencyVerifier {
     }
 
     private static void verifyGroups(ModelDevice device, ModelDevices devices) {
-        assert device != null : "device is null";
-        assert devices != null : "devices is null";
-
         ModelDevice genericDevice = devices.getById("generic");
         Set<String> genericGroups = genericDevice.getGroups();
         for (String group : device.getGroups()) {
@@ -75,8 +69,6 @@ final class ModelDevicesConsistencyVerifier {
     }
 
     private static void verifyCapabilities(ModelDevice device, ModelDevices devices) {
-        assert device != null : "device is null";
-        assert devices != null : "devices is null";
         assert devices.containsId("generic") : "device do not containing generic";
 
         ModelDevice genericDevice = devices.getById("generic");
