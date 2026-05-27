@@ -26,18 +26,29 @@ final class SamsungMatcher extends MatcherBase {
 
     @Override
     public boolean canHandle(WURFLRequest request) {
-        String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         if (request.getOriginalUserAgent().contains("SamsungBrowser")) {
             return false;
-        } else {
-            return !request._internalIsDesktopBrowser() && (StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, CAN_HANDLE_PREFIXES) || cleanedDeviceUserAgent.toLowerCase().contains("samsung"));
         }
+        String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
+        return !request._internalIsDesktopBrowser()
+            && (StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, CAN_HANDLE_PREFIXES)
+            || cleanedDeviceUserAgent.toLowerCase().contains("samsung"));
     }
 
     @Override
     protected String risMatch(String userAgent) {
-        int matchLength = StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SLASH_PREFIXES) ? StringMatchUtils.firstSlash(userAgent) : (StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SPACE_PREFIXES) ? StringMatchUtils.firstSpace(userAgent) : StringMatchUtils.secondSlash(userAgent));
-        return matchLength == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
+        int matchLength;
+        if (StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SLASH_PREFIXES)) {
+            matchLength = StringMatchUtils.firstSlash(userAgent);
+        } else if (StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SPACE_PREFIXES)) {
+            matchLength = StringMatchUtils.firstSpace(userAgent);
+        } else {
+            matchLength = StringMatchUtils.secondSlash(userAgent);
+        }
+        if (matchLength == -1) {
+            return StringMatchUtils.NULL_STRING;
+        }
+        return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
 
     @Override
