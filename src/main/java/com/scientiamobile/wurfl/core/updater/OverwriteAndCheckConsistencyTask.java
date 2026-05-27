@@ -23,7 +23,8 @@ public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
 
    public void execute(Map<String, Object> context) {
       String newWurflTempPath;
-      Validate.notEmpty(newWurflTempPath = (String)context.get("new_wurfl_temp_path"));
+      newWurflTempPath = (String)context.get("new_wurfl_temp_path");
+         Validate.notEmpty(newWurflTempPath);
       String originalWurflPath = (String)context.get("original_wurfl_path");
 
       try {

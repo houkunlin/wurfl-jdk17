@@ -353,7 +353,8 @@ public class DefaultWURFLModel implements WURFLModel {
    @Override
    public String toString() {
       ToStringBuilder out;
-      (out = new ToStringBuilder(this)).append(this.version);
+out = new ToStringBuilder(this);
+out.append(this.version);
       return out.toString();
    }
 }

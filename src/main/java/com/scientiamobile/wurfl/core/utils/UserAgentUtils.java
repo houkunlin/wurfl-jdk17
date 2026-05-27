@@ -135,7 +135,8 @@ public final class UserAgentUtils {
 
    public static Pattern createLocalePattern() {
       StringBuilder patternBuilder;
-      (patternBuilder = new StringBuilder()).append("; (");
+patternBuilder = new StringBuilder();
+patternBuilder.append("; (");
       String[] languages = Locale.getISOLanguages();
 
       for(int i = 0; i < languages.length; ++i) {
@@ -282,7 +283,8 @@ public final class UserAgentUtils {
 
    public static String getUcAndroidModel(String userAgent, boolean returnDefaultIfMissing) {
       Matcher matcher;
-      if (!(matcher = UC_ANDROID_MODEL_PATTERN.matcher(userAgent)).find()) {
+matcher = UC_ANDROID_MODEL_PATTERN.matcher(userAgent);
+if (!matcher.find()) {
          return null;
       } else {
          String model = matcher.group(1);
@@ -475,7 +477,8 @@ public final class UserAgentUtils {
    }
 
    static {
-      (SUPPORTED_ANDROID_VERSIONS = new TreeSet<>()).add("1.0");
+SUPPORTED_ANDROID_VERSIONS = new TreeSet<>();
+SUPPORTED_ANDROID_VERSIONS.add("1.0");
       SUPPORTED_ANDROID_VERSIONS.add("1.5");
       SUPPORTED_ANDROID_VERSIONS.add("1.6");
       SUPPORTED_ANDROID_VERSIONS.add("2.0");

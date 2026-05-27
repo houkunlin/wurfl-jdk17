@@ -73,7 +73,8 @@ final class OperaMatcher extends MatcherBase {
    }
 
    static {
-      (MAJOR_VERSION_TO_DEVICE_ID = new HashMap<>()).put("", OPERA_GENERIC);
+MAJOR_VERSION_TO_DEVICE_ID = new HashMap<>();
+MAJOR_VERSION_TO_DEVICE_ID.put("", OPERA_GENERIC);
       MAJOR_VERSION_TO_DEVICE_ID.put("7", "opera_7");
       MAJOR_VERSION_TO_DEVICE_ID.put("8", "opera_8");
       MAJOR_VERSION_TO_DEVICE_ID.put("9", "opera_9");

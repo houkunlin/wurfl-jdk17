@@ -6,6 +6,7 @@ public class LGNormalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       int lgIndex;
-      return (lgIndex = userAgent.indexOf("LG")) > 0 ? userAgent.substring(lgIndex) : userAgent;
+lgIndex = userAgent.indexOf("LG");
+return lgIndex > 0 ? userAgent.substring(lgIndex) : userAgent;
    }
 }

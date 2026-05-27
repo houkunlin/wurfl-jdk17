@@ -157,6 +157,7 @@ public class CheckConnection {
 
    public String getApiName() {
       String classPath;
-      return (classPath = System.getProperty("java.class.path")) != null && classPath.contains("wurfl-scala") ? "WURFL_Scala_API" : "WURFL_Java_API";
+      classPath = System.getProperty("java.class.path");
+      return classPath != null && classPath.contains("wurfl-scala") ? "WURFL_Scala_API" : "WURFL_Java_API";
    }
 }

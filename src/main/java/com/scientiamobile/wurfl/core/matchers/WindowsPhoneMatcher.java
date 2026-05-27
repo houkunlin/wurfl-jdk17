@@ -54,7 +54,8 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
    @Override
    protected String risMatch(String userAgent) {
       int index;
-      return (index = userAgent.indexOf("---")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, index + 3) : null;
+index = userAgent.indexOf("---");
+return index >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, index + 3) : null;
    }
 
    @Override
@@ -95,7 +96,8 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
    }
 
    static {
-      (VERSION_TO_DEVICE_ID = new HashMap<>()).put("10.0", "generic_ms_phone_os10");
+VERSION_TO_DEVICE_ID = new HashMap<>();
+VERSION_TO_DEVICE_ID.put("10.0", "generic_ms_phone_os10");
       VERSION_TO_DEVICE_ID.put("8.1", "generic_ms_phone_os8_1");
       VERSION_TO_DEVICE_ID.put("8.0", "generic_ms_phone_os8");
       VERSION_TO_DEVICE_ID.put("7.8", "generic_ms_phone_os7_8");

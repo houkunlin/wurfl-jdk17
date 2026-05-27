@@ -126,7 +126,8 @@ final class ResourceInput {
    private static InputStream unwrapZip(InputStream stream) {
       try {
          ZipInputStream zipInputStream;
-         (zipInputStream = new ZipInputStream(stream)).getNextEntry();
+zipInputStream = new ZipInputStream(stream);
+zipInputStream.getNextEntry();
          return zipInputStream;
       } catch (IOException e) {
          throw new RuntimeException(e);

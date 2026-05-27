@@ -105,7 +105,8 @@ public class UpdatePipeline {
 
    public static Integer getConnectionTimeoutMsOrDefault(Map<String, Object> context) {
       String timeoutValue;
-      return StringUtils.isNotEmpty(timeoutValue = (String)context.get("CONN_TIMEOUT")) && StringUtils.isNumeric(timeoutValue) ? Integer.parseInt(timeoutValue) : 10000;
+      timeoutValue = (String)context.get("CONN_TIMEOUT");
+      return StringUtils.isNotEmpty(timeoutValue) && StringUtils.isNumeric(timeoutValue) ? Integer.parseInt(timeoutValue) : 10000;
    }
 
    static int headRequest(URL url, String ifModifiedSince, int timeoutMs, String userAgent, ProxySettings proxySettings) {

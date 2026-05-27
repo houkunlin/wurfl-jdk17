@@ -140,7 +140,8 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
    @Override
    public int hashCode() {
       HashCodeBuilder hashCodeBuilder;
-      (hashCodeBuilder = new HashCodeBuilder()).append(this.getClass()).append(this.devicesById);
+      hashCodeBuilder = new HashCodeBuilder();
+      hashCodeBuilder.append(this.getClass()).append(this.devicesById);
       return hashCodeBuilder.toHashCode();
    }
 

@@ -34,7 +34,8 @@ public class DeviceInfo {
    @Override
    public String toString() {
       StringBuilder builder;
-      (builder = new StringBuilder()).append("{id='").append(this.id).append('\'');
+      builder = new StringBuilder("{id='");
+      builder.append(this.id).append('\'');
       builder.append(", match=").append(this.matchType);
       builder.append(", matcher=").append(this.matcherName);
       builder.append('}');

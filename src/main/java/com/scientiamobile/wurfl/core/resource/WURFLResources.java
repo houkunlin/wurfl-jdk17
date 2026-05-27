@@ -93,7 +93,8 @@ public final class WURFLResources {
    @Override
    public int hashCode() {
       HashCodeBuilder hashCodeBuilder;
-      (hashCodeBuilder = new HashCodeBuilder(53, 79)).append(this.getClass()).append(this.resources);
+      hashCodeBuilder = new HashCodeBuilder(53, 79);
+      hashCodeBuilder.append(this.getClass()).append(this.resources);
       return hashCodeBuilder.toHashCode();
    }
 }

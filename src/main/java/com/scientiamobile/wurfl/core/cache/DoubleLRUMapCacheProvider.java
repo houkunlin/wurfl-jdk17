@@ -38,9 +38,12 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
 
    @Override
    public InternalDevice getDevice(String userAgent) {
-      String deviceId;
-      InternalDevice device;
-      return (deviceId = this.deviceIdByUserAgent.get(userAgent)) != null && (device = this.deviceById.get(deviceId)) != null ? device : null;
+      String deviceId = this.deviceIdByUserAgent.get(userAgent);
+      if (deviceId == null) {
+         return null;
+      }
+      InternalDevice device = this.deviceById.get(deviceId);
+      return device;
    }
 
    @Override

@@ -314,7 +314,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
    private static void writeMissingEngineError(PrintWriter out) {
       StringBuilder message;
-      (message = new StringBuilder()).append("INTROSPECTOR SERVLET ERROR!\n");
+message = new StringBuilder();
+message.append("INTROSPECTOR SERVLET ERROR!\n");
       message.append("\n");
       message.append("No WURFLEngine was initialized in the IntrospectorServlet.\n");
       message.append("To use IntrospectorServlet, please call the method:\n");

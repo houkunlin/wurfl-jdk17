@@ -104,7 +104,8 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
    static {
       List<String> mobileKeywords = UserAgentUtils.getMobileKeywords();
       MOBILE_KEYWORDS = mobileKeywords.toArray(new String[0]);
-      (REQUIRED_DEVICE_IDS = new ArrayList<>()).add(MOZILLA_THUNDERBIRD);
+REQUIRED_DEVICE_IDS = new ArrayList<>();
+REQUIRED_DEVICE_IDS.add(MOZILLA_THUNDERBIRD);
       REQUIRED_DEVICE_IDS.add(MS_OUTLOOK);
       REQUIRED_DEVICE_IDS.add("mac_outlook");
       REQUIRED_DEVICE_IDS.add("ms_outlook_ios_ver1");

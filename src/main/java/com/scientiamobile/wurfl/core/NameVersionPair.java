@@ -109,7 +109,8 @@ final class NameVersionPair implements Serializable {
 
    private Matcher find(Pattern pattern, String input) {
       Matcher matcher;
-      if (!(matcher = pattern.matcher(input)).find()) {
+matcher = pattern.matcher(input);
+if (!matcher.find()) {
          this.lastRegexGroups = null;
          return null;
       } else {

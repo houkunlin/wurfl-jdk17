@@ -54,7 +54,8 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
    }
 
    static {
-      (ANDROID_VERSION_TO_DEVICE_ID = new HashMap<>()).put("1.6", "generic_android_ver1_6_ucweb");
+ANDROID_VERSION_TO_DEVICE_ID = new HashMap<>();
+ANDROID_VERSION_TO_DEVICE_ID.put("1.6", "generic_android_ver1_6_ucweb");
       ANDROID_VERSION_TO_DEVICE_ID.put("2.1", "generic_android_ver2_1_ucweb");
       ANDROID_VERSION_TO_DEVICE_ID.put("2.2", "generic_android_ver2_2_ucweb");
       ANDROID_VERSION_TO_DEVICE_ID.put("2.3", "generic_android_ver2_3_ucweb");

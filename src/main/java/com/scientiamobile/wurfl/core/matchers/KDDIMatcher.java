@@ -16,7 +16,8 @@ final class KDDIMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add(OPWV_V62_GENERIC);
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add(OPWV_V62_GENERIC);
       return requiredDeviceIds;
    }
 

@@ -14,7 +14,8 @@ public class MaemoNormalizer implements UserAgentNormalizer {
       if (maemoMatcher.find()) {
          int modelEndIndex;
          String deviceModel;
-         modelEndIndex = (deviceModel = maemoMatcher.group(1)).indexOf(" GTB");
+         deviceModel = maemoMatcher.group(1);
+            modelEndIndex = deviceModel.indexOf(" GTB");
          if (modelEndIndex == -1) {
             modelEndIndex = deviceModel.length();
          }

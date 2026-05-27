@@ -27,7 +27,8 @@ final class FennecOnAndroidMatcher extends MatcherBase {
          return this.requiredDeviceIds;
       } else {
          HashSet<String> requiredDeviceIds;
-         (requiredDeviceIds = new HashSet<>()).add("generic");
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add("generic");
          requiredDeviceIds.add(GENERIC_ANDROID_FENNEC_2);
          requiredDeviceIds.add(GENERIC_ANDROID_FENNEC_2_TABLET);
          requiredDeviceIds.add(GENERIC_ANDROID_FENNEC_2_DESKTOP);

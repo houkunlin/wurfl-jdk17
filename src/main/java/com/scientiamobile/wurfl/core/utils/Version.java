@@ -57,7 +57,8 @@ public class Version implements Comparable<Version> {
    @Override
    public String toString() {
       StringBuilder builder;
-      (builder = new StringBuilder()).append(this.digits[0]);
+builder = new StringBuilder();
+builder.append(this.digits[0]);
 
       for(int i = 1; i < this.digits.length; ++i) {
          builder.append(this.separator);

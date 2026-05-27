@@ -7,7 +7,8 @@ public class OperaMobiOrTabletOnAndroidNormalizer implements UserAgentNormalizer
    @Override
    public String normalize(String userAgent) {
       StringBuilder normalizedUaBuilder;
-      (normalizedUaBuilder = new StringBuilder()).append(userAgent.contains("Opera Mobi") ? "Opera Mobi" : "Opera Tablet").append(" ");
+normalizedUaBuilder = new StringBuilder();
+normalizedUaBuilder.append(userAgent.contains("Opera Mobi") ? "Opera Mobi" : "Opera Tablet").append(" ");
       String operaOrAndroidVersion;
       operaOrAndroidVersion = UserAgentUtils.getOperaOnAndroidVersion(userAgent, false);
       if (operaOrAndroidVersion != null) {

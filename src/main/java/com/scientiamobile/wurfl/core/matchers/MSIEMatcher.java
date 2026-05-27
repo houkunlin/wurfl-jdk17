@@ -104,7 +104,8 @@ final class MSIEMatcher extends MatcherBase {
    }
 
    static {
-      (DEVICE_BY_MAJOR_VERSION = new HashMap<>()).put("0", "msie");
+DEVICE_BY_MAJOR_VERSION = new HashMap<>();
+DEVICE_BY_MAJOR_VERSION.put("0", "msie");
       DEVICE_BY_MAJOR_VERSION.put("4", "msie_4");
       DEVICE_BY_MAJOR_VERSION.put("5", "msie_5");
       DEVICE_BY_MAJOR_VERSION.put("6", "msie_6");

@@ -47,7 +47,8 @@ final class KindleMatcher extends MatcherBase {
             }
          }
 
-         return (matchLength = userAgent.indexOf("PlayStation Vita")) >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 16 + 1) : null;
+matchLength = userAgent.indexOf("PlayStation Vita");
+return matchLength >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 16 + 1) : null;
       }
    }
 
@@ -75,7 +76,8 @@ final class KindleMatcher extends MatcherBase {
    }
 
    static {
-      (DEVICE_BY_TOKEN = new LinkedHashMap<>()).put("Kindle/1", "amazon_kindle_ver1");
+DEVICE_BY_TOKEN = new LinkedHashMap<>();
+DEVICE_BY_TOKEN.put("Kindle/1", "amazon_kindle_ver1");
       DEVICE_BY_TOKEN.put("Kindle/2", "amazon_kindle2_ver1");
       DEVICE_BY_TOKEN.put("Kindle/3", "amazon_kindle3_ver1");
       DEVICE_BY_TOKEN.put("Kindle Fire", "amazon_kindle_fire_ver1");

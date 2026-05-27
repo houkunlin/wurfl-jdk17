@@ -11,7 +11,8 @@ final class LGMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add("generic");
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add("generic");
       return requiredDeviceIds;
    }
 

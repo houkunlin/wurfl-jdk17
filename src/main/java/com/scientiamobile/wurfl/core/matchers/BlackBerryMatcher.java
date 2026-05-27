@@ -24,7 +24,8 @@ final class BlackBerryMatcher extends AbstractMatcher {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).addAll(OS_VERSION_TO_DEVICE_ID.values());
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.addAll(OS_VERSION_TO_DEVICE_ID.values());
       requiredDeviceIds.add("generic_mobile");
       requiredDeviceIds.add(RIM_PLAYBOOK_VER1);
       return requiredDeviceIds;
@@ -93,7 +94,8 @@ final class BlackBerryMatcher extends AbstractMatcher {
    }
 
    static {
-      (OS_VERSION_TO_DEVICE_ID = new LinkedHashMap<>()).put("2.", "blackberry_generic_ver2");
+OS_VERSION_TO_DEVICE_ID = new LinkedHashMap<>();
+OS_VERSION_TO_DEVICE_ID.put("2.", "blackberry_generic_ver2");
       OS_VERSION_TO_DEVICE_ID.put("3.2", "blackberry_generic_ver3_sub2");
       OS_VERSION_TO_DEVICE_ID.put("3.3", "blackberry_generic_ver3_sub30");
       OS_VERSION_TO_DEVICE_ID.put("3.5", "blackberry_generic_ver3_sub50");

@@ -33,7 +33,8 @@ final class AhoCorasickKeywordMatcher {
 
       for(int i = 0; i < root.getOutgoingCount(); ++i) {
          AcTrieNode child;
-         (child = root.getOutgoingAt(i)).setFail(root);
+         child = root.getOutgoingAt(i);
+               child.setFail(root);
          queue.add(child);
       }
 

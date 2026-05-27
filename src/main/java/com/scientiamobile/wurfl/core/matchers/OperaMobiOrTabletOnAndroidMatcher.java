@@ -59,7 +59,8 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
    }
 
    static {
-      (SUPPORTED_ANDROID_OPERA_DEVICE_IDS = new HashSet<>()).add("generic_android_ver1_5_opera_mobi");
+SUPPORTED_ANDROID_OPERA_DEVICE_IDS = new HashSet<>();
+SUPPORTED_ANDROID_OPERA_DEVICE_IDS.add("generic_android_ver1_5_opera_mobi");
       SUPPORTED_ANDROID_OPERA_DEVICE_IDS.add("generic_android_ver1_6_opera_mobi");
       SUPPORTED_ANDROID_OPERA_DEVICE_IDS.add(GENERIC_ANDROID_VER2_0_OPERA_MOBI);
       SUPPORTED_ANDROID_OPERA_DEVICE_IDS.add("generic_android_ver2_1_opera_mobi");

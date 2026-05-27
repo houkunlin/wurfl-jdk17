@@ -15,7 +15,8 @@ final class JavaMidletMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add(GENERIC_MIDP_MIDLET);
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add(GENERIC_MIDP_MIDLET);
       return requiredDeviceIds;
    }
 

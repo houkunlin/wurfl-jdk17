@@ -17,7 +17,8 @@ final class FirefoxMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add(FIREFOX_DEVICE_ID);
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add(FIREFOX_DEVICE_ID);
       return requiredDeviceIds;
    }
 

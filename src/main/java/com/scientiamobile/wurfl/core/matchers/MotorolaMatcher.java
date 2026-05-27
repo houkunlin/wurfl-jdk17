@@ -16,7 +16,8 @@ final class MotorolaMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add("generic");
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add("generic");
       requiredDeviceIds.add(MOT_MIB22_GENERIC);
       return requiredDeviceIds;
    }

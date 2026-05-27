@@ -13,7 +13,8 @@ final class HTCMacMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add(GENERIC_HTC_ANDROID_DISGUISED_AS_MAC);
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add(GENERIC_HTC_ANDROID_DISGUISED_AS_MAC);
       return requiredDeviceIds;
    }
 

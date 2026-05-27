@@ -13,7 +13,8 @@ public class CleanupTask implements UpdatePipelineTask {
 
    public void execute(Map<String, Object> context) {
       String[] pathsToDelete;
-      if (ArrayUtils.isNotEmpty(pathsToDelete = new String[]{(String)context.get("backup_wurfl_path"), (String)context.get("new_wurfl_temp_path")})) {
+      pathsToDelete = new String[]{(String)context.get("backup_wurfl_path"), (String)context.get("new_wurfl_temp_path")};
+      if (ArrayUtils.isNotEmpty(pathsToDelete)) {
          for(int i = 0; i < 2; ++i) {
             String path;
             if (StringUtils.isNotEmpty(path = pathsToDelete[i])) {

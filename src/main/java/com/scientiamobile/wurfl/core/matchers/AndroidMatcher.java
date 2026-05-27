@@ -22,7 +22,8 @@ final class AndroidMatcher extends AbstractMatcher {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).addAll(SUPPORTED_MOBILE_DEVICE_IDS);
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.addAll(SUPPORTED_MOBILE_DEVICE_IDS);
       requiredDeviceIds.addAll(SUPPORTED_TABLET_DEVICE_IDS);
       requiredDeviceIds.add(GENERIC_ANDROID);
       return requiredDeviceIds;

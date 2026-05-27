@@ -105,7 +105,8 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
    @Override
    public boolean equals(Object other) {
       EqualsBuilder eb;
-      (eb = new EqualsBuilder()).appendSuper(this.getClass().isInstance(other));
+      eb = new EqualsBuilder();
+      eb.appendSuper(this.getClass().isInstance(other));
       if (eb.isEquals()) {
          eb.append(this.id, ((InternalDeviceImpl)other).id);
       }

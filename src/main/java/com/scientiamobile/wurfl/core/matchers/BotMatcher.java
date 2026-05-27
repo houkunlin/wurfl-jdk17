@@ -16,7 +16,8 @@ final class BotMatcher extends AbstractMatcher {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add(GOOGLE_IMAGE_PROXY);
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add(GOOGLE_IMAGE_PROXY);
       requiredDeviceIds.add("generic_web_crawler");
       return requiredDeviceIds;
    }

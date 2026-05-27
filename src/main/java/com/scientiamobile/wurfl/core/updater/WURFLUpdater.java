@@ -90,7 +90,8 @@ public class WURFLUpdater {
          UpdatePipeline updatePipeline;
          (updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl)).setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
          updatePipeline.setConnectionTimeoutMs(this.connectionTimeoutMs);
-         if (!(updateResult = updatePipeline.execute()).isUpdateProcessSuccessful()) {
+updateResult = updatePipeline.execute();
+if (!updateResult.isUpdateProcessSuccessful()) {
             log.warn(updateResult.getMessage());
          } else if (updateResult.isUpdated()) {
             if (ArrayUtils.isEmpty(this.patchPaths)) {

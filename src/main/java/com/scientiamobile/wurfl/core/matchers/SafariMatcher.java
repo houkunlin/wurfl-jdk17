@@ -29,7 +29,8 @@ final class SafariMatcher extends MatcherBase {
    @Override
    protected String risMatch(String userAgent) {
       int matchLength;
-      return (matchLength = userAgent.indexOf("---")) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 3) : null;
+      matchLength = userAgent.indexOf("---");
+      return matchLength != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 3) : null;
    }
 
    @Override

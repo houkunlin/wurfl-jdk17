@@ -14,7 +14,8 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add("generic");
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add("generic");
       return requiredDeviceIds;
    }
 

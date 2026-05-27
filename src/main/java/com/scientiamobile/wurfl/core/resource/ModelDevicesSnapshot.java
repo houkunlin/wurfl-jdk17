@@ -44,7 +44,8 @@ final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevice
    @Override
    public int hashCode() {
       HashCodeBuilder hashCodeBuilder;
-      (hashCodeBuilder = new HashCodeBuilder(33, 55)).append(this.info).append(this.version);
+      hashCodeBuilder = new HashCodeBuilder(33, 55);
+      hashCodeBuilder.append(this.info).append(this.version);
       return hashCodeBuilder.toHashCode();
    }
 
@@ -56,14 +57,16 @@ final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevice
 
       ModelDevicesSnapshot o = (ModelDevicesSnapshot)other;
       EqualsBuilder equalsBuilder;
-      (equalsBuilder = new EqualsBuilder()).append(this.getSnapshotKey(), o.getSnapshotKey());
+      equalsBuilder = new EqualsBuilder();
+      equalsBuilder.append(this.getSnapshotKey(), o.getSnapshotKey());
       return equalsBuilder.isEquals();
    }
 
    @Override
    public String toString() {
       ToStringBuilder toStringBuilder;
-      (toStringBuilder = new ToStringBuilder(this)).append(this.info).append(this.version);
+      toStringBuilder = new ToStringBuilder(this);
+      toStringBuilder.append(this.info).append(this.version);
       return toStringBuilder.toString();
    }
 
@@ -73,7 +76,8 @@ final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevice
 
    public final int compareTo(ModelDevicesSnapshot other) {
       CompareToBuilder compareToBuilder;
-      (compareToBuilder = new CompareToBuilder()).append(this.info, other.info).append(this.version, other.version);
+      compareToBuilder = new CompareToBuilder();
+      compareToBuilder.append(this.info, other.info).append(this.version, other.version);
       return compareToBuilder.toComparison();
    }
 }

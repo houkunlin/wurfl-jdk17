@@ -48,7 +48,8 @@ public final class StringMatchUtils {
          return -1;
       } else {
          int index;
-         return (index = StringUtils.ordinalIndexOf(value, search, ordinal)) == -1 ? -1 : index + search.length();
+         index = StringUtils.ordinalIndexOf(value, search, ordinal);
+      return index == -1 ? -1 : index + search.length();
       }
    }
 
@@ -193,7 +194,8 @@ public final class StringMatchUtils {
 
    public static Integer firstChar(String value, char ch) {
       int index;
-      return (index = value.indexOf(ch)) != -1 ? index + 1 : -1;
+      index = value.indexOf(ch);
+      return index != -1 ? index + 1 : -1;
    }
 
    public static String rawdecode(String value, String encoding) {

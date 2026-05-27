@@ -19,7 +19,8 @@ final class LGUPLUSMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).addAll(DEVICE_BY_TOKENS.keySet());
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.addAll(DEVICE_BY_TOKENS.keySet());
       requiredDeviceIds.add(GENERIC_LGUPLUS);
       return requiredDeviceIds;
    }
@@ -57,7 +58,8 @@ final class LGUPLUSMatcher extends MatcherBase {
    }
 
    static {
-      (DEVICE_BY_TOKENS = new LinkedHashMap<>()).put("generic_lguplus_rexos_facebook_browser", new String[]{"Windows NT 5", "POLARIS"});
+DEVICE_BY_TOKENS = new LinkedHashMap<>();
+DEVICE_BY_TOKENS.put("generic_lguplus_rexos_facebook_browser", new String[]{"Windows NT 5", "POLARIS"});
       DEVICE_BY_TOKENS.put("generic_lguplus_rexos_webviewer_browser", new String[]{"Windows NT 5"});
       DEVICE_BY_TOKENS.put("generic_lguplus_winmo_facebook_browser", new String[]{"Windows CE", "POLARIS"});
       DEVICE_BY_TOKENS.put("generic_lguplus_android_webkit_browser", new String[]{"Android", "AppleWebKit"});

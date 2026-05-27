@@ -153,7 +153,8 @@ abstract class AbstractMatcher implements Matcher {
 
    protected String risMatch(String value) {
       int firstSlashIndex;
-      return (firstSlashIndex = StringMatchUtils.firstSlash(value)) == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), value, firstSlashIndex);
+      firstSlashIndex = StringMatchUtils.firstSlash(value);
+      return firstSlashIndex == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), value, firstSlashIndex);
    }
 
    protected String applyRecoveryMatch(WURFLRequest request) {
@@ -179,7 +180,8 @@ abstract class AbstractMatcher implements Matcher {
    }
 
    static {
-      (CATCH_ALL_FALLBACKS = new ArrayList<>()).add(new UserAgentFallbackRule("CoreMedia", "apple_iphone_coremedia_ver1"));
+CATCH_ALL_FALLBACKS = new ArrayList<>();
+CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("CoreMedia", "apple_iphone_coremedia_ver1"));
       CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("Windows CE", "generic_ms_mobile"));
       CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/7.2", "opwv_v72_generic"));
       CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/7", "opwv_v7_generic"));

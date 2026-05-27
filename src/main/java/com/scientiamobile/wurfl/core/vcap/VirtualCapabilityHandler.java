@@ -90,7 +90,8 @@ public class VirtualCapabilityHandler {
    }
 
    static {
-      (EVALUATORS_BY_NAME = new ConcurrentHashMap<>()).put("is_android", new IsAndroidOs());
+EVALUATORS_BY_NAME = new ConcurrentHashMap<>();
+EVALUATORS_BY_NAME.put("is_android", new IsAndroidOs());
       EVALUATORS_BY_NAME.put("is_ios", new IsIOs());
       EVALUATORS_BY_NAME.put("is_windows_phone", new IsWindowsPhone());
       EVALUATORS_BY_NAME.put("is_full_desktop", new IsFullDesktop());

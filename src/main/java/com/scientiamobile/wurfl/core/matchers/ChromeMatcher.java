@@ -17,7 +17,8 @@ final class ChromeMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add(CHROME_DEVICE_ID);
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add(CHROME_DEVICE_ID);
       return requiredDeviceIds;
    }
 

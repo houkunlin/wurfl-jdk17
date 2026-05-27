@@ -37,7 +37,8 @@ final class OperaMiniMatcher extends MatcherBase {
       } else if ((matchLength = StringMatchUtils.indexOf(userAgent, "Opera Mini")) >= 0 && (matchLength = StringMatchUtils.indexOf(userAgent, ".", matchLength)) >= 0) {
          return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 1);
       } else {
-         return (matchLength = StringMatchUtils.firstSlash(userAgent)) != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength) : StringMatchUtils.NULL_STRING;
+         matchLength = StringMatchUtils.firstSlash(userAgent);
+      return matchLength != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength) : StringMatchUtils.NULL_STRING;
       }
    }
 
@@ -64,7 +65,8 @@ final class OperaMiniMatcher extends MatcherBase {
    }
 
    static {
-      (OPERA_MINI_VERSION_TO_DEVICE_ID = new TreeMap<>()).put("Opera Mini/1", "generic_opera_mini_version1");
+OPERA_MINI_VERSION_TO_DEVICE_ID = new TreeMap<>();
+OPERA_MINI_VERSION_TO_DEVICE_ID.put("Opera Mini/1", "generic_opera_mini_version1");
       OPERA_MINI_VERSION_TO_DEVICE_ID.put("Opera Mini/2", "generic_opera_mini_version2");
       OPERA_MINI_VERSION_TO_DEVICE_ID.put("Opera Mini/3", "generic_opera_mini_version3");
       OPERA_MINI_VERSION_TO_DEVICE_ID.put("Opera Mini/4", "generic_opera_mini_version4");

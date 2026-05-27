@@ -132,7 +132,8 @@ final class UcwebU3Matcher extends MatcherBase {
    }
 
    static {
-      (SUPPORTED_DEVICE_IDS = new ArrayList<>()).add("generic_ucweb");
+SUPPORTED_DEVICE_IDS = new ArrayList<>();
+SUPPORTED_DEVICE_IDS.add("generic_ucweb");
       SUPPORTED_DEVICE_IDS.add(GENERIC_UCWEB_ANDROID_VER1);
       SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver2");
       SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver3");

@@ -59,6 +59,7 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
    }
 
    static {
-      (LAST_MODIFIED_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")).setTimeZone(TimeZone.getTimeZone("UTC"));
+      LAST_MODIFIED_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+      LAST_MODIFIED_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
    }
 }

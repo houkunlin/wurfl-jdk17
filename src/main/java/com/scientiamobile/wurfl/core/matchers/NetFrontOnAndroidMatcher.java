@@ -53,7 +53,8 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
    }
 
    static {
-      (ANDROID_VERSION_TO_DEVICE_ID = new HashMap<>()).put("2.1", "generic_android_ver2_1_netfrontlifebrowser");
+ANDROID_VERSION_TO_DEVICE_ID = new HashMap<>();
+ANDROID_VERSION_TO_DEVICE_ID.put("2.1", "generic_android_ver2_1_netfrontlifebrowser");
       ANDROID_VERSION_TO_DEVICE_ID.put("2.2", "generic_android_ver2_2_netfrontlifebrowser");
       ANDROID_VERSION_TO_DEVICE_ID.put("2.3", "generic_android_ver2_3_netfrontlifebrowser");
    }

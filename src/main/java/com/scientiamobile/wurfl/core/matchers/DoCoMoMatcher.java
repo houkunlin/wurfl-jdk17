@@ -17,7 +17,8 @@ final class DoCoMoMatcher extends MatcherBase {
    @Override
    protected Set<String> getRequiredDeviceIds() {
       HashSet<String> requiredDeviceIds;
-      (requiredDeviceIds = new HashSet<>()).add(DOCOMO_VER1);
+requiredDeviceIds = new HashSet<>();
+requiredDeviceIds.add(DOCOMO_VER1);
       requiredDeviceIds.add(DOCOMO_VER2);
       return requiredDeviceIds;
    }
