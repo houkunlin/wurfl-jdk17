@@ -84,7 +84,8 @@ public final class UserAgentUtils {
    public static String getUserAgent(HttpServletRequest request) {
       Validate.notNull(request, "The HttpServletRequest is null");
       String userAgent;
-      if ((userAgent = request.getHeader("Device-Stock-UA")) == null || "".equals(userAgent)) {
+      userAgent = request.getHeader("Device-Stock-UA");
+      if (userAgent == null || "".equals(userAgent)) {
          userAgent = request.getHeader("X-OperaMini-Phone-UA");
       }
 
@@ -206,7 +207,8 @@ public final class UserAgentUtils {
    public static String getAndroidModel(String userAgent) {
       userAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
       Matcher primaryMatcher;
-      if ((primaryMatcher = GIONEE_MODEL_PATTERN.matcher(userAgent)).find()) {
+      primaryMatcher = GIONEE_MODEL_PATTERN.matcher(userAgent);
+      if (primaryMatcher.find()) {
          userAgent = primaryMatcher.group(1);
       } else {
          primaryMatcher = ANDROID_MODEL_LINUX_ANDROID_RELEASE_PATTERN.matcher(userAgent);
@@ -241,15 +243,18 @@ public final class UserAgentUtils {
             userAgent = userAgent.substring(0, slashIndex);
          }
 
-         if ((userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, HUAWEI_PREFIX_PATTERN, "HUAWEI "), COOLPAD_PREFIX_PATTERN, "Coolpad ")).contains("HTC")) {
-            if ((slashIndex = StringMatchUtils.indexOf(userAgent = StringMatchUtils.replaceAll(userAgent, HTC_PREFIX_PATTERN, "HTC~"), "/")) >= 0) {
+         userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, HUAWEI_PREFIX_PATTERN, "HUAWEI "), COOLPAD_PREFIX_PATTERN, "Coolpad ");
+         if (userAgent.contains("HTC")) {
+            slashIndex = StringMatchUtils.indexOf(userAgent = StringMatchUtils.replaceAll(userAgent, HTC_PREFIX_PATTERN, "HTC~"), "/");
+            if (slashIndex >= 0) {
                userAgent = userAgent.substring(0, slashIndex);
             }
 
             userAgent = StringMatchUtils.replaceAll(userAgent, VERSION_SUFFIX_PATTERN, "");
          }
 
-         if ((userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, SAMSUNG_MODEL_PATTERN, "$1"), ORANGE_SUFFIX_PATTERN, "ORANGE"), LG_MODEL_OPTIONAL_HYPHEN_PATTERN, "$1"), TIMESTAMP_IN_BRACKETS_PATTERN, "").trim(), BRAND_PREFIX_PATTERN, "")).length() == 0) {
+         userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, SAMSUNG_MODEL_PATTERN, "$1"), ORANGE_SUFFIX_PATTERN, "ORANGE"), LG_MODEL_OPTIONAL_HYPHEN_PATTERN, "$1"), TIMESTAMP_IN_BRACKETS_PATTERN, "").trim(), BRAND_PREFIX_PATTERN, "");
+      if (userAgent.length() == 0) {
             userAgent = null;
          }
 
@@ -264,7 +269,8 @@ public final class UserAgentUtils {
 
    public static String getUcAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
       Matcher matcher;
-      if ((matcher = ADR_ANDROID_VERSION_PATTERN.matcher(userAgent)).find()) {
+      matcher = ADR_ANDROID_VERSION_PATTERN.matcher(userAgent);
+      if (matcher.find()) {
          String androidVersion = matcher.group(1);
          if (SUPPORTED_ANDROID_VERSIONS.contains(androidVersion)) {
             return androidVersion;
@@ -296,9 +302,11 @@ public final class UserAgentUtils {
 
    public static final String getWindowsPhoneVersion(String userAgent) {
       Matcher matcher;
-      if ((matcher = WINDOWS_PHONE_VERSION_PATTERN.matcher(userAgent)).find()) {
+      matcher = WINDOWS_PHONE_VERSION_PATTERN.matcher(userAgent);
+      if (matcher.find()) {
          String windowsPhoneVersion;
-         if ((windowsPhoneVersion = matcher.group(1)).startsWith("10.0")) {
+         windowsPhoneVersion = matcher.group(1);
+      if (windowsPhoneVersion.startsWith("10.0")) {
             return "10.0";
          } else if (!windowsPhoneVersion.startsWith("6.3") && !windowsPhoneVersion.startsWith("8.1")) {
             if (windowsPhoneVersion.startsWith("8.")) {
@@ -324,9 +332,11 @@ public final class UserAgentUtils {
 
    public static final String getWindowsPhoneDesktopVersion(String userAgent) {
       Matcher matcher;
-      if ((matcher = WINDOWS_NT_VERSION_PATTERN.matcher(userAgent)).find()) {
+      matcher = WINDOWS_NT_VERSION_PATTERN.matcher(userAgent);
+      if (matcher.find()) {
          String windowsNtVersion;
-         if ((windowsNtVersion = matcher.group(1)).indexOf("10.0") >= 0) {
+         windowsNtVersion = matcher.group(1);
+      if (windowsNtVersion.indexOf("10.0") >= 0) {
             return "10.0";
          } else {
             return windowsNtVersion.indexOf("6.3") < 0 && windowsNtVersion.indexOf("8.1") < 0 ? "8.0" : "8.1";
@@ -399,7 +409,8 @@ public final class UserAgentUtils {
       } else {
          String versionPrefix = "scientiamobile.com - ";
          int prefixIndex;
-         if ((prefixIndex = wurflVersion.indexOf(versionPrefix)) == -1) {
+         prefixIndex = wurflVersion.indexOf(versionPrefix);
+         if (prefixIndex == -1) {
             snapshotVersion = wurflVersion;
          } else {
             wurflVersion = wurflVersion.substring(prefixIndex + versionPrefix.length());

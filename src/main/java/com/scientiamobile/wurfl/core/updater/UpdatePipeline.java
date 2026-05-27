@@ -58,7 +58,8 @@ public class UpdatePipeline {
    static String resolvePath(String path) {
       if (path.contains("classpath:")) {
          int classpathPrefixIndex;
-         if ((classpathPrefixIndex = path.indexOf("classpath:")) > 0) {
+         classpathPrefixIndex = path.indexOf("classpath:");
+         if (classpathPrefixIndex > 0) {
             path = path.substring(classpathPrefixIndex);
          }
 

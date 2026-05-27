@@ -11,7 +11,8 @@ public class DeviceName implements VirtualCapabilityEvaluator, Serializable {
    public String eval(Device device, WURFLRequest request) {
       StringBuilder builder = new StringBuilder(device.getCapability("brand_name"));
       String namePart;
-      if ((namePart = device.getCapability("marketing_name")).length() == 0) {
+      namePart = device.getCapability("marketing_name");
+      if (namePart.length() == 0) {
          namePart = device.getCapability("model_name");
       }
 

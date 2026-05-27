@@ -38,14 +38,16 @@ final class AndroidMatcher extends AbstractMatcher {
    @Override
    protected String risMatch(String normalizedUserAgent) {
       int matchLength;
-      if ((matchLength = normalizedUserAgent.indexOf("---")) >= 0) {
+      matchLength = normalizedUserAgent.indexOf("---");
+      if (matchLength >= 0) {
          matchLength += 3;
          return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
       } else if (!StringMatchUtils.startsWithAnyOf(normalizedUserAgent, "Mozilla", "Dalvik")) {
          return null;
       } else {
          String androidModel;
-         if ((androidModel = UserAgentUtils.getAndroidModel(normalizedUserAgent)) != null && androidModel.length() != 0) {
+         androidModel = UserAgentUtils.getAndroidModel(normalizedUserAgent);
+          if (androidModel != null && androidModel.length() != 0) {
             matchLength = Math.min(
                StringMatchUtils.indexOfOrLength(normalizedUserAgent, " Build/"),
                StringMatchUtils.indexOfOrLength(normalizedUserAgent, " AppleWebKit")

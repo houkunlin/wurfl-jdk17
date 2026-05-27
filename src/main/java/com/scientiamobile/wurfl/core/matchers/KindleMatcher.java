@@ -33,13 +33,16 @@ final class KindleMatcher extends MatcherBase {
    @Override
    protected String risMatch(String userAgent) {
       int matchLength;
-      if ((matchLength = userAgent.indexOf("Build/")) != -1) {
+      matchLength = userAgent.indexOf("Build/");
+      if (matchLength != -1) {
          return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
       } else {
-         if ((matchLength = userAgent.indexOf("Kindle/")) >= 0) {
+         matchLength = userAgent.indexOf("Kindle/");
+         if (matchLength >= 0) {
             matchLength += 7;
             char firstVersionChar;
-            if ((firstVersionChar = userAgent.charAt(matchLength)) >= '1' && firstVersionChar <= '3') {
+            firstVersionChar = userAgent.charAt(matchLength);
+            if (firstVersionChar >= '1' && firstVersionChar <= '3') {
                return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 1);
             }
          }

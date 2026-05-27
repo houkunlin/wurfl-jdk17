@@ -228,7 +228,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          return true;
       } else {
          String uaProfile;
-         if ((uaProfile = request.getParameter("uaprof")) == null || uaProfile.trim().length() == 0) {
+         uaProfile = request.getParameter("uaprof");
+         if (uaProfile == null || uaProfile.trim().length() == 0) {
             uaProfile = request.getHeader("x-wap-profile");
          }
 
@@ -254,7 +255,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             UserAgentUtils.getUserAgent(request);
          } else {
             String userAgent;
-            if ((userAgent = request.getParameter("ua")) == null || userAgent.trim().length() <= 0) {
+            userAgent = request.getParameter("ua");
+         if (userAgent == null || userAgent.trim().length() <= 0) {
                userAgent = request.getHeader("User-Agent");
             }
 
@@ -263,7 +265,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             }
 
             String rawHeaders;
-            if ((rawHeaders = request.getParameter("headers")) != null && rawHeaders.trim().length() > 0) {
+            rawHeaders = request.getParameter("headers");
+         if (rawHeaders != null && rawHeaders.trim().length() > 0) {
                rawHeaders = rawHeaders.trim();
                String[] headerPairs = LINE_BREAK_PATTERN.matcher(rawHeaders).replaceAll("|").split("\\|");
 

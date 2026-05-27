@@ -74,7 +74,8 @@ public final class StringMatchUtils {
          return nonNullValue.length();
       } else {
          int index;
-         if ((index = StringUtils.ordinalIndexOf(StringUtils.substring(nonNullValue, fromIndex), search, ordinal)) >= 0) {
+         index = StringUtils.ordinalIndexOf(StringUtils.substring(nonNullValue, fromIndex), search, ordinal);
+         if (index >= 0) {
             index += fromIndex;
          } else {
             index = value.length();

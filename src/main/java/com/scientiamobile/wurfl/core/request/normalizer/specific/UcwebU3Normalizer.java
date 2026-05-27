@@ -12,14 +12,16 @@ public class UcwebU3Normalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       String ucBrowserVersion;
-      if ((ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, false)) == null) {
+      ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, false);
+      if (ucBrowserVersion == null) {
          return userAgent;
       } else {
          String normalizedPrefix = null;
          if (userAgent.contains("Windows Phone")) {
             String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(userAgent);
             String windowsPhoneModel;
-            if ((windowsPhoneModel = UserAgentUtils.getWindowsPhoneModel(userAgent)) != null && windowsPhoneVersion != null) {
+            windowsPhoneModel = UserAgentUtils.getWindowsPhoneModel(userAgent);
+         if (windowsPhoneModel != null && windowsPhoneVersion != null) {
                normalizedPrefix = windowsPhoneVersion + " U3WP " + ucBrowserVersion + " " + windowsPhoneModel + "---";
             }
          } else if (userAgent.contains("Android")) {
@@ -30,7 +32,8 @@ public class UcwebU3Normalizer implements UserAgentNormalizer {
             }
          } else if (userAgent.contains("iPhone;")) {
             Matcher matcher;
-            if ((matcher = IPHONE.matcher(userAgent)).find()) {
+            matcher = IPHONE.matcher(userAgent);
+      if (matcher.find()) {
                String iosVersion = matcher.group(1) + "." + (matcher.group(2) == null ? "" : matcher.group(2));
                normalizedPrefix = iosVersion + " U3iPhone " + ucBrowserVersion + "---";
             }

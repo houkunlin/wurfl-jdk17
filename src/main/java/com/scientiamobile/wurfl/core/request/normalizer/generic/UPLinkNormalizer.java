@@ -8,7 +8,8 @@ public class UPLinkNormalizer implements UserAgentNormalizer {
    public String normalize(String userAgent) {
       Validate.notNull(userAgent, "The userAgent is null");
       int upLinkIndex;
-      if ((upLinkIndex = userAgent.indexOf("UP.Link")) >= 0) {
+      upLinkIndex = userAgent.indexOf("UP.Link");
+      if (upLinkIndex >= 0) {
          userAgent = userAgent.substring(0, upLinkIndex);
       }
 

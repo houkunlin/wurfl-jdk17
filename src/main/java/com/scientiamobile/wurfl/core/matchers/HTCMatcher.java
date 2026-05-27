@@ -32,7 +32,8 @@ final class HTCMatcher extends MatcherBase {
    protected String risMatch(String normalizedUserAgent) {
       int matchLength = normalizedUserAgent.length();
       Matcher prefixMatcher;
-      if ((prefixMatcher = HTC_PREFIX.matcher(normalizedUserAgent)).find()) {
+      prefixMatcher = HTC_PREFIX.matcher(normalizedUserAgent);
+      if (prefixMatcher.find()) {
          matchLength = prefixMatcher.group(0).length();
       }
 

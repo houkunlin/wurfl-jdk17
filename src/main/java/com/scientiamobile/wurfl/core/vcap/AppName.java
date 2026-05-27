@@ -26,11 +26,14 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
          return webViewAppMatcher.find() ? webViewAppMatcher.group(1) : "WebView";
       } else {
          Matcher appNameMatcher;
-         if ((appNameMatcher = ANDROID_DALVIK_APP_PATTERN.matcher(userAgent)).find()) {
+         appNameMatcher = ANDROID_DALVIK_APP_PATTERN.matcher(userAgent);
+      if (appNameMatcher.find()) {
             return appNameMatcher.group(1);
-         } else if ((appNameMatcher = IOS_CFNETWORK_APP_PATTERN.matcher(userAgent)).find()) {
+         } else appNameMatcher = IOS_CFNETWORK_APP_PATTERN.matcher(userAgent);
+      if (appNameMatcher.find()) {
             return appNameMatcher.group(1);
-         } else if ((appNameMatcher = WINDOWS_PHONE_APP_PATTERN.matcher(userAgent)).find()) {
+         } else appNameMatcher = WINDOWS_PHONE_APP_PATTERN.matcher(userAgent);
+      if (appNameMatcher.find()) {
             return appNameMatcher.group(1);
          } else {
             for(int i = 0; i < APP_INDICATOR_KEYWORDS.size(); ++i) {

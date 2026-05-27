@@ -30,13 +30,15 @@ public final class RISMatcher {
          int middle = (low + high) / 2;
          String middleValue = (String)candidatesList.get(middle);
          int matchLength;
-         if ((matchLength = commonPrefixLength(value, middleValue)) > bestMatchLength) {
+         matchLength = commonPrefixLength(value, middleValue);
+         if (matchLength > bestMatchLength) {
             bestIndex = middle;
             bestMatchLength = matchLength;
          }
 
          int compareResult;
-         if ((compareResult = middleValue.compareTo(value)) < 0) {
+         compareResult = middleValue.compareTo(value);
+         if (compareResult < 0) {
             low = middle + 1;
          } else {
             if (compareResult <= 0) {
@@ -54,7 +56,8 @@ public final class RISMatcher {
 
          while(iterator.hasPrevious() && currentMatchLength == bestMatchLength) {
             String previousCandidate = (String)iterator.previous();
-            if ((currentMatchLength = commonPrefixLength(value, previousCandidate)) == bestMatchLength) {
+            currentMatchLength = commonPrefixLength(value, previousCandidate);
+            if (currentMatchLength == bestMatchLength) {
                --leftMostIndex;
             }
          }

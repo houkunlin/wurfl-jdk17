@@ -17,7 +17,8 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
    public String toString() {
       String matcherNameWithoutSuffix = this.matcherName;
       int matcherSuffixIndex;
-      if ((matcherSuffixIndex = matcherNameWithoutSuffix.indexOf("Matcher")) > 0) {
+      matcherSuffixIndex = matcherNameWithoutSuffix.indexOf("Matcher");
+      if (matcherSuffixIndex > 0) {
          matcherNameWithoutSuffix = matcherNameWithoutSuffix.substring(0, matcherSuffixIndex);
       }
 

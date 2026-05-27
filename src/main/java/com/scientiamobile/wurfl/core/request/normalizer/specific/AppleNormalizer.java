@@ -25,7 +25,8 @@ public class AppleNormalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       Matcher versionMatcher;
-      if ((versionMatcher = findMatcher(userAgent, IOS_APP_UA_PATTERN)) == null) {
+      versionMatcher = findMatcher(userAgent, IOS_APP_UA_PATTERN);
+      if (versionMatcher == null) {
          versionMatcher = findMatcher(userAgent, SERVER_BAG_PATTERN);
       }
 

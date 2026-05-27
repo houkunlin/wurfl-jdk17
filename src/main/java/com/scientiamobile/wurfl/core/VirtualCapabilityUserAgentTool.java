@@ -138,7 +138,8 @@ public final class VirtualCapabilityUserAgentTool {
                   deviceWithPairs.getOsPair().matchAndSetGroup(AMAZON_ANDROID_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Android", 1);
                   deviceWithPairs.getOsPair().matchAndSetGroup(ADR_ANDROID_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Android", 1);
                   String deviceOs;
-                  if ((deviceOs = device.getCapability("device_os")).equals("Fire OS")) {
+                  deviceOs = device.getCapability("device_os");
+      if (deviceOs.equals("Fire OS")) {
                      String deviceOsVersion = device.getCapability("device_os_version");
                      deviceWithPairs.getOsPair().setName(deviceOs);
                      deviceWithPairs.getOsPair().setVersion(deviceOsVersion);

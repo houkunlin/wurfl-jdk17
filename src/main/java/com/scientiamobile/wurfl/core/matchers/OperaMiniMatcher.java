@@ -31,7 +31,8 @@ final class OperaMiniMatcher extends MatcherBase {
    @Override
    protected String risMatch(String userAgent) {
       int matchLength;
-      if ((matchLength = userAgent.indexOf("---")) >= 0) {
+      matchLength = userAgent.indexOf("---");
+      if (matchLength >= 0) {
          return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 3);
       } else if ((matchLength = StringMatchUtils.indexOf(userAgent, "Opera Mini")) >= 0 && (matchLength = StringMatchUtils.indexOf(userAgent, ".", matchLength)) >= 0) {
          return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength + 1);

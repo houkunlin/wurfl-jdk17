@@ -11,11 +11,13 @@ public class CompleteDeviceName implements VirtualCapabilityEvaluator, Serializa
    public String eval(Device device, WURFLRequest request) {
       StringBuilder builder = new StringBuilder(device.getCapability("brand_name"));
       String namePart;
-      if ((namePart = device.getCapability("model_name")).length() > 0) {
+      namePart = device.getCapability("model_name");
+      if (namePart.length() > 0) {
          builder.append(" ").append(namePart);
       }
 
-      if ((namePart = device.getCapability("marketing_name")).length() > 0) {
+      namePart = device.getCapability("marketing_name");
+      if (namePart.length() > 0) {
          builder.append(" (").append(namePart).append(")");
       }
 

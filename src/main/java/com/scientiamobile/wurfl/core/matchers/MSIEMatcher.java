@@ -71,7 +71,8 @@ final class MSIEMatcher extends MatcherBase {
          }
 
          String deviceId;
-         if ((deviceId = DEVICE_BY_MAJOR_VERSION.get(majorVersion)) != null) {
+         deviceId = DEVICE_BY_MAJOR_VERSION.get(majorVersion);
+         if (deviceId != null) {
             return deviceId;
          }
       }

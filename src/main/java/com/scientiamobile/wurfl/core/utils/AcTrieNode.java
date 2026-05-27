@@ -25,7 +25,8 @@ final class AcTrieNode {
 
       while(true) {
          AcTrieNode next;
-         if ((next = current.transitions.get(pattern.charAt(0))) == null) {
+         next = current.transitions.get(pattern.charAt(0));
+         if (next == null) {
             if (pattern.length() == 1) {
                next = new AcTrieNode(true);
                current.transitions.put(pattern.charAt(0), next);

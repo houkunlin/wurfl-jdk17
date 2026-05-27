@@ -9,7 +9,8 @@ public class BlackBerryNormalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       int blackBerryIndex;
-      if ((blackBerryIndex = (userAgent = BLACKBERRY_PATTERN.matcher(userAgent).replaceAll("BlackBerry")).indexOf("BlackBerry")) > 0) {
+      blackBerryIndex = (userAgent = BLACKBERRY_PATTERN.matcher(userAgent).replaceAll("BlackBerry")).indexOf("BlackBerry");
+      if (blackBerryIndex > 0) {
          userAgent = userAgent.substring(blackBerryIndex);
       }
 

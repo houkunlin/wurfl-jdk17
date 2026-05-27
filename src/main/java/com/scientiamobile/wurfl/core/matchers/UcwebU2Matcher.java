@@ -33,7 +33,8 @@ final class UcwebU2Matcher extends MatcherBase {
          return null;
       } else {
          int matchLength;
-         if ((matchLength = userAgent.indexOf("---")) > 0) {
+         matchLength = userAgent.indexOf("---");
+         if (matchLength > 0) {
             matchLength += 3;
             String subUserAgent = userAgent.substring(matchLength);
             if (userAgent.contains("Adr")) {

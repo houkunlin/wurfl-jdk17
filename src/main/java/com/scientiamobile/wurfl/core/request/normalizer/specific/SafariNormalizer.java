@@ -6,10 +6,12 @@ public class SafariNormalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       int versionTokenStart;
-      if ((versionTokenStart = userAgent.indexOf("Version/")) != -1) {
+      versionTokenStart = userAgent.indexOf("Version/");
+      if (versionTokenStart != -1) {
          versionTokenStart += 8;
          int majorVersionDotIndex;
-         if ((majorVersionDotIndex = userAgent.indexOf(46, versionTokenStart)) != -1) {
+         majorVersionDotIndex = userAgent.indexOf(46, versionTokenStart);
+         if (majorVersionDotIndex != -1) {
             return "Safari " + userAgent.substring(versionTokenStart, majorVersionDotIndex) + "---" + userAgent;
          }
       }

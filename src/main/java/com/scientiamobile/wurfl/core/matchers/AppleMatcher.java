@@ -49,7 +49,8 @@ final class AppleMatcher extends AbstractMatcher {
       String userAgent = request.getNormalizedDeviceUserAgent();
       String subHw = null;
       Matcher hwMatcher;
-      if ((hwMatcher = APPLE_HARDWARE_ID_PATTERN.matcher(userAgent)).find()) {
+      hwMatcher = APPLE_HARDWARE_ID_PATTERN.matcher(userAgent);
+      if (hwMatcher.find()) {
          String hwId = hwMatcher.group(1);
          if (userAgent.contains("iPod")) {
             subHw = IPOD_HW_TO_SUBHW.get(hwId);
@@ -61,8 +62,10 @@ final class AppleMatcher extends AbstractMatcher {
       }
 
       int matchLength;
-      if ((matchLength = StringMatchUtils.firstChar(userAgent, '_')) < 0) {
-         if ((matchLength = userAgent.indexOf("like Mac OS X;")) >= 0) {
+      matchLength = StringMatchUtils.firstChar(userAgent, '_');
+      if (matchLength < 0) {
+         matchLength = userAgent.indexOf("like Mac OS X;");
+         if (matchLength >= 0) {
             matchLength += 14;
          } else {
             matchLength = userAgent.length();

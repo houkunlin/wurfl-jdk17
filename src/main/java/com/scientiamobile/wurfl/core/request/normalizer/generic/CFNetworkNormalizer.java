@@ -12,7 +12,8 @@ public class CFNetworkNormalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       Matcher cfNetworkMatcher;
-      if ((cfNetworkMatcher = CFNETWORK_VERSION_PATTERN.matcher(userAgent)).find()) {
+      cfNetworkMatcher = CFNETWORK_VERSION_PATTERN.matcher(userAgent);
+      if (cfNetworkMatcher.find()) {
          String cfNetworkVersionNormalized = (new BigDecimal(cfNetworkMatcher.group(1))).setScale(2, RoundingMode.HALF_DOWN).toString();
          StringBuilder normalizedUaBuilder = new StringBuilder();
          if (userAgent.contains("x86_64")) {

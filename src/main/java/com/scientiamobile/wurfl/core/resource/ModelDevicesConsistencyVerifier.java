@@ -83,7 +83,8 @@ final class ModelDevicesConsistencyVerifier {
                }
 
                int circularIndex;
-               if ((circularIndex = hierarchy.indexOf(devices.getById(currentDeviceId))) != -1) {
+               circularIndex = hierarchy.indexOf(devices.getById(currentDeviceId));
+               if (circularIndex != -1) {
                   LinkedList<ModelDevice> circularHierarchy = new LinkedList<>(hierarchy.subList(circularIndex, hierarchy.size()));
                   throw new CircularHierarchyException(circularHierarchy);
                }

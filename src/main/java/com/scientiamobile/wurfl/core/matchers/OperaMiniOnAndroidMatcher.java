@@ -29,7 +29,8 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
    @Override
    protected String risMatch(String userAgent) {
       int matchLength;
-      if ((matchLength = userAgent.indexOf(" Build/")) < 0) {
+      matchLength = userAgent.indexOf(" Build/");
+      if (matchLength < 0) {
          for(String prefix : OPERA_MINI_ANDROID_PREFIXES) {
             if (userAgent.startsWith(prefix)) {
                matchLength = prefix.length();

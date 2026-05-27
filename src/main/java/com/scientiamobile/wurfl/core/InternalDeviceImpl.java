@@ -60,7 +60,8 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
    @Override
    public boolean getCapabilityAsBool(String capabilityName) {
       String originalCapabilityName = capabilityName;
-      if ((capabilityName = this.capabilitiesHolder.getCapability(capabilityName)) != null && capabilityName.toLowerCase(Locale.ENGLISH).equals("true")) {
+      capabilityName = this.capabilitiesHolder.getCapability(capabilityName);
+      if (capabilityName != null && capabilityName.toLowerCase(Locale.ENGLISH).equals("true")) {
          return true;
       } else if (capabilityName != null && capabilityName.toLowerCase(Locale.ENGLISH).equals("false")) {
          return false;

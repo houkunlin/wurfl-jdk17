@@ -83,7 +83,8 @@ public final class LDMatcher {
             maxDistance <<= 1;
 
             for(char c = ' '; c < 'z'; ++c) {
-               if ((histogramDistance += Math.abs(charHistogram[c])) > maxDistance) {
+               histogramDistance += Math.abs(charHistogram[c]);
+            if (histogramDistance > maxDistance) {
                   return Integer.MAX_VALUE;
                }
             }

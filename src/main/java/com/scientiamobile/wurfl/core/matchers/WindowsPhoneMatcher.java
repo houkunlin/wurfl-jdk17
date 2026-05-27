@@ -69,7 +69,8 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
       if (!isDesktopMode && !isArmEdge) {
          String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(cleanedDeviceUserAgent);
          String deviceId;
-         if ((deviceId = VERSION_TO_DEVICE_ID.get(windowsPhoneVersion)) != null) {
+         deviceId = VERSION_TO_DEVICE_ID.get(windowsPhoneVersion);
+         if (deviceId != null) {
             return deviceId;
          } else {
             return UserAgentUtils.isWindowsPhoneAdClient(cleanedDeviceUserAgent) ? GENERIC_MS_PHONE_OS7 : "generic";

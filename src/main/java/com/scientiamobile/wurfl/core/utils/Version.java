@@ -18,7 +18,8 @@ public class Version implements Comparable<Version> {
 
       for(int i = 0; i < minLength; ++i) {
          int comparison;
-         if ((comparison = Integer.compare(this.digits[i], otherVersion.digits[i])) != 0) {
+         comparison = Integer.compare(this.digits[i], otherVersion.digits[i]);
+         if (comparison != 0) {
             return comparison;
          }
       }
@@ -28,7 +29,8 @@ public class Version implements Comparable<Version> {
 
       for(int i = minLength + 1; i < maxLength; ++i) {
          int digit;
-         if ((digit = longerVersion.digits[i]) > 0) {
+         digit = longerVersion.digits[i];
+         if (digit > 0) {
             if (isThisLonger) {
                return digit;
             }

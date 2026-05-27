@@ -12,7 +12,8 @@ public class HTCMacNormalizer implements UserAgentNormalizer {
    public String normalize(String userAgent) {
       userAgent = LOCALE_SUBSTITUTION_PATTERN.matcher(userAgent).replaceFirst("; xx-xx");
       Matcher htcModelMatcher;
-      if ((htcModelMatcher = HTC_MODEL_PATTERN.matcher(userAgent)).find()) {
+      htcModelMatcher = HTC_MODEL_PATTERN.matcher(userAgent);
+      if (htcModelMatcher.find()) {
          String htcModel = htcModelMatcher.group();
          return htcModel.replaceAll("[ _\\-/]", "~") + "---" + userAgent;
       } else {

@@ -49,7 +49,8 @@ public class VirtualCapabilityHandler {
 
       try {
          String overrideValue;
-         if ((overrideValue = device.getCapability(controlCapabilityName)) != null && !"default".equals(overrideValue)) {
+         overrideValue = device.getCapability(controlCapabilityName);
+         if (overrideValue != null && !"default".equals(overrideValue)) {
             if ("force_true".equals(overrideValue)) {
                return "true";
             }

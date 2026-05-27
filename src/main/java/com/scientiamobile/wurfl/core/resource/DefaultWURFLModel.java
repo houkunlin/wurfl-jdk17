@@ -94,7 +94,8 @@ public class DefaultWURFLModel implements WURFLModel {
             ++rootDevicesCount;
          } else {
             String fallbackId;
-            if ((fallbackId = device.getFallBack()).equals("generic") || fallbackId.equals("generic_mobile")) {
+            fallbackId = device.getFallBack();
+      if (fallbackId.equals("generic") || fallbackId.equals("generic_mobile")) {
                this.familyDeviceIds.add(device.getID());
             }
          }
@@ -339,7 +340,8 @@ public class DefaultWURFLModel implements WURFLModel {
          return this.genericDevice;
       } else {
          ModelDevice genericDevice;
-         if ((genericDevice = this.devicesById.get("generic")) == null && this.devicesById.size() > 0) {
+         genericDevice = this.devicesById.get("generic");
+      if (genericDevice == null && this.devicesById.size() > 0) {
             throw new RuntimeException(new GenericNotDefinedException());
          } else {
             this.genericDevice = genericDevice;

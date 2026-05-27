@@ -75,7 +75,8 @@ final class FennecOnAndroidMatcher extends MatcherBase {
       int androidMajorVersion = 0;
       String androidVersion;
       String normalizedUserAgent;
-      if ((androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent = request.getNormalizedDeviceUserAgent(), false)) != null) {
+      androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent = request.getNormalizedDeviceUserAgent(), false);
+      if (androidVersion != null) {
          String[] versionParts = androidVersion.split("\\.");
          androidMajorVersion = ArrayUtils.isNotEmpty(versionParts) ? Integer.parseInt(versionParts[0]) : 0;
          deviceId = "generic_android_ver" + androidMajorVersion + "_0_fennec";

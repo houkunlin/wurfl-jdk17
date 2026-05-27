@@ -16,7 +16,8 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       String ucBrowserVersion;
-      if ((ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, true)) == null) {
+      ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, true);
+      if (ucBrowserVersion == null) {
          return userAgent;
       } else {
          String normalizedPrefix = null;
@@ -28,7 +29,8 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
             }
          } else if (userAgent.contains("iPh OS")) {
             Matcher matcher;
-            if ((matcher = IPHONE.matcher(userAgent)).find()) {
+            matcher = IPHONE.matcher(userAgent);
+      if (matcher.find()) {
                String iosVersion = matcher.group(1) + "." + matcher.group(2);
                String iphoneDeviceVersion = matcher.group(3) + "." + matcher.group(4);
                normalizedPrefix = iosVersion + " U2iPhone " + ucBrowserVersion + " " + iphoneDeviceVersion + "---";
@@ -36,7 +38,8 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
          } else if (userAgent.contains("wds")) {
             String fixedUserAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
             Matcher matcher;
-            if ((matcher = WINDOWS_PHONE.matcher(fixedUserAgent)).find()) {
+            matcher = WINDOWS_PHONE.matcher(fixedUserAgent);
+      if (matcher.find()) {
                String windowsPhoneVersion = matcher.group(1) + "." + matcher.group(2);
                String modelName = (matcher.group(3) + "." + matcher.group(4)).replace("_blocked", "");
                modelName = NOKIA_RM_MODEL_PATTERN.matcher(modelName).replaceFirst("$1");
@@ -44,7 +47,8 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
             }
          } else if (userAgent.contains("Symbian")) {
             Matcher matcher;
-            if ((matcher = SYMBIAN.matcher(userAgent)).find()) {
+            matcher = SYMBIAN.matcher(userAgent);
+      if (matcher.find()) {
                String symbianVersion = "S60 V" + matcher.group(1);
                String modelName = matcher.group(2);
                normalizedPrefix = symbianVersion + " U2Symbian " + ucBrowserVersion + " " + modelName + "---";

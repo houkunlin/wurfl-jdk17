@@ -30,7 +30,8 @@ final class DoCoMoMatcher extends MatcherBase {
    @Override
    protected String risMatch(String normalizedUserAgent) {
       int matchLength;
-      if ((matchLength = StringMatchUtils.secondSlash(normalizedUserAgent)) == -1) {
+      matchLength = StringMatchUtils.secondSlash(normalizedUserAgent);
+      if (matchLength == -1) {
          matchLength = StringMatchUtils.firstOpenParenthesis(normalizedUserAgent);
       }
 

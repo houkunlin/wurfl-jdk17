@@ -10,10 +10,12 @@ public class MaemoNormalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       Matcher maemoMatcher;
-      if ((maemoMatcher = MAEMO_BROWSER_MODEL_PATTERN.matcher(userAgent)).find()) {
+      maemoMatcher = MAEMO_BROWSER_MODEL_PATTERN.matcher(userAgent);
+      if (maemoMatcher.find()) {
          int modelEndIndex;
          String deviceModel;
-         if ((modelEndIndex = (deviceModel = maemoMatcher.group(1)).indexOf(" GTB")) == -1) {
+         modelEndIndex = (deviceModel = maemoMatcher.group(1)).indexOf(" GTB");
+         if (modelEndIndex == -1) {
             modelEndIndex = deviceModel.length();
          }
 

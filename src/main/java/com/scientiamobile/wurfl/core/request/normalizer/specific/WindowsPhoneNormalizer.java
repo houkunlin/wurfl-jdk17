@@ -15,7 +15,8 @@ public class WindowsPhoneNormalizer implements UserAgentNormalizer {
       String windowsPhoneModel = null;
       String windowsPhoneVersion = null;
       Matcher windowsPhoneAppUaMatcher;
-      if ((windowsPhoneAppUaMatcher = WINDOWS_PHONE_APP_UA_PATTERN.matcher(userAgent)).find()) {
+      windowsPhoneAppUaMatcher = WINDOWS_PHONE_APP_UA_PATTERN.matcher(userAgent);
+      if (windowsPhoneAppUaMatcher.find()) {
          userAgent = "Mozilla/5.0 (Mobile; Windows Phone " + windowsPhoneAppUaMatcher.group(1) + "; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; " + windowsPhoneAppUaMatcher.group(2) + ") like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537 " + userAgent;
       }
 

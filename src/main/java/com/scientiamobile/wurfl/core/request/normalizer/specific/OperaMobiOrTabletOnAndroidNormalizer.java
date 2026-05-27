@@ -9,12 +9,14 @@ public class OperaMobiOrTabletOnAndroidNormalizer implements UserAgentNormalizer
       StringBuilder normalizedUaBuilder;
       (normalizedUaBuilder = new StringBuilder()).append(userAgent.contains("Opera Mobi") ? "Opera Mobi" : "Opera Tablet").append(" ");
       String operaOrAndroidVersion;
-      if ((operaOrAndroidVersion = UserAgentUtils.getOperaOnAndroidVersion(userAgent, false)) != null) {
+      operaOrAndroidVersion = UserAgentUtils.getOperaOnAndroidVersion(userAgent, false);
+      if (operaOrAndroidVersion != null) {
          normalizedUaBuilder.append(operaOrAndroidVersion).append(" ");
       }
 
       normalizedUaBuilder.append("Android");
-      if ((operaOrAndroidVersion = UserAgentUtils.getAndroidVersion(userAgent, false)) != null) {
+      operaOrAndroidVersion = UserAgentUtils.getAndroidVersion(userAgent, false);
+      if (operaOrAndroidVersion != null) {
          normalizedUaBuilder.append(" ").append(operaOrAndroidVersion);
       }
 

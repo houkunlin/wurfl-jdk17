@@ -95,7 +95,8 @@ public class VirtualCapabilityDevice implements Serializable {
    public void normalizeOS() {
       if (this.osPair.getName() != null && StringMatchUtils.indexOf(this.deviceUserAgent, "Windows") >= 0) {
          Matcher ntVersionMatcher;
-         if ((ntVersionMatcher = WINDOWS_NT_VERSION_PATTERN.matcher(this.osPair.getName())).find()) {
+         ntVersionMatcher = WINDOWS_NT_VERSION_PATTERN.matcher(this.osPair.getName());
+         if (ntVersionMatcher.find()) {
             this.osPair.setName("Windows");
             this.osPair.setVersion(windowsNtVersionToName.containsKey(ntVersionMatcher.group(1)) ? windowsNtVersionToName.get(ntVersionMatcher.group(1)) : ntVersionMatcher.group());
             return;

@@ -61,7 +61,8 @@ class MatcherChain implements Matcher, MatcherFilter {
 
       while(filterIterator.hasNext()) {
          MatcherFilter filter;
-         if ((filter = filterIterator.next()).canHandle(request)) {
+         filter = filterIterator.next();
+      if (filter.canHandle(request)) {
             filter.recordMatch(request, deviceId);
             return true;
          }
@@ -91,7 +92,8 @@ class MatcherChain implements Matcher, MatcherFilter {
 
       while(filterIterator.hasNext()) {
          MatcherFilter filter;
-         if ((filter = filterIterator.next()) instanceof MatcherChain) {
+         filter = filterIterator.next();
+      if (filter instanceof MatcherChain) {
             ((MatcherChain)filter).sortAll();
          } else {
             filter.getIndex().sortUserAgents();

@@ -33,7 +33,8 @@ final class MaemoMatcher extends MatcherBase {
    @Override
    protected String applyRecoveryMatch(WURFLRequest request) {
       String normalizedDeviceUserAgent;
-      if ((normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent()).contains("Opera Mobi")) {
+      normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
+      if (normalizedDeviceUserAgent.contains("Opera Mobi")) {
          return GENERIC_OPERA_MOBI_MAEMO;
       } else {
          return normalizedDeviceUserAgent.contains("Firefox") ? NOKIA_GENERIC_MAEMO_WITH_FIREFOX : NOKIA_GENERIC_MAEMO;

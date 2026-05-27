@@ -6,7 +6,8 @@ public class ChromeNormalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       int chromeIndex;
-      if ((chromeIndex = userAgent.indexOf("Chrome")) >= 0) {
+      chromeIndex = userAgent.indexOf("Chrome");
+      if (chromeIndex >= 0) {
          userAgent = userAgent.substring(chromeIndex);
       }
 

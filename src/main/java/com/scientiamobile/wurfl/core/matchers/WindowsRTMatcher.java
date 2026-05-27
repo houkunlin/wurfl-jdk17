@@ -31,12 +31,14 @@ final class WindowsRTMatcher extends AbstractMatcher {
    protected String risMatch(String userAgent) {
       if (userAgent.contains("like Gecko")) {
          int geckoIndex;
-         if ((geckoIndex = userAgent.indexOf(" Gecko")) >= 0) {
+         geckoIndex = userAgent.indexOf(" Gecko");
+         if (geckoIndex >= 0) {
             return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, geckoIndex + 6);
          }
       } else {
          int armIndex;
-         if ((armIndex = userAgent.indexOf(" ARM;")) >= 0) {
+         armIndex = userAgent.indexOf(" ARM;");
+         if (armIndex >= 0) {
             return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, armIndex + 5);
          }
       }
