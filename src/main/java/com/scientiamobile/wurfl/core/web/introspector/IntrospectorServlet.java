@@ -228,10 +228,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         return matchResults;
     }
 
-    private boolean handleRequest(HttpServletRequest request, PrintWriter out) {
+    private void handleRequest(HttpServletRequest request, PrintWriter out) {
         if (wurflEngine == null) {
             writeMissingEngineError(out);
-            return true;
+            return;
         }
         HeaderOnlyHttpServletRequest headerOnlyRequest = buildHeaderOnlyRequest(request);
         String rawCapabilities = request.getParameter("capabilities");
@@ -250,7 +250,6 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         }
         String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
         out.println(json);
-        return true;
     }
 
     private static String resolveUaProfile(HttpServletRequest request) {

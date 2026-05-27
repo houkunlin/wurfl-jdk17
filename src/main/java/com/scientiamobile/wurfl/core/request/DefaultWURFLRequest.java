@@ -9,6 +9,7 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -17,16 +18,16 @@ import java.util.Map;
 
 public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     private static final String[] USER_AGENT_HEADERS = new String[]{"Device-Stock-UA", "X-OperaMini-Phone-UA", "X-UCBrowser-Device-UA", "User-Agent"};
+    @Serial
     private static final long serialVersionUID = 100L;
     private final EngineTarget engineTarget;
-    @SuppressWarnings("serial")
     private final Map<String, String> headers;
     private String deviceUserAgent;
     private String cleanedDeviceUserAgent;
     private String normalizedDeviceUserAgent;
     private String browserUserAgent;
-    private UserAgentPriority userAgentPriority;
-    private String userAgentProfile;
+    private final UserAgentPriority userAgentPriority;
+    private final String userAgentProfile;
     private Boolean cachedIsMobileBrowser;
     private Boolean cachedMobileKeywordsDetected;
     private Boolean cachedScreenSizeDetected;
@@ -35,7 +36,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     private Boolean cachedIsDesktopBrowserHeavyDutyAnalysis;
     private Boolean cachedIsSmartTvBrowser;
     private Boolean cachedIsEmailClient;
-    private transient UserAgentNormalizer genericNormalizer;
+    private final transient UserAgentNormalizer genericNormalizer;
     private boolean urlEncoded;
 
     public DefaultWURFLRequest(String userAgent, UserAgentNormalizer genericNormalizer, UserAgentPriority userAgentPriority, EngineTarget engineTarget) {
