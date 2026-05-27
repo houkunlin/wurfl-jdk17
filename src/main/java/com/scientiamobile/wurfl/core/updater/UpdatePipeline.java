@@ -25,36 +25,15 @@ public class UpdatePipeline {
    private Integer connectionTimeoutMs = 10000;
 
    public UpdatePipeline(String originalWurflPath, String newWurflUrl) {
-      this.newWurflUrl = newWurflUrl;
-      this.originalWurflPath = resolvePath(originalWurflPath);
-      Validator.checkFileExtensions(originalWurflPath, newWurflUrl);
-      this.tasks = new ArrayList<>();
-      this.tasks.add(new CheckForNewWurflFileTask());
-      this.tasks.add(new WurflBackupTask());
-      this.tasks.add(new NewWurflFileDownloadTask());
-      this.tasks.add(new OverwriteAndCheckConsistencyTask());
+      this(originalWurflPath, newWurflUrl, (String[])null, null);
    }
 
    public UpdatePipeline(String originalWurflPath, String newWurflUrl, String[] patchPaths) {
-      this.newWurflUrl = newWurflUrl;
-      this.originalWurflPath = resolvePath(originalWurflPath);
-      Validator.checkFileExtensions(originalWurflPath, newWurflUrl);
-      this.tasks = new ArrayList<>();
-      this.tasks.add(new CheckForNewWurflFileTask());
-      this.tasks.add(new WurflBackupTask());
-      this.tasks.add(new NewWurflFileDownloadTask());
-      this.tasks.add(new OverwriteAndCheckConsistencyTask(patchPaths));
+      this(originalWurflPath, newWurflUrl, patchPaths, null);
    }
 
    public UpdatePipeline(String originalWurflPath, String newWurflUrl, ProxySettings proxySettings) {
-      this.newWurflUrl = newWurflUrl;
-      this.originalWurflPath = resolvePath(originalWurflPath);
-      Validator.checkFileExtensions(originalWurflPath, newWurflUrl);
-      this.tasks = new ArrayList<>();
-      this.tasks.add(new CheckForNewWurflFileTask(proxySettings));
-      this.tasks.add(new WurflBackupTask());
-      this.tasks.add(new NewWurflFileDownloadTask(proxySettings));
-      this.tasks.add(new OverwriteAndCheckConsistencyTask());
+      this(originalWurflPath, newWurflUrl, null, proxySettings);
    }
 
    public UpdatePipeline(String originalWurflPath, String newWurflUrl, String[] patchPaths, ProxySettings proxySettings) {

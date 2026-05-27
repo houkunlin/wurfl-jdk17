@@ -40,17 +40,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
 
    @Override
    public String normalize(String rawUserAgent) {
-      UserAgentWithNeedleCount needleCount = UserAgentUtils.getAsciiPrintableStringWithNeedleCount(new StringBuilder(rawUserAgent));
-      String userAgent = needleCount.getAsciiPrintableUserAgent();
-      if (!needleCount.hasSpaceChars() && needleCount.getPlusCharCount() > 2) {
-         userAgent = plusToSpaceAndMarkEncoded(userAgent, (WURFLRequest)null);
-      }
-
-      if (needleCount.getPercentageCharCount() > 2) {
-         userAgent = rawDecodeIfNeeded(userAgent, (WURFLRequest)null);
-      }
-
-      return this.applyChain(userAgent);
+      return normalize(rawUserAgent, null);
    }
 
    public String normalize(String rawUserAgent, WURFLRequest request) {

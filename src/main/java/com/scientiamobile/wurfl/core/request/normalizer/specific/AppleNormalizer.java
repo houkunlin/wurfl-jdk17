@@ -39,7 +39,7 @@ public class AppleNormalizer implements UserAgentNormalizer {
 
       if (versionMatcher != null) {
          String iosVersion = versionMatcher.group(1).replace(".", "_");
-         StringBuilder normalizedUserAgent = new StringBuilder(50);
+         StringBuilder normalizedUserAgent = new StringBuilder(256);
          if (userAgent.contains("iPad")) {
             return normalizedUserAgent.append("Mozilla/5.0 (iPad; CPU OS ").append(iosVersion).append(" like Mac OS X) AppleWebKit/538.39.2 (KHTML, like Gecko) Version/7.0 Mobile/12A4297e Safari/9537.53 ").append(userAgent).toString();
          } else if (userAgent.contains("iPod touch")) {

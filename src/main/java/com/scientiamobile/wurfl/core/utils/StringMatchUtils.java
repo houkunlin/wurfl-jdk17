@@ -173,7 +173,7 @@ public final class StringMatchUtils {
    }
 
    public static String format(Set<String> lines) {
-      StringBuilder out = new StringBuilder(10);
+      StringBuilder out = new StringBuilder(64);
 
       for (String line : lines) {
          out.append(line).append('\n');
