@@ -7,10 +7,12 @@ import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityHandler;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
 public class DefaultDevice implements EnrichedDevice, Serializable {
+    @Serial
     private static final long serialVersionUID = 11L;
 
     static {
@@ -22,9 +24,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     private final String matcherName;
     private final String normalizedUserAgent;
     private final transient MarkupResolver markupResolver;
-    private transient InternalDevice internalDevice;
+    private final transient InternalDevice internalDevice;
     private transient MarkUp markUp;
-    private transient VirtualCapabilityHandler virtualCapabilityHandler;
+    private final transient VirtualCapabilityHandler virtualCapabilityHandler;
 
     public DefaultDevice(InternalDevice internalDevice, VirtualCapabilityHandler virtualCapabilityHandler, MarkupResolver markupResolver, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent) {
         Validate.notNull(virtualCapabilityHandler, "The capabilitiesHandler must be not null");

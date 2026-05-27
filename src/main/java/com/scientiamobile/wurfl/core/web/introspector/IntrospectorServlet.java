@@ -19,6 +19,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -44,6 +45,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     public static final String REQUEST_ACCURACY = "RequestAccuracy";
     public static final String INFO = "Info";
     public static final String BUCKETS = "Buckets";
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final String OS_NAME = System.getProperty("os.name");
     private static final String OS_VERSION = System.getProperty("os.version");
@@ -55,20 +57,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     private static String apiVersion;
 
     static {
-        InputStream pomPropertiesStream = IntrospectorServlet.class.getResourceAsStream("/META-INF/maven/com.scientiamobile.wurfl/wurfl/pom.properties");
         Properties pomProperties = new Properties();
-
-        try {
+        try (InputStream pomPropertiesStream = IntrospectorServlet.class.getResourceAsStream("/META-INF/maven/com.scientiamobile.wurfl/wurfl/pom.properties")) {
             pomProperties.load(pomPropertiesStream);
             apiVersion = "1.9.1.0";
-        } catch (IOException e) {
+        } catch (Exception e) {
             apiVersion = "(Unavailable...)";
-        } finally {
-            try {
-                pomPropertiesStream.close();
-            } catch (IOException | RuntimeException ignore) {
-            }
-
         }
 
         if (apiVersion == null || apiVersion.isEmpty()) {

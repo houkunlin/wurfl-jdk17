@@ -1,6 +1,9 @@
 package com.scientiamobile.wurfl.core.exc;
 
+import java.io.Serial;
+
 public abstract class WURFLException extends Exception {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     protected WURFLException() {

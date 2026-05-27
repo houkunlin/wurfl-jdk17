@@ -5,9 +5,11 @@ import com.scientiamobile.wurfl.core.VirtualCapabilityDevice;
 import com.scientiamobile.wurfl.core.VirtualCapabilityUserAgentTool;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class OsName implements VirtualCapabilityEvaluator, Serializable {
+    @Serial
     private static final long serialVersionUID = 2665195735628227650L;
 
     @Override

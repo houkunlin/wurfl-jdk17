@@ -1,6 +1,9 @@
 package com.scientiamobile.wurfl.core.exc;
 
+import java.io.Serial;
+
 public class GroupNotDefinedException extends WURFLRuntimeException {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final String groupId;
 

@@ -5,14 +5,15 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("serial")
 class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializable {
+    @Serial
     private static final long serialVersionUID = 100L;
-    private static boolean assertionsDisabled = !CachingCapabilitiesHolder.class.desiredAssertionStatus();
+    private static final boolean assertionsDisabled = !CachingCapabilitiesHolder.class.desiredAssertionStatus();
     private int minCacheSize;
     private transient CapabilitiesProvider capabilitiesProvider;
     private Map<String, String> capabilitiesCache;

@@ -4,9 +4,11 @@ import com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 class MarkupResolverImpl implements MarkupResolver, Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(MarkupResolverImpl.class);
 
@@ -24,11 +26,11 @@ class MarkupResolverImpl implements MarkupResolver, Serializable {
         }
 
         MarkUp markup;
-        if (Integer.valueOf(xhtmlSupportLevel) >= 3) {
+        if (Integer.parseInt(xhtmlSupportLevel) >= 3) {
             markup = MarkUp.XHTML_ADVANCED;
-        } else if (Integer.valueOf(xhtmlSupportLevel) > 0) {
+        } else if (Integer.parseInt(xhtmlSupportLevel) > 0) {
             markup = MarkUp.XHTML_SIMPLE;
-        } else if (preferredMarkup.indexOf("imode") != -1) {
+        } else if (preferredMarkup.contains("imode")) {
             markup = MarkUp.CHTML;
         } else {
             markup = MarkUp.WML;

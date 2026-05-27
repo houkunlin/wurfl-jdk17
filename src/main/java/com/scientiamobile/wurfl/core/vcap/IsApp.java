@@ -4,6 +4,7 @@ import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 public class IsApp extends AbstractVirtualCapabilityEvaluator {
     static final Pattern ANDROID_UA_PREFIX_PATTERN = Pattern.compile("^.+Mozilla/5.0 \\(Linux; Android ");
     static final Pattern ANDROID_SAFARI_SUFFIX_PATTERN = Pattern.compile(" (?:Mobile )?Safari/[\\d\\.+]+[^\\d\\.+]+");
+    @Serial
     private static final long serialVersionUID = -2020126634302389944L;
     private static final Map<String, Pattern> HASH_APP_INDICATOR_PATTERNS = new HashMap<>(3);
     private static final Pattern IOS_DEVICE_SIGNATURE_PATTERN = Pattern.compile("iP(hone|od|ad)[\\d],[\\d]");

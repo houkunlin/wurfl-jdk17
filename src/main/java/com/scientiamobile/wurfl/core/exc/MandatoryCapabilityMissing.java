@@ -1,8 +1,11 @@
 package com.scientiamobile.wurfl.core.exc;
 
+import java.io.Serial;
+
 public class MandatoryCapabilityMissing extends WURFLRuntimeException {
+    @Serial
     private static final long serialVersionUID = 233366160908694904L;
-    private String missingMandatoryCapabilities;
+    private final String missingMandatoryCapabilities;
 
     public MandatoryCapabilityMissing(String missingMandatoryCapabilities) {
         this("Mandatory capabilities missing from configuration: ", missingMandatoryCapabilities);

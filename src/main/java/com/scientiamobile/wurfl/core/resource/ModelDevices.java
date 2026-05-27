@@ -5,14 +5,14 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-@SuppressWarnings("serial")
 public class ModelDevices implements Serializable, Iterable<ModelDevice> {
+    @Serial
     private static final long serialVersionUID = 10L;
-    @SuppressWarnings("serial")
-    private Map<String, ModelDevice> devicesById;
+    private final Map<String, ModelDevice> devicesById;
     private LinkedList<String> deviceIdsByInsertionOrder;
 
     public ModelDevices() {
@@ -27,13 +27,12 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         this.deviceIdsByInsertionOrder = new LinkedList<>(modelDevices.getDeviceIdsByInsertionOrder());
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public ModelDevices(Map devicesById) {
+    public ModelDevices(Map<String, ModelDevice> devicesById) {
         this.devicesById = CollectionFactory.createConcurrentHashMap();
         this.deviceIdsByInsertionOrder = new LinkedList<>();
         Validate.notNull(devicesById, "The devicesById is null");
         Validate.noNullElements(devicesById.values(), "The devicesById contains null value");
-        this.devicesById.putAll((Map<String, ModelDevice>) devicesById);
+        this.devicesById.putAll(devicesById);
     }
 
     public ModelDevices(Collection<ModelDevice> devices) {

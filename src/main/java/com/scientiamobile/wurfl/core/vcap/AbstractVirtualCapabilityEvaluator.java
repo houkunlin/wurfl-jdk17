@@ -6,6 +6,7 @@ import com.scientiamobile.wurfl.core.VirtualCapabilityUserAgentTool;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -19,10 +20,11 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
     protected static final List<String> APP_INDICATOR_PATTERNS;
     static final Set<String> ANDROID_BROWSER_PACKAGE_NAMES;
     static final Set<String> NON_APP_BROWSER_KEYWORDS;
+    @Serial
     private static final long serialVersionUID = 8192401578396133213L;
     private static final Pattern MAJOR_MINOR_VERSION_PATTERN;
-    private static Set<String> ANDROID_REQUESTED_WITH_APP_PACKAGES;
-    private static List<String> BOT_EXCLUSION_KEYWORDS;
+    private static final Set<String> ANDROID_REQUESTED_WITH_APP_PACKAGES;
+    private static final List<String> BOT_EXCLUSION_KEYWORDS;
 
     static {
         Pattern.compile("^Mozilla/5.0 \\(Linux; Android [45]\\.[\\d\\.]+; .+ Build/.+\\) AppleWebKit/[\\d\\.+]+ \\(KHTML, like Gecko\\) Version/[\\d\\.]+ Chrome/([\\d]+)\\.[\\d\\.]+? (?:Mobile )?Safari/[\\d\\.+]+$");

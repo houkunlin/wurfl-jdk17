@@ -2,11 +2,13 @@ package com.scientiamobile.wurfl.core;
 
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class NameVersionPair implements Serializable {
+    @Serial
     private static final long serialVersionUID = 4934582187956400034L;
     private String name = null;
     private String version = null;

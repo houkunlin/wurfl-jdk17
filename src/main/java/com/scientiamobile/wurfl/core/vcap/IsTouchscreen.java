@@ -4,9 +4,11 @@ import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class IsTouchscreen implements VirtualCapabilityEvaluator, Serializable {
+    @Serial
     private static final long serialVersionUID = 3516513258503645772L;
 
     @Override

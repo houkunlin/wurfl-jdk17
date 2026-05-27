@@ -3,6 +3,7 @@ package com.scientiamobile.wurfl.core.vcap;
 import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 public class AppName implements VirtualCapabilityEvaluator, Serializable {
     private static final List<String> APP_INDICATOR_KEYWORDS = new ArrayList<>();
     private static final List<String> APP_NAMES = new ArrayList<>();
+    @Serial
     private static final long serialVersionUID = 7704959740704532442L;
     private static final Pattern WEBVIEW_APP_PATTERN = Pattern.compile("WebViewApp ([^/]+)/");
     private static final Pattern ANDROID_DALVIK_APP_PATTERN = Pattern.compile("^([^/]+)/.+? Dalvik/");

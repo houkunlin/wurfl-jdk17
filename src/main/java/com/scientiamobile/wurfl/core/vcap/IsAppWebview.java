@@ -3,10 +3,12 @@ package com.scientiamobile.wurfl.core.vcap;
 import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 
 public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEvaluator, Serializable {
+    @Serial
     private static final long serialVersionUID = 165298984131843694L;
 
     @Override

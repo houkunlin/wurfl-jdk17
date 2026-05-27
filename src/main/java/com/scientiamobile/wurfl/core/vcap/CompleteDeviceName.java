@@ -3,9 +3,11 @@ package com.scientiamobile.wurfl.core.vcap;
 import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class CompleteDeviceName implements VirtualCapabilityEvaluator, Serializable {
+    @Serial
     private static final long serialVersionUID = -65030764132400949L;
 
     @Override

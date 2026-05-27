@@ -4,6 +4,7 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class VirtualCapabilityDevice implements Serializable {
+    @Serial
     private static final long serialVersionUID = -9083698933173727805L;
     private static final Pattern WINDOWS_NT_VERSION_PATTERN = Pattern.compile("Windows NT ([0-9]+?\\.[0-9])");
     private static final Pattern WINDOWS_VERSION_PATTERN = Pattern.compile("Windows [0-9\\.]+");
@@ -22,10 +24,10 @@ public class VirtualCapabilityDevice implements Serializable {
     private static final Pattern INTEL_MAC_OS_X_VERSION_PATTERN = Pattern.compile("Intel Mac OS X ([0-9\\._]+)");
     private static final Pattern MAC_OS_X_VERSION_PATTERN = Pattern.compile("MacOS X ([0-9\\._]+)");
     private static final Pattern DOT_SPLIT_PATTERN = Pattern.compile("\\.");
-    private static Map<String, String> windowsNtVersionToName = new HashMap<>();
-    private static Map<String, String> tridentVersionToIeVersion = new HashMap<>();
-    private static Map<String, String> windowsPhoneVersionMapping = new HashMap<>();
-    private static Set<String> knownOsNames = new HashSet<>(16);
+    private static final Map<String, String> windowsNtVersionToName = new HashMap<>();
+    private static final Map<String, String> tridentVersionToIeVersion = new HashMap<>();
+    private static final Map<String, String> windowsPhoneVersionMapping = new HashMap<>();
+    private static final Set<String> knownOsNames = new HashSet<>(16);
 
     static {
         windowsNtVersionToName.put("4.0", "NT 4.0");

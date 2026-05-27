@@ -5,6 +5,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 
 class InternalDeviceImpl implements InternalDevice, Serializable {
+    @Serial
     private static final long serialVersionUID = 101L;
     private final String id;
     private final String wurflUserAgent;
