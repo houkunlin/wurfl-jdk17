@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class HashMapCacheProvider implements CacheProvider {
     private static final Logger logger = LoggerFactory.getLogger(HashMapCacheProvider.class);
-    private Map<String, InternalDevice> cache;
+    private final Map<String, InternalDevice> cache;
     private int initialCapacity;
     private float loadFactor;
     private int concurrentWrites;

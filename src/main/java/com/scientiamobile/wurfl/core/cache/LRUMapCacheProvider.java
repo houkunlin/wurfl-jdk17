@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class LRUMapCacheProvider implements CacheProvider {
     private static final Logger log = LoggerFactory.getLogger(LRUMapCacheProvider.class);
-    private Map<String, InternalDevice> cache;
+    private final Map<String, InternalDevice> cache;
 
     public LRUMapCacheProvider(int cacheSize, boolean scanUntilRemovable) {
         this.cache = MapUtils.synchronizedMap(new LRUMap<>(cacheSize, scanUntilRemovable));

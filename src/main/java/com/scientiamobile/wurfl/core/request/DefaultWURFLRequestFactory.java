@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriority {
     private final UserAgentResolver userAgentResolver;
-    private UserAgentNormalizer userAgentNormalizer;
+    private final UserAgentNormalizer userAgentNormalizer;
     private UserAgentPriority userAgentPriority;
 
     public DefaultWURFLRequestFactory() {

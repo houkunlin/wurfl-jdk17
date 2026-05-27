@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class DoubleLRUMapCacheProvider implements CacheProvider {
     private static final Logger log = LoggerFactory.getLogger(DoubleLRUMapCacheProvider.class);
-    private Map<String, String> deviceIdByUserAgent;
-    private Map<String, InternalDevice> deviceById;
+    private final Map<String, String> deviceIdByUserAgent;
+    private final Map<String, InternalDevice> deviceById;
 
     public DoubleLRUMapCacheProvider(int userAgentCacheSize, int deviceCacheSize, boolean scanUntilRemovable) {
         this.deviceIdByUserAgent = MapUtils.synchronizedMap(new LRUMap<>(userAgentCacheSize, scanUntilRemovable));
