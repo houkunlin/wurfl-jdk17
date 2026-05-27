@@ -29,17 +29,28 @@ public class CheckConnection {
    }
 
    public CheckConnection() {
-      String classPathLowerCase = System.getProperty("java.class.path").toLowerCase(Locale.ENGLISH);
-      this.platformName = StringUtils.isNotEmpty(System.getProperty("jboss.boot.library.list"))
-         ? "JBoss/WildFly"
-         : (StringUtils.isNotEmpty(System.getProperty("oracle.j2ee.home"))
-            ? "OC4j/Oracle AS"
-            : (!classPathLowerCase.contains("websphere") && !classPathLowerCase.contains("web sphere")
-               ? (!classPathLowerCase.contains("tomcat") && !classPathLowerCase.contains("juli")
-                  ? (classPathLowerCase.contains("jetty") ? "Jetty" : "Command line")
-                  : "Tomcat")
-               : "IBM WebSphere"));
+      this.platformName = resolvePlatformName();
       this.enabled = ResourceUtils.getFullBuildId().startsWith("ch");
+   }
+
+   private static String resolvePlatformName() {
+      if (StringUtils.isNotEmpty(System.getProperty("jboss.boot.library.list"))) {
+         return "JBoss/WildFly";
+      }
+      if (StringUtils.isNotEmpty(System.getProperty("oracle.j2ee.home"))) {
+         return "OC4j/Oracle AS";
+      }
+      String classPathLowerCase = System.getProperty("java.class.path").toLowerCase(Locale.ENGLISH);
+      if (classPathLowerCase.contains("websphere") || classPathLowerCase.contains("web sphere")) {
+         return "IBM WebSphere";
+      }
+      if (classPathLowerCase.contains("tomcat") || classPathLowerCase.contains("juli")) {
+         return "Tomcat";
+      }
+      if (classPathLowerCase.contains("jetty")) {
+         return "Jetty";
+      }
+      return "Command line";
    }
 
    public void setup(WURFLEngine wurflEngine, WURFLModel wurflModel) {
