@@ -7,7 +7,6 @@ import com.scientiamobile.wurfl.core.request.*;
 import com.scientiamobile.wurfl.core.resource.*;
 import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityEvaluator;
 import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityHandler;
-import com.scientiamobile.wurfl.core.web.WurflWebConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +19,7 @@ import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
+public class GeneralWURFLEngine implements WURFLEngine {
     private static final Logger log = LoggerFactory.getLogger(GeneralWURFLEngine.class);
     private static final List<String> ALWAYS_INCLUDED_CAPABILITIES = Arrays.asList("device_os", "device_os_version", "is_tablet", "is_wireless_device", "pointing_method", "preferred_markup", "resolution_height", "resolution_width", "ux_full_desktop", "xhtml_support_level", "is_smarttv", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "mobile_browser_version");
     private final ReadWriteLock lock;
