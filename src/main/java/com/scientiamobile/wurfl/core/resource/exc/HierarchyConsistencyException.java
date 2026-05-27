@@ -9,7 +9,6 @@ import java.util.List;
 public abstract class HierarchyConsistencyException extends WURFLConsistencyException {
    @Serial
    private static final long serialVersionUID = 10L;
-   @SuppressWarnings("serial")
    private final List<ModelDevice> hierarchy;
 
    protected HierarchyConsistencyException(List<ModelDevice> hierarchy, String message) {

@@ -1,14 +1,15 @@
 package com.scientiamobile.wurfl.core.resource;
 
 import com.scientiamobile.wurfl.core.resource.exc.UserAgentOverrideException;
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 final class ModelDevicesPatchMerger {
    private static final Logger LOG = LoggerFactory.getLogger(ModelDevicesPatchMerger.class);
-   private static boolean ASSERTIONS_DISABLED = !ModelDevicesPatchMerger.class.desiredAssertionStatus();
+   private static final boolean ASSERTIONS_DISABLED = !ModelDevicesPatchMerger.class.desiredAssertionStatus();
 
    private ModelDevicesPatchMerger() {
    }
@@ -16,12 +17,11 @@ final class ModelDevicesPatchMerger {
    public static ModelDevices merge(ModelDevices baseDevices, ModelDevices patchDevices) {
       ModelDevices mergedDevices = new ModelDevices(baseDevices);
 
-      for(Object patchDeviceObj : patchDevices) {
-         ModelDevice patchDevice = (ModelDevice)patchDeviceObj;
+      for(ModelDevice patchDevice : patchDevices) {
          ModelDevice mergedDevice = patchDevice;
          if (baseDevices.containsId(patchDevice.getID())) {
             ModelDevice baseDevice = baseDevices.getById(patchDevice.getID());
-            if (patchDevice != null && patchDevice.getUserAgent() != null) {
+            if (patchDevice.getUserAgent() != null) {
                HashMap<String, String> mergedCapabilities = new HashMap<>(baseDevice.getCapabilities());
                mergedCapabilities.putAll(patchDevice.getCapabilities());
                Map<String, String> baseGroupsByCapability = baseDevice.getGroupsByCapability();

@@ -1,13 +1,10 @@
 package com.scientiamobile.wurfl.core.resource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.*;
 
 public final class WURFLResources {
    private final List<WURFLResource> resources = new ArrayList<>();
@@ -82,11 +79,10 @@ public final class WURFLResources {
    public boolean equals(Object object) {
       if (this == object) {
          return true;
-      } else if (!(object instanceof WURFLResources)) {
+      } else if (!(object instanceof WURFLResources other)) {
          return false;
       } else {
-         WURFLResources other = (WURFLResources)object;
-         return (new EqualsBuilder()).append(this.resources, other.resources).isEquals();
+          return (new EqualsBuilder()).append(this.resources, other.resources).isEquals();
       }
    }
 

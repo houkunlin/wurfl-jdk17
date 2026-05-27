@@ -1,9 +1,10 @@
 package com.scientiamobile.wurfl.core.strategy;
 
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ListIterator;
-import org.slf4j.LoggerFactory;
 
 public final class RISMatcher {
    public static final RISMatcher INSTANCE = new RISMatcher();
@@ -12,12 +13,12 @@ public final class RISMatcher {
       LoggerFactory.getLogger(RISMatcher.class);
    }
 
-   public final String getName() {
+   public String getName() {
       return "RIS";
    }
 
    @SuppressWarnings("rawtypes")
-   public final String match(Collection candidates, String value, int threshold) {
+   public String match(Collection candidates, String value, int threshold) {
       String matchedValue = null;
       int valueLength = value.length();
       ArrayList candidatesList = (ArrayList)candidates;
@@ -71,8 +72,7 @@ public final class RISMatcher {
    private static int commonPrefixLength(String firstValue, String secondValue) {
       int minLength = Math.min(firstValue.length(), secondValue.length());
 
-      int index;
-      index = 0;
+      int index = 0;
       for(; index < minLength && firstValue.charAt(index) == secondValue.charAt(index); ++index) {
       }
 

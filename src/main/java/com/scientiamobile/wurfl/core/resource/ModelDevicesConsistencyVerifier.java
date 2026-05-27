@@ -1,25 +1,13 @@
 package com.scientiamobile.wurfl.core.resource;
 
-import com.scientiamobile.wurfl.core.resource.exc.BadCapabilityGroupException;
-import com.scientiamobile.wurfl.core.resource.exc.CircularHierarchyException;
-import com.scientiamobile.wurfl.core.resource.exc.GenericNotDefinedException;
-import com.scientiamobile.wurfl.core.resource.exc.InexistentCapabilityException;
-import com.scientiamobile.wurfl.core.resource.exc.InexistentGroupException;
-import com.scientiamobile.wurfl.core.resource.exc.OrphanHierarchyException;
-import com.scientiamobile.wurfl.core.resource.exc.RedefinedDeviceException;
-import com.scientiamobile.wurfl.core.resource.exc.UserAgentNotUniqueException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import com.scientiamobile.wurfl.core.resource.exc.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
+import java.util.*;
+
 final class ModelDevicesConsistencyVerifier {
-   private static boolean ASSERTIONS_DISABLED = !ModelDevicesConsistencyVerifier.class.desiredAssertionStatus();
+   private static final boolean ASSERTIONS_DISABLED = !ModelDevicesConsistencyVerifier.class.desiredAssertionStatus();
 
    private ModelDevicesConsistencyVerifier() {
    }
@@ -106,8 +94,7 @@ final class ModelDevicesConsistencyVerifier {
          Set<String> deviceGroups = device.getGroups();
          Set<String> genericGroups = genericDevice.getGroups();
 
-         for(Object groupObj : deviceGroups) {
-            String group = (String)groupObj;
+         for(String group : deviceGroups) {
             if (!genericGroups.contains(group)) {
                throw new InexistentGroupException(device, group);
             }
@@ -127,8 +114,7 @@ final class ModelDevicesConsistencyVerifier {
          ModelDevice genericDevice = devices.getById("generic");
          Map<String, String> genericCapabilities = genericDevice.getCapabilities();
 
-         for(Object capabilityNameObj : device.getCapabilities().keySet()) {
-            String capabilityName = (String)capabilityNameObj;
+         for(String capabilityName : device.getCapabilities().keySet()) {
             if (!genericCapabilities.containsKey(capabilityName)) {
                throw new InexistentCapabilityException(device, capabilityName);
             }

@@ -73,7 +73,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
    }
 
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       System.currentTimeMillis();
       String action = request.getParameter("action");
       boolean handled = false;
@@ -173,7 +173,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                   matchResults.add(new MatchResultRow(matcherName, deviceInfo.getId(), normalizedUserAgent, originalUserAgent));
                }
 
-               log.info("BUCKETS (1/3): finished matching. Took " + (System.currentTimeMillis() - start) + " ms");
+               log.info("BUCKETS (1/3): finished matching. Took {} ms", System.currentTimeMillis() - start);
                log.info("BUCKETS (2/3): start sorting...");
                start = System.currentTimeMillis();
                Collections.sort(matchResults);
@@ -185,7 +185,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                   resultLines.add(row.toString());
                }
 
-               log.info("BUCKETS (3/3): finished building strings. Took " + (System.currentTimeMillis() - start) + " ms");
+               log.info("BUCKETS (3/3): finished building strings. Took {} ms", System.currentTimeMillis() - start);
                engineTargetField.set(wurflHolder, originalEngineTarget);
                matcherManagerField.setAccessible(originalMatcherManagerAccess);
                engineTargetField.setAccessible(originalEngineTargetAccess);
@@ -194,8 +194,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             holderField.setAccessible(originalHolderAccess);
             modelField.setAccessible(originalModelAccess);
 
-            for(Object lineObj : resultLines) {
-               out.println((String)lineObj);
+            for (String lineObj : resultLines) {
+               out.println(lineObj);
             }
 
             return true;
@@ -297,8 +297,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          if (capabilities != null && capabilities.length > 0) {
             HashMap<String, String> capabilityMap = new HashMap<>();
 
-            for(int i = 0; i < capabilities.length; ++i) {
-               String capabilityName = capabilities[i].trim();
+            for (String capability : capabilities) {
+               String capabilityName = capability.trim();
                capabilityMap.put(capabilityName, device.getCapability(capabilityName));
             }
             responseBody.capabilities = capabilityMap;
