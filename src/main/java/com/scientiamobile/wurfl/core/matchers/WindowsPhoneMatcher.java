@@ -16,6 +16,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
     private static final String GENERIC_MS_PHONE_OS7_5_DESKTOPMODE = "generic_ms_phone_os7_5_desktopmode";
     private static final String GENERIC_MS_PHONE_OS8_DESKTOPMODE = "generic_ms_phone_os8_desktopmode";
     private static final String GENERIC_MS_PHONE_OS10_DESKTOPMODE = "generic_ms_phone_os10_desktopmode";
+    private static final String WP_DESKTOP = "WPDesktop";
     private static final Map<String, String> VERSION_TO_DEVICE_ID = Map.ofEntries(
             Map.entry("10.0", "generic_ms_phone_os10"),
             Map.entry("8.1", "generic_ms_phone_os8_1"),
@@ -44,7 +45,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
     @Override
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
-        return !request._internalIsDesktopBrowser() && (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "WPDesktop", "ZuneWP7") || StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/") || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Windows Phone", "WindowsPhone", "NativeHost"));
+        return !request._internalIsDesktopBrowser() && (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, WP_DESKTOP, "ZuneWP7") || StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/") || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Windows Phone", "WindowsPhone", "NativeHost"));
     }
 
     @Override
@@ -74,8 +75,8 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
         if (StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/")) {
             return GENERIC_MS_PHONE_OS10_DESKTOPMODE;
         }
-        if (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "WPDesktop", "ZuneWP7")) {
-            if (cleanedDeviceUserAgent.contains("WPDesktop")) {
+        if (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, WP_DESKTOP, "ZuneWP7")) {
+            if (cleanedDeviceUserAgent.contains(WP_DESKTOP)) {
                 return GENERIC_MS_PHONE_OS8_DESKTOPMODE;
             }
             return cleanedDeviceUserAgent.contains("Trident/5.0") ? GENERIC_MS_PHONE_OS7_5_DESKTOPMODE : GENERIC_MS_PHONE_OS7_DESKTOPMODE;

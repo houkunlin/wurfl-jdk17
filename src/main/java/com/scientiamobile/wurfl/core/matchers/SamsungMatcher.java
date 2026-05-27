@@ -9,8 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 final class SamsungMatcher extends MatcherBase {
+    private static final String SAMSUNG = "Samsung";
     private static final String[] LEADING_SLASH_PREFIXES = new String[]{"SEC-", "SAMSUNG-", "SCH"};
-    private static final String[] LEADING_SPACE_PREFIXES = new String[]{"Samsung", "SPH", "SGH"};
+    private static final String[] LEADING_SPACE_PREFIXES = new String[]{SAMSUNG, "SPH", "SGH"};
     private static final String[] CAN_HANDLE_PREFIXES = new String[]{"SEC-", "SPH", "SGH", "SCH"};
 
     public SamsungMatcher(WURFLModel wurflModel) {
@@ -54,7 +55,7 @@ final class SamsungMatcher extends MatcherBase {
     @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
-        int samsungIndex = StringMatchUtils.indexOf(normalizedUserAgent, "Samsung");
+        int samsungIndex = StringMatchUtils.indexOf(normalizedUserAgent, SAMSUNG);
         int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "/", samsungIndex);
         String matchedUserAgent = StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
         return !StringUtils.isBlank(matchedUserAgent) ? this.getFilter().getIndex().getDeviceIdByUserAgent(matchedUserAgent) : "generic";
@@ -67,6 +68,6 @@ final class SamsungMatcher extends MatcherBase {
 
     @Override
     public String getBucketMatcherName() {
-        return "Samsung";
+        return SAMSUNG;
     }
 }

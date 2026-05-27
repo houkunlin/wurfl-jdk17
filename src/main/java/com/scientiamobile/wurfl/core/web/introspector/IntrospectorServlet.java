@@ -36,8 +36,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     public static final String ID = "id";
     public static final String CAPABILITY_MAP = "capabilityMap";
     public static final String X_WAP_PROFILE = "X-Wap-Profile";
-    public static final String X_WAP_PROFILE_lc = "x-wap-profile";
-    public static final String USER_AGENT_lc = "user-agent";
+    public static final String X_WAP_PROFILE_LC = "x-wap-profile";
+    public static final String USER_AGENT_LC = "user-agent";
     public static final String USER_AGENT = "User-Agent";
     public static final String DEVICE_STOCK_UA = "Device-Stock-UA";
     public static final String REQUEST = "Request";
@@ -248,7 +248,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         if (uaProfile != null && !uaProfile.trim().isEmpty()) {
             return uaProfile.trim();
         }
-        uaProfile = request.getHeader(X_WAP_PROFILE_lc);
+        uaProfile = request.getHeader(X_WAP_PROFILE_LC);
         if (uaProfile != null && !uaProfile.isEmpty()) {
             return uaProfile;
         }

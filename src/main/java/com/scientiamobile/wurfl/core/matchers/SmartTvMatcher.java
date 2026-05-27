@@ -15,6 +15,7 @@ final class SmartTvMatcher extends MatcherBase {
     private static final String TIZEN_2_4 = "generic_tizen_smarttv_2_4";
     private static final String TIZEN_2_3 = "generic_tizen_smarttv_2_3";
     private static final String TIZEN_GENERIC = "generic_tizen_smarttv";
+    private static final String GENERIC_SMARTTV_BROWSER = "generic_smarttv_browser";
 
     public SmartTvMatcher(WURFLModel wurflModel) {
         super(wurflModel);
@@ -23,7 +24,7 @@ final class SmartTvMatcher extends MatcherBase {
     @Override
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
-        requiredDeviceIds.add("generic_smarttv_browser");
+        requiredDeviceIds.add(GENERIC_SMARTTV_BROWSER);
         return requiredDeviceIds;
     }
 
@@ -49,7 +50,7 @@ final class SmartTvMatcher extends MatcherBase {
         } else if (normalizedUserAgent.contains("Tizen")) {
             return TIZEN_GENERIC;
         } else if (normalizedUserAgent.contains("SmartTV")) {
-            return "generic_smarttv_browser";
+            return GENERIC_SMARTTV_BROWSER;
         } else if (normalizedUserAgent.contains("GoogleTV")) {
             return GOOGLE_TV_BROWSER;
         } else if (normalizedUserAgent.contains("AppleTV")) {
@@ -57,7 +58,7 @@ final class SmartTvMatcher extends MatcherBase {
         } else if (normalizedUserAgent.contains("Boxee")) {
             return BOXEEBOX_BROWSER;
         } else {
-            return normalizedUserAgent.contains("CrKey") ? CHROMECAST : "generic_smarttv_browser";
+            return normalizedUserAgent.contains("CrKey") ? CHROMECAST : GENERIC_SMARTTV_BROWSER;
         }
     }
 

@@ -5,12 +5,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
+import static com.scientiamobile.wurfl.core.Constants.GENERIC;
+
 final class ModelDevicesConsistencyVerifier {
     private ModelDevicesConsistencyVerifier() {
     }
 
     public static void verifyModelDevices(ModelDevices devices) {
-        if (!devices.containsId("generic")) {
+        if (!devices.containsId(GENERIC)) {
             throw new GenericNotDefinedException();
         }
         HashMap<String, ModelDevice> deviceByUserAgent = new HashMap<>();
@@ -37,7 +39,7 @@ final class ModelDevicesConsistencyVerifier {
         ArrayList<ModelDevice> hierarchy = new ArrayList<>(10);
         hierarchy.add(devices.getById(currentDeviceId));
 
-        while (!"generic".equals(currentDeviceId)) {
+        while (!GENERIC.equals(currentDeviceId)) {
             currentDeviceId = devices.getById(currentDeviceId).getFallBack();
             assert !StringUtils.isEmpty(currentDeviceId);
 
@@ -58,7 +60,7 @@ final class ModelDevicesConsistencyVerifier {
     }
 
     private static void verifyGroups(ModelDevice device, ModelDevices devices) {
-        ModelDevice genericDevice = devices.getById("generic");
+        ModelDevice genericDevice = devices.getById(GENERIC);
         Set<String> genericGroups = genericDevice.getGroups();
         for (String group : device.getGroups()) {
             if (!genericGroups.contains(group)) {
@@ -68,9 +70,9 @@ final class ModelDevicesConsistencyVerifier {
     }
 
     private static void verifyCapabilities(ModelDevice device, ModelDevices devices) {
-        assert devices.containsId("generic") : "device do not containing generic";
+        assert devices.containsId(GENERIC) : "device do not containing generic";
 
-        ModelDevice genericDevice = devices.getById("generic");
+        ModelDevice genericDevice = devices.getById(GENERIC);
         Map<String, String> genericCapabilities = genericDevice.getCapabilities();
         for (String capabilityName : device.getCapabilities().keySet()) {
             if (!genericCapabilities.containsKey(capabilityName)) {

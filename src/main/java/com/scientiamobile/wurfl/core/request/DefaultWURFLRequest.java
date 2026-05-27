@@ -16,8 +16,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.scientiamobile.wurfl.core.Constants.USER_AGENT;
+
 public class DefaultWURFLRequest implements WURFLRequest, Serializable {
-    private static final String[] USER_AGENT_HEADERS = new String[]{"Device-Stock-UA", "X-OperaMini-Phone-UA", "X-UCBrowser-Device-UA", "User-Agent"};
+    private static final String[] USER_AGENT_HEADERS = new String[]{"Device-Stock-UA", "X-OperaMini-Phone-UA", "X-UCBrowser-Device-UA", USER_AGENT};
     @Serial
     private static final long serialVersionUID = 100L;
     private final EngineTarget engineTarget;
@@ -58,7 +60,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         this.cachedIsEmailClient = null;
         this.userAgentPriority = userAgentPriority;
         this.engineTarget = engineTarget;
-        this.browserUserAgent = truncateUserAgent(headers.get("User-Agent"));
+        this.browserUserAgent = truncateUserAgent(headers.get(USER_AGENT));
         if (this.browserUserAgent == null && userAgent != null) {
             this.browserUserAgent = truncateUserAgent(userAgent);
         }
@@ -87,7 +89,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         this.cachedIsEmailClient = null;
         this.userAgentPriority = userAgentPriority;
         this.engineTarget = engineTarget;
-        this.browserUserAgent = truncateUserAgent(headerProvider.getHeader("User-Agent"));
+        this.browserUserAgent = truncateUserAgent(headerProvider.getHeader(USER_AGENT));
         this.deviceUserAgent = getFirstAvailableUserAgent(headerProvider);
         if (this.deviceUserAgent == null) {
             this.deviceUserAgent = this.browserUserAgent;

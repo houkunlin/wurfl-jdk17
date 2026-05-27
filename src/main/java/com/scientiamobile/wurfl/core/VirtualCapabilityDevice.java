@@ -21,6 +21,8 @@ public class VirtualCapabilityDevice implements Serializable {
     private static final Pattern INTEL_MAC_OS_X_VERSION_PATTERN = Pattern.compile("Intel Mac OS X ([0-9\\._]+)");
     private static final Pattern MAC_OS_X_VERSION_PATTERN = Pattern.compile("MacOS X ([0-9\\._]+)");
     private static final Pattern DOT_SPLIT_PATTERN = Pattern.compile("\\.");
+    private static final String MAC_OS_X = "Mac OS X";
+    private static final String LINUX = "Linux";
     private static final Map<String, String> windowsNtVersionToName = Map.ofEntries(
             Map.entry("4.0", "NT 4.0"), Map.entry("5.0", "2000"),
             Map.entry("5.1", "XP"), Map.entry("5.2", "XP"),
@@ -37,8 +39,8 @@ public class VirtualCapabilityDevice implements Serializable {
     private static final Set<String> knownOsNames = Set.of(
             "Windows CE", "Windows Mobile", "Windows Phone", "Nintendo",
             "Android", "iOS", "Tizen", "Nokia Series 40", "Symbian",
-            "BlackBerry", "RIM Tablet OS", "Bada", "webOS", "Linux",
-            "X11", "Ubuntu", "Fedora", "Mac OS X", "Fire OS"
+            "BlackBerry", "RIM Tablet OS", "Bada", "webOS", LINUX,
+            "X11", "Ubuntu", "Fedora", MAC_OS_X, "Fire OS"
     );
 
     private final NameVersionPair browserPair;
@@ -143,16 +145,16 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     private boolean tryMatchMacVersion() {
-        if (this.osPair.matchAndSetGroup(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
+        if (this.osPair.matchAndSetGroup(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, MAC_OS_X, 1)) {
             return replaceUnderscoreInVersion();
         }
-        if (this.osPair.matchAndSetGroup(MAC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
+        if (this.osPair.matchAndSetGroup(MAC_OS_X_VERSION_PATTERN, this.deviceUserAgent, MAC_OS_X, 1)) {
             return replaceUnderscoreInVersion();
         }
-        if (this.osPair.matchAndSet(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", null)) {
+        if (this.osPair.matchAndSet(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, MAC_OS_X, null)) {
             return true;
         }
-        if (this.osPair.matchAndSetGroup(INTEL_MAC_OS_X_VERSION_PATTERN, this.deviceUserAgent, "Mac OS X", 1)) {
+        if (this.osPair.matchAndSetGroup(INTEL_MAC_OS_X_VERSION_PATTERN, this.deviceUserAgent, MAC_OS_X, 1)) {
             if (this.osPair.getVersion() != null) {
                 this.osPair.setVersion(this.osPair.getVersion().replace("_", "."));
                 if (isMacOS10OrLater()) {
@@ -179,11 +181,11 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     private void tryFallbackOs() {
-        if (this.osPair.containsAndSetName(this.deviceUserAgent, "Mac_PowerPC", "Mac OS X")) return;
+        if (this.osPair.containsAndSetName(this.deviceUserAgent, "Mac_PowerPC", MAC_OS_X)) return;
         if (this.osPair.containsAndSetName(this.deviceUserAgent, "CrOS", "Chrome OS")) return;
 
-        if (this.osPair.getName() != null && (this.osPair.getName().contains("Linux") || this.osPair.getName().contains("X11"))) {
-            this.osPair.setName("Linux");
+        if (this.osPair.getName() != null && (this.osPair.getName().contains(LINUX) || this.osPair.getName().contains("X11"))) {
+            this.osPair.setName(LINUX);
         }
         if (!StringUtils.isNotEmpty(this.osPair.getName())) {
             return;
@@ -195,8 +197,8 @@ public class VirtualCapabilityDevice implements Serializable {
         }
         this.osPair.setName("");
         this.osPair.setVersion("");
-        if (StringMatchUtils.indexOf(this.deviceUserAgent, "Linux") >= 0 || StringMatchUtils.indexOf(this.deviceUserAgent, "X11") >= 0) {
-            this.osPair.setName("Linux");
+        if (StringMatchUtils.indexOf(this.deviceUserAgent, LINUX) >= 0 || StringMatchUtils.indexOf(this.deviceUserAgent, "X11") >= 0) {
+            this.osPair.setName(LINUX);
         }
     }
 
