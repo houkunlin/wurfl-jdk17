@@ -9,7 +9,7 @@ public enum Frequency {
    private long value;
 
    private Frequency(int value) {
-      this.value = (long)value;
+      this.value = value;
    }
 
    public final long value() {

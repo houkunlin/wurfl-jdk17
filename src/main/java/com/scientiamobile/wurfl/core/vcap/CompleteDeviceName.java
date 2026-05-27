@@ -12,12 +12,12 @@ public class CompleteDeviceName implements VirtualCapabilityEvaluator, Serializa
       StringBuilder builder = new StringBuilder(device.getCapability("brand_name"));
       String namePart;
       namePart = device.getCapability("model_name");
-      if (namePart.length() > 0) {
+      if (!namePart.isEmpty()) {
          builder.append(" ").append(namePart);
       }
 
       namePart = device.getCapability("marketing_name");
-      if (namePart.length() > 0) {
+      if (!namePart.isEmpty()) {
          builder.append(" (").append(namePart).append(")");
       }
 

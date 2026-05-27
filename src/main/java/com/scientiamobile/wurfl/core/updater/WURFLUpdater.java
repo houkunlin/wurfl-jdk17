@@ -4,15 +4,16 @@ import com.scientiamobile.wurfl.core.WURFLEngine;
 import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.updater.exc.BadWurflExtensionException;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class WURFLUpdater {
    private static final Logger log = LoggerFactory.getLogger(WURFLUpdater.class);
@@ -33,7 +34,7 @@ public class WURFLUpdater {
    }
 
    public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl) {
-      
+
       this.frequency = Frequency.DAILY;
       log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
       this.wurflEngine = wurflEngine;
@@ -49,7 +50,7 @@ public class WURFLUpdater {
    }
 
    public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl, ProxySettings proxySettings) {
-      
+
       this.frequency = Frequency.DAILY;
       log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
       this.wurflEngine = wurflEngine;
@@ -73,7 +74,7 @@ public class WURFLUpdater {
    }
 
    public List<UpdateResult> getLastPeriodicUpdateResults() {
-      return this.periodicUpdateTask != null ? this.periodicUpdateTask.getLastResults() : new ArrayList<UpdateResult>(0);
+      return this.periodicUpdateTask != null ? this.periodicUpdateTask.getLastResults() : new ArrayList<>(0);
    }
 
    public void setConnectionTimeoutMs(Integer connectionTimeoutMs) {

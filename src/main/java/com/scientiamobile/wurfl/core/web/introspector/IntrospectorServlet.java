@@ -1,38 +1,28 @@
 package com.scientiamobile.wurfl.core.web.introspector;
 
-import com.scientiamobile.wurfl.core.Device;
-import com.scientiamobile.wurfl.core.DeviceInfo;
-import com.scientiamobile.wurfl.core.EngineTarget;
-import com.scientiamobile.wurfl.core.GeneralWURFLEngine;
-import com.scientiamobile.wurfl.core.UserAgentPriority;
-import com.scientiamobile.wurfl.core.WURFLEngine;
+import com.scientiamobile.wurfl.core.*;
 import com.scientiamobile.wurfl.core.matchers.MatcherManager;
 import com.scientiamobile.wurfl.core.request.DefaultWURFLRequestFactory;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import com.scientiamobile.wurfl.core.web.WurflWebConstants;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
-import java.util.regex.Pattern;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-import tools.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class IntrospectorServlet extends HttpServlet implements WurflWebConstants {
    private static final long serialVersionUID = 1L;
@@ -71,15 +61,18 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
       IntrospectorServlet.wurflEngine = wurflEngine;
    }
 
+   @Override
    public void init(ServletConfig config) throws ServletException {
       super.init(config);
       this.getServletContext().getServerInfo();
    }
 
+   @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       this.doPost(request, response);
    }
 
+   @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       System.currentTimeMillis();
       String action = request.getParameter("action");
@@ -227,14 +220,14 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
       }
    }
 
-   private boolean handleRequest(HttpServletRequest request, PrintWriter out) throws IOException {
+   private boolean handleRequest(HttpServletRequest request, PrintWriter out) {
       if (wurflEngine == null) {
          writeMissingEngineError(out);
          return true;
       } else {
          String uaProfile;
          uaProfile = request.getParameter("uaprof");
-         if (uaProfile == null || uaProfile.trim().length() == 0) {
+         if (uaProfile == null || uaProfile.trim().isEmpty()) {
             uaProfile = request.getHeader("x-wap-profile");
          }
 
@@ -248,7 +241,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             Enumeration<String> headerNames = request.getHeaderNames();
 
             while(headerNames.hasMoreElements()) {
-               String headerName = headerNames.nextElement().toString();
+               String headerName = headerNames.nextElement();
                if ("User-Agent".equalsIgnoreCase(headerName)) {
                   headers.put("User-Agent", request.getHeader(headerName));
                } else {
@@ -261,7 +254,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          } else {
             String userAgent;
             userAgent = request.getParameter("ua");
-         if (userAgent == null || userAgent.trim().length() <= 0) {
+         if (userAgent == null || userAgent.trim().isEmpty()) {
                userAgent = request.getHeader("User-Agent");
             }
 
@@ -271,13 +264,13 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
             String rawHeaders;
             rawHeaders = request.getParameter("headers");
-         if (rawHeaders != null && rawHeaders.trim().length() > 0) {
+         if (rawHeaders != null && !rawHeaders.trim().isEmpty()) {
                rawHeaders = rawHeaders.trim();
                String[] headerPairs = LINE_BREAK_PATTERN.matcher(rawHeaders).replaceAll("|").split("\\|");
 
                for(int i = 0; i < headerPairs.length; ++i) {
                   String headerPair = headerPairs[i];
-                  if (headerPair.indexOf(":") >= 0) {
+                  if (headerPair.contains(":")) {
                      String[] headerKeyValue = headerPair.split(":");
                      headerOnlyRequest.addHeader(headerKeyValue[0].trim(), headerKeyValue[1].trim());
                   }
@@ -291,13 +284,13 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
          String rawCapabilities = request.getParameter("capabilities");
          String[] capabilities = null;
-         if (rawCapabilities != null && rawCapabilities.trim().length() > 0) {
+         if (rawCapabilities != null && !rawCapabilities.trim().isEmpty()) {
             rawCapabilities = rawCapabilities.trim();
             capabilities = LINE_BREAK_PATTERN.matcher(rawCapabilities).replaceAll("|").split("\\|");
          }
 
          IntrospectorRequestResponse responseBody = new IntrospectorRequestResponse();
-         Device device = wurflEngine.getDeviceForRequest((HttpServletRequest)headerOnlyRequest);
+         Device device = wurflEngine.getDeviceForRequest(headerOnlyRequest);
          responseBody.deviceId = device.getId();
          responseBody.userAgent = headerOnlyRequest.getHeader("User-Agent");
          responseBody.requestType = request.getParameter("form") == null ? "request" : "form";

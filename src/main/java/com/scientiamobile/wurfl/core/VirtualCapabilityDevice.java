@@ -2,7 +2,8 @@ package com.scientiamobile.wurfl.core;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
-import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 
 public class VirtualCapabilityDevice implements Serializable {
    private static final long serialVersionUID = -9083698933173727805L;

@@ -12,7 +12,7 @@ public class DeviceName implements VirtualCapabilityEvaluator, Serializable {
       StringBuilder builder = new StringBuilder(device.getCapability("brand_name"));
       String namePart;
       namePart = device.getCapability("marketing_name");
-      if (namePart.length() == 0) {
+      if (namePart.isEmpty()) {
          namePart = device.getCapability("model_name");
       }
 
