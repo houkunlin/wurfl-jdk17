@@ -3,8 +3,7 @@ package com.scientiamobile.wurfl.core.resource.exc;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 public abstract class UserAgentConsistencyException extends DeviceConsistencyException {
-    private static final long serialVersionUID = 10L;
-    private String userAgent;
+    private final String userAgent;
 
     protected UserAgentConsistencyException(ModelDevice device, String userAgent, String message) {
         super(device, message);

@@ -3,12 +3,9 @@ package com.scientiamobile.wurfl.core.resource.exc;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-import java.io.Serial;
 import java.util.List;
 
 public abstract class HierarchyConsistencyException extends WURFLConsistencyException {
-    @Serial
-    private static final long serialVersionUID = 10L;
     private final List<ModelDevice> hierarchy;
 
     protected HierarchyConsistencyException(List<ModelDevice> hierarchy, String message) {

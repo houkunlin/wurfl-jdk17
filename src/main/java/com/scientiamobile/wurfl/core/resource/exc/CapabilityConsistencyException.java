@@ -3,8 +3,7 @@ package com.scientiamobile.wurfl.core.resource.exc;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 public abstract class CapabilityConsistencyException extends DeviceConsistencyException {
-    private static final long serialVersionUID = 10L;
-    private String capabilityName;
+   private final String capabilityName;
 
     protected CapabilityConsistencyException(ModelDevice device, String capabilityName) {
         super(device, "Device: " + device.getID() + " Capability: " + capabilityName + " consistency error");

@@ -3,7 +3,6 @@ package com.scientiamobile.wurfl.core.resource.exc;
 import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 
 public abstract class WURFLConsistencyException extends WURFLRuntimeException {
-    private static final long serialVersionUID = 10L;
 
     protected WURFLConsistencyException() {
         super("WURFL consistency exception");

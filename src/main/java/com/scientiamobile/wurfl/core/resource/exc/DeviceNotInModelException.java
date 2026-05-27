@@ -4,7 +4,6 @@ import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 public class DeviceNotInModelException extends WURFLRuntimeException {
-    private static final long serialVersionUID = 10L;
     private final ModelDevice modelDevice;
 
     public DeviceNotInModelException(ModelDevice modelDevice) {
