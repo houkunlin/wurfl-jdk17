@@ -55,8 +55,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     private static String apiVersion;
 
     static {
-        String resourcePath = "/META-INF/maven/com.scientiamobile.wurfl/wurfl/pom.properties";
-        InputStream pomPropertiesStream = IntrospectorServlet.class.getResourceAsStream(resourcePath);
+        InputStream pomPropertiesStream = IntrospectorServlet.class.getResourceAsStream("/META-INF/maven/com.scientiamobile.wurfl/wurfl/pom.properties");
         Properties pomProperties = new Properties();
 
         try {
@@ -106,7 +105,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.doPost(request, response);
     }
 
@@ -152,13 +151,13 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         out.println(json);
     }
 
-    private boolean writeBuckets(PrintWriter out) {
+    private void writeBuckets(PrintWriter out) {
         if (wurflEngine == null) {
             writeMissingEngineError(out);
-            return true;
+            return;
         }
         if (!(wurflEngine instanceof GeneralWURFLEngine engine)) {
-            return false;
+            return;
         }
         try {
             out.println("WURFL Java API " + apiVersion);
@@ -168,10 +167,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             for (String lineObj : resultLines) {
                 out.println(lineObj);
             }
-            return true;
         } catch (RuntimeException e) {
             log.debug("{} - {}", e.getClass().getSimpleName(), e.getMessage());
-            return false;
         }
     }
 

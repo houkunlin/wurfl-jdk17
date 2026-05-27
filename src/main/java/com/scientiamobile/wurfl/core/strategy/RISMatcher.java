@@ -13,14 +13,14 @@ public final class RISMatcher {
         LoggerFactory.getLogger(RISMatcher.class);
     }
 
-    private static int commonPrefixLength(String firstValue, String secondValue) {
-        int minLength = Math.min(firstValue.length(), secondValue.length());
-
-        int index = 0;
-        for (; index < minLength && firstValue.charAt(index) == secondValue.charAt(index); ++index) {
+    private static int commonPrefixLength(String first, String second) {
+        int shorter = Math.min(first.length(), second.length());
+        for (int i = 0; i < shorter; i++) {
+            if (first.charAt(i) != second.charAt(i)) {
+                return i;
+            }
         }
-
-        return index;
+        return shorter;
     }
 
     public String getName() {
