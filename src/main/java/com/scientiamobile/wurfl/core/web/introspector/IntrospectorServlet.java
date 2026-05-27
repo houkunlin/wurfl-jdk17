@@ -5,7 +5,6 @@ import com.scientiamobile.wurfl.core.matchers.MatcherManager;
 import com.scientiamobile.wurfl.core.request.DefaultWURFLRequestFactory;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
-import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import com.scientiamobile.wurfl.core.web.WurflWebConstants;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -20,7 +19,6 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -87,20 +85,6 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         IntrospectorServlet.wurflEngine = wurflEngine;
     }
 
-    private static String readStringField(String fieldName, Object target) {
-        try {
-            Field field;
-            field = target.getClass().getDeclaredField(fieldName);
-            boolean originalAccess = field.canAccess(target);
-            field.setAccessible(true);
-            String value = (String) field.get(target);
-            field.setAccessible(originalAccess);
-            return value;
-        } catch (ReflectiveOperationException | RuntimeException e) {
-            return null;
-        }
-    }
-
     private static void writeMissingEngineError(PrintWriter out) {
         StringBuilder message;
         message = new StringBuilder();
@@ -112,7 +96,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         message.append("to provide the servlet with the running WURFL instance.\n");
         message.append("\n");
         message.append("For more details, see documentation.\n");
-        out.println(message.toString());
+        out.println(message);
     }
 
     @Override
@@ -246,88 +230,99 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         if (wurflEngine == null) {
             writeMissingEngineError(out);
             return true;
-        } else {
-            String uaProfile;
-            uaProfile = request.getParameter("uaprof");
-            if (uaProfile == null || uaProfile.trim().isEmpty()) {
-                uaProfile = request.getHeader("x-wap-profile");
-            }
-
-            if (uaProfile == null) {
-                uaProfile = request.getHeader("X-Wap-Profile");
-            }
-
-            HeaderOnlyHttpServletRequest headerOnlyRequest = new HeaderOnlyHttpServletRequest();
-            if (request.getParameter("form") == null) {
-                HashMap<String, String> headers = new HashMap<>();
-                Enumeration<String> headerNames = request.getHeaderNames();
-
-                while (headerNames.hasMoreElements()) {
-                    String headerName = headerNames.nextElement();
-                    if ("User-Agent".equalsIgnoreCase(headerName)) {
-                        headers.put("User-Agent", request.getHeader(headerName));
-                    } else {
-                        headers.put(headerName, request.getHeader(headerName));
-                    }
-                }
-
-                headerOnlyRequest.addHeaders(headers);
-                UserAgentUtils.getUserAgent(request);
-            } else {
-                String userAgent;
-                userAgent = request.getParameter("ua");
-                if (userAgent == null || userAgent.trim().isEmpty()) {
-                    userAgent = request.getHeader("User-Agent");
-                }
-
-                if (userAgent != null) {
-                    headerOnlyRequest.addHeader("User-Agent", userAgent);
-                }
-
-                String rawHeaders;
-                rawHeaders = request.getParameter("headers");
-                if (rawHeaders != null && !rawHeaders.trim().isEmpty()) {
-                    rawHeaders = rawHeaders.trim();
-                    String[] headerPairs = LINE_BREAK_PATTERN.matcher(rawHeaders).replaceAll("|").split("\\|");
-
-                    for (String headerPair : headerPairs) {
-                        if (headerPair.contains(":")) {
-                            String[] headerKeyValue = headerPair.split(":");
-                            headerOnlyRequest.addHeader(headerKeyValue[0].trim(), headerKeyValue[1].trim());
-                        }
-                    }
-                }
-            }
-
-            if (uaProfile != null) {
-                headerOnlyRequest.addHeader("X-Wap-Profile", uaProfile);
-            }
-
-            String rawCapabilities = request.getParameter("capabilities");
-            String[] capabilities = null;
-            if (rawCapabilities != null && !rawCapabilities.trim().isEmpty()) {
-                rawCapabilities = rawCapabilities.trim();
-                capabilities = LINE_BREAK_PATTERN.matcher(rawCapabilities).replaceAll("|").split("\\|");
-            }
-
-            IntrospectorRequestResponse responseBody = new IntrospectorRequestResponse();
-            Device device = wurflEngine.getDeviceForRequest(headerOnlyRequest);
-            responseBody.deviceId = device.getId();
-            responseBody.userAgent = headerOnlyRequest.getHeader("User-Agent");
-            responseBody.requestType = request.getParameter("form") == null ? "request" : "form";
-            if (capabilities != null && capabilities.length > 0) {
-                HashMap<String, String> capabilityMap = new HashMap<>();
-
-                for (String capability : capabilities) {
-                    String capabilityName = capability.trim();
-                    capabilityMap.put(capabilityName, device.getCapability(capabilityName));
-                }
-                responseBody.capabilities = capabilityMap;
-            }
-
-            String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
-            out.println(json);
-            return true;
         }
+        HeaderOnlyHttpServletRequest headerOnlyRequest = buildHeaderOnlyRequest(request);
+        String rawCapabilities = request.getParameter("capabilities");
+        String[] capabilities = parseCapabilities(rawCapabilities);
+        Device device = wurflEngine.getDeviceForRequest(headerOnlyRequest);
+        IntrospectorRequestResponse responseBody = new IntrospectorRequestResponse();
+        responseBody.deviceId = device.getId();
+        responseBody.userAgent = headerOnlyRequest.getHeader("User-Agent");
+        responseBody.requestType = request.getParameter("form") == null ? "request" : "form";
+        if (capabilities != null && capabilities.length > 0) {
+            HashMap<String, String> capabilityMap = new HashMap<>();
+            for (String capability : capabilities) {
+                capabilityMap.put(capability.trim(), device.getCapability(capability.trim()));
+            }
+            responseBody.capabilities = capabilityMap;
+        }
+        String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
+        out.println(json);
+        return true;
+    }
+
+    private static String resolveUaProfile(HttpServletRequest request) {
+        String uaProfile = request.getParameter("uaprof");
+        if (uaProfile != null && !uaProfile.trim().isEmpty()) {
+            return uaProfile.trim();
+        }
+        uaProfile = request.getHeader("x-wap-profile");
+        if (uaProfile != null && !uaProfile.isEmpty()) {
+            return uaProfile;
+        }
+        return request.getHeader("X-Wap-Profile");
+    }
+
+    private static HeaderOnlyHttpServletRequest buildHeaderOnlyRequest(HttpServletRequest request) {
+        HeaderOnlyHttpServletRequest headerOnlyRequest = new HeaderOnlyHttpServletRequest();
+        if (request.getParameter("form") == null) {
+            copyAllHeaders(request, headerOnlyRequest);
+        } else {
+            addFormHeaders(request, headerOnlyRequest);
+        }
+        String uaProfile = resolveUaProfile(request);
+        if (uaProfile != null) {
+            headerOnlyRequest.addHeader("X-Wap-Profile", uaProfile);
+        }
+        return headerOnlyRequest;
+    }
+
+    private static void copyAllHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
+        HashMap<String, String> headers = new HashMap<>();
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            headers.put(headerName, request.getHeader(headerName));
+        }
+        headerOnlyRequest.addHeaders(headers);
+    }
+
+    private static void addFormHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
+        String userAgent = resolveFormUserAgent(request);
+        if (userAgent != null) {
+            headerOnlyRequest.addHeader("User-Agent", userAgent);
+        }
+        String rawHeaders = request.getParameter("headers");
+        if (rawHeaders != null && !rawHeaders.trim().isEmpty()) {
+            addHeaderPairs(rawHeaders.trim(), headerOnlyRequest);
+        }
+    }
+
+    private static String resolveFormUserAgent(HttpServletRequest request) {
+        String userAgent = request.getParameter("ua");
+        if (userAgent != null && !userAgent.trim().isEmpty()) {
+            return userAgent.trim();
+        }
+        return request.getHeader("User-Agent");
+    }
+
+    private static void addHeaderPairs(String rawHeaders, HeaderOnlyHttpServletRequest headerOnlyRequest) {
+        String[] headerPairs = LINE_BREAK_PATTERN.matcher(rawHeaders).replaceAll("|").split("\\|");
+        for (String headerPair : headerPairs) {
+            int colonIndex = headerPair.indexOf(':');
+            if (colonIndex > 0) {
+                headerOnlyRequest.addHeader(
+                    headerPair.substring(0, colonIndex).trim(),
+                    headerPair.substring(colonIndex + 1).trim()
+                );
+            }
+        }
+    }
+
+    private static String[] parseCapabilities(String rawCapabilities) {
+        if (rawCapabilities == null || rawCapabilities.trim().isEmpty()) {
+            return null;
+        }
+        return LINE_BREAK_PATTERN.matcher(rawCapabilities.trim()).replaceAll("|").split("\\|");
     }
 }
