@@ -5,10 +5,14 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 public class DeviceNotInModelException extends WURFLRuntimeException {
    private static final long serialVersionUID = 10L;
-   private ModelDevice modelDevice;
+   private final ModelDevice modelDevice;
 
    public DeviceNotInModelException(ModelDevice modelDevice) {
-      super((new StringBuilder("Device: ")).append(modelDevice.getID()).append(" is not managed by model").toString());
+      this(modelDevice, null);
+   }
+
+   public DeviceNotInModelException(ModelDevice modelDevice, Throwable cause) {
+      super("Device: " + modelDevice.getID() + " is not managed by model", cause);
       this.modelDevice = modelDevice;
    }
 

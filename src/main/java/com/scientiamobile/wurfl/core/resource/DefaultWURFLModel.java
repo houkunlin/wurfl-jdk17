@@ -195,7 +195,7 @@ public class DefaultWURFLModel implements WURFLModel {
          ModelDevice fallbackDevice = this.getDeviceById(device.getFallBack());
          return fallbackDevice;
       } catch (DeviceNotDefinedException e) {
-         throw new DeviceNotInModelException(device);
+         throw new DeviceNotInModelException(device, e);
       }
    }
 

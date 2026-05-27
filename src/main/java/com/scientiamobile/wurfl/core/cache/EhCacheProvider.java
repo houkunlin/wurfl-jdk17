@@ -3,8 +3,11 @@ package com.scientiamobile.wurfl.core.cache;
 import com.scientiamobile.wurfl.core.InternalDevice;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EhCacheProvider implements CacheProvider {
+   private static final Logger log = LoggerFactory.getLogger(EhCacheProvider.class);
    private Cache cache;
 
    public EhCacheProvider() {
@@ -28,9 +31,9 @@ public class EhCacheProvider implements CacheProvider {
 
    @Override
    public void clear() {
-      logger.info("Cache size: " + this.cache.getSize());
+      log.info("Cache size: {}", this.cache.getSize());
       this.cache.removeAll();
-      logger.info("Cache erased. size: " + this.cache.getSize());
+      log.info("Cache erased. size: {}", this.cache.getSize());
    }
 
    @Override

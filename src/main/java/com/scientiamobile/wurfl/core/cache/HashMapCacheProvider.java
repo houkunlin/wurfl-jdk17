@@ -62,7 +62,7 @@ public class HashMapCacheProvider implements CacheProvider {
 
    @Override
    public void clear() {
-      logger.info("Cache size: " + this.cache.size());
+      logger.info("Cache size: {}", this.cache.size());
       this.cache.clear();
       logger.info("Cache erased");
    }

@@ -4,8 +4,11 @@ import com.scientiamobile.wurfl.core.InternalDevice;
 import java.util.Map;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.map.LRUMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DoubleLRUMapCacheProvider implements CacheProvider {
+   private static final Logger log = LoggerFactory.getLogger(DoubleLRUMapCacheProvider.class);
    private Map<String, String> deviceIdByUserAgent;
    private Map<String, InternalDevice> deviceById;
 
@@ -25,12 +28,12 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
 
    @Override
    public void clear() {
-      logger.info("UA cache: size " + this.deviceIdByUserAgent.size());
+      log.info("UA cache: size {}", this.deviceIdByUserAgent.size());
       this.deviceIdByUserAgent.clear();
-      logger.info("UA cache cleared: size " + this.deviceIdByUserAgent.size());
-      logger.info("device cache: size " + this.deviceById.size());
+      log.info("UA cache cleared: size {}", this.deviceIdByUserAgent.size());
+      log.info("device cache: size {}", this.deviceById.size());
       this.deviceById.clear();
-      logger.info("device cache cleared: size " + this.deviceById.size());
+      log.info("device cache cleared: size {}", this.deviceById.size());
    }
 
    @Override
@@ -46,7 +49,7 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
          this.deviceById.put(device.getId(), device);
          this.deviceIdByUserAgent.put(userAgent, device.getId());
       } catch (RuntimeException e) {
-         logger.error("Could not cache " + userAgent);
+         log.error("Could not cache {}", userAgent, e);
       }
    }
 
