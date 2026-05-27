@@ -6,7 +6,6 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,18 +16,15 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
     private static final String GENERIC_MS_PHONE_OS7_5_DESKTOPMODE = "generic_ms_phone_os7_5_desktopmode";
     private static final String GENERIC_MS_PHONE_OS8_DESKTOPMODE = "generic_ms_phone_os8_desktopmode";
     private static final String GENERIC_MS_PHONE_OS10_DESKTOPMODE = "generic_ms_phone_os10_desktopmode";
-    private static final Map<String, String> VERSION_TO_DEVICE_ID;
-
-    static {
-        VERSION_TO_DEVICE_ID = new HashMap<>();
-        VERSION_TO_DEVICE_ID.put("10.0", "generic_ms_phone_os10");
-        VERSION_TO_DEVICE_ID.put("8.1", "generic_ms_phone_os8_1");
-        VERSION_TO_DEVICE_ID.put("8.0", "generic_ms_phone_os8");
-        VERSION_TO_DEVICE_ID.put("7.8", "generic_ms_phone_os7_8");
-        VERSION_TO_DEVICE_ID.put("7.5", "generic_ms_phone_os7_5");
-        VERSION_TO_DEVICE_ID.put("7.0", GENERIC_MS_PHONE_OS7);
-        VERSION_TO_DEVICE_ID.put("6.5", "generic_ms_winmo6_5");
-    }
+    private static final Map<String, String> VERSION_TO_DEVICE_ID = Map.ofEntries(
+            Map.entry("10.0", "generic_ms_phone_os10"),
+            Map.entry("8.1", "generic_ms_phone_os8_1"),
+            Map.entry("8.0", "generic_ms_phone_os8"),
+            Map.entry("7.8", "generic_ms_phone_os7_8"),
+            Map.entry("7.5", "generic_ms_phone_os7_5"),
+            Map.entry("7.0", GENERIC_MS_PHONE_OS7),
+            Map.entry("6.5", "generic_ms_winmo6_5")
+    );
 
     public WindowsPhoneMatcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
         super(userAgentNormalizer, wurflModel);
@@ -36,14 +32,13 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
 
     @Override
     protected Set<String> getRequiredDeviceIds() {
-        HashSet<String> requiredDeviceIds = new HashSet<>();
-        requiredDeviceIds.addAll(VERSION_TO_DEVICE_ID.values());
-        requiredDeviceIds.add(GENERIC_MS_PHONE_OS7_DESKTOPMODE);
-        requiredDeviceIds.add(GENERIC_MS_PHONE_OS7_5_DESKTOPMODE);
-        requiredDeviceIds.add(GENERIC_MS_PHONE_OS8_DESKTOPMODE);
-        requiredDeviceIds.add(GENERIC_MS_PHONE_OS10_DESKTOPMODE);
-        requiredDeviceIds.add("generic");
-        return requiredDeviceIds;
+        HashSet<String> ids = new HashSet<>(VERSION_TO_DEVICE_ID.values());
+        ids.add(GENERIC_MS_PHONE_OS7_DESKTOPMODE);
+        ids.add(GENERIC_MS_PHONE_OS7_5_DESKTOPMODE);
+        ids.add(GENERIC_MS_PHONE_OS8_DESKTOPMODE);
+        ids.add(GENERIC_MS_PHONE_OS10_DESKTOPMODE);
+        ids.add("generic");
+        return ids;
     }
 
     @Override
@@ -55,46 +50,42 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
     @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
-        boolean containsSeparator = normalizedUserAgent.contains("---");
-        if (!containsSeparator || !StringMatchUtils.containsAnyOf(normalizedUserAgent, "WPDesktop", "ZuneWP7") && !StringMatchUtils.containsAllOf(normalizedUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/") && !UserAgentUtils.isWindowsPhoneAdClient(request.getCleanedDeviceUserAgent())) {
-            return !containsSeparator && normalizedUserAgent.contains("NativeHost") ? GENERIC_MS_PHONE_OS7 : super.applyConclusiveMatch(request);
-        } else {
+        if (normalizedUserAgent.contains("---")) {
             return super.applyConclusiveMatch(request);
         }
+        if (normalizedUserAgent.contains("NativeHost")) {
+            return GENERIC_MS_PHONE_OS7;
+        }
+        return super.applyConclusiveMatch(request);
     }
 
     @Override
     protected String risMatch(String userAgent) {
-        int index;
-        index = userAgent.indexOf("---");
-        return index >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, index + 3) : null;
+        int index = userAgent.indexOf("---");
+        if (index < 0) {
+            return null;
+        }
+        return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, index + 3);
     }
 
     @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
-        boolean isDesktopMode = StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "WPDesktop", "ZuneWP7");
-        boolean isArmEdge = false;
-        if (!isDesktopMode) {
-            isArmEdge = StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/");
-        }
-
-        if (!isDesktopMode && !isArmEdge) {
-            String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(cleanedDeviceUserAgent);
-            String deviceId;
-            deviceId = VERSION_TO_DEVICE_ID.get(windowsPhoneVersion);
-            if (deviceId != null) {
-                return deviceId;
-            } else {
-                return UserAgentUtils.isWindowsPhoneAdClient(cleanedDeviceUserAgent) ? GENERIC_MS_PHONE_OS7 : "generic";
-            }
-        } else if (isArmEdge) {
+        if (StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/")) {
             return GENERIC_MS_PHONE_OS10_DESKTOPMODE;
-        } else if (cleanedDeviceUserAgent.contains("WPDesktop")) {
-            return GENERIC_MS_PHONE_OS8_DESKTOPMODE;
-        } else {
+        }
+        if (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "WPDesktop", "ZuneWP7")) {
+            if (cleanedDeviceUserAgent.contains("WPDesktop")) {
+                return GENERIC_MS_PHONE_OS8_DESKTOPMODE;
+            }
             return cleanedDeviceUserAgent.contains("Trident/5.0") ? GENERIC_MS_PHONE_OS7_5_DESKTOPMODE : GENERIC_MS_PHONE_OS7_DESKTOPMODE;
         }
+        String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(cleanedDeviceUserAgent);
+        String deviceId = VERSION_TO_DEVICE_ID.get(windowsPhoneVersion);
+        if (deviceId != null) {
+            return deviceId;
+        }
+        return UserAgentUtils.isWindowsPhoneAdClient(cleanedDeviceUserAgent) ? GENERIC_MS_PHONE_OS7 : "generic";
     }
 
     @Override
