@@ -3,7 +3,11 @@ package com.scientiamobile.wurfl.core.resource.exc;
 import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.resource.WURFLResource;
 
+import java.io.Serial;
+
 public class WURFLResourceException extends WURFLRuntimeException {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final WURFLResource resource;
 
     public WURFLResourceException(WURFLResource resource) {

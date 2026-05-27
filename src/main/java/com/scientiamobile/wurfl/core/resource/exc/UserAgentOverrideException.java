@@ -2,7 +2,11 @@ package com.scientiamobile.wurfl.core.resource.exc;
 
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
+import java.io.Serial;
+
 public class UserAgentOverrideException extends UserAgentConsistencyException {
+    @Serial
+    private static final long serialVersionUID = 1L;
    private final String existingUserAgent;
 
     public UserAgentOverrideException(ModelDevice device, String overridingUserAgent, String existingUserAgent) {

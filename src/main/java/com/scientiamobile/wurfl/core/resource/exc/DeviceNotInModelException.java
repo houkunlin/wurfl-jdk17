@@ -3,7 +3,11 @@ package com.scientiamobile.wurfl.core.resource.exc;
 import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
+import java.io.Serial;
+
 public class DeviceNotInModelException extends WURFLRuntimeException {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final ModelDevice modelDevice;
 
     public DeviceNotInModelException(ModelDevice modelDevice) {

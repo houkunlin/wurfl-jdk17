@@ -2,7 +2,11 @@ package com.scientiamobile.wurfl.core.resource.exc;
 
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
+import java.io.Serial;
+
 public class RedefinedDeviceException extends WURFLConsistencyException {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public RedefinedDeviceException(String message) {
         super(message);

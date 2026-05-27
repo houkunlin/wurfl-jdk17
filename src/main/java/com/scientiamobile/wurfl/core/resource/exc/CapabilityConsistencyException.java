@@ -2,7 +2,11 @@ package com.scientiamobile.wurfl.core.resource.exc;
 
 import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
+import java.io.Serial;
+
 public abstract class CapabilityConsistencyException extends DeviceConsistencyException {
+    @Serial
+    private static final long serialVersionUID = 1L;
    private final String capabilityName;
 
     protected CapabilityConsistencyException(ModelDevice device, String capabilityName) {
