@@ -112,48 +112,44 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.currentTimeMillis();
         String action = request.getParameter("action");
-        boolean handled = false;
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
         if ("Request".equalsIgnoreCase(action)) {
             wurflEngine.setEngineTarget(EngineTarget.accuracy);
-            handled = this.handleRequest(request, out);
+            this.handleRequest(request, out);
         } else if ("Info".equalsIgnoreCase(action)) {
             wurflEngine.setEngineTarget(EngineTarget.accuracy);
-            if (wurflEngine == null) {
-                writeMissingEngineError(out);
-            } else {
-                EngineTarget engineTarget = wurflEngine.getEngineTarget();
-                IntrospectorInfoResponse responseBody = new IntrospectorInfoResponse();
-                responseBody.apiVersion = apiVersion;
-                responseBody.wurflVersion = wurflEngine.getWURFLUtils().getVersion();
-                responseBody.engineTarget = engineTarget.name();
-                responseBody.userAgentPriority = wurflEngine.getUserAgentPriority().name();
-                responseBody.serverInfo = this.getServletContext().getServerInfo();
-                responseBody.osName = OS_NAME;
-                responseBody.osVersion = OS_VERSION;
-                responseBody.javaVendor = JAVA_VENDOR;
-                responseBody.javaVersion = JAVA_VERSION_PROP;
-                String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
-                out.println(json);
-            }
-
-            handled = true;
+            writeInfoResponse(out);
         } else if ("form".equalsIgnoreCase(action)) {
             wurflEngine.setEngineTarget(EngineTarget.valueOf(request.getParameter("wurflEngineTarget")));
             wurflEngine.setUserAgentPriority(UserAgentPriority.valueOf(request.getParameter("wurflUserAgentPriority")));
-            handled = this.handleRequest(request, out);
+            this.handleRequest(request, out);
         } else if ("Buckets".equalsIgnoreCase(action)) {
-            handled = this.writeBuckets(out);
-        }
-
-        if (!handled) {
+            this.writeBuckets(out);
+        } else {
             out.println("action " + action + " not supported");
         }
-
         out.flush();
+    }
+
+    private void writeInfoResponse(PrintWriter out) {
+        if (wurflEngine == null) {
+            writeMissingEngineError(out);
+            return;
+        }
+        IntrospectorInfoResponse responseBody = new IntrospectorInfoResponse();
+        responseBody.apiVersion = apiVersion;
+        responseBody.wurflVersion = wurflEngine.getWURFLUtils().getVersion();
+        responseBody.engineTarget = wurflEngine.getEngineTarget().name();
+        responseBody.userAgentPriority = wurflEngine.getUserAgentPriority().name();
+        responseBody.serverInfo = this.getServletContext().getServerInfo();
+        responseBody.osName = OS_NAME;
+        responseBody.osVersion = OS_VERSION;
+        responseBody.javaVendor = JAVA_VENDOR;
+        responseBody.javaVersion = JAVA_VERSION_PROP;
+        String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
+        out.println(json);
     }
 
     private boolean writeBuckets(PrintWriter out) {
