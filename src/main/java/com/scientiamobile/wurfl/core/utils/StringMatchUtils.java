@@ -116,8 +116,8 @@ public final class StringMatchUtils {
    }
 
    public static boolean containsAnyOf(String value, String... searches) {
-      for(int i = 0; i < searches.length; ++i) {
-         if (value.indexOf(searches[i]) != -1) {
+      for (String s : searches) {
+         if (value.indexOf(s) != -1) {
             return true;
          }
       }
@@ -153,8 +153,8 @@ public final class StringMatchUtils {
    }
 
    public static boolean containsAllOf(String value, String... searches) {
-      for(int i = 0; i < searches.length; ++i) {
-         if (value.indexOf(searches[i]) == -1) {
+      for (String s : searches) {
+         if (value.indexOf(s) == -1) {
             return false;
          }
       }
@@ -163,8 +163,8 @@ public final class StringMatchUtils {
    }
 
    public static boolean containsAllOf(String value, List<String> searches) {
-      for(int i = 0; i < searches.size(); ++i) {
-         if (value.indexOf(searches.get(i)) == -1) {
+      for (String s : searches) {
+         if (value.indexOf(s) == -1) {
             return false;
          }
       }

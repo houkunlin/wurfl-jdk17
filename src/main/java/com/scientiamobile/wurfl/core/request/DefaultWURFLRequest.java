@@ -116,8 +116,8 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    private static String getFirstAvailableUserAgent(WURFLHeaderProvider headerProvider) {
-      for(int i = 0; i < 4; ++i) {
-         String headerValue = headerProvider.getHeader(USER_AGENT_HEADERS[i]);
+      for (String header : USER_AGENT_HEADERS) {
+         String headerValue = headerProvider.getHeader(header);
          if (headerValue != null) {
             return truncateUserAgent(headerValue);
          }
@@ -127,8 +127,8 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
    }
 
    private static String getFirstAvailableUserAgent(Map<String, String> headers) {
-      for(int i = 0; i < 4; ++i) {
-         String headerValue = headers.get(USER_AGENT_HEADERS[i]);
+      for (String header : USER_AGENT_HEADERS) {
+         String headerValue = headers.get(header);
          if (headerValue != null) {
             return truncateUserAgent(headerValue);
          }

@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 final class AppleMatcher extends AbstractMatcher {
    private static final String COREMEDIA_DEVICE_ID = "apple_iphone_coremedia_ver1";
-   private static final String DEFAULT_IPHONE_DEVICE_ID = "apple_iphone_ver".concat("1");
+   private static final String DEFAULT_IPHONE_DEVICE_ID = "apple_iphone_ver1";
    private static final String[] APPLE_DEVICE_KEYWORDS = new String[]{"iPhone", "iPod", "iPad"};
    private static final Pattern IOS_MAJOR_VERSION_PATTERN = Pattern.compile(" (\\d+)_\\d+[ _]");
    private static final Pattern APPLE_HARDWARE_ID_PATTERN = Pattern.compile("(?:iPhone|iPad|iPod) ?(\\d+,\\d+)");

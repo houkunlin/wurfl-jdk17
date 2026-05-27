@@ -23,6 +23,9 @@ import org.apache.commons.lang3.Validate;
 
 public final class UserAgentUtils {
    private static final SortedSet<String> SUPPORTED_ANDROID_VERSIONS;
+   private static final String JAVA_VERSION = System.getProperty("java.version");
+   private static final String OS_NAME = System.getProperty("os.name");
+   private static final String OS_VERSION = System.getProperty("os.version");
    public static final Pattern STRIP_QUOTE_PATTERN;
    public static final Pattern NAMESPACE_NUMBER_PATTERN;
    private static final Pattern ANDROID_VERSION_SLASH_PATTERN;
@@ -155,7 +158,7 @@ public final class UserAgentUtils {
       }
 
       patternBuilder.append("))?");
-      return Pattern.compile(patternBuilder.toString(), 2);
+      return Pattern.compile(patternBuilder.toString(), Pattern.CASE_INSENSITIVE);
    }
 
    public static Map<String, String> getHeaders(HttpServletRequest request) {
@@ -404,7 +407,7 @@ public final class UserAgentUtils {
          }
       }
 
-      return (new StringBuilder(ResourceUtils.getBuildId())).append("/WURFL_JAVA_API/1.9.1.0 WURFL/").append(snapshotVersion).append(" Java/").append(System.getProperty("java.version")).append(" ").append(System.getProperty("os.name")).append("/").append(System.getProperty("os.version")).toString();
+      return (new StringBuilder(ResourceUtils.getBuildId())).append("/WURFL_JAVA_API/1.9.1.0 WURFL/").append(snapshotVersion).append(" Java/").append(JAVA_VERSION).append(" ").append(OS_NAME).append("/").append(OS_VERSION).toString();
    }
 
    public static List<String> getMobileKeywords() {

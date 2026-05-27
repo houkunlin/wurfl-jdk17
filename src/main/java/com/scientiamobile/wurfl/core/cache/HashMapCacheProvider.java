@@ -37,13 +37,7 @@ public class HashMapCacheProvider implements CacheProvider {
       this.concurrentWrites = concurrentWrites;
       this.cache = CollectionFactory.createConcurrentHashMap(initialCapacity, loadFactor, concurrentWrites);
       if (logger.isInfoEnabled()) {
-         StringBuffer builder;
-         (builder = new StringBuffer("Created HashMapCacheProvider with initial capacity: ")).append(initialCapacity);
-         builder.append(" load factor: ");
-         builder.append(loadFactor);
-         builder.append(" concurrent writes: ");
-         builder.append(concurrentWrites);
-         logger.info(builder.toString());
+         logger.info("Created HashMapCacheProvider with initial capacity: {} load factor: {} concurrent writes: {}", initialCapacity, loadFactor, concurrentWrites);
       }
 
    }

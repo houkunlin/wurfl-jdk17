@@ -48,6 +48,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
    public static final String HEADERS = "headers";
    public static final String CAPABILITIES = "capabilities";
    public static final String ID = "id";
+   private static final String OS_NAME = System.getProperty("os.name");
+   private static final String OS_VERSION = System.getProperty("os.version");
+   private static final String JAVA_VENDOR = System.getProperty("java.vendor");
+   private static final String JAVA_VERSION_PROP = System.getProperty("java.version");
    public static final String CAPABILITY_MAP = "capabilityMap";
    public static final String X_WAP_PROFILE = "X-Wap-Profile";
    public static final String X_WAP_PROFILE_lc = "x-wap-profile";
@@ -70,8 +74,6 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
    public void init(ServletConfig config) throws ServletException {
       super.init(config);
       this.getServletContext().getServerInfo();
-      (new StringBuilder()).append(System.getProperty("os.name")).append(" ").append(System.getProperty("os.version"));
-      (new StringBuilder()).append(System.getProperty("java.vendor")).append(" ").append(System.getProperty("java.version"));
    }
 
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -99,10 +101,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             responseBody.engineTarget = engineTarget.name();
             responseBody.userAgentPriority = wurflEngine.getUserAgentPriority().name();
             responseBody.serverInfo = this.getServletContext().getServerInfo();
-            responseBody.osName = System.getProperty("os.name");
-            responseBody.osVersion = System.getProperty("os.version");
-            responseBody.javaVendor = System.getProperty("java.vendor");
-            responseBody.javaVersion = System.getProperty("java.version");
+            responseBody.osName = OS_NAME;
+            responseBody.osVersion = OS_VERSION;
+            responseBody.javaVendor = JAVA_VENDOR;
+            responseBody.javaVersion = JAVA_VERSION_PROP;
             String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
             out.println(json);
          }
