@@ -126,7 +126,8 @@ public final class UserAgentUtils {
    public static boolean isXhtmlRequester(HttpServletRequest request) {
       Validate.notNull(request, "HttpRequest is null");
       String accept;
-      return (accept = request.getHeader("accept")) != null && (accept.indexOf("application/vnd.wap.xhtml+xml") != -1 || accept.indexOf("application/xhtml+xml") != -1 || accept.indexOf("application/text+html") != -1);
+      accept = request.getHeader("accept");
+      return accept != null && (accept.indexOf("application/vnd.wap.xhtml+xml") != -1 || accept.indexOf("text/vnd.wap.wml") != -1);
    }
 
    public static Predicate<String> isContainedIn(String value) {
@@ -245,13 +246,15 @@ patternBuilder.append("; (");
          return null;
       } else {
          int slashIndex;
-         if (StringMatchUtils.indexOf(userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, XX_XX_LOCALE_PATTERN, ""), CMCC_SUFFIX_PATTERN, ""), "*") >= 0 && (slashIndex = StringMatchUtils.indexOf(userAgent, "/")) >= 0) {
+         userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, XX_XX_LOCALE_PATTERN, ""), CMCC_SUFFIX_PATTERN, "");
+         if (userAgent.contains("*") && (slashIndex = StringMatchUtils.indexOf(userAgent, "/")) >= 0) {
             userAgent = userAgent.substring(0, slashIndex);
          }
 
          userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, HUAWEI_PREFIX_PATTERN, "HUAWEI "), COOLPAD_PREFIX_PATTERN, "Coolpad ");
          if (userAgent.contains("HTC")) {
-            slashIndex = StringMatchUtils.indexOf(userAgent = StringMatchUtils.replaceAll(userAgent, HTC_PREFIX_PATTERN, "HTC~"), "/");
+            userAgent = StringMatchUtils.replaceAll(userAgent, HTC_PREFIX_PATTERN, "HTC~");
+            slashIndex = userAgent.indexOf("/");
             if (slashIndex >= 0) {
                userAgent = userAgent.substring(0, slashIndex);
             }

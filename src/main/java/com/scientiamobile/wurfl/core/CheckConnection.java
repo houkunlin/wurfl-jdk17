@@ -29,12 +29,12 @@ public class CheckConnection {
    }
 
    public CheckConnection() {
-      String classPathLowerCase;
+      String classPathLowerCase = System.getProperty("java.class.path").toLowerCase(Locale.ENGLISH);
       this.platformName = StringUtils.isNotEmpty(System.getProperty("jboss.boot.library.list"))
          ? "JBoss/WildFly"
          : (StringUtils.isNotEmpty(System.getProperty("oracle.j2ee.home"))
             ? "OC4j/Oracle AS"
-            : (!(classPathLowerCase = System.getProperty("java.class.path").toLowerCase(Locale.ENGLISH)).contains("websphere") && !classPathLowerCase.contains("web sphere")
+            : (!classPathLowerCase.contains("websphere") && !classPathLowerCase.contains("web sphere")
                ? (!classPathLowerCase.contains("tomcat") && !classPathLowerCase.contains("juli")
                   ? (classPathLowerCase.contains("jetty") ? "Jetty" : "Command line")
                   : "Tomcat")
