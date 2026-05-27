@@ -105,20 +105,20 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String action = request.getParameter("action");
+        String action = request.getParameter(ACTION);
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
-        if ("Request".equalsIgnoreCase(action)) {
+        if (REQUEST.equalsIgnoreCase(action)) {
             wurflEngine.setEngineTarget(EngineTarget.accuracy);
             this.handleRequest(request, out);
-        } else if ("Info".equalsIgnoreCase(action)) {
+        } else if (INFO.equalsIgnoreCase(action)) {
             wurflEngine.setEngineTarget(EngineTarget.accuracy);
             writeInfoResponse(out);
         } else if ("form".equalsIgnoreCase(action)) {
             wurflEngine.setEngineTarget(EngineTarget.valueOf(request.getParameter("wurflEngineTarget")));
             wurflEngine.setUserAgentPriority(UserAgentPriority.valueOf(request.getParameter("wurflUserAgentPriority")));
             this.handleRequest(request, out);
-        } else if ("Buckets".equalsIgnoreCase(action)) {
+        } else if (BUCKETS.equalsIgnoreCase(action)) {
             this.writeBuckets(out);
         } else {
             out.println("action " + action + " not supported");
@@ -225,12 +225,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             return;
         }
         HeaderOnlyHttpServletRequest headerOnlyRequest = buildHeaderOnlyRequest(request);
-        String rawCapabilities = request.getParameter("capabilities");
+        String rawCapabilities = request.getParameter(CAPABILITIES);
         String[] capabilities = parseCapabilities(rawCapabilities);
         Device device = wurflEngine.getDeviceForRequest(headerOnlyRequest);
         IntrospectorRequestResponse responseBody = new IntrospectorRequestResponse();
         responseBody.deviceId = device.getId();
-        responseBody.userAgent = headerOnlyRequest.getHeader("User-Agent");
+        responseBody.userAgent = headerOnlyRequest.getHeader(USER_AGENT);
         responseBody.requestType = request.getParameter("form") == null ? "request" : "form";
         if (capabilities.length > 0) {
             HashMap<String, String> capabilityMap = new HashMap<>();
@@ -244,15 +244,15 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     private static String resolveUaProfile(HttpServletRequest request) {
-        String uaProfile = request.getParameter("uaprof");
+        String uaProfile = request.getParameter(UAPROF_PARAMNAME);
         if (uaProfile != null && !uaProfile.trim().isEmpty()) {
             return uaProfile.trim();
         }
-        uaProfile = request.getHeader("x-wap-profile");
+        uaProfile = request.getHeader(X_WAP_PROFILE_lc);
         if (uaProfile != null && !uaProfile.isEmpty()) {
             return uaProfile;
         }
-        return request.getHeader("X-Wap-Profile");
+        return request.getHeader(X_WAP_PROFILE);
     }
 
     private static HeaderOnlyHttpServletRequest buildHeaderOnlyRequest(HttpServletRequest request) {
@@ -264,7 +264,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         }
         String uaProfile = resolveUaProfile(request);
         if (uaProfile != null) {
-            headerOnlyRequest.addHeader("X-Wap-Profile", uaProfile);
+            headerOnlyRequest.addHeader(X_WAP_PROFILE, uaProfile);
         }
         return headerOnlyRequest;
     }
@@ -282,9 +282,9 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     private static void addFormHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
         String userAgent = resolveFormUserAgent(request);
         if (userAgent != null) {
-            headerOnlyRequest.addHeader("User-Agent", userAgent);
+            headerOnlyRequest.addHeader(USER_AGENT, userAgent);
         }
-        String rawHeaders = request.getParameter("headers");
+        String rawHeaders = request.getParameter(HEADERS);
         if (rawHeaders != null && !rawHeaders.trim().isEmpty()) {
             addHeaderPairs(rawHeaders.trim(), headerOnlyRequest);
         }
@@ -295,7 +295,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         if (userAgent != null && !userAgent.trim().isEmpty()) {
             return userAgent.trim();
         }
-        return request.getHeader("User-Agent");
+        return request.getHeader(USER_AGENT);
     }
 
     private static void addHeaderPairs(String rawHeaders, HeaderOnlyHttpServletRequest headerOnlyRequest) {
