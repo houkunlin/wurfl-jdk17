@@ -31,7 +31,8 @@ public final class LDMatcher {
 
       while(iterator.hasNext() && currentDistance > 0) {
          String candidate = (String)iterator.next();
-         if (Math.abs(candidate.length() - valueLength) <= maxDistance && ((currentDistance = getLevenshteinDistance(candidate, value, candidate.length(), valueLength, maxDistance, commonPrefixLength)) < bestDistance || currentDistance == 0)) {
+         currentDistance = getLevenshteinDistance(candidate, value, candidate.length(), valueLength, maxDistance, commonPrefixLength);
+         if (Math.abs(candidate.length() - valueLength) <= maxDistance && (currentDistance < bestDistance || currentDistance == 0)) {
             bestDistance = currentDistance;
             bestMatch = candidate;
          }

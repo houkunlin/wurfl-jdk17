@@ -51,7 +51,8 @@ public class CheckConnection {
                Field smidField;
                smidField = DefaultWURFLModel.class.getDeclaredField("g");
             smidField.setAccessible(true);
-               wurflSmid = StringUtils.isEmpty(wurflSmid = (String)smidField.get(wurflModel)) ? "unknown" : wurflSmid;
+               wurflSmid = (String)smidField.get(wurflModel);
+         wurflSmid = StringUtils.isEmpty(wurflSmid) ? "unknown" : wurflSmid;
             } catch (Exception e) {
                logger.error("Unable to get data from model class " + e.getMessage());
             }

@@ -65,7 +65,8 @@ requiredDeviceIds.add("generic");
    protected String risMatch(String normalizedUserAgent) {
       Matcher versionPrefixMatcher = VERSION_PREFIX.matcher(normalizedUserAgent);
       int matchLength;
-      return versionPrefixMatcher.find() && (matchLength = versionPrefixMatcher.end()) < normalizedUserAgent.length()
+      matchLength = versionPrefixMatcher.end();
+         return versionPrefixMatcher.find() && matchLength < normalizedUserAgent.length()
          ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
          : null;
    }
@@ -76,7 +77,8 @@ requiredDeviceIds.add("generic");
       int androidMajorVersion = 0;
       String androidVersion;
       String normalizedUserAgent;
-      androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent = request.getNormalizedDeviceUserAgent(), false);
+      normalizedUserAgent = request.getNormalizedDeviceUserAgent();
+         androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent, false);
       if (androidVersion != null) {
          String[] versionParts = androidVersion.split("\\.");
          androidMajorVersion = ArrayUtils.isNotEmpty(versionParts) ? Integer.parseInt(versionParts[0]) : 0;

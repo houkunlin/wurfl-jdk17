@@ -158,7 +158,8 @@ class WURFLServiceImpl implements WURFLService {
       InternalDevice internalDevice = this.deviceProvider.getInternalDevice(deviceId);
       String userAgentFromModel;
       String userAgent;
-      if (!(userAgentFromModel = internalDevice.getWURFLUserAgent()).startsWith("DO_NOT_MATCH")) {
+      userAgentFromModel = internalDevice.getWURFLUserAgent();
+         if (!userAgentFromModel.startsWith("DO_NOT_MATCH")) {
          userAgent = userAgentFromModel;
       } else {
          ModelDevice ancestor;

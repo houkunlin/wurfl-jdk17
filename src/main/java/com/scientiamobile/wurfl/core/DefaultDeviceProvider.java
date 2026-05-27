@@ -71,7 +71,8 @@ class DefaultDeviceProvider implements DeviceProvider {
    public Device buildDevice(InternalDevice internalDevice, WURFLRequest request, MatchType matchType, String matcherName, String bucketMatcherName) {
       Validate.notNull(internalDevice, "The internal device must be not null");
       String deviceId;
-      Validate.notEmpty(deviceId = internalDevice.getId(), "The id must be not null String");
+      deviceId = internalDevice.getId();
+         Validate.notEmpty(deviceId, "The id must be not null String");
       ModelDeviceWithAncestorId deviceWithAncestorId = this.getModelDeviceWithAncestorId(deviceId);
       if (!assertionsDisabled && deviceWithAncestorId.getModelDevice() == null) {
          throw new AssertionError("modelDevice is null");

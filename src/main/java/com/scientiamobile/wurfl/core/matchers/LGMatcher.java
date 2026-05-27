@@ -37,7 +37,8 @@ requiredDeviceIds.add("generic");
       FilteredDeviceIndex deviceIndex = this.getFilter().getIndex();
       String matchedUserAgent;
       String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
-      return (matchedUserAgent = StringMatchUtils.risMatch(deviceIndex.getUserAgents(), normalizedDeviceUserAgent, 7)) != null
+      matchedUserAgent = StringMatchUtils.risMatch(deviceIndex.getUserAgents(), normalizedDeviceUserAgent, 7);
+      return matchedUserAgent != null
          ? deviceIndex.getDeviceIdByUserAgent(matchedUserAgent)
          : "generic";
    }

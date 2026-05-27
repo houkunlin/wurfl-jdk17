@@ -50,7 +50,8 @@ final class MSIEMatcher extends MatcherBase {
 
       for(int i = 0; i < 3; ++i) {
          Matcher matcher = matchers[i];
-         if (matched = matcher.find()) {
+         matched = matcher.find();
+         if (matched) {
             matchedMatcher = matcher;
             break;
          }

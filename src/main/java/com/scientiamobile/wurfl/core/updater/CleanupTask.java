@@ -17,7 +17,8 @@ public class CleanupTask implements UpdatePipelineTask {
       if (ArrayUtils.isNotEmpty(pathsToDelete)) {
          for(int i = 0; i < 2; ++i) {
             String path;
-            if (StringUtils.isNotEmpty(path = pathsToDelete[i])) {
+            path = pathsToDelete[i];
+               if (StringUtils.isNotEmpty(path)) {
                try {
                   File file = new File(path).getCanonicalFile();
                   if (file.exists() && !file.delete()) {

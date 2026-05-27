@@ -45,7 +45,8 @@ requiredDeviceIds.add(GENERIC_OPERA_MOBI_MAEMO);
    @Override
    protected String risMatch(String normalizedUserAgent) {
       int matchLength;
-      return (matchLength = normalizedUserAgent.indexOf("---")) >= 0
+      matchLength = normalizedUserAgent.indexOf("---");
+      return matchLength >= 0
          ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength + 3)
          : super.risMatch(normalizedUserAgent);
    }

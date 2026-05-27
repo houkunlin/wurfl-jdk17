@@ -26,7 +26,8 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
    public void contextInitialized(ServletContextEvent servletContextEvent) {
       ServletContext servletContext = servletContextEvent.getServletContext();
       String wurflEngineKey;
-      if (!StringUtils.isEmpty(wurflEngineKey = servletContextEvent.getServletContext().getInitParameter("wurflEngineKey"))) {
+      wurflEngineKey = servletContextEvent.getServletContext().getInitParameter("wurflEngineKey");
+      if (!StringUtils.isEmpty(wurflEngineKey)) {
          this.engineKeyAttributeName = wurflEngineKey;
       }
 

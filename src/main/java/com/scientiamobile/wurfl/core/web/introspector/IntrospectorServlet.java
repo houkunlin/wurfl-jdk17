@@ -133,21 +133,25 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
          try {
             out.println("WURFL Java API " + apiVersion);
             Field modelField;
-            boolean originalModelAccess = (modelField = GeneralWURFLEngine.class.getDeclaredField("wurflModel")).canAccess(wurflEngine);
+            modelField = GeneralWURFLEngine.class.getDeclaredField("wurflModel");
+         boolean originalModelAccess = modelField.canAccess(wurflEngine);
             modelField.setAccessible(true);
             WURFLModel wurflModel = (WURFLModel)modelField.get(wurflEngine);
             Field holderField;
-            boolean originalHolderAccess = (holderField = GeneralWURFLEngine.class.getDeclaredField("wurflService")).canAccess(wurflEngine);
+            holderField = GeneralWURFLEngine.class.getDeclaredField("wurflService");
+         boolean originalHolderAccess = holderField.canAccess(wurflEngine);
             holderField.setAccessible(true);
             Object wurflHolder = holderField.get(wurflEngine);
             ArrayList<String> resultLines = null;
             if (wurflModel != null && wurflHolder != null) {
                Field engineTargetField;
-               boolean originalEngineTargetAccess = (engineTargetField = wurflHolder.getClass().getDeclaredField("engineTarget")).canAccess(wurflHolder);
+               engineTargetField = wurflHolder.getClass().getDeclaredField("engineTarget");
+         boolean originalEngineTargetAccess = engineTargetField.canAccess(wurflHolder);
                engineTargetField.setAccessible(true);
                EngineTarget originalEngineTarget = (EngineTarget)engineTargetField.get(wurflHolder);
                Field matcherManagerField;
-               boolean originalMatcherManagerAccess = (matcherManagerField = wurflHolder.getClass().getDeclaredField("matcherManager")).canAccess(wurflHolder);
+               matcherManagerField = wurflHolder.getClass().getDeclaredField("matcherManager");
+         boolean originalMatcherManagerAccess = matcherManagerField.canAccess(wurflHolder);
                matcherManagerField.setAccessible(true);
                MatcherManager matcherManager = (MatcherManager)matcherManagerField.get(wurflHolder);
                Set<ModelDevice> allDevices = wurflModel.getAllDevices();
@@ -212,7 +216,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
    private static String readStringField(String fieldName, Object target) {
       try {
          Field field;
-         boolean originalAccess = (field = target.getClass().getDeclaredField(fieldName)).canAccess(target);
+         field = target.getClass().getDeclaredField(fieldName);
+         boolean originalAccess = field.canAccess(target);
          field.setAccessible(true);
          String value = (String)field.get(target);
          field.setAccessible(originalAccess);

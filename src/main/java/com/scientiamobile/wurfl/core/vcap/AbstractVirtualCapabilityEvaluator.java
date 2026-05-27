@@ -48,7 +48,8 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
       Map<String, String> headers = request.getHeaders();
       String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
       String acceptEncoding;
-      if (headers.containsKey("Accept-Encoding") && userAgent.contains("Trident/") && (acceptEncoding = headers.get("Accept-Encoding")) != null && !acceptEncoding.contains("deflate")) {
+      acceptEncoding = headers.get("Accept-Encoding");
+      if (headers.containsKey("Accept-Encoding") && userAgent.contains("Trident/") && acceptEncoding != null && !acceptEncoding.contains("deflate")) {
          return true;
       } else {
          for(String keyword : BOT_EXCLUSION_KEYWORDS) {
@@ -84,7 +85,8 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
          Matcher versionMatcher = MAJOR_MINOR_VERSION_PATTERN.matcher(deviceOsVersion);
          float version = 0.0F;
          boolean versionParsed;
-         if (versionParsed = versionMatcher.matches()) {
+         versionParsed = versionMatcher.matches();
+      if (versionParsed) {
             try {
                version = Float.parseFloat(versionMatcher.group(1));
             } catch (NumberFormatException e) {

@@ -79,7 +79,8 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
       while(it.hasNext()) {
          String capabilityName;
-         if (!(capabilityName = it.next()).startsWith("controlcap_")) {
+         capabilityName = it.next();
+         if (!capabilityName.startsWith("controlcap_")) {
             filteredCapabilities.put(capabilityName, allCapabilities.get(capabilityName));
          }
       }

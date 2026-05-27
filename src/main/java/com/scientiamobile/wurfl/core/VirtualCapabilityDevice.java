@@ -120,7 +120,8 @@ public class VirtualCapabilityDevice implements Serializable {
             if (this.osPair.getVersion() != null) {
                this.osPair.setVersion(this.osPair.getVersion().replaceAll("_", "."));
                String[] majorMinor;
-               if (StringUtils.isNotEmpty(this.osPair.getVersion()) && (majorMinor = DOT_SPLIT_PATTERN.split(this.osPair.getVersion())) != null && majorMinor.length > 1 && StringUtils.isNumeric(majorMinor[0]) && StringUtils.isNumeric(majorMinor[1]) && Integer.parseInt(majorMinor[0]) >= 10 && Integer.parseInt(majorMinor[1]) >= 12) {
+               majorMinor = DOT_SPLIT_PATTERN.split(this.osPair.getVersion());
+            if (StringUtils.isNotEmpty(this.osPair.getVersion()) && majorMinor != null && majorMinor.length > 1 && StringUtils.isNumeric(majorMinor[0]) && StringUtils.isNumeric(majorMinor[1]) && Integer.parseInt(majorMinor[0]) >= 10 && Integer.parseInt(majorMinor[1]) >= 12) {
                   this.osPair.setName("macOS");
                   return;
                }

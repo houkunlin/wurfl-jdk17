@@ -19,7 +19,8 @@ public class ExceptionUtils {
             return message;
          }
 
-         if (StringUtils.isNotEmpty(message = throwable.getMessage())) {
+         message = throwable.getMessage();
+      if (StringUtils.isNotEmpty(message)) {
             return message;
          }
 
