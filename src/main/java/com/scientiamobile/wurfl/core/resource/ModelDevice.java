@@ -5,13 +5,14 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-@SuppressWarnings("serial")
 public class ModelDevice implements Serializable {
+    @Serial
     private static final long serialVersionUID = 10L;
-    private static boolean ASSERTIONS_DISABLED = !ModelDevice.class.desiredAssertionStatus();
+    private static final boolean ASSERTIONS_DISABLED = !ModelDevice.class.desiredAssertionStatus();
     private String userAgent;
     private String id;
     private String fallBack;

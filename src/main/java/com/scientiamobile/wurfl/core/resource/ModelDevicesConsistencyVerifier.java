@@ -2,142 +2,99 @@ package com.scientiamobile.wurfl.core.resource;
 
 import com.scientiamobile.wurfl.core.resource.exc.*;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 final class ModelDevicesConsistencyVerifier {
-    private static final boolean ASSERTIONS_DISABLED = !ModelDevicesConsistencyVerifier.class.desiredAssertionStatus();
-
-    static {
-        LoggerFactory.getLogger(ModelDevicesConsistencyVerifier.class);
-    }
-
     private ModelDevicesConsistencyVerifier() {
     }
 
     public static void verifyModelDevices(ModelDevices devices) {
+        assert devices != null : "devices is null";
+        if (!devices.containsId("generic")) {
+            throw new GenericNotDefinedException();
+        }
         HashMap<String, ModelDevice> deviceByUserAgent = new HashMap<>();
         HashSet<String> visitedDeviceIds = new HashSet<>();
-        if (!ASSERTIONS_DISABLED && devices == null) {
-            throw new AssertionError("devices is null");
-        } else if (!devices.containsId("generic")) {
-            throw new GenericNotDefinedException();
-        } else {
-            Iterator<ModelDevice> iterator = devices.iterator();
 
-            while (iterator.hasNext()) {
-                ModelDevice device = iterator.next();
-                if (!ASSERTIONS_DISABLED && device == null) {
-                    throw new AssertionError("device is null");
-                }
+        for (ModelDevice device : devices) {
+            assert device != null : "device is null";
 
-                if (deviceByUserAgent.containsKey(device.getUserAgent())) {
-                    ModelDevice existing = deviceByUserAgent.get(device.getUserAgent());
-                    throw new UserAgentNotUniqueException(device, device.getUserAgent(), existing);
-                }
-
-                deviceByUserAgent.put(device.getUserAgent(), device);
-                verifyHierarchy(device, devices, visitedDeviceIds);
-                visitedDeviceIds.add(device.getID());
-                verifyGroups(device, devices);
-                verifyCapabilities(device, devices);
+            ModelDevice existing = deviceByUserAgent.put(device.getUserAgent(), device);
+            if (existing != null) {
+                throw new UserAgentNotUniqueException(device, device.getUserAgent(), existing);
             }
-
+            verifyHierarchy(device, devices, visitedDeviceIds);
+            visitedDeviceIds.add(device.getID());
+            verifyGroups(device, devices);
+            verifyCapabilities(device, devices);
         }
     }
 
     private static void verifyHierarchy(ModelDevice device, ModelDevices devices, Set<String> visited) {
-        if (!ASSERTIONS_DISABLED && device == null) {
-            throw new AssertionError("device is null");
-        } else if (!ASSERTIONS_DISABLED && devices == null) {
-            throw new AssertionError("devices is null");
-        } else {
-            ArrayList<ModelDevice> hierarchy = new ArrayList<>(10);
-            String currentDeviceId = device.getID();
-            if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(currentDeviceId)) {
-                throw new AssertionError();
-            } else {
-                hierarchy.add(devices.getById(currentDeviceId));
+        assert device != null : "device is null";
+        assert devices != null : "devices is null";
 
-                while (!"generic".equals(currentDeviceId)) {
-                    currentDeviceId = devices.getById(currentDeviceId).getFallBack();
-                    if (!ASSERTIONS_DISABLED && StringUtils.isEmpty(currentDeviceId)) {
-                        throw new AssertionError();
-                    }
+        String currentDeviceId = device.getID();
+        assert !StringUtils.isEmpty(currentDeviceId);
 
-                    if (visited.contains(currentDeviceId)) {
-                        return;
-                    }
+        ArrayList<ModelDevice> hierarchy = new ArrayList<>(10);
+        hierarchy.add(devices.getById(currentDeviceId));
 
-                    if (!devices.containsId(currentDeviceId)) {
-                        throw new OrphanHierarchyException(hierarchy);
-                    }
+        while (!"generic".equals(currentDeviceId)) {
+            currentDeviceId = devices.getById(currentDeviceId).getFallBack();
+            assert !StringUtils.isEmpty(currentDeviceId);
 
-                    int circularIndex;
-                    circularIndex = hierarchy.indexOf(devices.getById(currentDeviceId));
-                    if (circularIndex != -1) {
-                        LinkedList<ModelDevice> circularHierarchy = new LinkedList<>(hierarchy.subList(circularIndex, hierarchy.size()));
-                        throw new CircularHierarchyException(circularHierarchy);
-                    }
-
-                    hierarchy.add(devices.getById(currentDeviceId));
-                }
-
+            if (visited.contains(currentDeviceId)) {
+                return;
             }
+            if (!devices.containsId(currentDeviceId)) {
+                throw new OrphanHierarchyException(hierarchy);
+            }
+
+            int circularIndex = hierarchy.indexOf(devices.getById(currentDeviceId));
+            if (circularIndex != -1) {
+                LinkedList<ModelDevice> circularHierarchy = new LinkedList<>(hierarchy.subList(circularIndex, hierarchy.size()));
+                throw new CircularHierarchyException(circularHierarchy);
+            }
+            hierarchy.add(devices.getById(currentDeviceId));
         }
     }
 
     private static void verifyGroups(ModelDevice device, ModelDevices devices) {
-        if (!ASSERTIONS_DISABLED && device == null) {
-            throw new AssertionError("device is null");
-        } else if (!ASSERTIONS_DISABLED && devices == null) {
-            throw new AssertionError("devices is null");
-        } else {
-            ModelDevice genericDevice = devices.getById("generic");
-            Set<String> deviceGroups = device.getGroups();
-            Set<String> genericGroups = genericDevice.getGroups();
+        assert device != null : "device is null";
+        assert devices != null : "devices is null";
 
-            for (String group : deviceGroups) {
-                if (!genericGroups.contains(group)) {
-                    throw new InexistentGroupException(device, group);
-                }
+        ModelDevice genericDevice = devices.getById("generic");
+        Set<String> genericGroups = genericDevice.getGroups();
+        for (String group : device.getGroups()) {
+            if (!genericGroups.contains(group)) {
+                throw new InexistentGroupException(device, group);
             }
-
         }
     }
 
     private static void verifyCapabilities(ModelDevice device, ModelDevices devices) {
-        if (!ASSERTIONS_DISABLED && device == null) {
-            throw new AssertionError("device is null");
-        } else if (!ASSERTIONS_DISABLED && devices == null) {
-            throw new AssertionError("devices is null");
-        } else if (!ASSERTIONS_DISABLED && !devices.containsId("generic")) {
-            throw new AssertionError("device do not containing generic");
-        } else {
-            ModelDevice genericDevice = devices.getById("generic");
-            Map<String, String> genericCapabilities = genericDevice.getCapabilities();
+        assert device != null : "device is null";
+        assert devices != null : "devices is null";
+        assert devices.containsId("generic") : "device do not containing generic";
 
-            for (String capabilityName : device.getCapabilities().keySet()) {
-                if (!genericCapabilities.containsKey(capabilityName)) {
-                    throw new InexistentCapabilityException(device, capabilityName);
-                }
-
-                String deviceGroup = device.getGroupForCapability(capabilityName);
-                String genericGroup = genericDevice.getGroupForCapability(capabilityName);
-                if (!deviceGroup.equals(genericGroup)) {
-                    throw new BadCapabilityGroupException(device, capabilityName, deviceGroup, genericGroup);
-                }
+        ModelDevice genericDevice = devices.getById("generic");
+        Map<String, String> genericCapabilities = genericDevice.getCapabilities();
+        for (String capabilityName : device.getCapabilities().keySet()) {
+            if (!genericCapabilities.containsKey(capabilityName)) {
+                throw new InexistentCapabilityException(device, capabilityName);
             }
-
+            String deviceGroup = device.getGroupForCapability(capabilityName);
+            String genericGroup = genericDevice.getGroupForCapability(capabilityName);
+            if (!deviceGroup.equals(genericGroup)) {
+                throw new BadCapabilityGroupException(device, capabilityName, deviceGroup, genericGroup);
+            }
         }
     }
 
     public static void verifyNoRedefinedDevices(ModelDevices patchDevices, ModelDevices baseDevices) {
-        Iterator<ModelDevice> iterator = patchDevices.getDevices().iterator();
-
-        while (iterator.hasNext()) {
-            ModelDevice patchDevice = iterator.next();
+        for (ModelDevice patchDevice : patchDevices.getDevices()) {
             String patchUserAgent = patchDevice.getUserAgent();
             String patchDeviceId = patchDevice.getID();
             String patchFallBack = patchDevice.getFallBack();
