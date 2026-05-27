@@ -229,13 +229,13 @@ final class WurflXmlHandler extends DefaultHandler {
    public final void characters(char[] ch, int start, int length) {
       switch (this.parseState) {
          case WurflXmlParseState.VERSION_VER:
-            this.wurflVersion = (new StringBuilder()).append(ch, start, length).toString();
+            this.wurflVersion = new String(ch, start, length);
             return;
          case WurflXmlParseState.VERSION_LAST_UPDATED:
-            this.wurflLastUpdated = (new StringBuilder()).append(ch, start, length).toString();
+            this.wurflLastUpdated = new String(ch, start, length);
             return;
          case WurflXmlParseState.VERSION_SMID:
-            this.wurflSmid = (new StringBuilder()).append(ch, start, length).toString();
+            this.wurflSmid = new String(ch, start, length);
             break;
          default:
       }

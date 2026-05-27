@@ -3,11 +3,12 @@ package com.scientiamobile.wurfl.core.web.introspector;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Vector;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.RequestDispatcher;
@@ -215,13 +216,13 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
 
    @Override
    public Enumeration<String> getHeaderNames() {
-      Vector<String> headerNames = new Vector<>();
+      ArrayList<String> headerNames = new ArrayList<>();
 
       for(String headerName : this.headers.keySet()) {
          headerNames.add(headerName);
       }
 
-      return headerNames.elements();
+      return Collections.enumeration(headerNames);
    }
 
    public final int getIntHeader(String name) {

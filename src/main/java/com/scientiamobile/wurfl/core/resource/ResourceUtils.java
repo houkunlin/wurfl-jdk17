@@ -31,10 +31,12 @@ public class ResourceUtils {
             String line = (buildId = reader.readLine()) != null ? buildId : "unknown";
             return line;
          } catch (IOException e) {
+            // silently ignore read failure
          } finally {
             try {
                reader.close();
             } catch (IOException e) {
+               // close failure is non-actionable
             }
 
          }
