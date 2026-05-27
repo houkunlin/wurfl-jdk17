@@ -36,9 +36,13 @@ public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements 
                if (androidUaPrefixMatcher.find() || androidSafariSuffixMatcher.find()) {
                   String chromeMajorVersion;
                   Matcher chromeVersionMatcher;
-                  if ((chromeVersionMatcher = CHROME_MAJOR_VERSION_PATTERN.matcher(userAgent)).find() && (chromeMajorVersion = chromeVersionMatcher.group(1).replaceFirst("^0+(?!$)", "")).length() > 0 && chromeMajorVersion.length() <= 2 && chromeMajorVersion.charAt(0) < '3') {
-                     return "false";
-                  }
+                   chromeVersionMatcher = CHROME_MAJOR_VERSION_PATTERN.matcher(userAgent);
+                   if (chromeVersionMatcher.find()) {
+                      chromeMajorVersion = chromeVersionMatcher.group(1).replaceFirst("^0+(?!$)", "");
+                      if (chromeMajorVersion.length() > 0 && chromeMajorVersion.length() <= 2 && chromeMajorVersion.charAt(0) < '3') {
+                         return "false";
+                      }
+                   }
 
                   return "true";
                }

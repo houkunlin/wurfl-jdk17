@@ -21,7 +21,8 @@ final class AhoCorasickKeywordMatcher {
 
       while(it.hasNext()) {
          String keyword;
-         if ((keyword = it.next()) != null && keyword.length() != 0) {
+         keyword = it.next();
+         if (keyword != null && keyword.length() != 0) {
             root.addPattern(keyword);
          }
       }
@@ -46,9 +47,9 @@ final class AhoCorasickKeywordMatcher {
 
             AcTrieNode failure;
             for(failure = current.getFail(); failure.getNext(c) == null && failure != root; failure = failure.getFail()) {
+               failure = failure.getNext(c);
             }
-
-            if ((failure = failure.getNext(c)) != null) {
+            if (failure != null) {
                next.setFail(failure);
             } else {
                next.setFail(root);
