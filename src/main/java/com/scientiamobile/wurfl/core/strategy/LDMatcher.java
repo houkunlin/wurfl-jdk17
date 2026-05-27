@@ -3,7 +3,6 @@ package com.scientiamobile.wurfl.core.strategy;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 public final class LDMatcher {
     public static final LDMatcher INSTANCE = new LDMatcher();
@@ -13,111 +12,88 @@ public final class LDMatcher {
     }
 
     public static int getLevenshteinDistance(String firstValue, String secondValue, int firstLength, int secondLength, int maxDistance, int prefixLength) {
-        while (true) {
-            if (firstValue != null && secondValue != null) {
-                if (maxDistance == 0) {
-                    if (firstValue.equals(secondValue)) {
-                        return 0;
-                    }
-
-                    return Integer.MAX_VALUE;
-                }
-
-                if (firstLength > secondLength) {
-                    String tempValue = secondValue;
-                    secondValue = firstValue;
-                    firstValue = tempValue;
-                    int tempLength = secondLength;
-                    secondLength = firstLength;
-                    firstLength = tempLength;
-                    continue;
-                }
-
-                if (secondLength < prefixLength) {
-                    return Integer.MAX_VALUE;
-                }
-
-                if (firstLength == 0) {
-                    return secondLength;
-                }
-
-                int[] charHistogram = new int[256];
-
-                for (int i = prefixLength; i < secondLength; ++i) {
-                    ++charHistogram[(char) (secondValue.charAt(i) & 255)];
-                }
-
-                for (int i = prefixLength; i < firstLength; ++i) {
-                    --charHistogram[(char) (firstValue.charAt(i) & 255)];
-                }
-
-                int histogramDistance = 0;
-                maxDistance <<= 1;
-
-                for (char c = ' '; c < 'z'; ++c) {
-                    histogramDistance += Math.abs(charHistogram[c]);
-                    if (histogramDistance > maxDistance) {
-                        return Integer.MAX_VALUE;
-                    }
-                }
-
-                firstValue = firstValue.substring(prefixLength);
-                firstLength -= prefixLength;
-                secondValue = secondValue.substring(prefixLength);
-                secondLength -= prefixLength;
-                int[] previousRow = new int[firstLength + 1];
-                int[] currentRow = new int[firstLength + 1];
-
-                for (int i = 0; i <= firstLength; previousRow[i] = i++) {
-                }
-
-                for (int rowIndex = 1; rowIndex <= secondLength; ++rowIndex) {
-                    histogramDistance = secondValue.charAt(rowIndex - 1);
-                    currentRow[0] = rowIndex;
-
-                    for (int columnIndex = 1; columnIndex <= firstLength; ++columnIndex) {
-                        int substitutionCost = firstValue.charAt(columnIndex - 1) == histogramDistance ? 0 : 1;
-                        currentRow[columnIndex] = Math.min(Math.min(currentRow[columnIndex - 1] + 1, previousRow[columnIndex] + 1), previousRow[columnIndex - 1] + substitutionCost);
-                    }
-
-                    int[] previousRowTemp = previousRow;
-                    previousRow = currentRow;
-                    currentRow = previousRowTemp;
-                }
-
-                return previousRow[firstLength];
-            }
-
+        if (firstValue == null || secondValue == null) {
             throw new IllegalArgumentException("Strings must not be null");
         }
+        if (maxDistance == 0) {
+            return firstValue.equals(secondValue) ? 0 : Integer.MAX_VALUE;
+        }
+        // Ensure shorter string is first for optimal array allocation
+        if (firstLength > secondLength) {
+            return getLevenshteinDistance(secondValue, firstValue, secondLength, firstLength, maxDistance, prefixLength);
+        }
+        if (secondLength < prefixLength) {
+            return Integer.MAX_VALUE;
+        }
+        if (firstLength == 0) {
+            return secondLength;
+        }
+        // Histogram-based early exit
+        int[] charHistogram = new int[256];
+        for (int i = prefixLength; i < secondLength; i++) {
+            charHistogram[secondValue.charAt(i) & 0xff]++;
+        }
+        for (int i = prefixLength; i < firstLength; i++) {
+            charHistogram[firstValue.charAt(i) & 0xff]--;
+        }
+        int histogramDistance = 0;
+        int maxDistanceDoubled = maxDistance << 1;
+        for (char c = ' '; c < 'z'; c++) {
+            histogramDistance += Math.abs(charHistogram[c]);
+            if (histogramDistance > maxDistanceDoubled) {
+                return Integer.MAX_VALUE;
+            }
+        }
+        // Levenshtein DP calculation
+        firstValue = firstValue.substring(prefixLength);
+        firstLength -= prefixLength;
+        secondValue = secondValue.substring(prefixLength);
+        secondLength -= prefixLength;
+        int[] previousRow = new int[firstLength + 1];
+        for (int i = 0; i <= firstLength; i++) {
+            previousRow[i] = i;
+        }
+        for (int rowIndex = 1; rowIndex <= secondLength; rowIndex++) {
+            int[] currentRow = new int[firstLength + 1];
+            currentRow[0] = rowIndex;
+            char secondChar = secondValue.charAt(rowIndex - 1);
+            for (int col = 1; col <= firstLength; col++) {
+                int substitutionCost = firstValue.charAt(col - 1) == secondChar ? 0 : 1;
+                currentRow[col] = Math.min(currentRow[col - 1] + 1,
+                        Math.min(previousRow[col] + 1, previousRow[col - 1] + substitutionCost));
+            }
+            previousRow = currentRow;
+        }
+        return previousRow[firstLength];
     }
 
     public final String getName() {
         return "LD";
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public final String match(Collection candidates, String value, int maxDistance) {
         return this.match(candidates, value, maxDistance, 0);
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public final String match(Collection candidates, String value, int maxDistance, int commonPrefixLength) {
         String bestMatch = null;
         int bestDistance = maxDistance + 1;
-        int currentDistance = value.length();
         int valueLength = value.length();
-        Iterator iterator = candidates.iterator();
+        int currentDistance = valueLength;
 
-        while (iterator.hasNext() && currentDistance > 0) {
-            String candidate = (String) iterator.next();
+        for (String candidate : (Collection<String>) candidates) {
+            if (currentDistance == 0) {
+                break;
+            }
             currentDistance = getLevenshteinDistance(candidate, value, candidate.length(), valueLength, maxDistance, commonPrefixLength);
-            if (Math.abs(candidate.length() - valueLength) <= maxDistance && (currentDistance < bestDistance || currentDistance == 0)) {
+            if (Math.abs(candidate.length() - valueLength) <= maxDistance
+                    && currentDistance < bestDistance) {
                 bestDistance = currentDistance;
                 bestMatch = candidate;
             }
         }
-
         return bestMatch;
     }
 

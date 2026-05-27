@@ -2,11 +2,11 @@ package com.scientiamobile.wurfl.core.utils;
 
 import java.util.*;
 
-final class AhoCorasickKeywordMatcher {
-    private int[] failStateByState;
-    private boolean[] terminalByState;
-    private char[][] transitionCharsByState;
-    private int[][] transitionTargetsByState;
+public final class AhoCorasickKeywordMatcher {
+    private final int[] failStateByState;
+    private final boolean[] terminalByState;
+    private final char[][] transitionCharsByState;
+    private final int[][] transitionTargetsByState;
 
     public AhoCorasickKeywordMatcher(List<String> keywords) {
         ArrayList<AcTrieNode> nodes = new ArrayList<>();
@@ -25,10 +25,11 @@ final class AhoCorasickKeywordMatcher {
         nodes.add(root);
 
         for (int i = 0; i < root.getOutgoingCount(); ++i) {
-            AcTrieNode child;
-            child = root.getOutgoingAt(i);
-            child.setFail(root);
-            queue.add(child);
+            AcTrieNode child = root.getOutgoingAt(i);
+            if (child != null) {
+                child.setFail(root);
+                queue.add(child);
+            }
         }
 
         while (!queue.isEmpty()) {
@@ -39,15 +40,14 @@ final class AhoCorasickKeywordMatcher {
                 AcTrieNode next = current.getNext(c);
                 queue.add(next);
 
-                AcTrieNode failure;
-                for (failure = current.getFail(); failure.getNext(c) == null && failure != root; failure = failure.getFail()) {
+                AcTrieNode failure = current.getFail();
+                while (failure != root && failure.getNext(c) == null) {
+                    failure = failure.getFail();
+                }
+                if (failure.getNext(c) != null) {
                     failure = failure.getNext(c);
                 }
-                if (failure != null) {
-                    next.setFail(failure);
-                } else {
-                    next.setFail(root);
-                }
+                next.setFail(failure);
             }
         }
 
@@ -74,33 +74,34 @@ final class AhoCorasickKeywordMatcher {
 
     }
 
-    public final boolean matchesAny(String input) {
+    private static final int KEYWORD_FOUND = -1;
+
+    public boolean matchesAny(String input) {
         char[] chars = input.toLowerCase(Locale.ENGLISH).toCharArray();
         int state = 0;
 
-        label34:
         for (char c : chars) {
-            while (true) {
-                char[] availableChars = this.transitionCharsByState[state];
-
-                for (int i = 0; i < availableChars.length; ++i) {
-                    if (availableChars[i] == c) {
-                        state = this.transitionTargetsByState[state][i];
-                        if (this.terminalByState[state]) {
-                            return true;
-                        }
-                        continue label34;
-                    }
-                }
-
-                if (state == 0) {
-                    break;
-                }
-
-                state = this.failStateByState[state];
+            state = advanceState(c, state);
+            if (state == KEYWORD_FOUND) {
+                return true;
             }
         }
-
         return false;
+    }
+
+    private int advanceState(char c, int state) {
+        while (true) {
+            char[] available = this.transitionCharsByState[state];
+            for (int i = 0; i < available.length; i++) {
+                if (available[i] == c) {
+                    int next = this.transitionTargetsByState[state][i];
+                    return this.terminalByState[next] ? KEYWORD_FOUND : next;
+                }
+            }
+            if (state == 0) {
+                return 0;
+            }
+            state = this.failStateByState[state];
+        }
     }
 }

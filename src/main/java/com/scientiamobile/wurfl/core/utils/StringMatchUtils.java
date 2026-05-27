@@ -94,15 +94,12 @@ public final class StringMatchUtils {
 
     public static String hierarchyAsString(List<ModelDevice> devices) {
         StringBuilder out = new StringBuilder();
-        Iterator<ModelDevice> iterator = devices.iterator();
-
-        while (iterator.hasNext()) {
-            out.append(iterator.next().getID());
-            if (iterator.hasNext()) {
+        for (ModelDevice device : devices) {
+            if (!out.isEmpty()) {
                 out.append(" -> ");
             }
+            out.append(device.getID());
         }
-
         return out.toString();
     }
 
@@ -122,7 +119,7 @@ public final class StringMatchUtils {
 
     public static boolean containsAnyOf(String value, String... searches) {
         for (String s : searches) {
-            if (value.indexOf(s) != -1) {
+            if (value.contains(s)) {
                 return true;
             }
         }
