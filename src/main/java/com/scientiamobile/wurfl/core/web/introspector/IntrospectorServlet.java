@@ -74,7 +74,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
         }
 
-        if (apiVersion == null || "".equals(apiVersion)) {
+        if (apiVersion == null || apiVersion.isEmpty()) {
             apiVersion = "(Unavailable...)";
         }
 
@@ -179,81 +179,63 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         } else {
             try {
                 out.println("WURFL Java API " + apiVersion);
-                Field modelField;
-                modelField = GeneralWURFLEngine.class.getDeclaredField("wurflModel");
-                boolean originalModelAccess = modelField.canAccess(wurflEngine);
-                modelField.setAccessible(true);
-                WURFLModel wurflModel = (WURFLModel) modelField.get(wurflEngine);
-                Field holderField;
-                holderField = GeneralWURFLEngine.class.getDeclaredField("wurflService");
-                boolean originalHolderAccess = holderField.canAccess(wurflEngine);
-                holderField.setAccessible(true);
-                Object wurflHolder = holderField.get(wurflEngine);
-                ArrayList<String> resultLines = null;
-                if (wurflModel != null && wurflHolder != null) {
-                    Field engineTargetField;
-                    engineTargetField = wurflHolder.getClass().getDeclaredField("engineTarget");
-                    boolean originalEngineTargetAccess = engineTargetField.canAccess(wurflHolder);
-                    engineTargetField.setAccessible(true);
-                    EngineTarget originalEngineTarget = (EngineTarget) engineTargetField.get(wurflHolder);
-                    Field matcherManagerField;
-                    matcherManagerField = wurflHolder.getClass().getDeclaredField("matcherManager");
-                    boolean originalMatcherManagerAccess = matcherManagerField.canAccess(wurflHolder);
-                    matcherManagerField.setAccessible(true);
-                    MatcherManager matcherManager = (MatcherManager) matcherManagerField.get(wurflHolder);
-                    Set<ModelDevice> allDevices = wurflModel.getAllDevices();
-                    ArrayList<String> userAgents = new ArrayList<>(allDevices.size());
-                    Iterator<ModelDevice> deviceIterator = allDevices.iterator();
+                if (wurflEngine instanceof GeneralWURFLEngine engine) {
+                    WURFLModel wurflModel = engine.getWurflModel();
+                    WURFLService wurflService = engine.getWurflService();
+                    ArrayList<String> resultLines = null;
+                    if (wurflModel != null && wurflService != null) {
+                        EngineTarget originalEngineTarget = wurflService.getEngineTarget();
+                        MatcherManager matcherManager = wurflService.getMatcherManager();
+                        Set<ModelDevice> allDevices = wurflModel.getAllDevices();
+                        ArrayList<String> userAgents = new ArrayList<>(allDevices.size());
 
-                    while (deviceIterator.hasNext()) {
-                        ModelDevice device = deviceIterator.next();
-                        if (!StringUtils.isEmpty(device.getUserAgent())) {
-                            userAgents.add(device.getUserAgent());
+                        for (ModelDevice device : allDevices) {
+                            if (!StringUtils.isEmpty(device.getUserAgent())) {
+                                userAgents.add(device.getUserAgent());
+                            }
+                        }
+
+                        wurflService.setEngineTarget(EngineTarget.accuracy);
+                        resultLines = new ArrayList<>(userAgents.size());
+                        ArrayList<MatchResultRow> matchResults = new ArrayList<>(userAgents.size());
+                        DefaultWURFLRequestFactory requestFactory = new DefaultWURFLRequestFactory();
+                        log.info("BUCKETS (1/3): start matching...");
+                        long start = System.currentTimeMillis();
+
+                        for (String ua : userAgents) {
+                            DeviceInfo deviceInfo = matcherManager.matchRequest(requestFactory.createRequest(ua, EngineTarget.accuracy));
+                            String matcherName = deviceInfo.getMatcherName();
+                            String normalizedUserAgent = deviceInfo.getNormalizedUserAgent();
+                            String originalUserAgent = deviceInfo.getOriginalUserAgent();
+                            matchResults.add(new MatchResultRow(matcherName, deviceInfo.getId(), normalizedUserAgent, originalUserAgent));
+                        }
+
+                        log.info("BUCKETS (1/3): finished matching. Took {} ms", System.currentTimeMillis() - start);
+                        log.info("BUCKETS (2/3): start sorting...");
+                        start = System.currentTimeMillis();
+                        Collections.sort(matchResults);
+                        log.info("BUCKETS (2/3): finished sorting. Took {} ms", System.currentTimeMillis() - start);
+                        log.info("BUCKETS (3/3): start building strings...");
+                        start = System.currentTimeMillis();
+
+                        for (MatchResultRow row : matchResults) {
+                            resultLines.add(row.toString());
+                        }
+
+                        log.info("BUCKETS (3/3): finished building strings. Took {} ms", System.currentTimeMillis() - start);
+                        wurflService.setEngineTarget(originalEngineTarget);
+                    }
+
+                    if (resultLines != null) {
+                        for (String lineObj : resultLines) {
+                            out.println(lineObj);
                         }
                     }
 
-                    engineTargetField.set(wurflHolder, EngineTarget.accuracy);
-                    resultLines = new ArrayList<>(userAgents.size());
-                    ArrayList<MatchResultRow> matchResults = new ArrayList<>(userAgents.size());
-                    DefaultWURFLRequestFactory requestFactory = new DefaultWURFLRequestFactory();
-                    log.info("BUCKETS (1/3): start matching...");
-                    long start = System.currentTimeMillis();
-
-                    for (String ua : userAgents) {
-                        DeviceInfo deviceInfo = matcherManager.matchRequest(requestFactory.createRequest(ua, EngineTarget.accuracy));
-                        String matcherName = readStringField("matcherName", deviceInfo);
-                        String normalizedUserAgent = readStringField("normalizedUserAgent", deviceInfo);
-                        String originalUserAgent = readStringField("originalUserAgent", deviceInfo);
-                        matchResults.add(new MatchResultRow(matcherName, deviceInfo.getId(), normalizedUserAgent, originalUserAgent));
-                    }
-
-                    log.info("BUCKETS (1/3): finished matching. Took {} ms", System.currentTimeMillis() - start);
-                    log.info("BUCKETS (2/3): start sorting...");
-                    start = System.currentTimeMillis();
-                    Collections.sort(matchResults);
-                    log.info("BUCKETS (2/3): finished sorting. Took {} ms", System.currentTimeMillis() - start);
-                    log.info("BUCKETS (3/3): start building strings...");
-                    start = System.currentTimeMillis();
-
-                    for (MatchResultRow row : matchResults) {
-                        resultLines.add(row.toString());
-                    }
-
-                    log.info("BUCKETS (3/3): finished building strings. Took {} ms", System.currentTimeMillis() - start);
-                    engineTargetField.set(wurflHolder, originalEngineTarget);
-                    matcherManagerField.setAccessible(originalMatcherManagerAccess);
-                    engineTargetField.setAccessible(originalEngineTargetAccess);
+                    return true;
                 }
-
-                holderField.setAccessible(originalHolderAccess);
-                modelField.setAccessible(originalModelAccess);
-
-                for (String lineObj : resultLines) {
-                    out.println(lineObj);
-                }
-
-                return true;
-            } catch (ReflectiveOperationException | RuntimeException e) {
+                return false;
+            } catch (RuntimeException e) {
                 log.debug("{} - {}", e.getClass().getSimpleName(), e.getMessage());
                 return false;
             }
@@ -308,8 +290,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
                     rawHeaders = rawHeaders.trim();
                     String[] headerPairs = LINE_BREAK_PATTERN.matcher(rawHeaders).replaceAll("|").split("\\|");
 
-                    for (int i = 0; i < headerPairs.length; ++i) {
-                        String headerPair = headerPairs[i];
+                    for (String headerPair : headerPairs) {
                         if (headerPair.contains(":")) {
                             String[] headerKeyValue = headerPair.split(":");
                             headerOnlyRequest.addHeader(headerKeyValue[0].trim(), headerKeyValue[1].trim());

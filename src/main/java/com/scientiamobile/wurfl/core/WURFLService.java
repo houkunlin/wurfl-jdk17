@@ -1,13 +1,14 @@
 package com.scientiamobile.wurfl.core;
 
 import com.scientiamobile.wurfl.core.cache.CacheProvider;
+import com.scientiamobile.wurfl.core.matchers.MatcherManager;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.WURFLRequestFactoryWithPriority;
 import com.scientiamobile.wurfl.core.resource.WURFLResource;
 import com.scientiamobile.wurfl.core.resource.WURFLResources;
 import jakarta.servlet.http.HttpServletRequest;
 
-interface WURFLService {
+public interface WURFLService {
     Device getDevice(HttpServletRequest request);
 
     Device getDevice(WURFLRequest request);
@@ -21,6 +22,8 @@ interface WURFLService {
     UserAgentPriority getUserAgentPriority();
 
     void setUserAgentPriority(UserAgentPriority priority);
+
+    MatcherManager getMatcherManager();
 
     void setCacheProvider(CacheProvider cacheProvider);
 

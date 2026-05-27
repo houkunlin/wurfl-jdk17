@@ -520,4 +520,12 @@ public class GeneralWURFLEngine implements WURFLEngine, WurflWebConstants {
     public String getApiVersion() {
         return "1.9.1.0";
     }
+
+    public WURFLModel getWurflModel() {
+        return wurflModel;
+    }
+
+    public WURFLService getWurflService() {
+        return wurflService;
+    }
 }

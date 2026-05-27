@@ -353,4 +353,8 @@ public class DefaultWURFLModel implements WURFLModel {
         out.append(this.version);
         return out.toString();
     }
+
+    public String getSmid() {
+        return smid;
+    }
 }

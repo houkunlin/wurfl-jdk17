@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -71,18 +70,11 @@ public class CheckConnection {
 
     public void setup(WURFLEngine wurflEngine, WURFLModel wurflModel) {
         if (this.enabled) {
-            String wurflSmid = "unknown";
-            if (wurflModel instanceof DefaultWURFLModel) {
+            String wurflSmid;
+            if (wurflModel instanceof DefaultWURFLModel defaultWURFLModel) {
 
-                try {
-                    Field smidField;
-                    smidField = DefaultWURFLModel.class.getDeclaredField("g");
-                    smidField.setAccessible(true);
-                    wurflSmid = (String) smidField.get(wurflModel);
-                    wurflSmid = StringUtils.isEmpty(wurflSmid) ? "unknown" : wurflSmid;
-                } catch (Exception e) {
-                    logger.error("Unable to get data from model class " + e.getMessage());
-                }
+                wurflSmid = defaultWURFLModel.getSmid();
+                wurflSmid = StringUtils.isEmpty(wurflSmid) ? "unknown" : wurflSmid;
 
                 String wurflVersion = wurflEngine.getWURFLUtils().getVersion();
                 int versionIndex = wurflVersion.indexOf("for WURFL");

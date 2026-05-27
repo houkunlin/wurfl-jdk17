@@ -7,12 +7,16 @@ public class DeviceInfo {
     private final MatchType matchType;
     private final String matcherName;
     private final String bucketMatcherName;
+    private final String normalizedUserAgent;
+    private final String originalUserAgent;
 
-    public DeviceInfo(String id, MatchType matchType, String matcherName, String bucketMatcherName, String unused1, String unused2) {
+    public DeviceInfo(String id, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent, String originalUserAgent) {
         this.id = id;
         this.matchType = matchType;
         this.matcherName = matcherName;
         this.bucketMatcherName = bucketMatcherName;
+        this.normalizedUserAgent = normalizedUserAgent;
+        this.originalUserAgent = originalUserAgent;
     }
 
     public String getId() {
@@ -29,6 +33,14 @@ public class DeviceInfo {
 
     public String getBucketMatcherName() {
         return this.bucketMatcherName;
+    }
+
+    public String getNormalizedUserAgent() {
+        return this.normalizedUserAgent;
+    }
+
+    public String getOriginalUserAgent() {
+        return this.originalUserAgent;
     }
 
     @Override

@@ -61,6 +61,11 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+    public MatcherManager getMatcherManager() {
+        return this.matcherManager;
+    }
+
+    @Override
     public void setCacheProvider(CacheProvider cacheProvider) {
         log.info("feeding {}", cacheProvider);
         this.cacheProvider = cacheProvider;
