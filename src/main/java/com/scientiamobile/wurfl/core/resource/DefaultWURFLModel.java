@@ -93,10 +93,8 @@ public class DefaultWURFLModel implements WURFLModel {
         this.devicesById = CollectionFactory.createConcurrentHashMap();
         this.devicesById.putAll(devices.getDevicesById());
         setAncestors(devices);
-        Iterator<ModelDevice> iterator = this.devicesById.values().iterator();
 
-        while (iterator.hasNext()) {
-            ModelDevice device = iterator.next();
+        for (ModelDevice device : this.devicesById.values()) {
             if (device.isActualDeviceRoot()) {
                 ++rootDevicesCount;
             } else {
@@ -319,10 +317,8 @@ public class DefaultWURFLModel implements WURFLModel {
     @Override
     public Set<String> getRootDevicesIds() {
         HashSet<String> rootDeviceIds = new HashSet<>();
-        Iterator<ModelDevice> iterator = this.devicesById.values().iterator();
 
-        while (iterator.hasNext()) {
-            ModelDevice device = iterator.next();
+        for (ModelDevice device : this.devicesById.values()) {
             if (device.isActualDeviceRoot()) {
                 rootDeviceIds.add(device.getID());
             }

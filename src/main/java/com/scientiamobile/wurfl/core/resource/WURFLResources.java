@@ -37,10 +37,9 @@ public final class WURFLResources {
     }
 
     public final void release() {
-        Iterator<WURFLResource> iterator = this.resources.iterator();
 
-        while (iterator.hasNext()) {
-            iterator.next().release();
+        for (WURFLResource resource : this.resources) {
+            resource.release();
         }
 
     }

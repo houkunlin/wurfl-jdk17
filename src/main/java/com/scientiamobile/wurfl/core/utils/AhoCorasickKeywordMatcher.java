@@ -11,12 +11,11 @@ final class AhoCorasickKeywordMatcher {
     public AhoCorasickKeywordMatcher(List<String> keywords) {
         ArrayList<AcTrieNode> nodes = new ArrayList<>();
         AcTrieNode root = new AcTrieNode();
-        Iterator<String> it = keywords.iterator();
 
-        while (it.hasNext()) {
+        for (String s : keywords) {
             String keyword;
-            keyword = it.next();
-            if (keyword != null && keyword.length() != 0) {
+            keyword = s;
+            if (keyword != null && !keyword.isEmpty()) {
                 root.addPattern(keyword);
             }
         }

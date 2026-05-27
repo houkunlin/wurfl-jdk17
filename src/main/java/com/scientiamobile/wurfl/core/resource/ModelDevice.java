@@ -118,10 +118,8 @@ public class ModelDevice implements Serializable {
             throw new AssertionError();
         } else {
             HashSet<String> capabilityNames = new HashSet<>();
-            Iterator<Map.Entry<String, String>> iterator = this.groupsByCapability.entrySet().iterator();
 
-            while (iterator.hasNext()) {
-                Map.Entry<String, String> entry = iterator.next();
+            for (Map.Entry<String, String> entry : this.groupsByCapability.entrySet()) {
                 if (entry.getValue().equals(groupId)) {
                     capabilityNames.add(entry.getKey());
                 }

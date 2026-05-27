@@ -8,7 +8,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -78,11 +77,10 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     public Map<String, String> getCapabilities() {
         Map<String, String> allCapabilities = this.capabilitiesHolder.getCapabilities();
         HashMap<String, String> filteredCapabilities = new HashMap<>(allCapabilities.size());
-        Iterator<String> it = allCapabilities.keySet().iterator();
 
-        while (it.hasNext()) {
+        for (String s : allCapabilities.keySet()) {
             String capabilityName;
-            capabilityName = it.next();
+            capabilityName = s;
             if (!capabilityName.startsWith("controlcap_")) {
                 filteredCapabilities.put(capabilityName, allCapabilities.get(capabilityName));
             }
