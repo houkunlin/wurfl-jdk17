@@ -9,27 +9,51 @@ public final class AhoCorasickKeywordMatcher {
     private final int[][] transitionTargetsByState;
 
     public AhoCorasickKeywordMatcher(List<String> keywords) {
-        ArrayList<AcTrieNode> nodes = new ArrayList<>();
         AcTrieNode root = new AcTrieNode();
-
-        for (String s : keywords) {
-            String keyword;
-            keyword = s;
+        for (String keyword : keywords) {
             if (keyword != null && !keyword.isEmpty()) {
                 root.addPattern(keyword);
             }
         }
+        List<AcTrieNode> nodes = buildFailureLinks(root);
+        int size = nodes.size();
 
-        LinkedList<AcTrieNode> queue = new LinkedList<>();
+        this.failStateByState = new int[size];
+        this.terminalByState = new boolean[size];
+        this.transitionCharsByState = new char[size][];
+        this.transitionTargetsByState = new int[size][];
+
+        Map<AcTrieNode, Integer> nodeIndex = new HashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            nodeIndex.put(nodes.get(i), i);
+        }
+
+        for (int i = 0; i < size; i++) {
+            AcTrieNode node = nodes.get(i);
+            this.failStateByState[i] = nodeIndex.get(node.getFail());
+            this.terminalByState[i] = node.isKeywordEnd();
+            Set<Map.Entry<Character, AcTrieNode>> entries = node.getOutgoingMap().entrySet();
+            this.transitionCharsByState[i] = new char[entries.size()];
+            this.transitionTargetsByState[i] = new int[entries.size()];
+            int j = 0;
+            for (Map.Entry<Character, AcTrieNode> entry : entries) {
+                this.transitionCharsByState[i][j] = entry.getKey();
+                this.transitionTargetsByState[i][j] = nodeIndex.get(entry.getValue());
+                j++;
+            }
+        }
+    }
+
+    private static List<AcTrieNode> buildFailureLinks(AcTrieNode root) {
+        List<AcTrieNode> nodes = new ArrayList<>();
         root.setFail(root);
         nodes.add(root);
 
-        for (int i = 0; i < root.getOutgoingCount(); ++i) {
-            AcTrieNode child = root.getOutgoingAt(i);
-            if (child != null) {
-                child.setFail(root);
-                queue.add(child);
-            }
+        LinkedList<AcTrieNode> queue = new LinkedList<>();
+        for (Character c : root.getNextChars()) {
+            AcTrieNode child = root.getNext(c);
+            child.setFail(root);
+            queue.add(child);
         }
 
         while (!queue.isEmpty()) {
@@ -50,28 +74,7 @@ public final class AhoCorasickKeywordMatcher {
                 next.setFail(failure);
             }
         }
-
-        this.failStateByState = new int[nodes.size()];
-        this.terminalByState = new boolean[nodes.size()];
-        this.transitionCharsByState = new char[nodes.size()][];
-        this.transitionTargetsByState = new int[nodes.size()][];
-
-        for (int i = 0; i < nodes.size(); ++i) {
-            AcTrieNode node = nodes.get(i);
-            this.failStateByState[i] = nodes.indexOf(node.getFail());
-            this.terminalByState[i] = node.isKeywordEnd();
-            Set<Map.Entry<Character, AcTrieNode>> entrySet = node.getOutgoingMap().entrySet();
-            this.transitionCharsByState[i] = new char[entrySet.size()];
-            this.transitionTargetsByState[i] = new int[entrySet.size()];
-            int j = 0;
-
-            for (Map.Entry<Character, AcTrieNode> entry : entrySet) {
-                this.transitionCharsByState[i][j] = entry.getKey();
-                this.transitionTargetsByState[i][j] = nodes.indexOf(entry.getValue());
-                ++j;
-            }
-        }
-
+        return nodes;
     }
 
     private static final int KEYWORD_FOUND = -1;

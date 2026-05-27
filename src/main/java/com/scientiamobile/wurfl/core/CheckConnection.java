@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -131,10 +130,9 @@ public class CheckConnection {
     }
 
     public synchronized void notifyObservers(Object argument) {
-        Iterator<CheckConnectionObserver> iterator = this.observers.iterator();
 
-        while (iterator.hasNext()) {
-            iterator.next().update(this, argument);
+        for (CheckConnectionObserver observer : this.observers) {
+            observer.update(this, argument);
             logger.info("observer notified");
         }
 

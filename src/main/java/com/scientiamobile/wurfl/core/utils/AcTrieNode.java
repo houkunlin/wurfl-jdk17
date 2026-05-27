@@ -45,21 +45,6 @@ final class AcTrieNode {
         return this.keywordEnd;
     }
 
-    public int getOutgoingCount() {
-        return this.transitions.size();
-    }
-
-    public AcTrieNode getOutgoingAt(int index) {
-        int i = 0;
-        for (AcTrieNode node : this.transitions.values()) {
-            if (i == index) {
-                return node;
-            }
-            i++;
-        }
-        return null;
-    }
-
     public AcTrieNode getNext(char c) {
         return this.transitions.get(c);
     }
