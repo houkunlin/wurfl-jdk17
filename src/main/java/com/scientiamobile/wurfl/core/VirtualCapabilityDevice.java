@@ -14,12 +14,12 @@ import java.util.regex.Pattern;
 public class VirtualCapabilityDevice implements Serializable {
     @Serial
     private static final long serialVersionUID = -9083698933173727805L;
-    private static final Pattern WINDOWS_NT_VERSION_PATTERN = Pattern.compile("Windows NT ([0-9]+?\\.[0-9])");
-    private static final Pattern WINDOWS_VERSION_PATTERN = Pattern.compile("Windows [0-9\\.]+");
-    private static final Pattern PPC_OS_X_VERSION_PATTERN = Pattern.compile("PPC.+OS X ([0-9\\._]+)");
-    private static final Pattern TRIDENT_VERSION_PATTERN = Pattern.compile("Trident/([\\d\\.]+)");
-    private static final Pattern INTEL_MAC_OS_X_VERSION_PATTERN = Pattern.compile("Intel Mac OS X ([0-9\\._]+)");
-    private static final Pattern MAC_OS_X_VERSION_PATTERN = Pattern.compile("MacOS X ([0-9\\._]+)");
+    private static final Pattern WINDOWS_NT_VERSION_PATTERN = Pattern.compile("Windows NT (\\d+?\\.\\d)");
+    private static final Pattern WINDOWS_VERSION_PATTERN = Pattern.compile("Windows [\\d.]+");
+    private static final Pattern PPC_OS_X_VERSION_PATTERN = Pattern.compile("PPC.+OS X ([\\d._]+)");
+    private static final Pattern TRIDENT_VERSION_PATTERN = Pattern.compile("Trident/([\\d.]+)");
+    private static final Pattern INTEL_MAC_OS_X_VERSION_PATTERN = Pattern.compile("Intel Mac OS X ([\\d._]+)");
+    private static final Pattern MAC_OS_X_VERSION_PATTERN = Pattern.compile("MacOS X ([\\d._]+)");
     private static final Pattern DOT_SPLIT_PATTERN = Pattern.compile("\\.");
     private static final String MAC_OS_X = "Mac OS X";
     private static final String LINUX = "Linux";

@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final class HTCMatcher extends MatcherBase {
-    private static final Pattern HTC_PREFIX = Pattern.compile("^.*?HTC.+?[/ ;]");
+    private static final Pattern HTC_PREFIX = Pattern.compile("^.*?HTC[^/ ;]+[/ ;]");
 
     public HTCMatcher(WURFLModel wurflModel) {
         super(wurflModel);
