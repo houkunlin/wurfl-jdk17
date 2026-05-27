@@ -5,19 +5,19 @@ import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 public abstract class WURFLConsistencyException extends WURFLRuntimeException {
    private static final long serialVersionUID = 10L;
 
-   public WURFLConsistencyException() {
+   protected WURFLConsistencyException() {
       super("WURFL consistency exception");
    }
 
-   public WURFLConsistencyException(Throwable cause) {
+   protected WURFLConsistencyException(Throwable cause) {
       super("WURFL consistency exception", cause);
    }
 
-   public WURFLConsistencyException(String message) {
+   protected WURFLConsistencyException(String message) {
       super(message);
    }
 
-   public WURFLConsistencyException(String message, Throwable cause) {
+   protected WURFLConsistencyException(String message, Throwable cause) {
       super(message, cause);
    }
 }

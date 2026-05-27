@@ -6,12 +6,12 @@ public abstract class DeviceConsistencyException extends WURFLConsistencyExcepti
    private static final long serialVersionUID = 10L;
    private ModelDevice device;
 
-   public DeviceConsistencyException(ModelDevice device, String message) {
+   protected DeviceConsistencyException(ModelDevice device, String message) {
       super(message);
       this.device = device;
    }
 
-   public DeviceConsistencyException(ModelDevice device) {
+   protected DeviceConsistencyException(ModelDevice device) {
       super("Device: " + device.getID() + " consistency error");
       this.device = device;
    }

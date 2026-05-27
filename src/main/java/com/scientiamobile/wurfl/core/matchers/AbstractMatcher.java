@@ -42,26 +42,26 @@ abstract class AbstractMatcher implements Matcher {
 
    }
 
-   public AbstractMatcher() {
+   protected AbstractMatcher() {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.normalizer = null;
    }
 
-   public AbstractMatcher(WURFLModel model) {
+   protected AbstractMatcher(WURFLModel model) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.normalizer = null;
       this.validateRequiredDeviceIds(model);
    }
 
-   public AbstractMatcher(UserAgentNormalizer normalizer) {
+   protected AbstractMatcher(UserAgentNormalizer normalizer) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.normalizer = normalizer;
    }
 
-   public AbstractMatcher(UserAgentNormalizer normalizer, WURFLModel model) {
+   protected AbstractMatcher(UserAgentNormalizer normalizer, WURFLModel model) {
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
       LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
       this.normalizer = normalizer;

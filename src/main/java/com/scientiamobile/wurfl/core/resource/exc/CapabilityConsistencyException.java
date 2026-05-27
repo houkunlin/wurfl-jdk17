@@ -6,12 +6,12 @@ public abstract class CapabilityConsistencyException extends DeviceConsistencyEx
    private static final long serialVersionUID = 10L;
    private String capabilityName;
 
-   public CapabilityConsistencyException(ModelDevice device, String capabilityName) {
+   protected CapabilityConsistencyException(ModelDevice device, String capabilityName) {
       super(device, "Device: " + device.getID() + " Capability: " + capabilityName + " consistency error");
       this.capabilityName = capabilityName;
    }
 
-   public CapabilityConsistencyException(ModelDevice device, String capabilityName, String message) {
+   protected CapabilityConsistencyException(ModelDevice device, String capabilityName, String message) {
       super(device, message);
       this.capabilityName = capabilityName;
    }

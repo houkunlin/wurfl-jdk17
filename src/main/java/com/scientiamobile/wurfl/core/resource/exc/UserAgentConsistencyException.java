@@ -6,12 +6,12 @@ public abstract class UserAgentConsistencyException extends DeviceConsistencyExc
    private static final long serialVersionUID = 10L;
    private String userAgent;
 
-   public UserAgentConsistencyException(ModelDevice device, String userAgent, String message) {
+   protected UserAgentConsistencyException(ModelDevice device, String userAgent, String message) {
       super(device, message);
       this.userAgent = userAgent;
    }
 
-   public UserAgentConsistencyException(ModelDevice device, String userAgent) {
+   protected UserAgentConsistencyException(ModelDevice device, String userAgent) {
       super(device, "Device: " + device.getID() + " user-agent: " + userAgent + " consistency exception");
       this.userAgent = userAgent;
    }

@@ -12,12 +12,12 @@ public abstract class HierarchyConsistencyException extends WURFLConsistencyExce
    @SuppressWarnings("serial")
    private final List<ModelDevice> hierarchy;
 
-   public HierarchyConsistencyException(List<ModelDevice> hierarchy, String message) {
+   protected HierarchyConsistencyException(List<ModelDevice> hierarchy, String message) {
       super(message);
       this.hierarchy = hierarchy;
    }
 
-   public HierarchyConsistencyException(List<ModelDevice> hierarchy) {
+   protected HierarchyConsistencyException(List<ModelDevice> hierarchy) {
       super("Consistency exception in hierarchy: [" + StringMatchUtils.hierarchyAsString(hierarchy) + "]");
       this.hierarchy = hierarchy;
    }
