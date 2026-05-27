@@ -25,7 +25,8 @@ public class Version implements Comparable<Version> {
       }
 
       boolean isThisLonger;
-      Version longerVersion = (isThisLonger = this.digits.length > otherVersion.digits.length) ? this : otherVersion;
+      isThisLonger = this.digits.length > otherVersion.digits.length;
+      Version longerVersion = isThisLonger ? this : otherVersion;
 
       for(int i = minLength + 1; i < maxLength; ++i) {
          int digit;
@@ -76,7 +77,8 @@ builder.append(this.digits[0]);
       if (version != null && version.length() != 0) {
          String separatorValue = new String(new char[]{separator});
          StringTokenizer tokenizer;
-         int[] digits = new int[(tokenizer = new StringTokenizer(version, separatorValue)).countTokens()];
+         tokenizer = new StringTokenizer(version, separatorValue);
+      int[] digits = new int[tokenizer.countTokens()];
 
          for(int index = 0; tokenizer.hasMoreTokens(); digits[index++] = Integer.parseInt(tokenizer.nextToken())) {
          }

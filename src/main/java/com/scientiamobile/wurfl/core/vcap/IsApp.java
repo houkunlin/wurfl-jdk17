@@ -35,7 +35,8 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
                   Matcher androidSafariSuffixMatcher = ANDROID_SAFARI_SUFFIX_PATTERN.matcher(userAgent);
                   if (androidUaPrefixMatcher.find() || androidSafariSuffixMatcher.find()) {
                      Matcher chromeVersionMatcher;
-                     return (chromeVersionMatcher = CHROME_MAJOR_VERSION_PATTERN.matcher(userAgent)).find() && parseIntOrMinusOne(chromeVersionMatcher.group(1)) < 30 ? "false" : "true";
+                     chromeVersionMatcher = CHROME_MAJOR_VERSION_PATTERN.matcher(userAgent);
+                     return chromeVersionMatcher.find() && parseIntOrMinusOne(chromeVersionMatcher.group(1)) < 30 ? "false" : "true";
                   }
                }
 

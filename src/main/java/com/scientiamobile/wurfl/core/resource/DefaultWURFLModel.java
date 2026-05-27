@@ -74,7 +74,9 @@ public class DefaultWURFLModel implements WURFLModel {
       for(int i = 0; patchResources != null && i < patchResources.size(); ++i) {
          ModelDevices patchDevices;
          ModelDevicesSnapshot patchSnapshot;
-         ModelDevicesConsistencyVerifier.verifyNoRedefinedDevices(patchDevices = (patchSnapshot = patchResources.get(i).getData(includedCapabilities)).copyDevices(), devices);
+         patchSnapshot = patchResources.get(i).getData(includedCapabilities);
+         patchDevices = patchSnapshot.copyDevices();
+         ModelDevicesConsistencyVerifier.verifyNoRedefinedDevices(patchDevices, devices);
          String mergedVersion = new StringBuilder().append(StringUtils.defaultString(this.version)).append("; ").append(patchSnapshot.getSnapshotKey()).toString();
          devices = ModelDevicesPatchMerger.merge(devices, patchDevices);
          this.deviceIdsByInsertionOrder = devices.getDeviceIdsByInsertionOrder();

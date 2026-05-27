@@ -12,7 +12,8 @@ public class WebOSNormalizer implements UserAgentNormalizer {
    public String normalize(String userAgent) {
       Matcher matcher;
       String webOsToken = (matcher = WEBOS_MAJOR_VERSION_PATTERN.matcher(userAgent)).find() ? "webOS".concat(matcher.group(1)) : null;
-      String appNameAndVersion = (matcher = TRAILING_APP_NAME_AND_VERSION_PATTERN.matcher(userAgent)).find() ? matcher.group(1) + " " + matcher.group(2) : null;
+      matcher = TRAILING_APP_NAME_AND_VERSION_PATTERN.matcher(userAgent);
+      String appNameAndVersion = matcher.find() ? matcher.group(1) + " " + matcher.group(2) : null;
       return webOsToken != null && appNameAndVersion != null ? appNameAndVersion + " " + webOsToken + "---" + userAgent : userAgent;
    }
 }

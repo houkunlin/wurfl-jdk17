@@ -55,7 +55,8 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
             }
          } else {
             Matcher matcher;
-            if (userAgent.contains("Java") && (matcher = JAVA.matcher(userAgent)).find()) {
+            matcher = JAVA.matcher(userAgent);
+            if (userAgent.contains("Java") && matcher.find()) {
                String modelName = matcher.group(1);
                normalizedPrefix = "Java U2JavaApp " + ucBrowserVersion + " " + modelName + "---";
             }

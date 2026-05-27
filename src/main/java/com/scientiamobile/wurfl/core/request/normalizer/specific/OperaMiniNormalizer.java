@@ -10,6 +10,7 @@ public class OperaMiniNormalizer implements UserAgentNormalizer {
    @Override
    public String normalize(String userAgent) {
       Matcher operaMiniMatcher;
-      return (operaMiniMatcher = OPERA_MINI_RES_PATTERN.matcher(userAgent)).matches() ? operaMiniMatcher.group(1) + "---" + userAgent : userAgent;
+      operaMiniMatcher = OPERA_MINI_RES_PATTERN.matcher(userAgent);
+      return operaMiniMatcher.matches() ? operaMiniMatcher.group(1) + "---" + userAgent : userAgent;
    }
 }

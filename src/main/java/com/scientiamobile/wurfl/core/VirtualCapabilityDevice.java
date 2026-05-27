@@ -156,8 +156,11 @@ public class VirtualCapabilityDevice implements Serializable {
       Matcher tridentMatcher = TRIDENT_VERSION_PATTERN.matcher(this.deviceUserAgent);
       if ("IE".equals(this.browserPair.getName()) && tridentMatcher.find()) {
          String tridentVersion = tridentMatcher.group(1);
-         if (tridentVersionToIeVersion.containsKey(tridentVersion) && !(tridentVersion = tridentVersionToIeVersion.get(tridentVersion)).equals(this.browserPair.getVersion())) {
-            this.browserPair.setVersion(tridentVersion + "(Compatibility View)");
+         if (tridentVersionToIeVersion.containsKey(tridentVersion)) {
+            tridentVersion = tridentVersionToIeVersion.get(tridentVersion);
+            if (!tridentVersion.equals(this.browserPair.getVersion())) {
+               this.browserPair.setVersion(tridentVersion + "(Compatibility View)");
+            }
          }
       }
 

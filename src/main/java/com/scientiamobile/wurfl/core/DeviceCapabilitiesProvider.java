@@ -44,7 +44,8 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
          return capabilityValue;
       } else {
          ModelDevice currentDevice;
-         for(currentDevice = this.modelDevice; currentDevice != null && !currentDevice.defineCapability(capabilityName); currentDevice = currentDevice.getAncestor()) {
+         currentDevice = this.modelDevice;
+      for(; currentDevice != null && !currentDevice.defineCapability(capabilityName); currentDevice = currentDevice.getAncestor()) {
          }
 
          String resolvedValue = currentDevice != null ? currentDevice.getCapability(capabilityName) : null;

@@ -39,7 +39,8 @@ public class UcwebU3Normalizer implements UserAgentNormalizer {
             }
          } else {
             Matcher matcher;
-            if (userAgent.contains("iPad") && (matcher = IPAD.matcher(userAgent)).find()) {
+            matcher = IPAD.matcher(userAgent);
+            if (userAgent.contains("iPad") && matcher.find()) {
                String iosMajorVersion = matcher.group(1);
                String iosMinorVersion = matcher.group(2);
                String iosVersion = iosMajorVersion + "." + (iosMinorVersion == null ? "" : iosMinorVersion);

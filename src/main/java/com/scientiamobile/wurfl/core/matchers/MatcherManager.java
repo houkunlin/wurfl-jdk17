@@ -154,7 +154,8 @@ public final class MatcherManager {
          String userAgent = device.getUserAgent();
          String deviceId = device.getID();
          WURFLRequest request;
-         (request = (new DefaultWURFLRequestFactory()).createRequest(userAgent, (EngineTarget)null)).performGenericNormalization();
+         request = (new DefaultWURFLRequestFactory()).createRequest(userAgent, (EngineTarget)null);
+            request.performGenericNormalization();
          if (!matcherChain.recordMatch(request, deviceId)) {
             throw new UnsupportedOperationException("no filter found for " + deviceId + "; device=" + device + "; count was " + filteredDevices);
          }

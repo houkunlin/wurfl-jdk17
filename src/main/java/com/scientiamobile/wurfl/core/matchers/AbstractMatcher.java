@@ -89,9 +89,12 @@ abstract class AbstractMatcher implements Matcher {
       String matcherName = this.getMatcherName();
       String bucketMatcherName = this.getBucketMatcherName();
       if (!StringUtils.isBlank(normalizedDeviceUserAgent)) {
-         if (isBlankOrGeneric(deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(normalizedDeviceUserAgent))) {
-            if (isBlankOrGeneric(deviceId = this.applyConclusiveMatch(request))) {
-               if (isBlankOrGeneric(deviceId = this.applyRecoveryMatch(request))) {
+         deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(normalizedDeviceUserAgent);
+      if (isBlankOrGeneric(deviceId)) {
+            deviceId = this.applyConclusiveMatch(request);
+      if (isBlankOrGeneric(deviceId)) {
+               deviceId = this.applyRecoveryMatch(request);
+      if (isBlankOrGeneric(deviceId)) {
                   this.getFilter().getIndex();
                   String fallbackDeviceId;
                   if (request._internalIsDesktopBrowserHeavyDutyAnalysis()) {

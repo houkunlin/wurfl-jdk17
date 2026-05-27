@@ -88,7 +88,8 @@ public class WURFLUpdater {
       UpdateResult updateResult;
       try {
          UpdatePipeline updatePipeline;
-         (updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl)).setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
+         updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl);
+            updatePipeline.setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
          updatePipeline.setConnectionTimeoutMs(this.connectionTimeoutMs);
 updateResult = updatePipeline.execute();
 if (!updateResult.isUpdateProcessSuccessful()) {
@@ -115,7 +116,8 @@ if (!updateResult.isUpdateProcessSuccessful()) {
       } else {
          try {
             UpdatePipeline updatePipeline;
-            (updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl)).setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
+            updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl);
+            updatePipeline.setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
             updatePipeline.setConnectionTimeoutMs(this.connectionTimeoutMs);
             this.scheduler = Executors.newScheduledThreadPool(1);
             this.periodicUpdateTask = new PeriodicUpdateTask(this.wurflEngine, updatePipeline, this.resolvedWurflPath);

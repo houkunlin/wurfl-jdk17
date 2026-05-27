@@ -24,7 +24,8 @@ class MatcherChain implements Matcher, MatcherFilter {
 
       while(matcherIterator.hasNext()) {
          Matcher matcher;
-         (matcher = matcherIterator.next()).getMatcherName();
+         matcher = matcherIterator.next();
+         matcher.getMatcherName();
          if (matcher.canHandle(request)) {
             return matcher.match(request);
          }

@@ -178,12 +178,16 @@ patternBuilder.append("; (");
    public static String getAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
       Matcher matcher;
       boolean found;
-      if (!(found = (matcher = ANDROID_VERSION_SPACE_PATTERN.matcher(userAgent)).find())) {
-         found = (matcher = ANDROID_VERSION_SLASH_PATTERN.matcher(userAgent)).find();
+      matcher = ANDROID_VERSION_SPACE_PATTERN.matcher(userAgent);
+      found = matcher.find();
+      if (!found) {
+         matcher = ANDROID_VERSION_SLASH_PATTERN.matcher(userAgent);
+         found = matcher.find();
       }
 
       if (!found) {
-         found = (matcher = AMAZON_ANDROID_VERSION_PATTERN.matcher(userAgent)).find();
+         matcher = AMAZON_ANDROID_VERSION_PATTERN.matcher(userAgent);
+         found = matcher.find();
       }
 
       if (found) {
@@ -198,7 +202,8 @@ patternBuilder.append("; (");
 
    public static String getOperaOnAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
       Matcher matcher;
-      if (!(matcher = OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN.matcher(userAgent)).find() || !matcher.group(1).equals("11") && !matcher.group(1).equals("12")) {
+      matcher = OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN.matcher(userAgent);
+      if (!matcher.find() || !matcher.group(1).equals("11") && !matcher.group(1).equals("12")) {
          return returnDefaultIfMissing ? "10" : null;
       } else {
          return matcher.group(1);
@@ -265,7 +270,8 @@ patternBuilder.append("; (");
 
    public static String getUcBrowserVersion(String userAgent, boolean returnDefaultIfMissing) {
       Matcher matcher;
-      return (matcher = UC_BROWSER_MAJOR_VERSION_PATTERN.matcher(userAgent)).find() ? matcher.group(1) : null;
+      matcher = UC_BROWSER_MAJOR_VERSION_PATTERN.matcher(userAgent);
+      return matcher.find() ? matcher.group(1) : null;
    }
 
    public static String getUcAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
@@ -298,7 +304,8 @@ if (!matcher.find()) {
          model = ORANGE_SUFFIX_PATTERN.matcher(model).replaceFirst("ORANGE");
          model = LG_MODEL_PATTERN.matcher(model).replaceFirst("$1");
          String cleaned;
-         return StringUtils.isEmpty(cleaned = TIMESTAMP_IN_BRACKETS_PATTERN.matcher(model).replaceFirst("").trim()) ? null : cleaned;
+         cleaned = TIMESTAMP_IN_BRACKETS_PATTERN.matcher(model).replaceFirst("").trim();
+      return StringUtils.isEmpty(cleaned) ? null : cleaned;
       }
    }
 
@@ -356,9 +363,14 @@ if (!matcher.find()) {
       userAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
       Matcher matcher = null;
       Pattern[] patternArray;
-      int patternCount = (patternArray = patterns).length;
+      patternArray = patterns;
+      int patternCount = patternArray.length;
 
-      for(int i = 0; i < patternCount && !(matcher = patternArray[i].matcher(userAgent)).find(); ++i) {
+      for(int i = 0; i < patternCount; ++i) {
+            matcher = patternArray[i].matcher(userAgent);
+            if (matcher.find()) {
+               break;
+            }
          matcher = null;
       }
 
@@ -406,7 +418,8 @@ if (!matcher.find()) {
    public static String createApiUserAgent(WURFLEngine wurflEngine) {
       String wurflVersion;
       String snapshotVersion;
-      if (StringUtils.isEmpty(wurflVersion = wurflEngine.getWURFLUtils().getVersion())) {
+      wurflVersion = wurflEngine.getWURFLUtils().getVersion();
+      if (StringUtils.isEmpty(wurflVersion)) {
          snapshotVersion = wurflVersion;
       } else {
          String versionPrefix = "scientiamobile.com - ";

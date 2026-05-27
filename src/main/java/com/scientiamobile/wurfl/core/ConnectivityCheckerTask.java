@@ -21,7 +21,8 @@ final class ConnectivityCheckerTask implements Runnable {
       try {
          HttpsURLConnection connection;
          URL url = URI.create("https://core.scientiamobile.com/api/v2/checkconnectivity/update").toURL();
-         (connection = (HttpsURLConnection)url.openConnection()).setRequestMethod("POST");
+         connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestMethod("POST");
          connection.setUseCaches(false);
          connection.setDoOutput(true);
          connection.setConnectTimeout(10000);
@@ -37,7 +38,8 @@ final class ConnectivityCheckerTask implements Runnable {
          label64: {
             try {
                failed = true;
-               (output = new DataOutputStream(connection.getOutputStream())).write(payloadBytes);
+               output = new DataOutputStream(connection.getOutputStream());
+            output.write(payloadBytes);
                Integer responseCode = connection.getResponseCode();
                this.checkConnection.notifyObservers(responseCode);
                failed = false;

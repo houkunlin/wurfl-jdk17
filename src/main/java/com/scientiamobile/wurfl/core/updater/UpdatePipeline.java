@@ -113,7 +113,8 @@ public class UpdatePipeline {
       Validate.isTrue(url.getHost() != null && (url.getHost().endsWith(".scientiamobile.com") || url.getHost().equals("localhost") || url.getHost().equals("127.0.0.1")), "Invalid URL host: " + url.getHost());
       HttpsURLConnection connection = null;
       try {
-         (connection = proxySettings != null ? (HttpsURLConnection)url.openConnection(proxySettings.getProxy()) : (HttpsURLConnection)url.openConnection()).setRequestMethod("HEAD");
+         connection = proxySettings != null ? (HttpsURLConnection)url.openConnection(proxySettings.getProxy()) : (HttpsURLConnection)url.openConnection();
+         connection.setRequestMethod("HEAD");
          connection.setUseCaches(false);
          if (StringUtils.isNotEmpty(ifModifiedSince)) {
             connection.setRequestProperty("If-Modified-Since", ifModifiedSince);

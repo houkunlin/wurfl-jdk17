@@ -72,7 +72,8 @@ public final class RISMatcher {
       int minLength = Math.min(firstValue.length(), secondValue.length());
 
       int index;
-      for(index = 0; index < minLength && firstValue.charAt(index) == secondValue.charAt(index); ++index) {
+      index = 0;
+      for(; index < minLength && firstValue.charAt(index) == secondValue.charAt(index); ++index) {
       }
 
       return index;

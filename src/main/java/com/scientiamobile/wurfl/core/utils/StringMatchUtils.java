@@ -114,7 +114,8 @@ public final class StringMatchUtils {
 
    public static String removeSubstringBefore(String value, String search) {
       int index;
-      return (index = value.indexOf(search)) > 0 ? value.substring(index) : value;
+      index = value.indexOf(search);
+      return index > 0 ? value.substring(index) : value;
    }
 
    public static boolean containsAnyOf(String value, String... searches) {
@@ -150,7 +151,8 @@ public final class StringMatchUtils {
          return value.length();
       } else {
          int index;
-         return (index = StringUtils.indexOfAny(fromIndex > 0 ? value.substring(fromIndex) : value, searches)) >= 0 ? index + fromIndex : value.length();
+         index = StringUtils.indexOfAny(fromIndex > 0 ? value.substring(fromIndex) : value, searches);
+      return index >= 0 ? index + fromIndex : value.length();
       }
    }
 
@@ -248,7 +250,8 @@ public final class StringMatchUtils {
 
    public static byte[] charToBytesUTFCustom(char ch) {
       byte[] out;
-      (out = new byte[2])[0] = (byte)(ch >> 8);
+      out = new byte[2];
+      out[0] = (byte)(ch >> 8);
       out[1] = (byte)ch;
       return out;
    }

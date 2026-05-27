@@ -49,7 +49,8 @@ public class CheckConnection {
 
             try {
                Field smidField;
-               (smidField = DefaultWURFLModel.class.getDeclaredField("g")).setAccessible(true);
+               smidField = DefaultWURFLModel.class.getDeclaredField("g");
+            smidField.setAccessible(true);
                wurflSmid = StringUtils.isEmpty(wurflSmid = (String)smidField.get(wurflModel)) ? "unknown" : wurflSmid;
             } catch (Exception e) {
                logger.error("Unable to get data from model class " + e.getMessage());
@@ -63,7 +64,7 @@ public class CheckConnection {
             }
 
             StringBuilder payloadBuilder;
-            (payloadBuilder = appendJsonField(
+            payloadBuilder = appendJsonField(
                appendJsonField(
                   appendJsonField(
                      appendJsonField(
@@ -98,7 +99,7 @@ public class CheckConnection {
                "platform",
                this.platformName,
                false
-            )).append(" }");
+            ).append(" }");
             this.payloadJson = payloadBuilder.toString();
          }
 
