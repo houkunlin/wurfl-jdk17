@@ -8,7 +8,6 @@ import com.scientiamobile.wurfl.core.resource.*;
 import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityEvaluator;
 import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityHandler;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -160,7 +159,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
                 log.warn("Empty value has been provided for replacing root, skipping");
                 return false;
             } else if (!(new File(this.rootPath).getCanonicalFile()).canWrite()) {
-                log.error("Engine root at {}is not writable, cannot replace it", this.rootPath);
+                log.error("Engine root at {} is not writable, cannot replace it", this.rootPath);
                 return false;
             } else {
                 GeneralWURFLEngine newEngine;
@@ -171,7 +170,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
                 }
 
                 newEngine.load();
-                FileUtils.copyFile(new File(newRootPath).getCanonicalFile(), new File(this.rootPath).getCanonicalFile(), true);
+                java.nio.file.Files.copy(new File(newRootPath).toPath(), new File(this.rootPath).toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
                 this.reload(this.rootPath);
                 return true;
             }
