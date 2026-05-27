@@ -8,7 +8,7 @@ import java.io.Serial;
 public class WURFLResourceException extends WURFLRuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final WURFLResource resource;
+    private final transient WURFLResource resource;
 
     public WURFLResourceException(WURFLResource resource) {
         super("WURFL resource exception in: " + resource.getInfo());

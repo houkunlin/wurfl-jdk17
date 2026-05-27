@@ -6,16 +6,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serial;
 import java.io.Serializable;
 
-final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevicesSnapshot> {
+public final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevicesSnapshot> {
+    @Serial
     private static final long serialVersionUID = 1L;
-    private String info;
-    private String version;
-    private boolean patch;
-    private ModelDevices devices;
+    private final String info;
+    private final String version;
+    private final boolean patch;
+    private final ModelDevices devices;
     private transient String cachedKey;
-    private String smid;
+    private final String smid;
 
     public ModelDevicesSnapshot(String info, String version, boolean patch, ModelDevices devices, String smid) {
         this.info = info;
