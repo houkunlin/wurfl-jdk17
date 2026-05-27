@@ -3,14 +3,7 @@ package com.scientiamobile.wurfl.core.request;
 import com.scientiamobile.wurfl.core.EngineTarget;
 import com.scientiamobile.wurfl.core.UserAgentPriority;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
-import com.scientiamobile.wurfl.core.request.normalizer.generic.BlackBerryNormalizer;
-import com.scientiamobile.wurfl.core.request.normalizer.generic.CFNetworkNormalizer;
-import com.scientiamobile.wurfl.core.request.normalizer.generic.GenericAndroidNormalizer;
-import com.scientiamobile.wurfl.core.request.normalizer.generic.LocaleNormalizer;
-import com.scientiamobile.wurfl.core.request.normalizer.generic.SerialNumberNormalizer;
-import com.scientiamobile.wurfl.core.request.normalizer.generic.TransferEncodingNormalizer;
-import com.scientiamobile.wurfl.core.request.normalizer.generic.UCWebNormalizer;
-import com.scientiamobile.wurfl.core.request.normalizer.generic.UPLinkNormalizer;
+import com.scientiamobile.wurfl.core.request.normalizer.generic.*;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -18,81 +11,81 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
 
 public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriority {
-   private final UserAgentResolver userAgentResolver;
-   private UserAgentNormalizer userAgentNormalizer;
-   private UserAgentPriority userAgentPriority;
+    private final UserAgentResolver userAgentResolver;
+    private UserAgentNormalizer userAgentNormalizer;
+    private UserAgentPriority userAgentPriority;
 
-   private static UserAgentNormalizerChain createDefaultNormalizerChain() {
-      return new UserAgentNormalizerChain(new UserAgentNormalizer[]{new UCWebNormalizer(), new UPLinkNormalizer(), new SerialNumberNormalizer(), new LocaleNormalizer(), new CFNetworkNormalizer(), new BlackBerryNormalizer(), new GenericAndroidNormalizer(), new TransferEncodingNormalizer()});
-   }
+    public DefaultWURFLRequestFactory() {
+        this(createDefaultNormalizerChain());
+    }
 
-   public DefaultWURFLRequestFactory() {
-      this(createDefaultNormalizerChain());
-   }
+    public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver) {
+        this(userAgentResolver, createDefaultNormalizerChain());
+    }
 
-   public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver) {
-      this(userAgentResolver, createDefaultNormalizerChain());
-   }
+    public DefaultWURFLRequestFactory(UserAgentNormalizer userAgentNormalizer) {
+        this(new HttpServletRequestUserAgentResolver(), userAgentNormalizer);
+    }
 
-   public DefaultWURFLRequestFactory(UserAgentNormalizer userAgentNormalizer) {
-      this(new HttpServletRequestUserAgentResolver(), userAgentNormalizer);
-   }
+    public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentNormalizer userAgentNormalizer) {
+        this(userAgentResolver, userAgentNormalizer, UserAgentPriority.OverrideSideloadedBrowserUserAgent);
+    }
 
-   public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentNormalizer userAgentNormalizer) {
-      this(userAgentResolver, userAgentNormalizer, UserAgentPriority.OverrideSideloadedBrowserUserAgent);
-   }
+    public DefaultWURFLRequestFactory(UserAgentPriority userAgentPriority) {
+        this(createDefaultNormalizerChain(), userAgentPriority);
+    }
 
-   public DefaultWURFLRequestFactory(UserAgentPriority userAgentPriority) {
-      this(createDefaultNormalizerChain(), userAgentPriority);
-   }
+    public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentPriority userAgentPriority) {
+        this(userAgentResolver, createDefaultNormalizerChain(), userAgentPriority);
+    }
 
-   public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentPriority userAgentPriority) {
-      this(userAgentResolver, createDefaultNormalizerChain(), userAgentPriority);
-   }
+    public DefaultWURFLRequestFactory(UserAgentNormalizer userAgentNormalizer, UserAgentPriority userAgentPriority) {
+        this(new HttpServletRequestUserAgentResolver(), userAgentNormalizer, userAgentPriority);
+    }
 
-   public DefaultWURFLRequestFactory(UserAgentNormalizer userAgentNormalizer, UserAgentPriority userAgentPriority) {
-      this(new HttpServletRequestUserAgentResolver(), userAgentNormalizer, userAgentPriority);
-   }
+    public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentNormalizer userAgentNormalizer, UserAgentPriority userAgentPriority) {
+        LoggerFactory.getLogger(DefaultWURFLRequestFactory.class);
+        Validate.notNull(userAgentResolver, "userAgentResolver is null");
+        this.userAgentResolver = userAgentResolver;
+        this.userAgentNormalizer = userAgentNormalizer;
+        this.userAgentPriority = userAgentPriority;
+    }
 
-   public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentNormalizer userAgentNormalizer, UserAgentPriority userAgentPriority) {
-      LoggerFactory.getLogger(DefaultWURFLRequestFactory.class);
-      Validate.notNull(userAgentResolver, "userAgentResolver is null");
-      this.userAgentResolver = userAgentResolver;
-      this.userAgentNormalizer = userAgentNormalizer;
-      this.userAgentPriority = userAgentPriority;
-   }
+    private static UserAgentNormalizerChain createDefaultNormalizerChain() {
+        return new UserAgentNormalizerChain(new UserAgentNormalizer[]{new UCWebNormalizer(), new UPLinkNormalizer(), new SerialNumberNormalizer(), new LocaleNormalizer(), new CFNetworkNormalizer(), new BlackBerryNormalizer(), new GenericAndroidNormalizer(), new TransferEncodingNormalizer()});
+    }
 
-   @Override
-   public WURFLRequest createRequest(HttpServletRequest request, EngineTarget engineTarget) {
-      Validate.notNull(request, "The sourceRequest must be not null");
-      String userAgent = StringUtils.trimToEmpty(this.userAgentResolver.resolve(request));
-      String uaProfile = UserAgentUtils.getUaProfile(request);
-      return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, UserAgentUtils.getHeaders(request), this.userAgentPriority, engineTarget);
-   }
+    @Override
+    public WURFLRequest createRequest(HttpServletRequest request, EngineTarget engineTarget) {
+        Validate.notNull(request, "The sourceRequest must be not null");
+        String userAgent = StringUtils.trimToEmpty(this.userAgentResolver.resolve(request));
+        String uaProfile = UserAgentUtils.getUaProfile(request);
+        return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, UserAgentUtils.getHeaders(request), this.userAgentPriority, engineTarget);
+    }
 
-   @Override
-   public WURFLRequest createRequest(String userAgent, EngineTarget engineTarget) {
-      userAgent = StringUtils.trimToEmpty(userAgent);
-      return new DefaultWURFLRequest(userAgent, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
-   }
+    @Override
+    public WURFLRequest createRequest(String userAgent, EngineTarget engineTarget) {
+        userAgent = StringUtils.trimToEmpty(userAgent);
+        return new DefaultWURFLRequest(userAgent, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
+    }
 
-   public WURFLRequest createRequest(String userAgent, String uaProfile, EngineTarget engineTarget) {
-      userAgent = StringUtils.trimToEmpty(userAgent);
-      return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
-   }
+    public WURFLRequest createRequest(String userAgent, String uaProfile, EngineTarget engineTarget) {
+        userAgent = StringUtils.trimToEmpty(userAgent);
+        return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
+    }
 
-   @Override
-   public WURFLRequest createRequest(WURFLHeaderProvider headerProvider, EngineTarget engineTarget) {
-      return new DefaultWURFLRequest(this.userAgentNormalizer, headerProvider, this.userAgentPriority, engineTarget);
-   }
+    @Override
+    public WURFLRequest createRequest(WURFLHeaderProvider headerProvider, EngineTarget engineTarget) {
+        return new DefaultWURFLRequest(this.userAgentNormalizer, headerProvider, this.userAgentPriority, engineTarget);
+    }
 
-   @Override
-   public UserAgentPriority getUserAgentPriority() {
-      return this.userAgentPriority;
-   }
+    @Override
+    public UserAgentPriority getUserAgentPriority() {
+        return this.userAgentPriority;
+    }
 
-   @Override
-   public void setUserAgentPriority(UserAgentPriority userAgentPriority) {
-      this.userAgentPriority = userAgentPriority;
-   }
+    @Override
+    public void setUserAgentPriority(UserAgentPriority userAgentPriority) {
+        this.userAgentPriority = userAgentPriority;
+    }
 }

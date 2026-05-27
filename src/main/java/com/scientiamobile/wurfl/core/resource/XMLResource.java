@@ -1,95 +1,97 @@
 package com.scientiamobile.wurfl.core.resource;
 
 import com.scientiamobile.wurfl.core.resource.exc.WURFLResourceException;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
-import javax.xml.parsers.SAXParserFactory;
-import org.slf4j.LoggerFactory;
 
 public class XMLResource implements WURFLResource {
-   private final ResourceInput resourceInput;
-   private String version;
-   private Set<String> includedCapabilities;
-   private String originalPath;
-   private static final SAXParserFactory SAX_PARSER_FACTORY;
+    private static final SAXParserFactory SAX_PARSER_FACTORY;
 
-   public XMLResource(String originalPath) {
-      this.originalPath = originalPath;
-      this.resourceInput = new ResourceInput(originalPath);
-   }
+    static {
+        LoggerFactory.getLogger(XMLResource.class);
+        SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
+    }
 
-   public XMLResource(File originalFile) {
-      this.originalPath = originalFile.getAbsolutePath();
-      this.resourceInput = new ResourceInput(originalFile);
-   }
+    private final ResourceInput resourceInput;
+    private String version;
+    private Set<String> includedCapabilities;
+    private String originalPath;
 
-   public XMLResource(URI uri) {
-      this.resourceInput = new ResourceInput(uri);
-   }
+    public XMLResource(String originalPath) {
+        this.originalPath = originalPath;
+        this.resourceInput = new ResourceInput(originalPath);
+    }
 
-   public XMLResource(InputStream inputStream, String originalPath) {
-      this.resourceInput = new ResourceInput(inputStream, originalPath);
-   }
+    public XMLResource(File originalFile) {
+        this.originalPath = originalFile.getAbsolutePath();
+        this.resourceInput = new ResourceInput(originalFile);
+    }
 
-   @Override
-   public ModelDevicesSnapshot getData(String... includedCapabilities) {
-      if (includedCapabilities != null) {
-         this.includedCapabilities = new HashSet<>(includedCapabilities.length);
-         for(String capabilityName : includedCapabilities) {
-            this.includedCapabilities.add(capabilityName);
-         }
-      } else {
-         this.includedCapabilities = new HashSet<>(0);
-      }
+    public XMLResource(URI uri) {
+        this.resourceInput = new ResourceInput(uri);
+    }
 
-      ModelDevicesSnapshot snapshot = this.parseSnapshot(this.resourceInput.openInputStream());
-      this.resourceInput.reset();
-      return snapshot;
-   }
+    public XMLResource(InputStream inputStream, String originalPath) {
+        this.resourceInput = new ResourceInput(inputStream, originalPath);
+    }
 
-   public String getOriginalPath() {
-      return this.originalPath;
-   }
+    @Override
+    public ModelDevicesSnapshot getData(String... includedCapabilities) {
+        if (includedCapabilities != null) {
+            this.includedCapabilities = new HashSet<>(includedCapabilities.length);
+            for (String capabilityName : includedCapabilities) {
+                this.includedCapabilities.add(capabilityName);
+            }
+        } else {
+            this.includedCapabilities = new HashSet<>(0);
+        }
 
-   public String getInfo() {
-      return this.resourceInput.getResourceName();
-   }
+        ModelDevicesSnapshot snapshot = this.parseSnapshot(this.resourceInput.openInputStream());
+        this.resourceInput.reset();
+        return snapshot;
+    }
 
-   @Override
-   public String getVersion() {
-      return this.version;
-   }
+    public String getOriginalPath() {
+        return this.originalPath;
+    }
 
-   public void release() {
-      this.resourceInput.close();
-   }
+    public String getInfo() {
+        return this.resourceInput.getResourceName();
+    }
 
-   private ModelDevicesSnapshot parseSnapshot(InputStream inputStream) {
-      WurflXmlHandler handler = new WurflXmlHandler(this.includedCapabilities);
+    @Override
+    public String getVersion() {
+        return this.version;
+    }
 
-      try {
-         SAX_PARSER_FACTORY.newSAXParser().parse(inputStream, handler);
-      } catch (RuntimeException e) {
-         throw e;
-      } catch (Exception e) {
-         throw new WURFLResourceException(this, e);
-      }
+    public void release() {
+        this.resourceInput.close();
+    }
 
-      String info = this.getInfo();
-      String wurflVersion = handler.getWurflVersion();
-      String wurflLastUpdated = handler.getWurflLastUpdated();
-      String wurflSmid = handler.getWurflSmid();
-      this.version = wurflVersion != null && wurflVersion.length() != 0 ? wurflVersion : (wurflLastUpdated != null && wurflLastUpdated.length() != 0 ? wurflLastUpdated : "(no version info)");
-      boolean patch = handler.isPatch();
-      ModelDevices devices = handler.getDevices();
-      return new ModelDevicesSnapshot(info, this.version, patch, devices, wurflSmid);
-   }
+    private ModelDevicesSnapshot parseSnapshot(InputStream inputStream) {
+        WurflXmlHandler handler = new WurflXmlHandler(this.includedCapabilities);
 
-   static {
-      LoggerFactory.getLogger(XMLResource.class);
-      SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
-   }
+        try {
+            SAX_PARSER_FACTORY.newSAXParser().parse(inputStream, handler);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new WURFLResourceException(this, e);
+        }
+
+        String info = this.getInfo();
+        String wurflVersion = handler.getWurflVersion();
+        String wurflLastUpdated = handler.getWurflLastUpdated();
+        String wurflSmid = handler.getWurflSmid();
+        this.version = wurflVersion != null && wurflVersion.length() != 0 ? wurflVersion : (wurflLastUpdated != null && wurflLastUpdated.length() != 0 ? wurflLastUpdated : "(no version info)");
+        boolean patch = handler.isPatch();
+        ModelDevices devices = handler.getDevices();
+        return new ModelDevicesSnapshot(info, this.version, patch, devices, wurflSmid);
+    }
 }

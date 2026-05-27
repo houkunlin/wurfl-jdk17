@@ -8,49 +8,49 @@ import java.util.HashMap;
 import java.util.Map;
 
 final class ModelDevicesPatchMerger {
-   private static final Logger LOG = LoggerFactory.getLogger(ModelDevicesPatchMerger.class);
-   private static final boolean ASSERTIONS_DISABLED = !ModelDevicesPatchMerger.class.desiredAssertionStatus();
+    private static final Logger LOG = LoggerFactory.getLogger(ModelDevicesPatchMerger.class);
+    private static final boolean ASSERTIONS_DISABLED = !ModelDevicesPatchMerger.class.desiredAssertionStatus();
 
-   private ModelDevicesPatchMerger() {
-   }
+    private ModelDevicesPatchMerger() {
+    }
 
-   public static ModelDevices merge(ModelDevices baseDevices, ModelDevices patchDevices) {
-      ModelDevices mergedDevices = new ModelDevices(baseDevices);
+    public static ModelDevices merge(ModelDevices baseDevices, ModelDevices patchDevices) {
+        ModelDevices mergedDevices = new ModelDevices(baseDevices);
 
-      for(ModelDevice patchDevice : patchDevices) {
-         ModelDevice mergedDevice = patchDevice;
-         if (baseDevices.containsId(patchDevice.getID())) {
-            ModelDevice baseDevice = baseDevices.getById(patchDevice.getID());
-            if (patchDevice.getUserAgent() != null) {
-               HashMap<String, String> mergedCapabilities = new HashMap<>(baseDevice.getCapabilities());
-               mergedCapabilities.putAll(patchDevice.getCapabilities());
-               Map<String, String> baseGroupsByCapability = baseDevice.getGroupsByCapability();
-               Map<String, String> patchGroupsByCapability = patchDevice.getGroupsByCapability();
-               HashMap<String, String> mergedGroupsByCapability = new HashMap<>();
-               mergedGroupsByCapability.putAll(baseGroupsByCapability);
-               mergedGroupsByCapability.putAll(patchGroupsByCapability);
-               if (!patchDevice.getUserAgent().equals(baseDevice.getUserAgent())) {
-                  throw new UserAgentOverrideException(baseDevice, patchDevice.getUserAgent(), baseDevice.getUserAgent());
-               }
+        for (ModelDevice patchDevice : patchDevices) {
+            ModelDevice mergedDevice = patchDevice;
+            if (baseDevices.containsId(patchDevice.getID())) {
+                ModelDevice baseDevice = baseDevices.getById(patchDevice.getID());
+                if (patchDevice.getUserAgent() != null) {
+                    HashMap<String, String> mergedCapabilities = new HashMap<>(baseDevice.getCapabilities());
+                    mergedCapabilities.putAll(patchDevice.getCapabilities());
+                    Map<String, String> baseGroupsByCapability = baseDevice.getGroupsByCapability();
+                    Map<String, String> patchGroupsByCapability = patchDevice.getGroupsByCapability();
+                    HashMap<String, String> mergedGroupsByCapability = new HashMap<>();
+                    mergedGroupsByCapability.putAll(baseGroupsByCapability);
+                    mergedGroupsByCapability.putAll(patchGroupsByCapability);
+                    if (!patchDevice.getUserAgent().equals(baseDevice.getUserAgent())) {
+                        throw new UserAgentOverrideException(baseDevice, patchDevice.getUserAgent(), baseDevice.getUserAgent());
+                    }
 
-               mergedDevice = (new ModelDeviceBuilder(baseDevice.getID(), baseDevice.getUserAgent(), patchDevice.getFallBack())).setActualDeviceRoot(patchDevice.isActualDeviceRoot()).setCapabilitiesByGroup(mergedGroupsByCapability).setCapabilities(mergedCapabilities).build();
-            } else {
-               LOG.error("invalid patching device, not patched");
-               mergedDevice = baseDevice;
+                    mergedDevice = (new ModelDeviceBuilder(baseDevice.getID(), baseDevice.getUserAgent(), patchDevice.getFallBack())).setActualDeviceRoot(patchDevice.isActualDeviceRoot()).setCapabilitiesByGroup(mergedGroupsByCapability).setCapabilities(mergedCapabilities).build();
+                } else {
+                    LOG.error("invalid patching device, not patched");
+                    mergedDevice = baseDevice;
+                }
+
+                if (mergedDevice != null) {
+                    mergedDevices.remove(baseDevice);
+                }
             }
 
-            if (mergedDevice != null) {
-               mergedDevices.remove(baseDevice);
+            if (!ASSERTIONS_DISABLED && mergedDevice == null) {
+                throw new AssertionError("patchedDevice is null");
             }
-         }
 
-         if (!ASSERTIONS_DISABLED && mergedDevice == null) {
-            throw new AssertionError("patchedDevice is null");
-         }
+            mergedDevices.add(mergedDevice);
+        }
 
-         mergedDevices.add(mergedDevice);
-      }
-
-      return mergedDevices;
-   }
+        return mergedDevices;
+    }
 }

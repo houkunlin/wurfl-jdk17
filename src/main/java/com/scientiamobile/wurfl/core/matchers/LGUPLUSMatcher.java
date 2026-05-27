@@ -3,65 +3,66 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
+
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 final class LGUPLUSMatcher extends MatcherBase {
-   private static final String GENERIC_LGUPLUS = "generic_lguplus";
-   private static final Map<String, String[]> DEVICE_BY_TOKENS;
+    private static final String GENERIC_LGUPLUS = "generic_lguplus";
+    private static final Map<String, String[]> DEVICE_BY_TOKENS;
 
-   public LGUPLUSMatcher(WURFLModel wurflModel) {
-      super(wurflModel);
-   }
+    static {
+        DEVICE_BY_TOKENS = new LinkedHashMap<>();
+        DEVICE_BY_TOKENS.put("generic_lguplus_rexos_facebook_browser", new String[]{"Windows NT 5", "POLARIS"});
+        DEVICE_BY_TOKENS.put("generic_lguplus_rexos_webviewer_browser", new String[]{"Windows NT 5"});
+        DEVICE_BY_TOKENS.put("generic_lguplus_winmo_facebook_browser", new String[]{"Windows CE", "POLARIS"});
+        DEVICE_BY_TOKENS.put("generic_lguplus_android_webkit_browser", new String[]{"Android", "AppleWebKit"});
+    }
 
-   @Override
-   protected Set<String> getRequiredDeviceIds() {
-      HashSet<String> requiredDeviceIds;
-requiredDeviceIds = new HashSet<>();
-requiredDeviceIds.addAll(DEVICE_BY_TOKENS.keySet());
-      requiredDeviceIds.add(GENERIC_LGUPLUS);
-      return requiredDeviceIds;
-   }
+    public LGUPLUSMatcher(WURFLModel wurflModel) {
+        super(wurflModel);
+    }
 
-   @Override
-   public boolean canHandle(WURFLRequest request) {
-      return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "lgtelecom", "LGUPLUS");
-   }
+    @Override
+    protected Set<String> getRequiredDeviceIds() {
+        HashSet<String> requiredDeviceIds;
+        requiredDeviceIds = new HashSet<>();
+        requiredDeviceIds.addAll(DEVICE_BY_TOKENS.keySet());
+        requiredDeviceIds.add(GENERIC_LGUPLUS);
+        return requiredDeviceIds;
+    }
 
-   @Override
-   protected String applyConclusiveMatch(WURFLRequest request) {
-      return null;
-   }
+    @Override
+    public boolean canHandle(WURFLRequest request) {
+        return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "lgtelecom", "LGUPLUS");
+    }
 
-   @Override
-   protected String applyRecoveryMatch(WURFLRequest request) {
-      String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
-      for(Map.Entry<String, String[]> entry : DEVICE_BY_TOKENS.entrySet()) {
-         if (StringMatchUtils.containsAllOf(normalizedDeviceUserAgent, entry.getValue())) {
-            return entry.getKey();
-         }
-      }
+    @Override
+    protected String applyConclusiveMatch(WURFLRequest request) {
+        return null;
+    }
 
-      return GENERIC_LGUPLUS;
-   }
+    @Override
+    protected String applyRecoveryMatch(WURFLRequest request) {
+        String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
+        for (Map.Entry<String, String[]> entry : DEVICE_BY_TOKENS.entrySet()) {
+            if (StringMatchUtils.containsAllOf(normalizedDeviceUserAgent, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
 
-   @Override
-   public String getMatcherName() {
-      return "LGUPLUSMatcher";
-   }
+        return GENERIC_LGUPLUS;
+    }
 
-   @Override
-   public String getBucketMatcherName() {
-      return "LGUPLUS";
-   }
+    @Override
+    public String getMatcherName() {
+        return "LGUPLUSMatcher";
+    }
 
-   static {
-DEVICE_BY_TOKENS = new LinkedHashMap<>();
-DEVICE_BY_TOKENS.put("generic_lguplus_rexos_facebook_browser", new String[]{"Windows NT 5", "POLARIS"});
-      DEVICE_BY_TOKENS.put("generic_lguplus_rexos_webviewer_browser", new String[]{"Windows NT 5"});
-      DEVICE_BY_TOKENS.put("generic_lguplus_winmo_facebook_browser", new String[]{"Windows CE", "POLARIS"});
-      DEVICE_BY_TOKENS.put("generic_lguplus_android_webkit_browser", new String[]{"Android", "AppleWebKit"});
-   }
+    @Override
+    public String getBucketMatcherName() {
+        return "LGUPLUS";
+    }
 }

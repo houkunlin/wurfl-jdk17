@@ -1,39 +1,39 @@
 package com.scientiamobile.wurfl.core.updater;
 
 public class UpdateResult {
-   private UpdateResultStatus resultStatus;
-   private String message;
+    private UpdateResultStatus resultStatus;
+    private String message;
 
-   public UpdateResult(UpdateResultStatus resultStatus, String message) {
-      this.resultStatus = resultStatus;
-      this.message = message;
-   }
+    public UpdateResult(UpdateResultStatus resultStatus, String message) {
+        this.resultStatus = resultStatus;
+        this.message = message;
+    }
 
-   public boolean isUpdateProcessSuccessful() {
-      return this.resultStatus == UpdateResultStatus.UPDATED || this.resultStatus == UpdateResultStatus.UPDATE_SKIPPED;
-   }
+    public static UpdateResultStatus statusFromString(String value) {
+        if (UpdateResultStatus.PIPELINE_TASK_FAILED.value().equals(value)) {
+            return UpdateResultStatus.PIPELINE_TASK_FAILED;
+        } else if (UpdateResultStatus.UPDATE_SKIPPED.value().equals(value)) {
+            return UpdateResultStatus.UPDATE_SKIPPED;
+        } else if (UpdateResultStatus.UPDATED.value().equals(value)) {
+            return UpdateResultStatus.UPDATED;
+        } else {
+            return UpdateResultStatus.PIPELINE_TASK_DONE.value().equals(value) ? UpdateResultStatus.PIPELINE_TASK_DONE : null;
+        }
+    }
 
-   final boolean isUpdated() {
-      return this.resultStatus == UpdateResultStatus.UPDATED;
-   }
+    public boolean isUpdateProcessSuccessful() {
+        return this.resultStatus == UpdateResultStatus.UPDATED || this.resultStatus == UpdateResultStatus.UPDATE_SKIPPED;
+    }
 
-   public UpdateResultStatus getResultStatus() {
-      return this.resultStatus;
-   }
+    final boolean isUpdated() {
+        return this.resultStatus == UpdateResultStatus.UPDATED;
+    }
 
-   public String getMessage() {
-      return this.message;
-   }
+    public UpdateResultStatus getResultStatus() {
+        return this.resultStatus;
+    }
 
-   public static UpdateResultStatus statusFromString(String value) {
-      if (UpdateResultStatus.PIPELINE_TASK_FAILED.value().equals(value)) {
-         return UpdateResultStatus.PIPELINE_TASK_FAILED;
-      } else if (UpdateResultStatus.UPDATE_SKIPPED.value().equals(value)) {
-         return UpdateResultStatus.UPDATE_SKIPPED;
-      } else if (UpdateResultStatus.UPDATED.value().equals(value)) {
-         return UpdateResultStatus.UPDATED;
-      } else {
-         return UpdateResultStatus.PIPELINE_TASK_DONE.value().equals(value) ? UpdateResultStatus.PIPELINE_TASK_DONE : null;
-      }
-   }
+    public String getMessage() {
+        return this.message;
+    }
 }

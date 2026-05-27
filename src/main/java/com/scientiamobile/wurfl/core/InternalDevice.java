@@ -3,19 +3,19 @@ package com.scientiamobile.wurfl.core;
 import java.util.Map;
 
 public interface InternalDevice {
-   String getId();
+    String getId();
 
-   String getWURFLUserAgent();
+    String getWURFLUserAgent();
 
-   String getCapability(String capabilityName);
+    String getCapability(String capabilityName);
 
-   int getCapabilityAsInt(String capabilityName);
+    int getCapabilityAsInt(String capabilityName);
 
-   boolean getCapabilityAsBool(String capabilityName);
+    boolean getCapabilityAsBool(String capabilityName);
 
-   Map<String, String> getCapabilities();
+    Map<String, String> getCapabilities();
 
-   boolean isActualDeviceRoot();
+    boolean isActualDeviceRoot();
 
-   String getDeviceRootId();
+    String getDeviceRootId();
 }

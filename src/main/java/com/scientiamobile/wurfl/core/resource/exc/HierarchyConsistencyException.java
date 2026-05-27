@@ -7,21 +7,21 @@ import java.io.Serial;
 import java.util.List;
 
 public abstract class HierarchyConsistencyException extends WURFLConsistencyException {
-   @Serial
-   private static final long serialVersionUID = 10L;
-   private final List<ModelDevice> hierarchy;
+    @Serial
+    private static final long serialVersionUID = 10L;
+    private final List<ModelDevice> hierarchy;
 
-   protected HierarchyConsistencyException(List<ModelDevice> hierarchy, String message) {
-      super(message);
-      this.hierarchy = hierarchy;
-   }
+    protected HierarchyConsistencyException(List<ModelDevice> hierarchy, String message) {
+        super(message);
+        this.hierarchy = hierarchy;
+    }
 
-   protected HierarchyConsistencyException(List<ModelDevice> hierarchy) {
-      super("Consistency exception in hierarchy: [" + StringMatchUtils.hierarchyAsString(hierarchy) + "]");
-      this.hierarchy = hierarchy;
-   }
+    protected HierarchyConsistencyException(List<ModelDevice> hierarchy) {
+        super("Consistency exception in hierarchy: [" + StringMatchUtils.hierarchyAsString(hierarchy) + "]");
+        this.hierarchy = hierarchy;
+    }
 
-   public List<ModelDevice> getHierarchy() {
-      return this.hierarchy;
-   }
+    public List<ModelDevice> getHierarchy() {
+        return this.hierarchy;
+    }
 }

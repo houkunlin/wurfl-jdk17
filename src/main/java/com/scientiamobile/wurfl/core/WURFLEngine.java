@@ -6,76 +6,77 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.WURFLRequestFactory;
 import com.scientiamobile.wurfl.core.resource.WURFLResource;
 import com.scientiamobile.wurfl.core.resource.WURFLResources;
-import java.util.Collection;
-import java.util.Set;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Collection;
+import java.util.Set;
+
 public interface WURFLEngine {
-   String API_VERSION = "1.9.1.0";
+    String API_VERSION = "1.9.1.0";
 
-   Device getDeviceForRequest(HttpServletRequest request);
+    Device getDeviceForRequest(HttpServletRequest request);
 
-   Device getDeviceForRequest(WURFLRequest request);
+    Device getDeviceForRequest(WURFLRequest request);
 
-   Device getDeviceForRequest(String userAgent);
+    Device getDeviceForRequest(String userAgent);
 
-   void load();
+    void load();
 
-   void reload(String wurflPath);
+    void reload(String wurflPath);
 
-   void reload(String wurflPath, String[] wurflPatchPaths);
+    void reload(String wurflPath, String[] wurflPatchPaths);
 
-   void reload(WURFLResource wurflResource, WURFLResource... patchResources);
+    void reload(WURFLResource wurflResource, WURFLResource... patchResources);
 
-   void reload(WURFLResource wurflResource, WURFLResources patchResources);
+    void reload(WURFLResource wurflResource, WURFLResources patchResources);
 
-   boolean replaceRoot(String wurflPath);
+    boolean replaceRoot(String wurflPath);
 
-   void applyPatches(String... patchPaths);
+    void applyPatches(String... patchPaths);
 
-   void applyPatches(WURFLResource... patchResources);
+    void applyPatches(WURFLResource... patchResources);
 
-   void applyPatches(WURFLResources patchResources);
+    void applyPatches(WURFLResources patchResources);
 
-   void setMarkupResolver(MarkupResolver markupResolver);
+    void setMarkupResolver(MarkupResolver markupResolver);
 
-   void setCapabilitiesHolderFactory(CapabilitiesHolderFactory capabilitiesHolderFactory);
+    void setCapabilitiesHolderFactory(CapabilitiesHolderFactory capabilitiesHolderFactory);
 
-   void setWurflRequestFactory(WURFLRequestFactory wurflRequestFactory);
+    void setWurflRequestFactory(WURFLRequestFactory wurflRequestFactory);
 
-   void setUserAgentResolver(UserAgentResolver userAgentResolver);
+    void setUserAgentResolver(UserAgentResolver userAgentResolver);
 
-   void setDeviceProvider(DeviceProvider deviceProvider);
+    void setDeviceProvider(DeviceProvider deviceProvider);
 
-   void setCacheProvider(CacheProvider cacheProvider);
+    void setCacheProvider(CacheProvider cacheProvider);
 
-   void setCapabilityFilter(String... capabilityFilter);
+    void setCapabilityFilter(String... capabilityFilter);
 
-   void setCapabilityFilter(Collection<String> capabilityFilter);
+    void setCapabilityFilter(Collection<String> capabilityFilter);
 
-   EngineTarget getEngineTarget();
+    EngineTarget getEngineTarget();
 
-   void setEngineTarget(EngineTarget engineTarget);
+    void setEngineTarget(EngineTarget engineTarget);
 
-   UserAgentPriority getUserAgentPriority();
+    UserAgentPriority getUserAgentPriority();
 
-   void setUserAgentPriority(UserAgentPriority userAgentPriority);
+    void setUserAgentPriority(UserAgentPriority userAgentPriority);
 
-   WURFLUtils getWURFLUtils();
+    WURFLUtils getWURFLUtils();
 
-   Set<String> getAllVirtualCapabilities();
+    Set<String> getAllVirtualCapabilities();
 
-   Device getDeviceById(String deviceId);
+    Device getDeviceById(String deviceId);
 
-   Device getDeviceById(String deviceId, WURFLRequest request);
+    Device getDeviceById(String deviceId, WURFLRequest request);
 
-   Device getDeviceById(String deviceId, HttpServletRequest request);
+    Device getDeviceById(String deviceId, HttpServletRequest request);
 
-   String getAPIVersion();
+    String getAPIVersion();
 
-   Set<String> getAllMandatoryCapabilities();
+    Set<String> getAllMandatoryCapabilities();
 
-   Set<String> getAllCapabilities();
+    Set<String> getAllCapabilities();
 
-   String getRootPath();
+    String getRootPath();
 }

@@ -2,22 +2,23 @@ package com.scientiamobile.wurfl.core.vcap;
 
 import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
+
 import java.io.Serializable;
 
 public class IsWMLPreferred implements VirtualCapabilityEvaluator, Serializable {
-   private static final long serialVersionUID = 4429460118740181952L;
+    private static final long serialVersionUID = 4429460118740181952L;
 
-   @Override
-   public String eval(Device device, WURFLRequest request) {
-      try {
-         return Boolean.toString(device.getCapabilityAsInt("xhtml_support_level") <= 0);
-      } catch (RuntimeException e) {
-         return "false";
-      }
-   }
+    @Override
+    public String eval(Device device, WURFLRequest request) {
+        try {
+            return Boolean.toString(device.getCapabilityAsInt("xhtml_support_level") <= 0);
+        } catch (RuntimeException e) {
+            return "false";
+        }
+    }
 
-   @Override
-   public String getHandledVirtualCapabilityName() {
-      return "is_wml_preferred";
-   }
+    @Override
+    public String getHandledVirtualCapabilityName() {
+        return "is_wml_preferred";
+    }
 }

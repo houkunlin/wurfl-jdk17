@@ -4,47 +4,47 @@ import java.util.List;
 import java.util.Set;
 
 public interface WURFLModel {
-   String getVersion();
+    String getVersion();
 
-   ModelDevice getDeviceById(String deviceId);
+    ModelDevice getDeviceById(String deviceId);
 
-   boolean isDeviceDefined(String deviceId);
+    boolean isDeviceDefined(String deviceId);
 
-   Set<ModelDevice> getAllDevices();
+    Set<ModelDevice> getAllDevices();
 
-   List<ModelDevice> getAllDevicesAsList();
+    List<ModelDevice> getAllDevicesAsList();
 
-   Set<String> getAllDevicesId();
+    Set<String> getAllDevicesId();
 
-   Set<ModelDevice> getDevices(Set<String> deviceIds);
+    Set<ModelDevice> getDevices(Set<String> deviceIds);
 
-   List<ModelDevice> getDeviceHierarchy(ModelDevice device);
+    List<ModelDevice> getDeviceHierarchy(ModelDevice device);
 
-   ModelDevice getDeviceFallback(ModelDevice device);
+    ModelDevice getDeviceFallback(ModelDevice device);
 
-   ModelDevice getDeviceAncestor(ModelDevice device);
+    ModelDevice getDeviceAncestor(ModelDevice device);
 
-   int size();
+    int size();
 
-   Integer getCapabilityCount();
+    Integer getCapabilityCount();
 
-   void reload(WURFLResource resource, WURFLResources resources, String... params);
+    void reload(WURFLResource resource, WURFLResources resources, String... params);
 
-   void applyPatches(WURFLResources resources, String... params);
+    void applyPatches(WURFLResources resources, String... params);
 
-   Set<String> getAllCapabilities();
+    Set<String> getAllCapabilities();
 
-   boolean isCapabilityDefined(String capabilityName);
+    boolean isCapabilityDefined(String capabilityName);
 
-   String getGroupByCapability(String capabilityName);
+    String getGroupByCapability(String capabilityName);
 
-   ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice device, String capabilityName);
+    ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice device, String capabilityName);
 
-   Set<String> getAllGroups();
+    Set<String> getAllGroups();
 
-   boolean isGroupDefined(String groupId);
+    boolean isGroupDefined(String groupId);
 
-   Set<String> getCapabilitiesForGroup(String groupId);
+    Set<String> getCapabilitiesForGroup(String groupId);
 
-   Set<String> getRootDevicesIds();
+    Set<String> getRootDevicesIds();
 }

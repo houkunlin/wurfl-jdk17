@@ -8,32 +8,32 @@ import com.scientiamobile.wurfl.core.resource.WURFLResources;
 import jakarta.servlet.http.HttpServletRequest;
 
 interface WURFLService {
-   Device getDevice(HttpServletRequest request);
+    Device getDevice(HttpServletRequest request);
 
-   Device getDevice(WURFLRequest request);
+    Device getDevice(WURFLRequest request);
 
-   Device getDevice(String userAgent);
+    Device getDevice(String userAgent);
 
-   EngineTarget getEngineTarget();
+    EngineTarget getEngineTarget();
 
-   void setEngineTarget(EngineTarget engineTarget);
+    void setEngineTarget(EngineTarget engineTarget);
 
-   UserAgentPriority getUserAgentPriority();
+    UserAgentPriority getUserAgentPriority();
 
-   void setUserAgentPriority(UserAgentPriority priority);
+    void setUserAgentPriority(UserAgentPriority priority);
 
-   void setCacheProvider(CacheProvider cacheProvider);
+    void setCacheProvider(CacheProvider cacheProvider);
 
-   void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches);
+    void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches);
 
-   void applyPatches(WURFLResources wurflResources, String... patches);
+    void applyPatches(WURFLResources wurflResources, String... patches);
 
-   void setRequestFactory(WURFLRequestFactoryWithPriority requestFactory);
+    void setRequestFactory(WURFLRequestFactoryWithPriority requestFactory);
 
-   Device getDeviceById(String deviceId);
+    Device getDeviceById(String deviceId);
 
-   Device getDeviceById(String deviceId, HttpServletRequest request);
+    Device getDeviceById(String deviceId, HttpServletRequest request);
 
-   Device getDeviceById(String deviceId, WURFLRequest request);
+    Device getDeviceById(String deviceId, WURFLRequest request);
 }
 

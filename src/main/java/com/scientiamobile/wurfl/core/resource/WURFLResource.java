@@ -1,13 +1,13 @@
 package com.scientiamobile.wurfl.core.resource;
 
 public interface WURFLResource {
-   ModelDevicesSnapshot getData(String... params);
+    ModelDevicesSnapshot getData(String... params);
 
-   String getInfo();
+    String getInfo();
 
-   String getVersion();
+    String getVersion();
 
-   void release();
+    void release();
 
-   String getOriginalPath();
+    String getOriginalPath();
 }

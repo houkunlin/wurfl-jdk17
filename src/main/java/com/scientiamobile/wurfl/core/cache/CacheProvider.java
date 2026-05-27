@@ -4,11 +4,11 @@ import com.scientiamobile.wurfl.core.InternalDevice;
 
 public interface CacheProvider {
 
-   InternalDevice getDevice(String deviceId);
+    InternalDevice getDevice(String deviceId);
 
-   InternalDevice getInternalDeviceFromDeviceId(String deviceId);
+    InternalDevice getInternalDeviceFromDeviceId(String deviceId);
 
-   void putDevice(String deviceId, InternalDevice device);
+    void putDevice(String deviceId, InternalDevice device);
 
-   void clear();
+    void clear();
 }

@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 final class ModelDeviceUserAgentComparator implements Serializable, Comparator<ModelDevice> {
-   private static final long serialVersionUID = 101L;
-   static final ModelDeviceUserAgentComparator INSTANCE = new ModelDeviceUserAgentComparator();
+    static final ModelDeviceUserAgentComparator INSTANCE = new ModelDeviceUserAgentComparator();
+    private static final long serialVersionUID = 101L;
 
-   private ModelDeviceUserAgentComparator() {
-   }
+    private ModelDeviceUserAgentComparator() {
+    }
 
-   public final int compare(ModelDevice left, ModelDevice right) {
-      return left.getUserAgent().compareTo(right.getUserAgent());
-   }
+    public final int compare(ModelDevice left, ModelDevice right) {
+        return left.getUserAgent().compareTo(right.getUserAgent());
+    }
 }
 

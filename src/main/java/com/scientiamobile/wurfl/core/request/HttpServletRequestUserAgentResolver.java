@@ -5,9 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.Validate;
 
 final class HttpServletRequestUserAgentResolver implements UserAgentResolver {
-   public final String resolve(HttpServletRequest request) {
-      Validate.notNull(request, "The HttpServletRequest is null");
-      return UserAgentUtils.getUserAgent(request);
-   }
+    public final String resolve(HttpServletRequest request) {
+        Validate.notNull(request, "The HttpServletRequest is null");
+        return UserAgentUtils.getUserAgent(request);
+    }
 }
 

@@ -2,44 +2,45 @@ package com.scientiamobile.wurfl.core.request;
 
 import com.scientiamobile.wurfl.core.EngineTarget;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
+
 import java.util.Map;
 
 public interface WURFLRequest {
-   String getDeviceUserAgent();
+    String getDeviceUserAgent();
 
-   String getBrowserUserAgent();
+    String getBrowserUserAgent();
 
-   String getCleanedDeviceUserAgent();
+    String getCleanedDeviceUserAgent();
 
-   String getNormalizedDeviceUserAgent();
+    String getNormalizedDeviceUserAgent();
 
-   String getOriginalUserAgent();
+    String getOriginalUserAgent();
 
-   void normalizeUserAgent(UserAgentNormalizer normalizer);
+    void normalizeUserAgent(UserAgentNormalizer normalizer);
 
-   void performGenericNormalization();
+    void performGenericNormalization();
 
-   String getUserAgentProfile();
+    String getUserAgentProfile();
 
-   String getHeader(String headerName);
+    String getHeader(String headerName);
 
-   Map<String, String> getHeaders();
+    Map<String, String> getHeaders();
 
-   EngineTarget getEngineTarget();
+    EngineTarget getEngineTarget();
 
-   boolean _internalIsMobileBrowser();
+    boolean _internalIsMobileBrowser();
 
-   boolean _internalIsDesktopBrowser();
+    boolean _internalIsDesktopBrowser();
 
-   boolean _internalIsDesktopBrowserHeavyDutyAnalysis();
+    boolean _internalIsDesktopBrowserHeavyDutyAnalysis();
 
-   boolean _internalIsBot();
+    boolean _internalIsBot();
 
-   boolean _internalIsSmartTvBrowser();
+    boolean _internalIsSmartTvBrowser();
 
-   boolean _internalIsEmailClient();
+    boolean _internalIsEmailClient();
 
-   boolean isUrlEncoded();
+    boolean isUrlEncoded();
 
-   void setUrlEncoded(boolean urlEncoded);
+    void setUrlEncoded(boolean urlEncoded);
 }

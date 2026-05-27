@@ -3,11 +3,11 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 interface MatcherFilter {
-   boolean canHandle(WURFLRequest request);
+    boolean canHandle(WURFLRequest request);
 
-   boolean recordMatch(WURFLRequest request, String deviceId);
+    boolean recordMatch(WURFLRequest request, String deviceId);
 
-   FilteredDeviceIndex getIndex();
+    FilteredDeviceIndex getIndex();
 
-   String getMatcherName();
+    String getMatcherName();
 }

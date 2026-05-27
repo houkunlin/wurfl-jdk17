@@ -1,9 +1,9 @@
 package com.scientiamobile.wurfl.core;
 
 public interface EnrichedDevice extends Device {
-   String getMatcherName();
+    String getMatcherName();
 
-   String getBucketMatcherName();
+    String getBucketMatcherName();
 
-   String getNormalizedUserAgent();
+    String getNormalizedUserAgent();
 }
