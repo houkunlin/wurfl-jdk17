@@ -14,12 +14,14 @@ public class OperaNormalizer implements UserAgentNormalizer {
     private static final Pattern OPERA_CHROMIUM_VERSION_PATTERN = Pattern.compile("OPR/(\\d+\\.\\d+)");
 
     @Override
-/**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
- */
-
+    /**
+     * 规范化 Opera 浏览器的 User-Agent。
+     * <p>古典 Opera：将 {@code Opera/9.80 ... Version/N.M} 替换为 {@code Opera/N.M ...}。</p>
+     * <p>Chromium Opera：提取 {@code OPR/N.M} 并格式化为 {@code Opera/N.M} 前置。</p>
+     *
+     * @param userAgent 原始 User-Agent 字符串
+     * @return 规范化后的 User-Agent 字符串
+     */
     public String normalize(String userAgent) {
         Matcher versionMatcher;
         versionMatcher = OPERA_VERSION_PATTERN.matcher(userAgent);

@@ -13,12 +13,16 @@ public class SerialNumberNormalizer implements UserAgentNormalizer {
     private static final Pattern ST_TF_NT_PATTERN = Pattern.compile("\\[(ST|TF|NT)[\\dX]+\\]");
 
     @Override
-/**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
- */
-
+    /**
+     * 将 User-Agent 中的序列号替换为固定掩码字符串：
+     * <ul>
+     *   <li>{@code /SN1234567890X} → {@code /SNXXXXXXXXXXXXXXX}</li>
+     *   <li>{@code [TF1234567890X]} → {@code TFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX}</li>
+     * </ul>
+     *
+     * @param userAgent 原始 User-Agent 字符串
+     * @return 序列号被掩码后的 User-Agent 字符串
+     */
     public String normalize(String userAgent) {
         userAgent = SN_PATTERN.matcher(userAgent).replaceAll("/SNXXXXXXXXXXXXXXX");
         return ST_TF_NT_PATTERN.matcher(userAgent).replaceAll("TFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");

@@ -39,9 +39,13 @@ public class AppleNormalizer implements UserAgentNormalizer {
     }
 
     /**
-     * Matc hosversion.
- */
-
+     * 从 User-Agent 中匹配 iOS 版本号。
+     * <p>依次尝试多个预定义的 iOS UA 模式，返回第一个匹配到的版本号，
+     * 并将点号替换为下划线（标准 Mobile Safari UA 中的格式）。</p>
+     *
+     * @param userAgent User-Agent 字符串
+     * @return iOS 版本号（使用下划线分隔），如果无法匹配则返回 null
+     */
     private static String matchIOSVersion(String userAgent) {
         for (Pattern pattern : IOS_VERSION_PATTERNS) {
             Matcher matcher = findMatcher(userAgent, pattern);
@@ -70,12 +74,18 @@ public class AppleNormalizer implements UserAgentNormalizer {
     }
 
     @Override
-/**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
- */
-
+    /**
+     * 规范化 Apple iOS 设备的 User-Agent。
+     * <p>处理流程：</p>
+     * <ol>
+     *   <li>尝试匹配多种 iOS 原生应用 UA 格式并构建标准 Safari UA</li>
+     *   <li>匹配 iOS 客户端 SDK UA 格式，提取内部的浏览器 UA</li>
+     *   <li>修正 "CPU iOS" 为 "CPU iPhone OS" 或 "CPU OS"（iPad），标准化操作系统标记</li>
+     * </ol>
+     *
+     * @param userAgent 原始 User-Agent 字符串
+     * @return 规范化后的 User-Agent 字符串
+     */
     public String normalize(String userAgent) {
         String iosVersion = matchIOSVersion(userAgent);
         if (iosVersion != null) {

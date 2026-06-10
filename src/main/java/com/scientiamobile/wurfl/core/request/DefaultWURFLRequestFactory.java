@@ -27,6 +27,11 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
         this(userAgentResolver, createDefaultNormalizerChain());
     }
 
+    /**
+     * 使用自定义规范化器和默认解析器构造工厂实例。
+     *
+     * @param userAgentNormalizer User-Agent 规范化器
+     */
     public DefaultWURFLRequestFactory(UserAgentNormalizer userAgentNormalizer) {
         this(new HttpServletRequestUserAgentResolver(), userAgentNormalizer);
     }
@@ -35,10 +40,21 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
         this(userAgentResolver, userAgentNormalizer, UserAgentPriority.OverrideSideloadedBrowserUserAgent);
     }
 
+    /**
+     * 使用自定义优先级策略和默认规范化链构造工厂实例。
+     *
+     * @param userAgentPriority User-Agent 优先级策略（决定当设备 UA 和浏览器 UA 不同时以哪个为准）
+     */
     public DefaultWURFLRequestFactory(UserAgentPriority userAgentPriority) {
         this(createDefaultNormalizerChain(), userAgentPriority);
     }
 
+    /**
+     * 使用自定义解析器和优先级策略构造工厂实例。
+     *
+     * @param userAgentResolver User-Agent 解析器
+     * @param userAgentPriority User-Agent 优先级策略
+     */
     public DefaultWURFLRequestFactory(UserAgentResolver userAgentResolver, UserAgentPriority userAgentPriority) {
         this(userAgentResolver, createDefaultNormalizerChain(), userAgentPriority);
     }
@@ -56,18 +72,35 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
     }
 
     /**
-     * Creat eefaul tormalize rhain.
+     * 创建默认的 User-Agent 规范化链。
+     * <p>该链组合了多个基础规范化器，按顺序依次处理：</p>
+     * <ol>
+     *   <li>{@link UCWebNormalizer} - 修正 UC 浏览器格式不规范的 UA</li>
+     *   <li>{@link UPLinkNormalizer} - 移除 UP.Link 代理痕迹</li>
+     *   <li>{@link SerialNumberNormalizer} - 掩码序列号信息</li>
+     *   <li>{@link LocaleNormalizer} - 标准化语言区域信息</li>
+     *   <li>{@link CFNetworkNormalizer} - 规整 CFNetwork 版本号</li>
+     *   <li>{@link BlackBerryNormalizer} - 标准化 BlackBerry 标识</li>
+     *   <li>{@link GenericAndroidNormalizer} - 精简 Android 版本信息</li>
+     *   <li>{@link TransferEncodingNormalizer} - 移除传输编码的标记</li>
+     * </ol>
+     *
+     * @return 默认的规范化器链
      */
-
     private static UserAgentNormalizerChain createDefaultNormalizerChain() {
         return new UserAgentNormalizerChain(new UserAgentNormalizer[]{new UCWebNormalizer(), new UPLinkNormalizer(), new SerialNumberNormalizer(), new LocaleNormalizer(), new CFNetworkNormalizer(), new BlackBerryNormalizer(), new GenericAndroidNormalizer(), new TransferEncodingNormalizer()});
     }
 
     @Override
-/**
- * Creat eequest.
- */
-
+    /**
+     * 从 HttpServletRequest 创建 WURFL 请求对象。
+     * <p>自动解析请求中的 User-Agent 和 UAProfile，并提取所有请求头。</p>
+     *
+     * @param request      Servlet HTTP 请求对象，不能为 null
+     * @param engineTarget 引擎匹配目标
+     * @return WURFL 请求对象
+     * @throws NullPointerException 如果 request 为 null
+     */
     public WURFLRequest createRequest(HttpServletRequest request, EngineTarget engineTarget) {
         Validate.notNull(request, "The sourceRequest must be not null");
         String userAgent = StringUtils.trimToEmpty(this.userAgentResolver.resolve(request));
@@ -86,9 +119,13 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
     }
 
     /**
-     * Creat eequest.
- */
-
+     * 从 User-Agent 字符串和 UAProfile 创建 WURFL 请求对象。
+     *
+     * @param userAgent    User-Agent 字符串
+     * @param uaProfile    UAProfile URL
+     * @param engineTarget 引擎匹配目标
+     * @return WURFL 请求对象
+     */
     public WURFLRequest createRequest(String userAgent, String uaProfile, EngineTarget engineTarget) {
         userAgent = StringUtils.trimToEmpty(userAgent);
         return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
@@ -104,19 +141,21 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
     }
 
     @Override
-/**
- * Returns the use rgen triority.
- */
-
+    /**
+     * 获取当前的 User-Agent 优先级策略。
+     *
+     * @return 当前优先级策略
+     */
     public UserAgentPriority getUserAgentPriority() {
         return this.userAgentPriority;
     }
 
     @Override
-/**
- * Sets the use rgen triority.
- */
-
+    /**
+     * 设置 User-Agent 优先级策略。
+     *
+     * @param userAgentPriority 优先级策略
+     */
     public void setUserAgentPriority(UserAgentPriority userAgentPriority) {
         this.userAgentPriority = userAgentPriority;
     }

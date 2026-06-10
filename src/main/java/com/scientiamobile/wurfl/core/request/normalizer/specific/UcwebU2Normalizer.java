@@ -19,12 +19,20 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
     private static final Pattern NOKIA_RM_MODEL_PATTERN = Pattern.compile("(NOKIA.RM-.+?)_.*");
 
     @Override
-/**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
- */
-
+    /**
+     * 规范化 UC 浏览器 U2 内核的 User-Agent。
+     * <p>根据平台类型分别处理：</p>
+     * <ul>
+     *   <li>Android（"Adr"）→ 提取 Android 版本、型号和 UC 版本</li>
+     *   <li>iOS（"iPh OS"）→ 提取 iOS 版本、设备型号和 UC 版本</li>
+     *   <li>Windows Phone（"wds"）→ 提取 WP 版本、设备型号和 UC 版本</li>
+     *   <li>Symbian → 提取 S60 版本、设备型号和 UC 版本</li>
+     *   <li>Java → 提取设备型号和 UC 版本</li>
+     * </ul>
+     *
+     * @param userAgent 原始 User-Agent 字符串
+     * @return 规范化后的 User-Agent 字符串
+     */
     public String normalize(String userAgent) {
         String ucBrowserVersion;
         ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, true);

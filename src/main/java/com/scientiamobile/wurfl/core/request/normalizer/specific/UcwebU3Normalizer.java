@@ -7,20 +7,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for Ucweb U3.
+ * UC 浏览器 U3 内核的 User-Agent 特定规范化器。
+ * <p>UC 浏览器 U3 内核的 UA 中包含 WebKit 信息，不同平台（Windows Phone、Android、iPhone、iPad）
+ * 的 UA 结构各不相同。该规范化器提取各平台的版本号和设备信息，
+ * 构建统一格式的前缀，提高 UC U3 设备的匹配准确性。</p>
  */
-
 public class UcwebU3Normalizer implements UserAgentNormalizer {
+    /**
+     * 匹配 iPhone 平台 UC U3 UA 中的 iOS 版本号。
+     */
     public static final Pattern IPHONE = Pattern.compile("iPhone OS (\\d+)_(\\d+)(?:_\\d+)* like");
+    /**
+     * 匹配 iPad 平台 UC U3 UA 中的 iOS 版本号和设备型号。
+     */
     public static final Pattern IPAD = Pattern.compile("CPU OS (\\d+)_(\\d+)?.+like Mac.+; iPad([0-9,]+)\\) AppleWebKit");
 
     @Override
-/**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
- */
-
+    /**
+     * 规范化 UC 浏览器 U3 内核的 User-Agent。
+     * <p>根据平台类型分别处理：</p>
+     * <ul>
+     *   <li>Windows Phone → 提取 WP 版本、型号和 UC 版本</li>
+     *   <li>Android → 提取 Android 版本、型号和 UC 版本</li>
+     *   <li>iPhone → 提取 iOS 版本和 UC 版本</li>
+     *   <li>iPad → 提取 iOS 版本、iPad 型号和 UC 版本</li>
+     * </ul>
+     *
+     * @param userAgent 原始 User-Agent 字符串
+     * @return 规范化后的 User-Agent 字符串
+     */
     public String normalize(String userAgent) {
         String ucBrowserVersion;
         ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, false);
