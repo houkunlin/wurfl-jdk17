@@ -13,7 +13,10 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * A task that performs New Wurfl File Download.
+ * 从远程服务器下载新版本 WURFL 文件的管线任务。
+ * <p>通过 HTTP GET 请求从 ScientiaMobile 更新服务器下载最新的 WURFL 文件，
+ * 保存为临时文件（原路径加 {@code .wtmp} 后缀）。下载完成后将临时文件路径
+ * 存入上下文，供后续的覆盖和一致性检查任务使用。</p>
  */
 
 public class NewWurflFileDownloadTask implements UpdatePipelineTask {
@@ -28,11 +31,12 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
     }
 
     /**
-     * Executes this operation with the given context.
+     * 执行新 WURFL 文件的下载。
+     * <p>建立 HTTPS 连接并发起 GET 请求，将响应流写入临时文件。
+     * 下载完成后会设置文件的最后修改时间以匹配服务端时间戳。</p>
      *
-     * @param context the execution context map
+     * @param context 管线执行上下文 Map
      */
-
     public void execute(Map<String, Object> context) {
         try {
             String tempWurflPath = (String) context.get("original_wurfl_path") + ".wtmp";

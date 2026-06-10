@@ -10,12 +10,21 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * A task that performs Cleanup.
+ * 更新管线结束后的清理任务。
+ * <p>无论更新成功还是失败，此任务都会在管线执行完毕后被调用，
+ * 负责删除临时下载文件和备份文件，并清空上下文数据以释放内存。</p>
  */
 
 public class CleanupTask implements UpdatePipelineTask {
     private static final Logger log = LoggerFactory.getLogger(CleanupTask.class);
 
+    /**
+     * 执行清理操作。
+     * <p>从上下文中读取备份文件路径和临时文件路径，逐个删除这些临时文件，
+     * 最后清空整个上下文 Map。</p>
+     *
+     * @param context 管线执行上下文 Map
+     */
     public void execute(Map<String, Object> context) {
         String[] pathsToDelete;
         pathsToDelete = new String[]{(String) context.get("backup_wurfl_path"), (String) context.get("new_wurfl_temp_path")};

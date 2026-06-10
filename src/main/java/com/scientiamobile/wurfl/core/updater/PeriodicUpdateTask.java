@@ -77,9 +77,10 @@ public class PeriodicUpdateTask implements Runnable {
     }
 
     /**
-     * Returns the las tesults.
- */
-
+     * 获取最近多次周期性更新的结果列表。
+     *
+     * @return 最近更新结果的只读列表（最多 10 条）
+     */
     public List<UpdateResult> getLastResults() {
         return this.lastResults;
     }

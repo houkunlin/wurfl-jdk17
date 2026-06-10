@@ -14,7 +14,16 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * A task that performs Check For New Wurfl File.
+ * 检查远程服务器是否存在新版本 WURFL 文件的管线任务。
+ * <p>通过发送 HTTP HEAD 请求到 ScientiaMobile 更新服务器，携带本地文件的最后修改时间
+ * 作为 {@code If-Modified-Since} 头，判断服务端是否有更新的文件版本。</p>
+ *
+ * <p>根据 HTTP 响应码决定后续流程：</p>
+ * <ul>
+ *   <li>200 - 存在新版本，继续执行后续下载任务</li>
+ *   <li>304 - 文件未变更，跳过本次更新</li>
+ *   <li>402 - 许可证已过期，终止更新</li>
+ * </ul>
  */
 
 public class CheckForNewWurflFileTask implements UpdatePipelineTask {
@@ -36,11 +45,12 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
     }
 
     /**
-     * Executes this operation with the given context.
+     * 执行检查新版本 WURFL 文件的任务。
+     * <p>从上下文中读取本地文件路径和远程 URL，通过 HEAD 请求检测服务端文件变更情况，
+     * 并将结果状态写入上下文供管线调度使用。</p>
      *
-     * @param context the execution context map
+     * @param context 管线执行上下文 Map
      */
-
     public void execute(Map<String, Object> context) {
         String originalWurflPath = (String) context.get("original_wurfl_path");
 

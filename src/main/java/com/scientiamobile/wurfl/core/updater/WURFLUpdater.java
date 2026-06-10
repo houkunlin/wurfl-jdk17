@@ -90,9 +90,12 @@ public class WURFLUpdater {
     }
 
     /**
-     * Perfor mpdate.
- */
-
+     * 执行一次手动 WURFL 更新。
+     * <p>构造更新管线并同步执行。如果更新成功并且 WURFL 文件确实发生了变化，
+     * 则重新加载 WURFL 引擎以使新数据立即生效。</p>
+     *
+     * @return 更新结果，包含状态和描述信息
+     */
     public synchronized UpdateResult performUpdate() {
         UpdateResult updateResult;
         try {
@@ -143,9 +146,10 @@ public class WURFLUpdater {
     }
 
     /**
-     * Returns whether this i seriodi cpdat eunning.
- */
-
+     * 检查定期更新是否正在运行。
+     *
+     * @return 如果调度器存在且未终止则返回 {@code true}
+     */
     private boolean isPeriodicUpdateRunning() {
         return this.scheduler != null && !this.scheduler.isTerminated();
     }
@@ -160,9 +164,14 @@ public class WURFLUpdater {
     }
 
     /**
-     * Validat eetup.
- */
-
+     * 验证 WURFL 更新的初始配置。
+     * <p>依次检查：</p>
+     * <ul>
+     *   <li>文件扩展名是否为 .zip 或 .gz</li>
+     *   <li>本地文件是否可写</li>
+     *   <li>远程 URL 是否可达且有效</li>
+     * </ul>
+     */
     private void validateSetup() {
         Validator.checkFileExtensions(this.resolvedWurflPath, this.updateUrl);
         Validator.validateWritableFile(this.resolvedWurflPath);

@@ -27,6 +27,15 @@ public class Validator {
         }
     }
 
+    /**
+     * 验证本地 WURFL 文件是否可写。
+     * <p>通过尝试复制文件到临时备份文件并删除来测试文件系统的写入能力。
+     * 还会检查文件所在目录是否可写。</p>
+     *
+     * @param localWurflPath 本地 WURFL 文件路径
+     * @throws WurflFilePermissionException 如果文件或目录不可写
+     * @throws WURFLRuntimeException        如果无法访问文件
+     */
     static void validateWritableFile(String localWurflPath) {
         File wurflFile;
         try {
