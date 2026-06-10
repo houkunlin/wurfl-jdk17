@@ -12,7 +12,11 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Implementation of Default Device.
+ * 默认设备实现，封装了设备检测后返回给用户的完整设备信息。
+ * <p>实现了 {@link EnrichedDevice} 接口，整合了内部设备（{@link InternalDevice}）的能力数据、
+ * 虚拟能力处理器（{@link VirtualCapabilityHandler}）的虚拟能力以及标记语言解析器（{@link MarkupResolver}）
+ * 的标记语言信息。同时记录了匹配类型、匹配器名称等匹配元数据。</p>
+ * <p>获取能力时采用两阶段策略：先尝试从内部设备获取物理能力，如果未定义则回退到虚拟能力。</p>
  */
 
 public class DefaultDevice implements EnrichedDevice, Serializable {
@@ -23,13 +27,25 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         LoggerFactory.getLogger(DefaultDevice.class);
     }
 
+    /**
+     * 匹配类型（如精确匹配、缓存匹配等）
+     */
     private final MatchType matchType;
+    /**
+     * 桶匹配器的名称
+     */
     private final String bucketMatcherName;
+    /** 最终匹配器的名称 */
     private final String matcherName;
+    /** 归一化后的 User-Agent */
     private final String normalizedUserAgent;
+    /** 标记语言解析器（暂态，不参与序列化） */
     private final transient MarkupResolver markupResolver;
+    /** 内部设备实例，提供物理能力数据 */
     private final transient InternalDevice internalDevice;
+    /** 计算出的标记语言类型 */
     private transient MarkUp markUp;
+    /** 虚拟能力处理器（暂态，不参与序列化） */
     private final transient VirtualCapabilityHandler virtualCapabilityHandler;
 
     public DefaultDevice(InternalDevice internalDevice, VirtualCapabilityHandler virtualCapabilityHandler, MarkupResolver markupResolver, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent) {
@@ -58,7 +74,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the virtua lapabilities.
+ * 获取所有虚拟能力的名称到值映射。
+ *
+ * @return 虚拟能力映射
  */
 
     public Map<String, String> getVirtualCapabilities() {
@@ -67,7 +85,10 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the virtua lapability.
+ * 获取指定名称的虚拟能力值。
+ *
+ * @param virtualCapabilityName 虚拟能力名称
+ * @return 虚拟能力值
  */
 
     public String getVirtualCapability(String virtualCapabilityName) {
@@ -76,7 +97,10 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the virtua lapabilit y snt.
+ * 获取虚拟能力值并转换为整数。
+ *
+ * @param virtualCapabilityName 虚拟能力名称
+ * @return 整型的能力值
  */
 
     public int getVirtualCapabilityAsInt(String virtualCapabilityName) {
@@ -85,7 +109,10 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the virtua lapabilit y sool.
+ * 获取虚拟能力值并转换为布尔值。
+ *
+ * @param virtualCapabilityName 虚拟能力名称
+ * @return 布尔型的能力值
  */
 
     public boolean getVirtualCapabilityAsBool(String virtualCapabilityName) {
@@ -94,7 +121,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the matc hype.
+ * 获取匹配类型。
+ *
+ * @return 匹配类型枚举
  */
 
     public MatchType getMatchType() {
@@ -103,7 +132,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器的名称。
+ *
+ * @return 桶匹配器名称
  */
 
     public String getBucketMatcherName() {
@@ -112,7 +143,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取最终匹配器的名称。
+ *
+ * @return 匹配器名称
  */
 
     public String getMatcherName() {
@@ -121,7 +154,10 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the mar kp.
+ * 获取设备支持的标记语言类型。
+ * <p>通过 {@link MarkupResolver} 根据设备能力计算，结果会被缓存。</p>
+ *
+ * @return 标记语言枚举
  */
 
     public MarkUp getMarkUp() {
@@ -134,7 +170,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns a string representation of this object.
+ * 返回设备的简短字符串表示，格式为 {@code [设备ID, match=匹配类型]}。
+ *
+ * @return 字符串表示
  */
 
     public String toString() {
@@ -143,7 +181,13 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the capability.
+ * 获取指定名称的能力值。
+ * <p>先尝试从内部设备获取物理能力，如果未定义（抛出 {@link CapabilityNotDefinedException}），
+ * 则回退到从虚拟能力处理器获取。如果两者都未定义，则抛出原始的能力未定义异常。</p>
+ *
+ * @param capabilityName 能力名称
+ * @return 能力值
+ * @throws CapabilityNotDefinedException 如果物理能力和虚拟能力都未定义
  */
 
     public String getCapability(String capabilityName) {
@@ -160,7 +204,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the id.
+ * 获取设备 ID。
+ *
+ * @return 设备 ID
  */
 
     public String getId() {
@@ -169,7 +215,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the wurfluse rgent.
+ * 获取 WURFL 数据中定义的设备 User-Agent 字符串。
+ *
+ * @return User-Agent 字符串
  */
 
     public String getWURFLUserAgent() {
@@ -178,7 +226,11 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the capabilit y snt.
+ * 获取指定能力值并将其解析为整数。
+ * <p>先尝试从物理能力获取，如果未定义则回退到虚拟能力，再无法获取则抛出原始异常。</p>
+ *
+ * @param capabilityName 能力名称
+ * @return 整型的能力值
  */
 
     public int getCapabilityAsInt(String capabilityName) {
@@ -195,7 +247,11 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the capabilit y sool.
+ * 获取指定能力值并转换为布尔值。
+ * <p>先尝试从物理能力获取，如果未定义则回退到虚拟能力，再无法获取则抛出原始异常。</p>
+ *
+ * @param capabilityName 能力名称
+ * @return 布尔型的能力值
  */
 
     public boolean getCapabilityAsBool(String capabilityName) {
@@ -212,7 +268,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the capabilities.
+ * 获取设备的所有能力映射。
+ *
+ * @return 能力名称到值的映射
  */
 
     public Map<String, String> getCapabilities() {
@@ -221,7 +279,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns whether this i sctua levic eoot.
+ * 判断该设备是否是某个设备树的实际根节点。
+ *
+ * @return 如果是实际设备根节点则返回 {@code true}
  */
 
     public boolean isActualDeviceRoot() {
@@ -230,7 +290,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the devic eoo td.
+ * 获取该设备所属设备树的根节点 ID。
+ *
+ * @return 设备树根节点 ID
  */
 
     public String getDeviceRootId() {
@@ -243,7 +305,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
 
     @Override
 /**
- * Returns the normalize dse rgent.
+ * 获取归一化后的 User-Agent 字符串。
+ *
+ * @return 归一化后的 User-Agent
  */
 
     public String getNormalizedUserAgent() {

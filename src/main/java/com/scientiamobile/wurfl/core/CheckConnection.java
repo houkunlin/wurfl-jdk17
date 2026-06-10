@@ -16,15 +16,28 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
- * Implementation of Check Connection.
+ * WURFL 连通性检查器，用于定期向 ScientiaMobile 后台发送使用情况统计信息。
+ * <p>仅当构建 ID 以 {@code ch} 开头（表示需要检查）时启用。
+ * 在应用启动时收集 API 版本、WURFL 版本、操作系统、服务器平台等信息，
+ * 通过后台线程异步发送到 ScientiaMobile 的连通性检查服务。</p>
  */
 
 public class CheckConnection {
+    /**
+     * 日志记录器
+     */
     private static final Logger logger = LoggerFactory.getLogger(CheckConnection.class);
+    /**
+     * 连通性检查观察者列表
+     */
     private final List<CheckConnectionObserver> observers = new ArrayList<>();
+    /** 发送给服务端的 JSON 负载字符串 */
     private String payloadJson;
+    /** 操作系统名称和版本 */
     private String osNameAndVersion = System.getProperty("os.name") + " " + System.getProperty("os.version");
+    /** 解析出的应用服务器平台名称（如 Tomcat、Jetty 等） */
     private String platformName;
+    /** 是否启用连通性检查 */
     private boolean enabled;
 
     public CheckConnection() {
@@ -33,7 +46,9 @@ public class CheckConnection {
     }
 
     /**
-     * Resolv elatfor mame.
+     * 通过分析 classpath 关键字，推断当前运行的应用服务器平台名称。
+     *
+     * @return 平台名称（如 Tomcat、JBoss/WildFly、Jetty 等），未知时返回 "Command line"
      */
 
     private static String resolvePlatformName() {
@@ -57,8 +72,14 @@ public class CheckConnection {
     }
 
     /**
-     * Appen dso nield.
- */
+     * 向 JSON 构建器追加一个键值对字段。
+     *
+     * @param builder      JSON 字符串构建器
+     * @param key          字段名
+     * @param value        字段值
+     * @param hasMoreFields 是否还有后续字段（添加逗号分隔符）
+     * @return 构建器实例
+     */
 
     private static StringBuilder appendJsonField(StringBuilder builder, String key, String value, boolean hasMoreFields) {
         builder.append("\"").append(key).append("\": \"").append(value).append("\"");
@@ -72,8 +93,10 @@ public class CheckConnection {
     }
 
     /**
-     * Returns the hos tam e rnknown.
- */
+     * 获取本机主机名，获取失败时返回 "unknown"。
+     *
+     * @return 主机名字符串
+     */
 
     private static String getHostNameOrUnknown() {
         try {
@@ -84,8 +107,12 @@ public class CheckConnection {
     }
 
     /**
-     * Sets the up.
- */
+     * 初始化连通性检查，构建发送给服务端的 JSON 负载。
+     * <p>如果连通性检查未启用或 WURFL 模型不是 {@link DefaultWURFLModel} 类型，则跳过。</p>
+     *
+     * @param wurflEngine WURFL 引擎实例
+     * @param wurflModel  WURFL 数据模型
+     */
 
     public void setup(WURFLEngine wurflEngine, WURFLModel wurflModel) {
         if (!this.enabled || !(wurflModel instanceof DefaultWURFLModel defaultWURFLModel)) {
@@ -97,8 +124,11 @@ public class CheckConnection {
     }
 
     /**
-     * Extrac tersio nnfo.
- */
+     * 从 WURFL 引擎中提取精简的版本信息字符串。
+     *
+     * @param wurflEngine WURFL 引擎实例
+     * @return 精简版本字符串
+     */
 
     private static String extractVersionInfo(WURFLEngine wurflEngine) {
         String wurflVersion = wurflEngine.getWURFLUtils().getVersion();
@@ -111,8 +141,13 @@ public class CheckConnection {
     }
 
     /**
-     * Buil dayload.
- */
+     * 构建发送给连通性检查服务端的 JSON 负载字符串。
+     * <p>包含 API 标识、WURFL 标识、API 名称和版本、WURFL 版本、主机名、操作系统和平台信息。</p>
+     *
+     * @param wurflSmid    WURFL 数据的 SMID
+     * @param wurflVersion WURFL 版本字符串
+     * @return JSON 格式的负载
+     */
 
     private String buildPayload(String wurflSmid, String wurflVersion) {
         StringBuilder payloadBuilder = appendJsonField(
@@ -141,8 +176,9 @@ public class CheckConnection {
     }
 
     /**
-     * Check.
- */
+     * 异步执行连通性检查。
+     * <p>通过线程池启动 {@link ConnectivityCheckerTask} 发送 HTTP 请求。</p>
+     */
 
     public void check() {
         if (this.enabled) {
@@ -158,8 +194,10 @@ public class CheckConnection {
     }
 
     /**
-     * Ad dbserver.
- */
+     * 添加连通性检查的观察者。
+     *
+     * @param observer 观察者实例
+     */
 
     public synchronized void addObserver(CheckConnectionObserver observer) {
         this.observers.add(observer);
@@ -179,8 +217,10 @@ public class CheckConnection {
     }
 
     /**
-     * Returns the ap iame.
- */
+     * 获取 API 名称，根据 classpath 中是否包含 "wurfl-scala" 判断是 Java API 还是 Scala API。
+     *
+     * @return API 名称
+     */
 
     public String getApiName() {
         String classPath;
@@ -189,8 +229,9 @@ public class CheckConnection {
     }
 
     /**
-     * Implementation of Check Connection Observer.
- */
+     * 连通性检查观察者接口。
+     * <p>当连通性检查完成时，通知注册的观察者。</p>
+     */
 
     public interface CheckConnectionObserver {
         void update(CheckConnection checkConnection, Object argument);

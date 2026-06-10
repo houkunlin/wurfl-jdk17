@@ -15,13 +15,24 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 
 /**
- * Provides Default Device functionality.
+ * 默认的设备提供者实现，负责创建内部设备和构建最终设备实例。
+ * <p>通过 WURFL 数据模型获取设备的能力数据，使用 {@link CapabilitiesHolderFactory} 创建能力持有器，
+ * 并在构建最终设备时注入虚拟能力处理器和标记语言解析器。
+ * 构造时会校验模型中是否包含所有必备能力，如果缺少则抛出异常。</p>
  */
 
 class DefaultDeviceProvider implements DeviceProvider {
+    /**
+     * 断言是否禁用（用于内部校验开关）
+     */
     private static boolean assertionsDisabled = !DefaultDeviceProvider.class.desiredAssertionStatus();
+    /**
+     * 标记语言解析器
+     */
     private final MarkupResolver markupResolver;
+    /** 能力持有器工厂 */
     private final CapabilitiesHolderFactory capabilitiesHolderFactory;
+    /** WURFL 数据模型 */
     private final WURFLModel wurflModel;
 
     public DefaultDeviceProvider(WURFLModel wurflModel, CapabilitiesHolderFactory capabilitiesHolderFactory, MarkupResolver markupResolver) {
@@ -56,7 +67,11 @@ class DefaultDeviceProvider implements DeviceProvider {
 
     @Override
 /**
- * Returns the interna levice.
+ * 根据设备 ID 获取内部设备实例。
+ * <p>从模型中获取设备及其祖先信息，创建能力持有器并构建 {@link InternalDeviceImpl}。</p>
+ *
+ * @param deviceId 设备 ID
+ * @return 内部设备实例
  */
 
     public InternalDevice getInternalDevice(String deviceId) {
@@ -73,7 +88,15 @@ class DefaultDeviceProvider implements DeviceProvider {
 
     @Override
 /**
- * Buil device.
+ * 使用 User-Agent 字符串构建最终设备实例。
+ * <p>便捷方法，内部创建默认的 {@link DefaultWURFLRequest} 并委托给重载方法。</p>
+ *
+ * @param internalDevice    内部设备实例
+ * @param userAgent         User-Agent 字符串
+ * @param matchType         匹配类型
+ * @param matcherName       匹配器名称
+ * @param bucketMatcherName 桶匹配器名称
+ * @return 最终设备实例
  */
 
     public Device buildDevice(InternalDevice internalDevice, String userAgent, MatchType matchType, String matcherName, String bucketMatcherName) {
@@ -82,7 +105,15 @@ class DefaultDeviceProvider implements DeviceProvider {
 
     @Override
 /**
- * Buil device.
+ * 使用 WURFL 请求对象构建最终设备实例。
+ * <p>根据内部设备获取其祖先模型信息，创建带标记语言解析器和虚拟能力处理器的 {@link DefaultDevice}。</p>
+ *
+ * @param internalDevice    内部设备实例
+ * @param request           WURFL 请求对象（包含归一化后的 UA 和优先级等信息）
+ * @param matchType         匹配类型
+ * @param matcherName       匹配器名称
+ * @param bucketMatcherName 桶匹配器名称
+ * @return 最终设备实例
  */
 
     public Device buildDevice(InternalDevice internalDevice, WURFLRequest request, MatchType matchType, String matcherName, String bucketMatcherName) {
@@ -99,7 +130,10 @@ class DefaultDeviceProvider implements DeviceProvider {
     }
 
     /**
-     * Returns the mode levic eit hncesto rd.
+     * 从模型中获取指定设备及其祖先信息的包装对象。
+     *
+     * @param deviceId 设备 ID
+     * @return 设备及其祖先 ID 的包装对象
      */
 
     private ModelDeviceWithAncestorId getModelDeviceWithAncestorId(String deviceId) {

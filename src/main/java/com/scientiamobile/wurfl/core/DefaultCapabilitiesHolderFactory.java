@@ -7,11 +7,17 @@ import org.apache.commons.lang3.Validate;
 import java.util.Set;
 
 /**
- * Factory for creating Default Capabilities Holder instances.
+ * 默认的能力持有器工厂实现。
+ * <p>接收 WURFL 数据模型，为每个 {@link ModelDevice} 创建带缓存的能力持有器
+ * （{@link CachingCapabilitiesHolder}），并通过 {@link DeviceCapabilitiesProvider}
+ * 从设备模型中加载能力数据。</p>
  */
 
 class DefaultCapabilitiesHolderFactory implements CapabilitiesHolderFactory {
     private static boolean assertionsDisabled = !DefaultCapabilitiesHolderFactory.class.desiredAssertionStatus();
+    /**
+     * WURFL 数据模型实例
+     */
     private WURFLModel wurflModel;
 
     public DefaultCapabilitiesHolderFactory(WURFLModel wurflModel) {
@@ -24,7 +30,11 @@ class DefaultCapabilitiesHolderFactory implements CapabilitiesHolderFactory {
 
     @Override
 /**
- * Create.
+ * 为指定的设备模型创建带缓存的能力持有器。
+ * <p>使用设备的缓存大小阈值初始化 {@link CachingCapabilitiesHolder}。</p>
+ *
+ * @param modelDevice 设备模型
+ * @return 能力持有器实例
  */
 
     public CapabilitiesHolder create(ModelDevice modelDevice) {
@@ -34,7 +44,9 @@ class DefaultCapabilitiesHolderFactory implements CapabilitiesHolderFactory {
 
     @Override
 /**
- * Returns the mode lapabilities.
+ * 获取 WURFL 模型中定义的所有能力名称集合。
+ *
+ * @return 能力名称集合
  */
 
     public Set<String> getModelCapabilities() {

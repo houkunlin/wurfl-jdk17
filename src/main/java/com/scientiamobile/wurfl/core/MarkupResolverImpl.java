@@ -8,7 +8,15 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Implementation of Markup Resolver  Implementation.
+ * 默认的标记语言解析器实现。
+ * <p>根据设备的 {@code xhtml_support_level} 和 {@code preferred_markup} 能力值
+ * 来判断设备所支持的标记语言类型。规则如下：</p>
+ * <ul>
+ *   <li>XHTML 支持级别 >= 3 → 高级 XHTML</li>
+ *   <li>XHTML 支持级别 > 0 → 简单 XHTML</li>
+ *   <li>首选标记包含 "imode" → CHTML</li>
+ *   <li>其他 → WML</li>
+ * </ul>
  */
 
 class MarkupResolverImpl implements MarkupResolver, Serializable {
@@ -18,7 +26,11 @@ class MarkupResolverImpl implements MarkupResolver, Serializable {
 
     @Override
 /**
- * Returns the marku po revice.
+ * 根据设备的能力信息计算其支持的标记语言类型。
+ *
+ * @param device 内部设备实例
+ * @return 标记语言枚举
+ * @throws RuntimeException 如果无法从设备获取所需能力值
  */
 
     public MarkUp getMarkupForDevice(InternalDevice device) {
