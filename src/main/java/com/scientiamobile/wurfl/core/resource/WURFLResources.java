@@ -7,20 +7,39 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.*;
 
 /**
- * Implementation of WURFL Resources.
+ * WURFL 资源集合。
+ * <p>管理一组 {@link WURFLResource} 实例的有序集合，支持添加、移除、
+ * 遍历和批量释放资源。通常用于持有主 WURFL 数据源和多个补丁数据源，
+ * 按顺序应用于 {@link DefaultWURFLModel}。</p>
  */
 
 public final class WURFLResources {
     private final List<WURFLResource> resources = new ArrayList<>();
 
+    /**
+     * 创建一个空的资源集合。
+     */
     public WURFLResources() {
     }
 
+    /**
+     * 使用可变参数创建资源集合。
+     *
+     * @param resources WURFL 资源数组
+     * @throws NullPointerException 如果资源数组为 null
+     */
     public WURFLResources(WURFLResource... resources) {
         Validate.notNull(resources, "The resources is null");
         this.resources.addAll(Arrays.asList(resources));
     }
 
+    /**
+     * 使用已有的资源集合创建。
+     *
+     * @param resources WURFL 资源集合
+     * @throws NullPointerException     如果集合为 null
+     * @throws IllegalArgumentException 如果集合中包含 null 元素
+     */
     public WURFLResources(Collection<WURFLResource> resources) {
         Validate.notNull(resources, "The resources is null");
         Validate.noNullElements(resources, "The resources contains null value");
@@ -28,20 +47,31 @@ public final class WURFLResources {
     }
 
     /**
-     * Size.
+     * 获取集合中的资源数量。
+     *
+     * @return 资源数量
      */
 
     public final int size() {
         return this.resources.size();
     }
 
+    /**
+     * 根据索引获取资源。
+     *
+     * @param index 索引位置
+     * @return 指定索引处的资源
+     */
     public final WURFLResource get(int index) {
         return this.resources.get(index);
     }
 
     /**
-     * Inde xf.
- */
+     * 查找指定资源在集合中的索引位置。
+     *
+     * @param resource 要查找的资源
+     * @return 资源所在的索引，不存在则返回 -1
+     */
 
     public final int indexOf(WURFLResource resource) {
         Validate.notNull(resource, "The resource is null");
@@ -49,8 +79,8 @@ public final class WURFLResources {
     }
 
     /**
-     * Release.
- */
+     * 释放集合中所有资源持有的底层系统资源（如文件句柄、输入流等）。
+     */
 
     public final void release() {
 
@@ -61,8 +91,11 @@ public final class WURFLResources {
     }
 
     /**
-     * Add.
- */
+     * 向集合中添加一个资源。
+     *
+     * @param resource 要添加的资源
+     * @throws NullPointerException 如果资源为 null
+     */
 
     public final void add(WURFLResource resource) {
         Validate.notNull(resource, "The resource must be not null");
@@ -70,8 +103,11 @@ public final class WURFLResources {
     }
 
     /**
-     * Remove.
- */
+     * 从集合中移除一个资源。
+     *
+     * @param resource 要移除的资源
+     * @throws NullPointerException 如果资源为 null
+     */
 
     public final void remove(WURFLResource resource) {
         Validate.notNull(resource, "The resource must be not null");
@@ -79,8 +115,10 @@ public final class WURFLResources {
     }
 
     /**
-     * Returns an iterator over elements of this collection.
- */
+     * 返回遍历所有资源的迭代器。
+     *
+     * @return 资源迭代器
+     */
 
     public final Iterator<WURFLResource> iterator() {
         return this.resources.iterator();
@@ -88,7 +126,8 @@ public final class WURFLResources {
 
     @Override
 /**
- * Returns a string representation of this object.
+ * 返回集合中所有资源的字符串表示。
+ * @return 包含每个资源信息及版本的字符串
  */
 
     public String toString() {
@@ -108,9 +147,9 @@ public final class WURFLResources {
 
     @Override
 /**
- * Indicates whether some other object is equal to this one.
- * @param obj the reference object with which to compare
- * @return true if this object is the same as the obj argument
+ * 判断两个资源集合是否相等。
+ * @param obj 要比较的对象
+ * @return 如果内部资源列表相同则返回 true
  */
 
     public boolean equals(Object object) {
@@ -125,7 +164,8 @@ public final class WURFLResources {
 
     @Override
 /**
- * Returns whether this has hode.
+ * 计算哈希码。
+ * @return 哈希码
  */
 
     public int hashCode() {

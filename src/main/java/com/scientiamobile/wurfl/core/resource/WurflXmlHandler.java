@@ -244,8 +244,13 @@ final class WurflXmlHandler extends DefaultHandler {
     }
 
     /**
-     * Characters.
- */
+     * 处理元素中的文本内容。
+     * <p>在版本信息相关的状态下，提取 ver、last_updated 和 smid 的文本值。</p>
+     *
+     * @param ch     字符数组
+     * @param start  起始偏移
+     * @param length 字符长度
+     */
 
     public final void characters(char[] ch, int start, int length) {
         switch (this.parseState) {
