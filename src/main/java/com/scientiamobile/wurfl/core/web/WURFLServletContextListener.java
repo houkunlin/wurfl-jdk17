@@ -18,10 +18,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
- * Implementation of WURFL Servlet Context Listener.
+ * WURFL Servlet 上下文监听器，用于在 Web 应用启动时自动初始化 WURFL 引擎。
+ * <p>该监听器从 web.xml 的上下文参数中读取 WURFL 配置（如 WURFL 数据文件路径、补丁文件路径等），
+ * 创建并配置 {@link GeneralWURFLEngine} 实例，并将其存储在 ServletContext 属性中供后续使用。</p>
  */
 
 public class WURFLServletContextListener implements WurflWebConstants, ServletContextListener {
+    /**
+     * WURFL 引擎实例在 ServletContext 中存储的属性键名
+     */
     private String engineKeyAttributeName;
 
     public WURFLServletContextListener() {
@@ -29,7 +34,13 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     /**
-     * Resolv eesourc eri.
+     * 将 ServletContext 中的资源路径解析为 URI 对象。
+     * <p>优先通过 ServletContext 获取资源 URL，然后转换为 URI。如果资源不存在则返回 {@code null}。</p>
+     *
+     * @param servletContext Servlet 上下文，用于查找资源
+     * @param resourcePath   资源路径（如 /WEB-INF/wurfl.zip）
+     * @return 解析后的 URI，如果资源不存在则返回 {@code null}
+     * @throws RuntimeException 如果 URL 无法转换为 URI
      */
 
     private static URI resolveResourceUri(ServletContext servletContext, String resourcePath) {
@@ -51,7 +62,18 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
 
     @Override
 /**
- * Contex tnitialized.
+ * Web 应用初始化时调用，负责读取配置并初始化 WURFL 引擎。
+ * <p>具体流程：</p>
+ * <ul>
+ *   <li>解析可选的引擎键名（{@code wurflEngineKey}）</li>
+ *   <li>读取必填的 WURFL 数据文件路径（{@code wurfl}）</li>
+ *   <li>读取可选的补丁文件路径列表（{@code wurflPatch}）</li>
+ *   <li>创建 {@link GeneralWURFLEngine} 实例</li>
+ *   <li>配置能力过滤器、引擎目标模式和 User-Agent 优先级</li>
+ *   <li>将引擎实例存入 ServletContext 属性</li>
+ * </ul>
+ *
+ * @param servletContextEvent Servlet 上下文事件，包含 ServletContext 引用
  */
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -71,8 +93,12 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     /**
-     * Resolv engin eey.
- */
+     * 解析可选的 WURFL 引擎键名配置。
+     * <p>如果 web.xml 中配置了 {@code wurflEngineKey} 参数，则使用该值作为引擎实例在
+     * ServletContext 中的属性键名；否则使用默认键名。</p>
+     *
+     * @param servletContext Servlet 上下文，用于读取初始化参数
+     */
 
     private void resolveEngineKey(ServletContext servletContext) {
         String wurflEngineKey = servletContext.getInitParameter("wurflEngineKey");
@@ -82,8 +108,13 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     /**
-     * Creat em lesource.
- */
+     * 根据给定的路径创建 XML 资源对象。
+     * <p>优先尝试将路径解析为 Servlet 资源 URI，如果资源不在应用中则直接使用原始路径字符串。</p>
+     *
+     * @param servletContext Servlet 上下文
+     * @param path           WURFL 数据文件路径
+     * @return XML 资源对象
+     */
 
     private static XMLResource createXmlResource(ServletContext servletContext, String path) {
         URI uri = resolveResourceUri(servletContext, path);
@@ -91,8 +122,13 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     /**
-     * Creat eatc hesources.
- */
+     * 根据补丁路径数组创建补丁资源集合。
+     * <p>遍历补丁路径数组，为每个路径创建 XML 资源对象（优先使用 Servlet 资源 URI）。</p>
+     *
+     * @param servletContext Servlet 上下文
+     * @param patchPaths     补丁文件路径数组
+     * @return 补丁资源集合
+     */
 
     private static WURFLResources createPatchResources(ServletContext servletContext, String[] patchPaths) {
         WURFLResources resources = new WURFLResources();
@@ -105,8 +141,12 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     /**
-     * Configur eapabilit yilter.
- */
+     * 配置引擎的能力过滤器。
+     * <p>从 web.xml 初始化参数中读取换行分隔的能力名列表，过滤后的能力才会被引擎加载。</p>
+     *
+     * @param servletContext Servlet 上下文
+     * @param wurflEngine    WURFL 引擎实例
+     */
 
     private static void configureCapabilityFilter(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
         String filterValue = servletContext.getInitParameter("capability-filter");
@@ -123,8 +163,13 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     /**
-     * Configur engin earget.
- */
+     * 配置引擎的目标匹配模式（性能优先或精度优先）。
+     * <p>从 web.xml 初始化参数中读取 {@code wurflEngineTarget}，将其转换为 {@link EngineTarget} 枚举后设置到引擎中。</p>
+     *
+     * @param servletContext Servlet 上下文
+     * @param wurflEngine    WURFL 引擎实例
+     * @throws WURFLRuntimeException 如果参数值不是有效的枚举值
+     */
 
     private static void configureEngineTarget(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
         String value = servletContext.getInitParameter("wurflEngineTarget");
@@ -141,8 +186,14 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     /**
-     * Configur ese rgen triority.
- */
+     * 配置 User-Agent 优先级策略。
+     * <p>从 web.xml 初始化参数中读取 {@code wurflUserAgentPriority}，决定是否使用浏览器侧载的 User-Agent
+     * 覆盖设备 UA，还是直接使用原始 User-Agent。</p>
+     *
+     * @param servletContext Servlet 上下文
+     * @param wurflEngine    WURFL 引擎实例
+     * @throws WURFLRuntimeException 如果参数值不是有效的枚举值
+     */
 
     private static void configureUserAgentPriority(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
         String value = servletContext.getInitParameter("wurflUserAgentPriority");
@@ -160,7 +211,9 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     /**
-     * Contex testroyed.
+     * Web 应用关闭时调用，清理 ServletContext 中存储的 WURFL 引擎实例。
+     *
+     * @param servletContextEvent Servlet 上下文事件
  */
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

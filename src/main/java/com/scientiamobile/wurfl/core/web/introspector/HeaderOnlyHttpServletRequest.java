@@ -9,10 +9,16 @@ import java.security.Principal;
 import java.util.*;
 
 /**
- * Implementation of Header Only HTTP Servlet Request.
+ * 仅包含请求头的 HTTP Servlet 请求包装类。
+ * <p>实现了 {@link HttpServletRequest} 接口，但仅保留请求头信息，
+ * 其他所有方法均返回 null/0/false。用于 WURFL 设备检测时仅传递必要的请求头数据，
+ * 无需完整的 HTTP 请求上下文。</p>
  */
 
 final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
+    /**
+     * 存储请求头名称到值的映射
+     */
     private final Map<String, String> headers = new HashMap<>();
 
     public final Object getAttribute(String attributeName) {
@@ -266,20 +272,32 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
 
     @Override
 /**
- * Returns the header.
+ * 根据请求头名称获取对应的值。
+ *
+ * @param name 请求头名称
+ * @return 请求头值，如果不存在则返回 {@code null}
  */
 
     public String getHeader(String name) {
         return this.headers.get(name);
     }
 
+    /**
+     * 添加单个请求头。
+     *
+     * @param headerName  请求头名称
+     * @param headerValue 请求头值
+     */
+
     public final void addHeader(String headerName, String headerValue) {
         this.headers.put(headerName, headerValue);
     }
 
     /**
-     * Ad deaders.
- */
+     * 批量添加请求头。
+     *
+     * @param headers 请求头映射
+     */
 
     public final void addHeaders(Map<String, String> headers) {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
@@ -299,7 +317,9 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
 
     @Override
 /**
- * Returns the heade rames.
+ * 获取所有请求头名称的枚举。
+ *
+ * @return 请求头名称枚举
  */
 
     public Enumeration<String> getHeaderNames() {

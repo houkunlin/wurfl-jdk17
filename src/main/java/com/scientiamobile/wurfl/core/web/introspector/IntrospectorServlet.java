@@ -24,40 +24,81 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * Implementation of Introspector Servlet.
+ * WURFL 浏览诊断 Servlet，提供设备检测结果查询和调试功能。
+ * <p>该 Servlet 支持以下操作模式：</p>
+ * <ul>
+ *   <li>{@code Request} - 根据请求头或表单参数检测设备并返回匹配结果</li>
+ *   <li>{@code Info} - 返回 WURFL 引擎和服务器的版本信息</li>
+ *   <li>{@code Buckets} - 对 WURFL 模型中所有设备的 UA 进行桶匹配，输出匹配统计</li>
+ *   <li>{@code form} - 类似 Request 模式，但允许通过表单参数指定引擎目标和 UA 优先级</li>
+ * </ul>
  */
 
 public class IntrospectorServlet extends HttpServlet implements WurflWebConstants {
+    /**
+     * 用于拆分 header 对的分隔符（转义后的正则形式）
+     */
     public static final String ESCAPED_SPLIT_CHAR = "\\|";
+    /**
+     * header 对的分隔符
+     */
     public static final String SPLIT_CHAR = "|";
+    /** 键值对中的冒号分隔符 */
     public static final String COLON = ":";
+    /** 制表符，用于格式化输出 */
     public static final String TABULATION = "\t";
+    /** 请求参数名：操作类型 */
     public static final String ACTION = "action";
+    /** 请求参数名：User-Agent */
     public static final String USER_AGENT_PARAMNAME = "ua";
+    /** 请求参数名：UAProfile URL */
     public static final String UAPROF_PARAMNAME = "uaprof";
+    /** 请求参数名：自定义请求头 */
     public static final String HEADERS = "headers";
+    /** 请求参数名：需要查询的能力列表 */
     public static final String CAPABILITIES = "capabilities";
+    /** 请求参数名：设备 ID */
     public static final String ID = "id";
+    /** JSON 响应中的能力映射字段名 */
     public static final String CAPABILITY_MAP = "capabilityMap";
+    /** 设备 UAProfile 请求头名（首字母大写形式） */
     public static final String X_WAP_PROFILE = "X-Wap-Profile";
+    /** 设备 UAProfile 请求头名（小写形式） */
     public static final String X_WAP_PROFILE_LC = "x-wap-profile";
+    /** User-Agent 请求头名（小写） */
     public static final String USER_AGENT_LC = "user-agent";
+    /** User-Agent 请求头名 */
     public static final String USER_AGENT = "User-Agent";
+    /** 设备原始 UA 请求头名 */
     public static final String DEVICE_STOCK_UA = "Device-Stock-UA";
+    /** 操作类型：普通请求匹配 */
     public static final String REQUEST = "Request";
+    /** 操作类型：性能模式请求匹配 */
     public static final String REQUEST_PERFORMANCE = "RequestPerformance";
+    /** 操作类型：精度模式请求匹配 */
     public static final String REQUEST_ACCURACY = "RequestAccuracy";
+    /** 操作类型：返回引擎和服务器信息 */
     public static final String INFO = "Info";
+    /** 操作类型：返回桶匹配统计 */
     public static final String BUCKETS = "Buckets";
+    /** 序列化版本号 */
     @Serial
     private static final long serialVersionUID = 1L;
+    /** 运行时的操作系统名称 */
     private static final String OS_NAME = System.getProperty("os.name");
+    /** 运行时的操作系统版本 */
     private static final String OS_VERSION = System.getProperty("os.version");
+    /** Java 运行环境的供应商 */
     private static final String JAVA_VENDOR = System.getProperty("java.vendor");
+    /** Java 运行环境版本 */
     private static final String JAVA_VERSION_PROP = System.getProperty("java.version");
+    /** 用于匹配换行符的正则模式 */
     private static final Pattern LINE_BREAK_PATTERN = Pattern.compile("[\r\n]+");
+    /** 日志记录器 */
     private static final Logger log = LoggerFactory.getLogger(IntrospectorServlet.class);
+    /** WURFL 引擎静态实例，通过 {@link #setWURFLEngine(WURFLEngine)} 注入 */
     private static WURFLEngine wurflEngine = null;
+    /** WURFL API 版本号 */
     private static String apiVersion;
 
     static {
@@ -76,15 +117,26 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         log.info("WURFL core library running version {}", pomProperties.get("version"));
     }
 
+    /** Jackson JSON 对象映射器，用于序列化响应体 */
     private final transient ObjectMapper objectMapper = new ObjectMapper();
 
     /**
-     * Sets the wurflengine.
+     * 设置 WURFL 引擎静态实例，供诊断 Servlet 使用。
+     * <p>在 Web 应用启动时需要先调用此方法注入已初始化的 WURFL 引擎实例。</p>
+     *
+     * @param wurflEngine WURFL 引擎实例
      */
 
     public static void setWURFLEngine(WURFLEngine wurflEngine) {
         IntrospectorServlet.wurflEngine = wurflEngine;
     }
+
+    /**
+     * 当 WURFL 引擎未初始化时，向响应输出错误信息。
+     * <p>提示调用者需要通过 {@link #setWURFLEngine(WURFLEngine)} 方法注入引擎实例。</p>
+     *
+     * @param out 响应输出流
+     */
 
     private static void writeMissingEngineError(PrintWriter out) {
         StringBuilder message;
@@ -102,7 +154,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
     @Override
 /**
- * Init.
+ * Servlet 初始化方法，记录服务器信息。
+ *
+ * @param config Servlet 配置对象
+ * @throws ServletException 初始化异常
  */
 
     public void init(ServletConfig config) throws ServletException {
@@ -112,7 +167,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
     @Override
 /**
- * D oet.
+ * GET 请求委托给 POST 方法处理。
  */
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -121,7 +176,18 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
     @Override
 /**
- * D oost.
+ * 处理 POST 请求，根据 {@code action} 参数分发到不同的处理逻辑。
+ * <p>支持的 action 值：</p>
+ * <ul>
+ *   <li>{@code Request} - 精度模式下执行设备检测并返回 JSON</li>
+ *   <li>{@code Info} - 返回引擎及服务器版本信息 JSON</li>
+ *   <li>{@code form} - 使用表单参数指定的引擎目标和 UA 优先级执行检测</li>
+ *   <li>{@code Buckets} - 输出桶匹配统计</li>
+ * </ul>
+ *
+ * @param request  HTTP 请求
+ * @param response HTTP 响应
+ * @throws IOException 写入响应时可能发生的异常
  */
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -147,8 +213,11 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Writ enf oesponse.
- */
+     * 输出引擎和服务器版本信息（JSON 格式）。
+     * <p>包含 API 版本、WURFL 数据版本、引擎目标、UA 优先级、服务器信息、OS 信息、Java 环境等。</p>
+     *
+     * @param out 响应输出流
+     */
 
     private void writeInfoResponse(PrintWriter out) {
         if (wurflEngine == null) {
@@ -170,8 +239,11 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Writ euckets.
- */
+     * 输出桶匹配统计结果。
+     * <p>遍历 WURFL 模型中所有设备的 User-Agent，使用匹配器进行匹配，按匹配器分组排序后输出。</p>
+     *
+     * @param out 响应输出流
+     */
 
     private void writeBuckets(PrintWriter out) {
         if (wurflEngine == null) {
@@ -195,8 +267,13 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Ru nucke tatching.
- */
+     * 对模型中所有设备的 User-Agent 执行桶匹配。
+     * <p>先收集所有设备的 UA，然后逐一匹配，最后对匹配结果排序。</p>
+     *
+     * @param wurflModel    WURFL 数据模型
+     * @param wurflService  WURFL 服务实例
+     * @return 排序后的匹配结果行列表
+     */
 
     private static List<String> runBucketMatching(WURFLModel wurflModel, WURFLService wurflService) {
         if (wurflModel == null || wurflService == null) {
@@ -223,8 +300,11 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Collec tse rgents.
- */
+     * 从 WURFL 模型中收集所有有效的 User-Agent。
+     *
+     * @param wurflModel WURFL 数据模型
+     * @return 所有非空的 User-Agent 列表
+     */
 
     private static ArrayList<String> collectUserAgents(WURFLModel wurflModel) {
         Set<ModelDevice> allDevices = wurflModel.getAllDevices();
@@ -238,8 +318,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Matc hse rgents.
- */
+     * 对收集到的 User-Agent 逐一执行匹配，生成匹配结果行。
+     *
+     * @param userAgents    需要匹配的 User-Agent 列表
+     * @param matcherManager 匹配器管理器
+     * @return 匹配结果行列表
+     */
 
     private static ArrayList<MatchResultRow> matchUserAgents(ArrayList<String> userAgents, MatcherManager matcherManager) {
         ArrayList<MatchResultRow> matchResults = new ArrayList<>(userAgents.size());
@@ -260,8 +344,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Handl eequest.
- */
+     * 处理设备检测请求，返回匹配结果 JSON。
+     * <p>从请求中提取请求头（或表单参数），使用 WURFL 引擎进行设备检测，获取指定能力的值。</p>
+     *
+     * @param request HTTP 请求
+     * @param out     响应输出流
+     */
 
     private void handleRequest(HttpServletRequest request, PrintWriter out) {
         if (wurflEngine == null) {
@@ -288,8 +376,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Resolv e arofile.
- */
+     * 解析请求中的 UAProfile URL。
+     * <p>优先从请求参数获取，其次从小写头名获取，最后从大写头名获取。</p>
+     *
+     * @param request HTTP 请求
+     * @return UAProfile URL，如果未提供则返回 {@code null}
+     */
 
     private static String resolveUaProfile(HttpServletRequest request) {
         String uaProfile = request.getParameter(UAPROF_PARAMNAME);
@@ -304,8 +396,13 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Buil deade rnl yequest.
- */
+     * 构建只包含请求头的 HTTP Servlet 请求对象，用于设备检测。
+     * <p>如果请求包含表单参数（{@code form} 模式），则从表单中提取 UA 和自定义请求头；
+     * 否则复制原始请求的所有请求头。同时会解析并添加 UAProfile 头。</p>
+     *
+     * @param request 原始 HTTP 请求
+     * @return 仅包含请求头的请求对象
+     */
 
     private static HeaderOnlyHttpServletRequest buildHeaderOnlyRequest(HttpServletRequest request) {
         HeaderOnlyHttpServletRequest headerOnlyRequest = new HeaderOnlyHttpServletRequest();
@@ -322,8 +419,11 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Cop yl leaders.
- */
+     * 从原始请求中复制所有请求头到 HeaderOnlyHttpServletRequest。
+     *
+     * @param request            原始 HTTP 请求
+     * @param headerOnlyRequest  目标请求头对象
+     */
 
     private static void copyAllHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
         HashMap<String, String> headers = new HashMap<>();
@@ -336,8 +436,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Ad dor meaders.
- */
+     * 从表单参数中提取请求头信息。
+     * <p>获取表单提交的 User-Agent 和自定义请求头（格式为 {@code headerName:headerValue}，以竖线或换行分隔）。</p>
+     *
+     * @param request            原始 HTTP 请求
+     * @param headerOnlyRequest  目标请求头对象
+     */
 
     private static void addFormHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
         String userAgent = resolveFormUserAgent(request);
@@ -351,8 +455,11 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Resolv eor mse rgent.
- */
+     * 从表单参数或请求头中解析 User-Agent。
+     *
+     * @param request HTTP 请求
+     * @return User-Agent 字符串，如果两者都未提供则返回 {@code null}
+     */
 
     private static String resolveFormUserAgent(HttpServletRequest request) {
         String userAgent = request.getParameter("ua");
@@ -363,8 +470,12 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Ad deade rairs.
- */
+     * 按 {@code name:value} 格式解析 header 键值对字符串，添加到请求头对象中。
+     * <p>每个 header 对以竖线或换行分隔。</p>
+     *
+     * @param rawHeaders         原始 header 字符串
+     * @param headerOnlyRequest  目标请求头对象
+     */
 
     private static void addHeaderPairs(String rawHeaders, HeaderOnlyHttpServletRequest headerOnlyRequest) {
         String[] headerPairs = LINE_BREAK_PATTERN.matcher(rawHeaders).replaceAll("|").split("\\|");
@@ -380,8 +491,11 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     /**
-     * Pars eapabilities.
- */
+     * 解析能力筛选参数，以换行或竖线分隔。
+     *
+     * @param rawCapabilities 原始能力名称字符串
+     * @return 能力名称数组，如果未提供则返回空数组
+     */
 
     private static String[] parseCapabilities(String rawCapabilities) {
         if (rawCapabilities == null || rawCapabilities.trim().isEmpty()) {
