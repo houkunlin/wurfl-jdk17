@@ -15,64 +15,183 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Implementation of User Agent Utils.
+ * User-Agent 解析与处理工具类。
+ * <p>提供 WURFL 引擎中最核心的 User-Agent 字符串解析方法集合，
+ * 涵盖从 HTTP 请求头中提取 User-Agent、解析 Android/iOS/Windows Phone 等
+ * 主流操作系统版本与设备型号、判断设备类型（移动/桌面/智能电视/爬虫）、
+ * 清洗 URL 编码内容以及构建 API 日志 User-Agent 等功能。
+ * 所有方法均为无状态的静态工具方法。</p>
  */
 
 public final class UserAgentUtils {
+
+    /**
+     * 用于去除 UA Profile 中引号的正则模式
+     */
     public static final Pattern STRIP_QUOTE_PATTERN;
+
+    /**
+     * 用于匹配命名空间编号（如 "ns=123"）的正则模式
+     */
     public static final Pattern NAMESPACE_NUMBER_PATTERN;
+
+    /** WURFL 官方认可的 Android 版本号集合 */
     private static final SortedSet<String> SUPPORTED_ANDROID_VERSIONS;
+
+    /** 当前 JVM 的 Java 版本 */
     private static final String JAVA_VERSION = System.getProperty("java.version");
+
+    /** 当前操作系统名称 */
     private static final String OS_NAME = System.getProperty("os.name");
+
+    /** 当前操作系统版本 */
     private static final String OS_VERSION = System.getProperty("os.version");
+
+    /** 匹配 "Android/2.3" 格式的版本号 */
     private static final Pattern ANDROID_VERSION_SLASH_PATTERN;
+
+    /** 匹配 "Android 2.3" 格式的版本号 */
     private static final Pattern ANDROID_VERSION_SPACE_PATTERN;
+
+    /** 匹配 Amazon 设备 ":::Android_2.3" 格式的版本号 */
     private static final Pattern AMAZON_ANDROID_VERSION_PATTERN;
+
+    /** 匹配 Opera on Android 的主版本号 */
     private static final Pattern OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN;
+
+    /** 匹配 "Model Linux Android Release" 格式中的设备型号 */
     private static final Pattern ANDROID_MODEL_LINUX_ANDROID_RELEASE_PATTERN;
+
+    /** 匹配 "Model Android/Linux" 格式中的设备型号 */
     private static final Pattern ANDROID_MODEL_ANDROID_LINUX_PATTERN;
+
+    /** 匹配 Android User-Agent 中 "Build/" 或 "MIUI/" 前的设备型号 */
     private static final Pattern ANDROID_MODEL_BUILD_PATTERN;
+
+    /** 匹配 Amazon 购物应用的设备型号 */
     private static final Pattern ANDROID_MODEL_AMAZON_APP_PATTERN;
+
+    /** 匹配 GIONEE 品牌设备型号 */
     private static final Pattern GIONEE_MODEL_PATTERN;
+
+    /** 用于修复分号后缺少空格的 User-Agent 字符串 */
     private static final Pattern SEMICOLON_WITHOUT_SPACE_PATTERN;
+
+    /** 匹配 Amazon 购物平台 User-Agent 中的设备型号 */
     private static final Pattern AMAZON_SHOPPING_MODEL_PATTERN;
+
+    /** 匹配 User-Agent 中的 "xx-xx" 区域设置占位符 */
     private static final Pattern XX_XX_LOCALE_PATTERN;
+
+    /** 匹配中国移动定制后缀（_CMCC_TD, _CMCC, _TD） */
     private static final Pattern CMCC_SUFFIX_PATTERN;
+
+    /** 匹配华为品牌前缀 "HW-HUAWEI_" */
     private static final Pattern HUAWEI_PREFIX_PATTERN;
+
+    /** 匹配酷派品牌前缀 "YL-Coolpad_" */
     private static final Pattern COOLPAD_PREFIX_PATTERN;
+
+    /** 匹配 HTC 品牌前缀 */
     private static final Pattern HTC_PREFIX_PATTERN;
+
+    /** 匹配版本号后缀（如 " V2.3"） */
     private static final Pattern VERSION_SUFFIX_PATTERN;
+
+    /** 匹配 UC 浏览器主版本号 */
     private static final Pattern UC_BROWSER_MAJOR_VERSION_PATTERN;
+
+    /** 匹配 "Adr 4.0.3" 格式的 Android 版本 */
     private static final Pattern ADR_ANDROID_VERSION_PATTERN;
+
+    /** 匹配 UC 浏览器 User-Agent 中的 Android 设备型号 */
     private static final Pattern UC_ANDROID_MODEL_PATTERN;
+
+    /** 匹配末尾多余版本号信息 */
     private static final Pattern VERSION_TRAILING_PATTERN;
+
+    /** 匹配 "/..." 到最后的部分 */
     private static final Pattern SLASH_TO_END_PATTERN;
+
+    /** 匹配三星设备型号 */
     private static final Pattern SAMSUNG_MODEL_PATTERN;
+
+    /** 匹配 Orange 后缀 */
     private static final Pattern ORANGE_SUFFIX_PATTERN;
+
+    /** 匹配 LG 设备型号（带可选连字符） */
     private static final Pattern LG_MODEL_PATTERN;
+
+    /** 匹配 LG 设备型号（连字符可选） */
     private static final Pattern LG_MODEL_OPTIONAL_HYPHEN_PATTERN;
+
+    /** 匹配时间戳标记 "[1234567890]" */
     private static final Pattern TIMESTAMP_IN_BRACKETS_PATTERN;
+
+    /** 匹配设备品牌前缀（SAMSUNG/SonyEricsson/Sony/HUAWEI） */
     private static final Pattern BRAND_PREFIX_PATTERN;
+
+    /** 匹配 Windows Phone 设备的型号 */
     private static final Pattern WINDOWS_PHONE_MODEL_PATTERN;
+
+    /** 匹配 Edge 浏览器 User-Agent 中的 Windows Phone 型号 */
     private static final Pattern WINDOWS_PHONE_EDGE_MODEL_PATTERN;
+
+    /** 匹配 Windows Phone OS 版本号 */
     private static final Pattern WINDOWS_PHONE_VERSION_PATTERN;
+
+    /** 匹配 Windows NT 版本号 */
     private static final Pattern WINDOWS_NT_VERSION_PATTERN;
+
+    /** 匹配 Windows Phone Desktop 模式下的设备型号 */
     private static final Pattern WINDOWS_PHONE_DESKTOP_MODEL_PATTERN;
+
+    /** 匹配 ARM 架构 Edge 浏览器的 Windows Phone 型号 */
     private static final Pattern WINDOWS_PHONE_ARM_EDGE_MODEL_PATTERN;
+
+    /** 匹配诺基亚 RM 设备型号 */
     private static final Pattern NOKIA_RM_MODEL_PATTERN;
+
+    /** 匹配微软 RM 设备型号 */
     private static final Pattern MICROSOFT_RM_MODEL_PATTERN;
+
+    /** 用于检测移动设备的关键词列表 */
     private static final List<String> MOBILE_KEYWORDS;
+
+    /** 用于检测桌面浏览器的关键词列表 */
     private static final List<String> DESKTOP_KEYWORDS;
+
+    /** 用于检测智能电视的关键词列表 */
     private static final List<String> SMART_TV_KEYWORDS;
+
+    /** 用于检测爬虫/机器人程序的关键词列表 */
     private static final List<String> BOT_KEYWORDS;
+
+    /** 移动设备关键词的 Aho-Corasick 匹配器 */
     private static final AhoCorasickKeywordMatcher MOBILE_KEYWORDS_MATCHER;
+
+    /** 桌面浏览器关键词的 Aho-Corasick 匹配器 */
     private static final AhoCorasickKeywordMatcher DESKTOP_BROWSER_MATCHER;
+
+    /** 智能电视关键词的 Aho-Corasick 匹配器 */
     private static final AhoCorasickKeywordMatcher SMART_TV_BROWSER_MATCHER;
+
+    /** 爬虫关键词的 Aho-Corasick 匹配器 */
     private static final AhoCorasickKeywordMatcher BOT_MATCHER;
+
+    /** 匹配桌面 Safari 浏览器的标准 User-Agent 模式 */
     private static final Pattern DESKTOP_SAFARI_PATTERN;
+
+    /** 匹配 IE11 及以上版本的 Trident 引擎标识 */
     private static final Pattern IE11_TRIDENT_PATTERN;
+
+    /** 匹配 MSIE 9 和 10 */
     private static final Pattern MSIE_9_10_PATTERN;
+
+    /** 匹配旧版 MSIE 浏览器 */
     private static final Pattern MSIE_LEGACY_PATTERN;
+
+    /** 匹配屏幕尺寸标识（如 "480x800"） */
     private static final Pattern SCREEN_SIZE_PATTERN;
 
     static {
@@ -266,9 +385,14 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the use rgent.
+     * 从 HTTP 请求中获取 User-Agent 字符串。
+     * <p>根据 WURFL 最佳实践，优先使用 {@code Device-Stock-UA} 头（原始设备 UA），
+     * 其次尝试 {@code X-OperaMini-Phone-UA}（Opera Mini 转发的原始 UA），
+     * 最后回退到标准的 {@code User-Agent} 头。如果三者均不存在则返回空字符串。</p>
+     *
+     * @param request HTTP Servlet 请求对象
+     * @return User-Agent 字符串，可能为空字符串
      */
-
     public static String getUserAgent(HttpServletRequest request) {
         Validate.notNull(request, "The HttpServletRequest is null");
         String userAgent;
@@ -289,13 +413,22 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the u arofile.
- */
-
+     * 从 HTTP 请求中提取 UA Profile 值。
+     *
+     * @param request HTTP Servlet 请求对象
+     * @return UA Profile URL 字符串，可能为 null
+     */
     public static String getUaProfile(HttpServletRequest request) {
         return getUaProfile((WURFLHeaderProvider) (new HttpServletRequestHeaderProvider(request)));
     }
 
+    /**
+     * 从请求头提供者中提取 UA Profile 值。
+     * <p>优先查找名为 {@code Profile} 的请求头，获取 URL 后去除其中的引号字符。</p>
+     *
+     * @param headerProvider WURFL 请求头提供者
+     * @return 清洗后的 UA Profile URL，可能为 null
+     */
     public static String getUaProfile(WURFLHeaderProvider headerProvider) {
         Validate.notNull(headerProvider, "The WURFLHeaderProvider is null");
         String headerName = null;
@@ -316,9 +449,12 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns whether this i shtm lequester.
- */
-
+     * 判断 HTTP 请求的 Accept 头中是否包含 XHTML 或 WML 标记。
+     * <p>用于初步判断设备是否支持 XHTML MP 或 WAP 浏览器。</p>
+     *
+     * @param request HTTP Servlet 请求对象
+     * @return 如果 Accept 头包含 XHTML 或 WML 标记则返回 {@code true}
+     */
     public static boolean isXhtmlRequester(HttpServletRequest request) {
         Validate.notNull(request, "HttpRequest is null");
         String accept;
@@ -327,13 +463,23 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns whether this i sontaine dn.
- */
-
+     * 创建一个忽略大小写的包含判断谓词。
+     * <p>用于在集合或流式操作中判断字符串是否包含指定值。</p>
+     *
+     * @param value 被搜索的基准字符串
+     * @return 新的 Predicate 实例
+     */
     public static Predicate<String> isContainedIn(String value) {
         return new ContainsIgnoreCasePredicate(value);
     }
 
+    /**
+     * 动态生成匹配区域设置（Locale）的正则表达式模式。
+     * <p>基于 JVM 支持的所有 ISO 语言和国家代码生成，用于从 User-Agent 中
+     * 匹配合法的区域设置标识（如 "; en-US"）。</p>
+     *
+     * @return 匹配区域设置的 Pattern 对象
+     */
     public static Pattern createLocalePattern() {
         StringBuilder patternBuilder;
         patternBuilder = new StringBuilder();
@@ -365,9 +511,11 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the headers.
- */
-
+     * 从 HTTP 请求中提取所有请求头，以键值对形式返回。
+     *
+     * @param request HTTP Servlet 请求对象
+     * @return 请求头的键值映射
+     */
     public static Map<String, String> getHeaders(HttpServletRequest request) {
         HashMap<String, String> headers = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
@@ -381,9 +529,14 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the androi dersion.
- */
-
+     * 从 User-Agent 中提取 Android 操作系统版本号。
+     * <p>依次尝试匹配 "Android 4.0"、 "Android/4.0" 和 Amazon 定制格式，
+     * 仅返回 WURFL 官方支持的版本号范围。</p>
+     *
+     * @param userAgent              User-Agent 字符串
+     * @param returnDefaultIfMissing 如果未找到匹配版本时是否返回默认值 "4.0"
+     * @return 版本号字符串，如 "4.4"；未找到且 returnDefaultIfMissing 为 false 时返回 null
+     */
     public static String getAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
         boolean found;
@@ -410,9 +563,13 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the oper a nndroi dersion.
- */
-
+     * 从 User-Agent 中提取 Opera on Android 的版本号。
+     * <p>仅识别版本 11 和 12，其他版本（包括未匹配）返回默认值 "10"。</p>
+     *
+     * @param userAgent              User-Agent 字符串
+     * @param returnDefaultIfMissing 未匹配时是否返回默认值
+     * @return Opera 主版本号，如 "11"
+     */
     public static String getOperaOnAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
         matcher = OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN.matcher(userAgent);
@@ -424,9 +581,14 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the androi dodel.
- */
-
+     * 从 User-Agent 中提取 Android 设备型号。
+     * <p>尝试多种 Android User-Agent 格式，包括标准 Linux Android Release 格式、
+     * Amazon 应用格式、GIONEE 品牌等。对提取的型号进行品牌前缀清洗
+     * （HTC/HUAWEI/Coolpad/Samsung/Orange/LG）及品牌名标准化处理。</p>
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 清洗后的设备型号，如果无法提取则返回 null
+     */
     public static String getAndroidModel(String userAgent) {
         userAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
         Matcher primaryMatcher;
@@ -488,9 +650,12 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the u crowse rersion.
- */
-
+     * 从 User-Agent 中提取 UC 浏览器的主版本号。
+     *
+     * @param userAgent              User-Agent 字符串
+     * @param returnDefaultIfMissing 参数保留用于接口一致性，本实现中未使用
+     * @return UC 浏览器主版本号，如 "12"；如果无法匹配则返回 null
+     */
     public static String getUcBrowserVersion(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
         matcher = UC_BROWSER_MAJOR_VERSION_PATTERN.matcher(userAgent);
@@ -498,9 +663,13 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the u cndroi dersion.
- */
-
+     * 从 UC 浏览器的 User-Agent 中提取 Android 版本号。
+     * <p>匹配 "Adr 4.0.3" 格式的版本标识，仅返回 WURFL 官方支持的版本。</p>
+     *
+     * @param userAgent              User-Agent 字符串
+     * @param returnDefaultIfMissing 未匹配时是否返回默认值 "4.0"
+     * @return Android 版本号，如 "4.0"
+     */
     public static String getUcAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
         matcher = ADR_ANDROID_VERSION_PATTERN.matcher(userAgent);
@@ -515,9 +684,12 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the u cndroi dodel.
- */
-
+     * 从 UC 浏览器的 User-Agent 中提取 Android 设备型号。
+     *
+     * @param userAgent              User-Agent 字符串
+     * @param returnDefaultIfMissing 参数保留用于接口一致性，本实现中未使用
+     * @return 设备型号字符串，如果无法匹配则返回 null
+     */
     public static String getUcAndroidModel(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
         matcher = UC_ANDROID_MODEL_PATTERN.matcher(userAgent);
@@ -541,9 +713,12 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the window shon eersion.
- */
-
+     * 从 User-Agent 中提取 Windows Phone 操作系统版本号。
+     * <p>识别 Windows Phone 6.5/7.0/7.5/7.8/8.0/8.1/10.0 等常见版本。</p>
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 标准化的 Windows Phone 版本号，如 "8.1"；如果无法匹配则返回 null
+     */
     public static final String getWindowsPhoneVersion(String userAgent) {
         Matcher matcher;
         matcher = WINDOWS_PHONE_VERSION_PATTERN.matcher(userAgent);
@@ -571,13 +746,21 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the window shon eodel.
- */
-
+     * 从 User-Agent 中提取 Windows Phone 设备型号。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 清洗后的设备型号，如果无法匹配则返回 null
+     */
     public static final String getWindowsPhoneModel(String userAgent) {
         return cleanAndReplaceWindowsPhoneModel(userAgent, WINDOWS_PHONE_MODEL_PATTERN, WINDOWS_PHONE_EDGE_MODEL_PATTERN);
     }
 
+    /**
+     * 从 Windows Phone 桌面模式的 User-Agent 中提取 Windows NT 版本号。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return Windows NT 版本号，如 "10.0"；如果无法匹配则返回 null
+     */
     public static final String getWindowsPhoneDesktopVersion(String userAgent) {
         Matcher matcher;
         matcher = WINDOWS_NT_VERSION_PATTERN.matcher(userAgent);
@@ -595,13 +778,24 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the window shon eeskto podel.
- */
-
+     * 从 Windows Phone 桌面模式的 User-Agent 中提取设备型号。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 清洗后的设备型号，如果无法匹配则返回 null
+     */
     public static final String getWindowsPhoneDesktopModel(String userAgent) {
         return cleanAndReplaceWindowsPhoneModel(userAgent, WINDOWS_PHONE_DESKTOP_MODEL_PATTERN, WINDOWS_PHONE_ARM_EDGE_MODEL_PATTERN);
     }
 
+    /**
+     * 使用一组正则模式从 Windows Phone User-Agent 中提取并清洗设备型号。
+     * <p>先修复分号后缺少空格的问题，然后依次尝试每个模式，使用第一个匹配成功的结果。
+     * 提取后去除 "_blocked" 后缀，并尝试使用 Nokia/Microsoft RM 模式进行标准化。</p>
+     *
+     * @param userAgent User-Agent 字符串
+     * @param patterns  待尝试的正则匹配模式列表
+     * @return 清洗后的设备型号，如果所有模式都未匹配则返回 null
+     */
     public static final String cleanAndReplaceWindowsPhoneModel(String userAgent, Pattern... patterns) {
         userAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
         Matcher matcher = null;
@@ -627,57 +821,95 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns whether this i sindow shon e dlient.
- */
-
+     * 判断 User-Agent 是否来自 Windows Phone 广告客户端。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果匹配则返回 {@code true}
+     */
     public static boolean isWindowsPhoneAdClient(String userAgent) {
         return StringMatchUtils.startsWithAnyOf(userAgent, "Windows Phone Ad Client", "WindowsPhoneAdClient");
     }
 
+    /**
+     * 检测 User-Agent 中是否包含移动设备关键词。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果包含移动关键词则返回 {@code true}
+     */
     public static boolean mobileKeywordsDetected(String userAgent) {
         return MOBILE_KEYWORDS_MATCHER.matchesAny(userAgent);
     }
 
     /**
-     * Scree niz eetected.
- */
-
+     * 检测 User-Agent 中是否包含屏幕尺寸标识（如 "480x800"）。
+     * <p>屏幕尺寸信息有助于推断设备的显示能力。</p>
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果包含屏幕尺寸标识则返回 {@code true}
+     */
     public static boolean screenSizeDetected(String userAgent) {
         return SCREEN_SIZE_PATTERN.matcher(userAgent).find();
     }
 
+    /**
+     * 检测 User-Agent 是否来自桌面浏览器。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果是桌面浏览器则返回 {@code true}
+     */
     public static boolean isDesktopBrowser(String userAgent) {
         return DESKTOP_BROWSER_MATCHER.matchesAny(userAgent);
     }
 
     /**
-     * Returns whether this i smar t vrowser.
- */
-
+     * 检测 User-Agent 是否来自智能电视或机顶盒设备。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果是智能电视则返回 {@code true}
+     */
     public static boolean isSmartTvBrowser(String userAgent) {
         return SMART_TV_BROWSER_MATCHER.matchesAny(userAgent);
     }
 
+    /**
+     * 检测 User-Agent 是否来自网络爬虫或机器人程序。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果是爬虫则返回 {@code true}
+     */
     public static boolean isBot(String userAgent) {
         return BOT_MATCHER.matchesAny(userAgent);
     }
 
     /**
-     * Returns whether this i seskto pattern.
- */
-
+     * 使用正则精确匹配桌面 Safari 浏览器的标准 User-Agent 模式。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果完全匹配桌面 Safari 格式则返回 {@code true}
+     */
     public static boolean isDesktopPattern(String userAgent) {
         return DESKTOP_SAFARI_PATTERN.matcher(userAgent).matches();
     }
 
+    /**
+     * 检测 User-Agent 是否来自 Internet Explorer 浏览器。
+     * <p>支持 IE11（Trident 引擎）、MSIE 9/10、以及旧版 MSIE。</p>
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果是 IE 浏览器则返回 {@code true}
+     */
     public static boolean isIEPattern(String userAgent) {
         return IE11_TRIDENT_PATTERN.matcher(userAgent).find() || MSIE_9_10_PATTERN.matcher(userAgent).find() || MSIE_LEGACY_PATTERN.matcher(userAgent).find();
     }
 
     /**
-     * Creat ep ise rgent.
- */
-
+     * 生成用于 WURFL API 日志的 User-Agent 字符串。
+     * <p>包含构建 ID、WURFL API 版本、数据快照版本、Java 版本和操作系统信息，
+     * 用于 WURFL 服务端识别调用方。</p>
+     *
+     * @param wurflEngine WURFL 引擎实例
+     * @return 格式化的 API User-Agent 字符串
+     */
     public static String createApiUserAgent(WURFLEngine wurflEngine) {
         String wurflVersion;
         String snapshotVersion;
@@ -700,25 +932,47 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the mobil eeywords.
- */
-
+     * 获取移动设备关键词列表（不可修改视图）。
+     *
+     * @return 不可修改的关键词列表
+     */
     public static List<String> getMobileKeywords() {
         return Collections.unmodifiableList(MOBILE_KEYWORDS);
     }
 
+    /**
+     * 判断 User-Agent 是否具有特殊的日志格式特征。
+     * <p>如果字符串中不包含空格但包含 2 个以上的 '{@code +}' 字符，
+     * 则认为是某种非标准日志格式。</p>
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果符合日志格式特征则返回 {@code true}
+     */
     public static boolean hasIIsLoggingStyle(String userAgent) {
         return StringUtils.countMatches(userAgent, " ") == 0 && StringUtils.countMatches(userAgent, "+") > 2;
     }
 
     /**
-     * Returns whether this i sa wr lncoded.
- */
-
+     * 判断 User-Agent 是否为原始 URL 编码格式。
+     * <p>如果字符串中包含 2 个以上的 '{@code %}' 字符，
+     * 则表明它可能是经过 URL 编码的。</p>
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 如果是 URL 编码格式则返回 {@code true}
+     */
     public static boolean isRawUrlEncoded(String userAgent) {
         return StringUtils.countMatches(userAgent, "%") > 2;
     }
 
+    /**
+     * 获取 ASNI 可打印字符的 User-Agent 字符串，同时统计特殊字符出现的次数。
+     * <p>移除所有非 ASCII 可打印字符，并统计 '{@code +}' 和 '{@code %}' 的出现次数，
+     * 以及是否包含空格。结果以 {@link UserAgentWithNeedleCount} 形式返回，
+     * 供后续判断 URL 编码格式或日志格式使用。</p>
+     *
+     * @param userAgentBuilder User-Agent 字符串的 StringBuilder，方法内会直接修改
+     * @return 包含清洗后字符串和统计信息的对象
+     */
     public static UserAgentWithNeedleCount getAsciiPrintableStringWithNeedleCount(StringBuilder userAgentBuilder) {
         boolean hasSpaceChars = false;
         char[] needles = new char[]{'+', '%'};
@@ -745,9 +999,13 @@ public final class UserAgentUtils {
     }
 
     /**
-     * Returns the asci irintabl etring.
- */
-
+     * 从 User-Agent 字符串中移除所有非 ASCII 可打印字符。
+     * <p>遍历字符串，仅保留 ASCII 可打印字符（包括字母、数字、标点符号和空格），
+     * 移除控制字符和扩展 ASCII 字符。</p>
+     *
+     * @param userAgent 原始 User-Agent 字符串
+     * @return 仅含 ASCII 可打印字符的字符串；如果输入为 null 则返回空字符串
+     */
     public static String getAsciiPrintableString(String userAgent) {
         if (userAgent == null) {
             return "";
