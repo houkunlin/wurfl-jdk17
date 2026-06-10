@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Normalizes User-Agent strings for Android.
+ */
+
 public class AndroidNormalizer implements UserAgentNormalizer {
     @Override
     public String normalize(String userAgent) {

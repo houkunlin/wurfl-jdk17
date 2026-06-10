@@ -5,11 +5,21 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for HTC Mac.
+ */
+
 public class HTCMacNormalizer implements UserAgentNormalizer {
     private static final Pattern LOCALE_SUBSTITUTION_PATTERN = Pattern.compile("; [a-z]{2}(?:-[a-zA-Z]{2})?(?:\\.utf8|\\.big5)?\\b ");
     private static final Pattern HTC_MODEL_PATTERN = Pattern.compile("(HTC[^;\\)]+)");
 
     @Override
+/**
+ * Normalizes the given User-Agent string.
+ * @param userAgent the raw User-Agent string
+ * @return the normalized User-Agent string
+ */
+
     public String normalize(String userAgent) {
         userAgent = LOCALE_SUBSTITUTION_PATTERN.matcher(userAgent).replaceFirst("; xx-xx");
         Matcher htcModelMatcher;

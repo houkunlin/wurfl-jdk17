@@ -9,6 +9,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Implementation of Model Devices Snapshot.
+ */
+
 public final class ModelDevicesSnapshot implements Serializable, Comparable<ModelDevicesSnapshot> {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -27,6 +31,10 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
         this.smid = smid;
     }
 
+    /**
+     * Returns the snapsho tey.
+     */
+
     public final String getSnapshotKey() {
         if (this.cachedKey == null) {
             StringBuilder builder = (new StringBuilder()).append(this.patch ? "Patch" : "Root").append(":").append(this.info);
@@ -40,11 +48,19 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
         return this.cachedKey;
     }
 
+    /**
+     * Cop yevices.
+ */
+
     public final ModelDevices copyDevices() {
         return new ModelDevices(this.devices);
     }
 
     @Override
+/**
+ * Returns whether this has hode.
+ */
+
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder;
         hashCodeBuilder = new HashCodeBuilder(33, 55);
@@ -53,6 +69,12 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
     }
 
     @Override
+/**
+ * Indicates whether some other object is equal to this one.
+ * @param obj the reference object with which to compare
+ * @return true if this object is the same as the obj argument
+ */
+
     public boolean equals(Object other) {
         if (!this.getClass().isInstance(other)) {
             return false;
@@ -66,6 +88,10 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         ToStringBuilder toStringBuilder;
         toStringBuilder = new ToStringBuilder(this);
@@ -76,6 +102,10 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
     final String getSmid() {
         return this.smid;
     }
+
+    /**
+     * Compar eo.
+ */
 
     public final int compareTo(ModelDevicesSnapshot other) {
         CompareToBuilder compareToBuilder;

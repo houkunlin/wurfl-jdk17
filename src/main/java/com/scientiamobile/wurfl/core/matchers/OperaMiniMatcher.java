@@ -10,6 +10,10 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * Matcher implementation for identifying Opera Mini devices and browsers.
+ */
+
 final class OperaMiniMatcher extends MatcherBase {
     private static final SortedMap<String, String> OPERA_MINI_VERSION_TO_DEVICE_ID;
 
@@ -29,6 +33,10 @@ final class OperaMiniMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(OPERA_MINI_VERSION_TO_DEVICE_ID.values());
@@ -36,11 +44,19 @@ final class OperaMiniMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera Mini", "OperaMini", "Opera Mobi", "OperaMobi");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         int matchLength;
         matchLength = userAgent.indexOf("---");
@@ -55,6 +71,10 @@ final class OperaMiniMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         for (String versionPrefix : OPERA_MINI_VERSION_TO_DEVICE_ID.keySet()) {
@@ -67,11 +87,19 @@ final class OperaMiniMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "OperaMiniMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "OperaMini";
     }

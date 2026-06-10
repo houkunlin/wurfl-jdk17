@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * Handler for Api Config operations.
+ */
+
 final class ApiConfigHandler extends DefaultHandler {
     private final WURFLServiceImpl wurflService;
 
@@ -15,6 +19,10 @@ final class ApiConfigHandler extends DefaultHandler {
     }
 
     @Override
+/**
+ * Star tlement.
+ */
+
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
         if (qName.equals("wurfl-api-config")) {
             String engineTarget = attributes.getValue("engine-target");

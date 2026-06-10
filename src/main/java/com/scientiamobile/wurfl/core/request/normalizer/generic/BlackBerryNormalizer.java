@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for Black Berry.
+ */
+
 public class BlackBerryNormalizer implements UserAgentNormalizer {
     private static final Pattern BLACKBERRY_PATTERN = Pattern.compile("(?i)black(?i)berry");
 

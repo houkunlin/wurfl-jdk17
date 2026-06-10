@@ -15,6 +15,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Ucweb U3 devices and browsers.
+ */
+
 final class UcwebU3Matcher extends MatcherBase {
     private static final String GENERIC_MS_PHONE_OS8_SUBUAWCWEB = "generic_ms_phone_os8_subuaucweb";
     private static final String GENERIC_UCWEB_ANDROID_VER1 = "generic_ucweb_android_ver1";
@@ -66,17 +70,29 @@ final class UcwebU3Matcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         return new HashSet<>(SUPPORTED_DEVICE_IDS);
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.startsWith("Mozilla") && cleanedDeviceUserAgent.contains("UCBrowser");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         if (UserAgentUtils.getUcBrowserVersion(userAgent, false) == null) {
             return null;
@@ -106,6 +122,10 @@ final class UcwebU3Matcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("Windows Phone")) {
@@ -160,11 +180,19 @@ final class UcwebU3Matcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "UcwebU3Matcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "UcwebU3";
     }

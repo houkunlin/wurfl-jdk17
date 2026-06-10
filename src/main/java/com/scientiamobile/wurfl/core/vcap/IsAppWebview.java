@@ -7,11 +7,19 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 
+/**
+ * Implementation of Is App Webview.
+ */
+
 public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEvaluator, Serializable {
     @Serial
     private static final long serialVersionUID = 165298984131843694L;
 
     @Override
+/**
+ * Eval.
+ */
+
     public String eval(Device device, WURFLRequest request) {
         String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
 
@@ -63,6 +71,10 @@ public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements 
     }
 
     @Override
+/**
+ * Returns the handle dirtua lapabilit yame.
+ */
+
     public String getHandledVirtualCapabilityName() {
         return "is_app_webview";
     }

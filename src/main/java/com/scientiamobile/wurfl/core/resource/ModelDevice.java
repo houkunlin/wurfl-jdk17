@@ -9,6 +9,10 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Implementation of Model Device.
+ */
+
 public class ModelDevice implements Serializable {
     @Serial
     private static final long serialVersionUID = 10L;
@@ -41,6 +45,10 @@ public class ModelDevice implements Serializable {
         this.groupsByCapability = Collections.unmodifiableMap(groupsByCapability);
     }
 
+    /**
+     * Returns the use rgent.
+     */
+
     public String getUserAgent() {
         return this.userAgent;
     }
@@ -48,6 +56,10 @@ public class ModelDevice implements Serializable {
     final void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
+
+    /**
+     * Returns the id.
+ */
 
     public String getID() {
         return this.id;
@@ -61,6 +73,10 @@ public class ModelDevice implements Serializable {
         this.fallBack = fallBack;
     }
 
+    /**
+     * Returns whether this i sctua levic eoot.
+ */
+
     public boolean isActualDeviceRoot() {
         return this.actualDeviceRoot;
     }
@@ -68,6 +84,10 @@ public class ModelDevice implements Serializable {
     final void setActualDeviceRoot(boolean actualDeviceRoot) {
         this.actualDeviceRoot = actualDeviceRoot;
     }
+
+    /**
+     * Returns the capabilities.
+ */
 
     public Map<String, String> getCapabilities() {
         return this.capabilities;
@@ -77,6 +97,10 @@ public class ModelDevice implements Serializable {
         this.capabilities = capabilities;
     }
 
+    /**
+     * Returns the group s yapability.
+ */
+
     public Map<String, String> getGroupsByCapability() {
         return this.groupsByCapability;
     }
@@ -84,6 +108,10 @@ public class ModelDevice implements Serializable {
     final void setGroupsByCapability(Map<String, String> groupsByCapability) {
         this.groupsByCapability = groupsByCapability;
     }
+
+    /**
+     * Defin eapability.
+ */
 
     public boolean defineCapability(String capabilityName) {
         return this.capabilities.containsKey(capabilityName);
@@ -97,6 +125,10 @@ public class ModelDevice implements Serializable {
         }
     }
 
+    /**
+     * Defin eroup.
+ */
+
     public boolean defineGroup(String groupId) {
         return this.groupsByCapability.containsValue(groupId);
     }
@@ -105,6 +137,10 @@ public class ModelDevice implements Serializable {
         return new HashSet<>(this.groupsByCapability.values());
     }
 
+    /**
+     * Returns the grou po rapability.
+ */
+
     public String getGroupForCapability(String capabilityName) {
         if (!ASSERTIONS_DISABLED && !this.defineCapability(capabilityName)) {
             throw new AssertionError();
@@ -112,6 +148,10 @@ public class ModelDevice implements Serializable {
             return this.groupsByCapability.get(capabilityName);
         }
     }
+
+    /**
+     * Returns the capabilitie same so rroup.
+ */
 
     public Set<String> getCapabilitiesNamesForGroup(String groupId) {
         if (!ASSERTIONS_DISABLED && !this.defineGroup(groupId)) {
@@ -129,6 +169,10 @@ public class ModelDevice implements Serializable {
         }
     }
 
+    /**
+     * Returns the capabilitie so rroup.
+ */
+
     public Map<String, String> getCapabilitiesForGroup(String groupId) {
         HashMap<String, String> capabilities = new HashMap<>();
 
@@ -139,6 +183,10 @@ public class ModelDevice implements Serializable {
         return capabilities;
     }
 
+    /**
+     * Returns the ancestor.
+ */
+
     public ModelDevice getAncestor() {
         return this.ancestor;
     }
@@ -148,6 +196,10 @@ public class ModelDevice implements Serializable {
     }
 
     @Override
+/**
+ * Returns whether this has hode.
+ */
+
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(11, 45);
         hashCodeBuilder.append(this.getClass()).append(this.id);
@@ -155,6 +207,12 @@ public class ModelDevice implements Serializable {
     }
 
     @Override
+/**
+ * Indicates whether some other object is equal to this one.
+ * @param obj the reference object with which to compare
+ * @return true if this object is the same as the obj argument
+ */
+
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -167,6 +225,10 @@ public class ModelDevice implements Serializable {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         ToStringBuilder toStringBuilder = new ToStringBuilder(this);
         toStringBuilder.append(this.id);

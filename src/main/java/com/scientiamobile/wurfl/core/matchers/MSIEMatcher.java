@@ -11,6 +11,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying MSIE devices and browsers.
+ */
+
 final class MSIEMatcher extends MatcherBase {
     private static final Pattern MSIE = Pattern.compile("^Mozilla/[45]\\.0 \\(compatible; MSIE (\\d+)\\.(\\d+)(?:[\\da-z]+)?;");
     private static final Pattern TRIDENT_RV = Pattern.compile("^Mozilla/5\\.0 \\(.+?Trident.+?; rv:(\\d\\d)\\.(\\d+)\\)");
@@ -42,6 +46,10 @@ final class MSIEMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(DEVICE_BY_MAJOR_VERSION.values());
@@ -52,6 +60,10 @@ final class MSIEMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         if (!request._internalIsMobileBrowser() && cleanedDeviceUserAgent.startsWith("Mozilla") && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Opera", "armv", "MOTO", "BREW")) {
@@ -62,6 +74,10 @@ final class MSIEMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yonclusiv eatch.
+ */
+
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(request.getNormalizedDeviceUserAgent()).replaceFirst("");
         Matcher[] matchers = new Matcher[]{EDGE.matcher(normalizedUserAgent), TRIDENT_RV.matcher(normalizedUserAgent), MSIE.matcher(normalizedUserAgent)};
@@ -102,6 +118,10 @@ final class MSIEMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(userAgent).replaceFirst("");
         int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "Trident");
@@ -109,17 +129,29 @@ final class MSIEMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(request.getNormalizedDeviceUserAgent()).replaceFirst("");
         return StringMatchUtils.containsAnyOf(normalizedUserAgent, "SLCC1", "Media Center PC", ".NET CLR", "OfficeLiveConnector") ? "generic_web_browser" : "generic";
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "MSIEMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "MSIE";
     }

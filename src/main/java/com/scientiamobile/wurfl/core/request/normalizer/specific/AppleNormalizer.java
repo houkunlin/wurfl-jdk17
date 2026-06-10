@@ -5,6 +5,10 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for Apple.
+ */
+
 public class AppleNormalizer implements UserAgentNormalizer {
     private static final Pattern IOS_APP_UA_PATTERN = Pattern.compile("^[^/]+?/[\\d\\.]+? \\(i[A-Za-z]+; iOS ([\\d\\.]+); Scale/[\\d\\.]+\\)");
     private static final Pattern SERVER_BAG_PATTERN = Pattern.compile("^server-bag \\[iPhone OS,([\\d\\.]+),");
@@ -21,6 +25,10 @@ public class AppleNormalizer implements UserAgentNormalizer {
         IOS_DEVICE_MODEL_IOS_VERSION_PATTERN,
     };
 
+    /**
+     * Fin datcher.
+     */
+
     private static Matcher findMatcher(String userAgent, Pattern pattern) {
         if (userAgent != null && pattern != null) {
             Matcher matcher = pattern.matcher(userAgent);
@@ -29,6 +37,10 @@ public class AppleNormalizer implements UserAgentNormalizer {
             return null;
         }
     }
+
+    /**
+     * Matc hosversion.
+ */
 
     private static String matchIOSVersion(String userAgent) {
         for (Pattern pattern : IOS_VERSION_PATTERNS) {
@@ -39,6 +51,10 @@ public class AppleNormalizer implements UserAgentNormalizer {
         }
         return null;
     }
+
+    /**
+     * Buil dosua.
+ */
 
     private static String buildIOSUA(String userAgent, String iosVersion) {
         if (userAgent.contains("iPad")) {
@@ -54,6 +70,12 @@ public class AppleNormalizer implements UserAgentNormalizer {
     }
 
     @Override
+/**
+ * Normalizes the given User-Agent string.
+ * @param userAgent the raw User-Agent string
+ * @return the normalized User-Agent string
+ */
+
     public String normalize(String userAgent) {
         String iosVersion = matchIOSVersion(userAgent);
         if (iosVersion != null) {

@@ -10,6 +10,10 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Implementation of XML Resource.
+ */
+
 public class XMLResource implements WURFLResource {
     private static final SAXParserFactory SAX_PARSER_FACTORY;
 
@@ -42,6 +46,10 @@ public class XMLResource implements WURFLResource {
     }
 
     @Override
+/**
+ * Returns the data.
+ */
+
     public ModelDevicesSnapshot getData(String... includedCapabilities) {
         if (includedCapabilities != null) {
             this.includedCapabilities = new HashSet<>(includedCapabilities.length);
@@ -57,6 +65,10 @@ public class XMLResource implements WURFLResource {
         return snapshot;
     }
 
+    /**
+     * Returns the origina lath.
+     */
+
     public String getOriginalPath() {
         return this.originalPath;
     }
@@ -66,6 +78,10 @@ public class XMLResource implements WURFLResource {
     }
 
     @Override
+/**
+ * Returns the version.
+ */
+
     public String getVersion() {
         return this.version;
     }
@@ -73,6 +89,10 @@ public class XMLResource implements WURFLResource {
     public void release() {
         this.resourceInput.close();
     }
+
+    /**
+     * Pars enapshot.
+ */
 
     private ModelDevicesSnapshot parseSnapshot(InputStream inputStream) {
         WurflXmlHandler handler = new WurflXmlHandler(this.includedCapabilities);

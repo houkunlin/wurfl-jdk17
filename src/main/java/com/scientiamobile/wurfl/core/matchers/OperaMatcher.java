@@ -14,6 +14,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Opera devices and browsers.
+ */
+
 final class OperaMatcher extends MatcherBase {
     private static final String OPERA_GENERIC = "opera";
     private static final Pattern OPERA_VERSION = Pattern.compile("Opera[ /]?(\\d+\\.\\d+)");
@@ -64,6 +68,10 @@ final class OperaMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(MAJOR_VERSION_TO_DEVICE_ID.values());
@@ -71,11 +79,19 @@ final class OperaMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera", "OPR/");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         int operaIndex = StringMatchUtils.indexOf(userAgent, "Opera");
         int matchLength = StringMatchUtils.indexOfOrLength(userAgent, ".", operaIndex);
@@ -83,6 +99,10 @@ final class OperaMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         Matcher versionMatcher = OPERA_VERSION.matcher(request.getNormalizedDeviceUserAgent());
         if (!versionMatcher.find()) {
@@ -104,11 +124,19 @@ final class OperaMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "OperaMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Opera";
     }

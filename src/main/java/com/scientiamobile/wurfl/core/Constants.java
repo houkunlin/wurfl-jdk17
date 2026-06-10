@@ -1,5 +1,9 @@
 package com.scientiamobile.wurfl.core;
 
+/**
+ * Implementation of Constants.
+ */
+
 public interface Constants {
     String GENERIC = "generic";
     String GENERIC_MOBILE = "generic_mobile";

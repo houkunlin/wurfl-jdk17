@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core.resource;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Implementation of WURFL Model.
+ */
+
 public interface WURFLModel {
     String getVersion();
 

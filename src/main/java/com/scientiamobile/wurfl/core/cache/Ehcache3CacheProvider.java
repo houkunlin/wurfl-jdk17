@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Provides Ehcache3Cache functionality.
+ */
+
 public class Ehcache3CacheProvider implements CacheProvider {
     private static final Logger log = LoggerFactory.getLogger(Ehcache3CacheProvider.class);
     private static final String DEVICE_CACHE = "wurfl-device-cache";
@@ -44,6 +48,10 @@ public class Ehcache3CacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public InternalDevice getDevice(String userAgent) {
         String deviceId = this.userAgentToIdCache.get(userAgent);
         if (deviceId == null) {
@@ -53,11 +61,19 @@ public class Ehcache3CacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Returns the interna levic ero mevic ed.
+ */
+
     public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
         return this.deviceIdCache.get(deviceId);
     }
 
     @Override
+/**
+ * Pu tevice.
+ */
+
     public void putDevice(String userAgent, InternalDevice device) {
         if (device == null) return;
         String deviceId = device.getId();
@@ -70,12 +86,20 @@ public class Ehcache3CacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Clears all cached data.
+ */
+
     public void clear() {
         log.info("Clearing Ehcache3 cache...");
         this.deviceIdCache.clear();
         this.userAgentToIdCache.clear();
         log.info("Ehcache3 cache cleared");
     }
+
+    /**
+     * Releases all resources held by this instance.
+     */
 
     public void close() {
         if (this.closed.compareAndSet(false, true)) {

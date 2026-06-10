@@ -10,6 +10,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying UCWEB7On Android devices and browsers.
+ */
+
 final class UCWEB7OnAndroidMatcher extends MatcherBase {
     private static final String GENERIC_ANDROID_VER2_0_UCWEB = "generic_android_ver2_0_ucweb";
     private static final Map<String, String> ANDROID_VERSION_TO_DEVICE_ID;
@@ -27,6 +31,10 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(ANDROID_VERSION_TO_DEVICE_ID.values());
@@ -35,17 +43,29 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Android", "UCWEB7");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, StringMatchUtils.indexOfOrLength(userAgent, "UCWEB7"));
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String androidVersion = UserAgentUtils.getAndroidVersion(request.getNormalizedDeviceUserAgent(), true);
         String deviceId = ANDROID_VERSION_TO_DEVICE_ID.get(androidVersion);
@@ -53,11 +73,19 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "UCWEB7OnAndroidMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Ucweb7OnAndroid";
     }

@@ -9,6 +9,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Desktop Application devices and browsers.
+ */
+
 public final class DesktopApplicationMatcher extends MatcherBase {
     private static final String GENERIC_WEB_BROWSER = "generic_web_browser";
     private static final String GENERIC_DESKTOP_APPLICATION = "generic_desktop_application";
@@ -27,6 +31,10 @@ public final class DesktopApplicationMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICE_IDS);
         requiredDeviceIds.add(GENERIC_WEB_BROWSER);
@@ -34,11 +42,19 @@ public final class DesktopApplicationMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Microsoft Office", "MSOffice", "office", "DesktopApp ");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         Matcher msOfficeMatcher = MSOFFICE_PATTERN.matcher(userAgent);
         Matcher microsoftOfficeMatcher = MICROSOFT_OFFICE_PATTERN.matcher(userAgent);
@@ -62,6 +78,10 @@ public final class DesktopApplicationMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();
         if (StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office")) {
@@ -72,11 +92,19 @@ public final class DesktopApplicationMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "DesktopApplicationMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "DesktopApplication";
     }

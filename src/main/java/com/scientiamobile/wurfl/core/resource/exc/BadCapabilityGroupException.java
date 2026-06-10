@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when bad capability group occurs.
+ */
+
 public class BadCapabilityGroupException extends CapabilityConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -15,6 +19,10 @@ public class BadCapabilityGroupException extends CapabilityConsistencyException 
         this.expectedGroupId = expectedGroupId;
         this.actualGroupId = actualGroupId;
     }
+
+    /**
+     * Returns the righ troup.
+     */
 
     public String getRightGroup() {
         return this.expectedGroupId;

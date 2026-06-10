@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * Implementation of WURFL Engine.
+ */
+
 public interface WURFLEngine {
     String API_VERSION = "1.9.1.0";
 

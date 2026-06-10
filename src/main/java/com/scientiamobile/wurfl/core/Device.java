@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.matchers.MatchType;
 
 import java.util.Map;
 
+/**
+ * Implementation of Device.
+ */
+
 public interface Device extends InternalDevice {
     MatchType getMatchType();
 

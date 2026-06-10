@@ -9,6 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+/**
+ * Provides Hash Map Cache functionality.
+ */
+
 public class HashMapCacheProvider implements CacheProvider {
     private static final Logger logger = LoggerFactory.getLogger(HashMapCacheProvider.class);
     private final Map<String, InternalDevice> cache;
@@ -43,6 +47,10 @@ public class HashMapCacheProvider implements CacheProvider {
 
     }
 
+    /**
+     * Returns the initia lapacity.
+     */
+
     public int getInitialCapacity() {
         return this.initialCapacity;
     }
@@ -51,11 +59,19 @@ public class HashMapCacheProvider implements CacheProvider {
         return this.loadFactor;
     }
 
+    /**
+     * Returns the concurren trites.
+ */
+
     public int getConcurrentWrites() {
         return this.concurrentWrites;
     }
 
     @Override
+/**
+ * Clears all cached data.
+ */
+
     public void clear() {
         logger.info("Cache size: {}", this.cache.size());
         this.cache.clear();
@@ -63,18 +79,30 @@ public class HashMapCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public InternalDevice getDevice(String key) {
         Validate.notNull(key, "The key is null");
         return this.cache.get(key);
     }
 
     @Override
+/**
+ * Pu tevice.
+ */
+
     public void putDevice(String key, InternalDevice device) {
         Validate.notNull(key, "The key is null");
         this.cache.put(key, device);
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return (new ToStringBuilder(this))
                 .append("initialCapacity", this.initialCapacity)
@@ -82,6 +110,10 @@ public class HashMapCacheProvider implements CacheProvider {
                 .append("concurrentWrites", this.concurrentWrites)
                 .toString();
     }
+
+    /**
+     * Returns the interna levic ero mevic ed.
+ */
 
     public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
         return null;

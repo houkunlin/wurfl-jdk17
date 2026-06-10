@@ -14,6 +14,10 @@ import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
+/**
+ * Implementation of Resource Input.
+ */
+
 final class ResourceInput {
     private static final Logger LOG = LoggerFactory.getLogger(ResourceInput.class);
     private static boolean ASSERTIONS_DISABLED = !ResourceInput.class.desiredAssertionStatus();
@@ -55,6 +59,10 @@ final class ResourceInput {
         }
     }
 
+    /**
+     * Pars eri.
+     */
+
     private static URI parseUri(String path) {
         if (!ASSERTIONS_DISABLED && !StringUtils.isNotBlank(path)) {
             throw new AssertionError("The path must be not blank");
@@ -89,6 +97,10 @@ final class ResourceInput {
         }
     }
 
+    /**
+     * Unwra pip.
+ */
+
     private static InputStream unwrapZip(InputStream stream) {
         try {
             ZipInputStream zipInputStream;
@@ -100,6 +112,10 @@ final class ResourceInput {
         }
     }
 
+    /**
+     * Returns the resourc eame.
+ */
+
     public final String getResourceName() {
         if (this.uri != null) {
             return this.uri.toString();
@@ -107,6 +123,10 @@ final class ResourceInput {
             return "Stream resource";
         }
     }
+
+    /**
+     * Ope ntream.
+ */
 
     private InputStream openStream(URI uri) {
         try {
@@ -135,6 +155,10 @@ final class ResourceInput {
         }
     }
 
+    /**
+     * Clos etream.
+ */
+
     private void closeStream() {
         try {
             LOG.info("closing input stream: {}", this.stream.getClass().getSimpleName());
@@ -146,6 +170,10 @@ final class ResourceInput {
         this.stream = null;
     }
 
+    /**
+     * Releases all resources held by this instance.
+ */
+
     public final void close() {
         if (this.stream != null) {
             this.closeStream();
@@ -153,6 +181,10 @@ final class ResourceInput {
 
         this.uri = null;
     }
+
+    /**
+     * Ope nnpu ttream.
+ */
 
     public final InputStream openInputStream() {
         if (this.stream == null) {
@@ -165,6 +197,10 @@ final class ResourceInput {
 
         return this.stream;
     }
+
+    /**
+     * Reset.
+ */
 
     public final void reset() {
         if (this.stream.markSupported()) {

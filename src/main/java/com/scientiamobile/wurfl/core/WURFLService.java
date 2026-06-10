@@ -8,6 +8,10 @@ import com.scientiamobile.wurfl.core.resource.WURFLResource;
 import com.scientiamobile.wurfl.core.resource.WURFLResources;
 import jakarta.servlet.http.HttpServletRequest;
 
+/**
+ * Implementation of WURFL Service.
+ */
+
 public interface WURFLService {
     Device getDevice(HttpServletRequest request);
 

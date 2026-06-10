@@ -10,6 +10,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation of Caching Capabilities Holder.
+ */
+
 class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializable {
     @Serial
     private static final long serialVersionUID = 100L;
@@ -30,6 +34,10 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
     }
 
     @Override
+/**
+ * Returns the capability.
+ */
+
     public String getCapability(String capabilityName) {
         String capabilityValue = this.capabilitiesProvider.getCapability(this.capabilitiesCache, capabilityName);
         if (capabilityValue == null) {
@@ -40,6 +48,10 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
     }
 
     @Override
+/**
+ * Returns the capabilities.
+ */
+
     public Map<String, String> getCapabilities() {
         if (this.capabilitiesCache == null || this.capabilitiesCache.size() < this.minCacheSize) {
             if (this.capabilitiesProvider == null) {
@@ -55,6 +67,10 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
             return this.capabilitiesCache;
         }
     }
+
+    /**
+     * Writ ebject.
+     */
 
     private void writeObject(ObjectOutputStream oos) throws IOException {
         if (this.capabilitiesCache == null) {

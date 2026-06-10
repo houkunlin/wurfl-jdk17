@@ -1,5 +1,9 @@
 package com.scientiamobile.wurfl.core.updater;
 
+/**
+ * Implementation of Update Result.
+ */
+
 public class UpdateResult {
     private UpdateResultStatus resultStatus;
     private String message;
@@ -8,6 +12,10 @@ public class UpdateResult {
         this.resultStatus = resultStatus;
         this.message = message;
     }
+
+    /**
+     * Statu sro mtring.
+     */
 
     public static UpdateResultStatus statusFromString(String value) {
         if (UpdateResultStatus.PIPELINE_TASK_FAILED.value().equals(value)) {
@@ -21,6 +29,10 @@ public class UpdateResult {
         }
     }
 
+    /**
+     * Returns whether this i spdat eroces successful.
+ */
+
     public boolean isUpdateProcessSuccessful() {
         return this.resultStatus == UpdateResultStatus.UPDATED || this.resultStatus == UpdateResultStatus.UPDATE_SKIPPED;
     }
@@ -28,6 +40,10 @@ public class UpdateResult {
     final boolean isUpdated() {
         return this.resultStatus == UpdateResultStatus.UPDATED;
     }
+
+    /**
+     * Returns the resul ttatus.
+ */
 
     public UpdateResultStatus getResultStatus() {
         return this.resultStatus;

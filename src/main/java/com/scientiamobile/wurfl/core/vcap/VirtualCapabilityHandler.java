@@ -9,6 +9,10 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Handler for Virtual Capability operations.
+ */
+
 public class VirtualCapabilityHandler {
     private static final Map<String, VirtualCapabilityEvaluator> EVALUATORS_BY_NAME;
 
@@ -85,10 +89,18 @@ public class VirtualCapabilityHandler {
         return computedValue == null ? "" : computedValue;
     }
 
+    /**
+     * Returns the al lirtua lapabilities.
+     */
+
     public static Set<String> getAllVirtualCapabilities() {
         new VirtualCapabilityHandler();
         return EVALUATORS_BY_NAME.keySet();
     }
+
+    /**
+     * Returns the mandator yapabilities.
+ */
 
     public static Set<String> getMandatoryCapabilities() {
         return new HashSet<>(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
@@ -106,6 +118,10 @@ public class VirtualCapabilityHandler {
         }
     }
 
+    /**
+     * Returns the virtua lapabilit y snt.
+ */
+
     public int getVirtualCapabilityAsInt(String virtualCapabilityName, Device device) {
         return Integer.parseInt(this.getVirtualCapability(virtualCapabilityName, device));
     }
@@ -113,6 +129,10 @@ public class VirtualCapabilityHandler {
     public boolean getVirtualCapabilityAsBool(String virtualCapabilityName, Device device) {
         return Boolean.parseBoolean(this.getVirtualCapability(virtualCapabilityName, device));
     }
+
+    /**
+     * Returns the al lirtua lapabilities.
+ */
 
     public Map<String, String> getAllVirtualCapabilities(Device device) {
         HashMap<String, String> virtualCapabilities = new HashMap<>();

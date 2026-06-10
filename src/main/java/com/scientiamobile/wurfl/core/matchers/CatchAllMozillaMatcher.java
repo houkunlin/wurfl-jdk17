@@ -7,12 +7,20 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Catch All Mozilla devices and browsers.
+ */
+
 final class CatchAllMozillaMatcher extends AbstractMatcher {
     public CatchAllMozillaMatcher(WURFLModel wurflModel) {
         super(wurflModel);
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -21,11 +29,19 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "Mozilla/3", "Mozilla/4", "Mozilla/5");
     }
 
     @Override
+/**
+ * Appl yonclusiv eatch.
+ */
+
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         int matchLength = StringMatchUtils.firstCloseParenthesis(normalizedUserAgent);
@@ -45,11 +61,19 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "CatchAllMozillaMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "CatchAllMozilla";
     }

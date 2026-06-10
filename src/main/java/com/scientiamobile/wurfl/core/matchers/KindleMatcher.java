@@ -9,6 +9,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Kindle devices and browsers.
+ */
+
 final class KindleMatcher extends MatcherBase {
     private static final String GENERIC_AMAZON_KINDLE = "generic_amazon_kindle";
     private static final Map<String, String> DEVICE_BY_TOKEN;
@@ -27,6 +31,10 @@ final class KindleMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add(GENERIC_AMAZON_KINDLE);
@@ -35,12 +43,20 @@ final class KindleMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "/Kindle", "Silk") ? false : StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Kindle", "Silk");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         int matchLength;
         matchLength = userAgent.indexOf("Build/");
@@ -63,6 +79,10 @@ final class KindleMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
 
@@ -76,11 +96,19 @@ final class KindleMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "KindleMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Kindle";
     }

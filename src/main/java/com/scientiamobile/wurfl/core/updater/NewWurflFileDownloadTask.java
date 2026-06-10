@@ -12,6 +12,10 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Map;
 
+/**
+ * A task that performs New Wurfl File Download.
+ */
+
 public class NewWurflFileDownloadTask implements UpdatePipelineTask {
     private static final Logger log = LoggerFactory.getLogger(NewWurflFileDownloadTask.class);
     private ProxySettings proxySettings;
@@ -22,6 +26,12 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
     public NewWurflFileDownloadTask(ProxySettings proxySettings) {
         this.proxySettings = proxySettings;
     }
+
+    /**
+     * Executes this operation with the given context.
+     *
+     * @param context the execution context map
+     */
 
     public void execute(Map<String, Object> context) {
         try {

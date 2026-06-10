@@ -7,6 +7,10 @@ import java.util.*;
 
 import static com.scientiamobile.wurfl.core.Constants.GENERIC;
 
+/**
+ * Implementation of Model Devices Consistency Verifier.
+ */
+
 final class ModelDevicesConsistencyVerifier {
     private ModelDevicesConsistencyVerifier() {
     }
@@ -31,6 +35,10 @@ final class ModelDevicesConsistencyVerifier {
             verifyCapabilities(device, devices);
         }
     }
+
+    /**
+     * Verif yierarchy.
+     */
 
     private static void verifyHierarchy(ModelDevice device, ModelDevices devices, Set<String> visited) {
         String currentDeviceId = device.getID();
@@ -59,6 +67,10 @@ final class ModelDevicesConsistencyVerifier {
         }
     }
 
+    /**
+     * Verif yroups.
+ */
+
     private static void verifyGroups(ModelDevice device, ModelDevices devices) {
         ModelDevice genericDevice = devices.getById(GENERIC);
         Set<String> genericGroups = genericDevice.getGroups();
@@ -68,6 +80,10 @@ final class ModelDevicesConsistencyVerifier {
             }
         }
     }
+
+    /**
+     * Verif yapabilities.
+ */
 
     private static void verifyCapabilities(ModelDevice device, ModelDevices devices) {
         assert devices.containsId(GENERIC) : "device do not containing generic";
@@ -85,6 +101,10 @@ final class ModelDevicesConsistencyVerifier {
             }
         }
     }
+
+    /**
+     * Verif y oedefine devices.
+ */
 
     public static void verifyNoRedefinedDevices(ModelDevices patchDevices, ModelDevices baseDevices) {
         for (ModelDevice patchDevice : patchDevices.getDevices()) {

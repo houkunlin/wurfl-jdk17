@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Provides Caffeine Cache functionality.
+ */
+
 public class CaffeineCacheProvider implements CacheProvider {
     private static final Logger log = LoggerFactory.getLogger(CaffeineCacheProvider.class);
 
@@ -44,6 +48,10 @@ public class CaffeineCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public InternalDevice getDevice(String userAgent) {
         String deviceId = this.userAgentToDeviceIdCache.getIfPresent(userAgent);
         if (deviceId == null) {
@@ -53,11 +61,19 @@ public class CaffeineCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Returns the interna levic ero mevic ed.
+ */
+
     public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
         return this.deviceIdCache.getIfPresent(deviceId);
     }
 
     @Override
+/**
+ * Pu tevice.
+ */
+
     public void putDevice(String userAgent, InternalDevice device) {
         if (device == null) return;
         String deviceId = device.getId();
@@ -70,12 +86,20 @@ public class CaffeineCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Clears all cached data.
+ */
+
     public void clear() {
         log.info("Clearing Caffeine cache...");
         this.deviceIdCache.invalidateAll();
         this.userAgentToDeviceIdCache.invalidateAll();
         log.info("Caffeine cache cleared");
     }
+
+    /**
+     * Estimate devic each eize.
+     */
 
     public long estimatedDeviceCacheSize() {
         return this.deviceIdCache.estimatedSize();

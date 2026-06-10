@@ -13,6 +13,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * Implementation of Validator.
+ */
+
 public class Validator {
     private Validator() {
     }

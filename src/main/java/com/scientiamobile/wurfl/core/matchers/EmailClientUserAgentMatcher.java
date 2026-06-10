@@ -9,6 +9,10 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Email Client User Agent devices and browsers.
+ */
+
 public class EmailClientUserAgentMatcher extends MatcherBase {
     public static final List<String> EMAIL_CLIENTS;
     private static final String MOZILLA_THUNDERBIRD = "mozilla_thunderbird";
@@ -46,22 +50,38 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();
         return request._internalIsEmailClient() && !StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office") || deviceUserAgent.contains("Spark/") && deviceUserAgent.contains("CFNetwork/");
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "EmailClientMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "EmailClient";
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         if (userAgent.contains("Thunderbird")) {
             userAgent = userAgent.substring(userAgent.indexOf("Thunderbird"));
@@ -80,11 +100,19 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         return new HashSet<>(REQUIRED_DEVICE_IDS);
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();
         if (deviceUserAgent.contains("Thunderbird")) {

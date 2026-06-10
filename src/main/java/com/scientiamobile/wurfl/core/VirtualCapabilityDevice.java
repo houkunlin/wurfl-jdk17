@@ -11,6 +11,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of Virtual Capability Device.
+ */
+
 public class VirtualCapabilityDevice implements Serializable {
     @Serial
     private static final long serialVersionUID = -9083698933173727805L;
@@ -71,6 +75,10 @@ public class VirtualCapabilityDevice implements Serializable {
         this.osPair = new NameVersionPair();
     }
 
+    /**
+     * Returns the devic ese rgent.
+     */
+
     public String getDeviceUserAgent() {
         return this.deviceUserAgent;
     }
@@ -78,6 +86,10 @@ public class VirtualCapabilityDevice implements Serializable {
     public String getBrowserUserAgent() {
         return this.browserUserAgent;
     }
+
+    /**
+     * Returns the cleane devic ese rgent.
+ */
 
     public String getCleanedDeviceUserAgent() {
         return this.cleanedDeviceUserAgent;
@@ -87,6 +99,10 @@ public class VirtualCapabilityDevice implements Serializable {
         return this.browserPair;
     }
 
+    /**
+     * Returns the o sai rame.
+ */
+
     public String getOsPairName() {
         return this.osPair.getName();
     }
@@ -95,6 +111,10 @@ public class VirtualCapabilityDevice implements Serializable {
         return this.browserPair.getName();
     }
 
+    /**
+     * Returns the browse rai rersion.
+ */
+
     public String getBrowserPairVersion() {
         return this.browserPair.getVersion();
     }
@@ -102,6 +122,10 @@ public class VirtualCapabilityDevice implements Serializable {
     public String getOsPairVersion() {
         return this.osPair.getVersion();
     }
+
+    /**
+     * Returns the o sair.
+ */
 
     public NameVersionPair getOsPair() {
         return this.osPair;
@@ -114,6 +138,10 @@ public class VirtualCapabilityDevice implements Serializable {
         normalizeWindowsPhoneVersion();
         normalizeMacOrFallbackOs();
     }
+
+    /**
+     * Normaliz eindow ss.
+ */
 
     private boolean normalizeWindowsOs() {
         if (this.osPair.getName() == null || StringMatchUtils.indexOf(this.deviceUserAgent, "Windows") < 0) {
@@ -129,6 +157,10 @@ public class VirtualCapabilityDevice implements Serializable {
         return WINDOWS_VERSION_PATTERN.matcher(this.osPair.getName()).find();
     }
 
+    /**
+     * Normaliz eindow shon eersion.
+ */
+
     private void normalizeWindowsPhoneVersion() {
         if (StringMatchUtils.indexOf(this.osPair.getName(), "Windows Phone") < 0 || this.osPair.getVersion() == null) {
             return;
@@ -139,10 +171,18 @@ public class VirtualCapabilityDevice implements Serializable {
         }
     }
 
+    /**
+     * Normaliz ea c rallbac ks.
+ */
+
     private void normalizeMacOrFallbackOs() {
         if (tryMatchMacVersion()) return;
         tryFallbackOs();
     }
+
+    /**
+     * Tr yatc ha cersion.
+ */
 
     private boolean tryMatchMacVersion() {
         if (this.osPair.matchAndSetGroup(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, MAC_OS_X, 1)) {
@@ -166,6 +206,10 @@ public class VirtualCapabilityDevice implements Serializable {
         return false;
     }
 
+    /**
+     * Replac enderscor e nersion.
+ */
+
     private boolean replaceUnderscoreInVersion() {
         if (this.osPair.getVersion() != null) {
             this.osPair.setVersion(this.osPair.getVersion().replace("_", "."));
@@ -173,12 +217,20 @@ public class VirtualCapabilityDevice implements Serializable {
         return true;
     }
 
+    /**
+     * Returns whether this i sa cs10o rater.
+ */
+
     private boolean isMacOS10OrLater() {
         String[] majorMinor = DOT_SPLIT_PATTERN.split(this.osPair.getVersion());
         return majorMinor != null && majorMinor.length > 1
                 && StringUtils.isNumeric(majorMinor[0]) && StringUtils.isNumeric(majorMinor[1])
                 && Integer.parseInt(majorMinor[0]) >= 10 && Integer.parseInt(majorMinor[1]) >= 12;
     }
+
+    /**
+     * Tr yallbac ks.
+ */
 
     private void tryFallbackOs() {
         if (this.osPair.containsAndSetName(this.deviceUserAgent, "Mac_PowerPC", MAC_OS_X)) return;
@@ -201,6 +253,10 @@ public class VirtualCapabilityDevice implements Serializable {
             this.osPair.setName(LINUX);
         }
     }
+
+    /**
+     * Normaliz erowser.
+ */
 
     public void normalizeBrowser() {
         if (!"IE".equals(this.browserPair.getName())) {

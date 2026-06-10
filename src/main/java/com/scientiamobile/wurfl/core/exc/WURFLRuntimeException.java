@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core.exc;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when wurfl runtime occurs.
+ */
+
 public class WURFLRuntimeException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;

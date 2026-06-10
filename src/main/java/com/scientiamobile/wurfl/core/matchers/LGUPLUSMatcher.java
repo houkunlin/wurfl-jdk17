@@ -9,6 +9,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying LGUPLUS devices and browsers.
+ */
+
 final class LGUPLUSMatcher extends MatcherBase {
     private static final String GENERIC_LGUPLUS = "generic_lguplus";
     private static final Map<String, String[]> DEVICE_BY_TOKENS;
@@ -26,6 +30,10 @@ final class LGUPLUSMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -35,16 +43,28 @@ final class LGUPLUSMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "lgtelecom", "LGUPLUS");
     }
 
     @Override
+/**
+ * Appl yonclusiv eatch.
+ */
+
     protected String applyConclusiveMatch(WURFLRequest request) {
         return null;
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         for (Map.Entry<String, String[]> entry : DEVICE_BY_TOKENS.entrySet()) {
@@ -57,11 +77,19 @@ final class LGUPLUSMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "LGUPLUSMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "LGUPLUS";
     }

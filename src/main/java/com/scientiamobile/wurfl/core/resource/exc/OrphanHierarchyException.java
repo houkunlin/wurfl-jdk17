@@ -6,6 +6,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.io.Serial;
 import java.util.List;
 
+/**
+ * Exception thrown when orphan hierarchy occurs.
+ */
+
 public class OrphanHierarchyException extends HierarchyConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;

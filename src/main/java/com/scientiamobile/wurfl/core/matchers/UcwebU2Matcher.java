@@ -10,12 +10,20 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Ucweb U2 devices and browsers.
+ */
+
 final class UcwebU2Matcher extends MatcherBase {
     public UcwebU2Matcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
         super(userAgentNormalizer, wurflModel);
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add("generic_ucweb");
@@ -23,12 +31,20 @@ final class UcwebU2Matcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.startsWith("UCWEB") && cleanedDeviceUserAgent.contains("UCBrowser");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         if (UserAgentUtils.getUcBrowserVersion(userAgent, true) == null) {
             return null;
@@ -66,16 +82,28 @@ final class UcwebU2Matcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         return "generic_ucweb";
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "UcwebU2Matcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "UcwebU2";
     }

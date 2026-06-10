@@ -5,6 +5,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of Virtual Capability User Agent Tool.
+ */
+
 public final class VirtualCapabilityUserAgentTool {
     private static final Pattern DESKTOP_APP_MAC_PATTERN = Pattern.compile("^Mozilla/[0-9]\\.0 \\(Macintosh;(?: U;)?([a-zA-Z_ \\.0-9]+)(?:;)?.+? DesktopApp ([A-Za-z0-9]+)/([\\d\\.]+)\\.?");
     private static final Pattern DESKTOP_APP_WINDOWS_PATTERN = Pattern.compile("^Mozilla/[0-9]\\.0 \\((?:Windows;|X11;)?(?: U; )?([a-zA-Z_ \\.0-9]+)(?:;)?.+? DesktopApp ([A-Za-z0-9]+)/([\\d\\.]+)\\.?");
@@ -107,6 +111,10 @@ public final class VirtualCapabilityUserAgentTool {
     private VirtualCapabilityUserAgentTool() {
     }
 
+    /**
+     * Returns the instance.
+     */
+
     public static VirtualCapabilityUserAgentTool getInstance() {
         if (instance == null) {
             instance = new VirtualCapabilityUserAgentTool();
@@ -114,6 +122,10 @@ public final class VirtualCapabilityUserAgentTool {
 
         return instance;
     }
+
+    /**
+     * Assig nroperties.
+ */
 
     public final VirtualCapabilityDevice assignProperties(WURFLRequest request, InternalDevice internalDevice) {
         VirtualCapabilityDevice virtualCapabilityDevice = new VirtualCapabilityDevice(request);

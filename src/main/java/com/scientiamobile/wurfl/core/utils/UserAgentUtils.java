@@ -14,6 +14,10 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of User Agent Utils.
+ */
+
 public final class UserAgentUtils {
     public static final Pattern STRIP_QUOTE_PATTERN;
     public static final Pattern NAMESPACE_NUMBER_PATTERN;
@@ -261,6 +265,10 @@ public final class UserAgentUtils {
     private UserAgentUtils() {
     }
 
+    /**
+     * Returns the use rgent.
+     */
+
     public static String getUserAgent(HttpServletRequest request) {
         Validate.notNull(request, "The HttpServletRequest is null");
         String userAgent;
@@ -279,6 +287,10 @@ public final class UserAgentUtils {
 
         return userAgent;
     }
+
+    /**
+     * Returns the u arofile.
+ */
 
     public static String getUaProfile(HttpServletRequest request) {
         return getUaProfile((WURFLHeaderProvider) (new HttpServletRequestHeaderProvider(request)));
@@ -303,12 +315,20 @@ public final class UserAgentUtils {
         return uaProfile;
     }
 
+    /**
+     * Returns whether this i shtm lequester.
+ */
+
     public static boolean isXhtmlRequester(HttpServletRequest request) {
         Validate.notNull(request, "HttpRequest is null");
         String accept;
         accept = request.getHeader("accept");
         return accept != null && (accept.indexOf("application/vnd.wap.xhtml+xml") != -1 || accept.indexOf("text/vnd.wap.wml") != -1);
     }
+
+    /**
+     * Returns whether this i sontaine dn.
+ */
 
     public static Predicate<String> isContainedIn(String value) {
         return new ContainsIgnoreCasePredicate(value);
@@ -344,6 +364,10 @@ public final class UserAgentUtils {
         return Pattern.compile(patternBuilder.toString(), Pattern.CASE_INSENSITIVE);
     }
 
+    /**
+     * Returns the headers.
+ */
+
     public static Map<String, String> getHeaders(HttpServletRequest request) {
         HashMap<String, String> headers = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
@@ -355,6 +379,10 @@ public final class UserAgentUtils {
 
         return headers;
     }
+
+    /**
+     * Returns the androi dersion.
+ */
 
     public static String getAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
@@ -381,6 +409,10 @@ public final class UserAgentUtils {
         return returnDefaultIfMissing ? "4.0" : null;
     }
 
+    /**
+     * Returns the oper a nndroi dersion.
+ */
+
     public static String getOperaOnAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
         matcher = OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN.matcher(userAgent);
@@ -390,6 +422,10 @@ public final class UserAgentUtils {
             return matcher.group(1);
         }
     }
+
+    /**
+     * Returns the androi dodel.
+ */
 
     public static String getAndroidModel(String userAgent) {
         userAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
@@ -451,11 +487,19 @@ public final class UserAgentUtils {
         }
     }
 
+    /**
+     * Returns the u crowse rersion.
+ */
+
     public static String getUcBrowserVersion(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
         matcher = UC_BROWSER_MAJOR_VERSION_PATTERN.matcher(userAgent);
         return matcher.find() ? matcher.group(1) : null;
     }
+
+    /**
+     * Returns the u cndroi dersion.
+ */
 
     public static String getUcAndroidVersion(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
@@ -469,6 +513,10 @@ public final class UserAgentUtils {
 
         return returnDefaultIfMissing ? "4.0" : null;
     }
+
+    /**
+     * Returns the u cndroi dodel.
+ */
 
     public static String getUcAndroidModel(String userAgent, boolean returnDefaultIfMissing) {
         Matcher matcher;
@@ -491,6 +539,10 @@ public final class UserAgentUtils {
             return StringUtils.isEmpty(cleaned) ? null : cleaned;
         }
     }
+
+    /**
+     * Returns the window shon eersion.
+ */
 
     public static final String getWindowsPhoneVersion(String userAgent) {
         Matcher matcher;
@@ -518,6 +570,10 @@ public final class UserAgentUtils {
         }
     }
 
+    /**
+     * Returns the window shon eodel.
+ */
+
     public static final String getWindowsPhoneModel(String userAgent) {
         return cleanAndReplaceWindowsPhoneModel(userAgent, WINDOWS_PHONE_MODEL_PATTERN, WINDOWS_PHONE_EDGE_MODEL_PATTERN);
     }
@@ -537,6 +593,10 @@ public final class UserAgentUtils {
             return null;
         }
     }
+
+    /**
+     * Returns the window shon eeskto podel.
+ */
 
     public static final String getWindowsPhoneDesktopModel(String userAgent) {
         return cleanAndReplaceWindowsPhoneModel(userAgent, WINDOWS_PHONE_DESKTOP_MODEL_PATTERN, WINDOWS_PHONE_ARM_EDGE_MODEL_PATTERN);
@@ -566,6 +626,10 @@ public final class UserAgentUtils {
         }
     }
 
+    /**
+     * Returns whether this i sindow shon e dlient.
+ */
+
     public static boolean isWindowsPhoneAdClient(String userAgent) {
         return StringMatchUtils.startsWithAnyOf(userAgent, "Windows Phone Ad Client", "WindowsPhoneAdClient");
     }
@@ -573,6 +637,10 @@ public final class UserAgentUtils {
     public static boolean mobileKeywordsDetected(String userAgent) {
         return MOBILE_KEYWORDS_MATCHER.matchesAny(userAgent);
     }
+
+    /**
+     * Scree niz eetected.
+ */
 
     public static boolean screenSizeDetected(String userAgent) {
         return SCREEN_SIZE_PATTERN.matcher(userAgent).find();
@@ -582,6 +650,10 @@ public final class UserAgentUtils {
         return DESKTOP_BROWSER_MATCHER.matchesAny(userAgent);
     }
 
+    /**
+     * Returns whether this i smar t vrowser.
+ */
+
     public static boolean isSmartTvBrowser(String userAgent) {
         return SMART_TV_BROWSER_MATCHER.matchesAny(userAgent);
     }
@@ -590,6 +662,10 @@ public final class UserAgentUtils {
         return BOT_MATCHER.matchesAny(userAgent);
     }
 
+    /**
+     * Returns whether this i seskto pattern.
+ */
+
     public static boolean isDesktopPattern(String userAgent) {
         return DESKTOP_SAFARI_PATTERN.matcher(userAgent).matches();
     }
@@ -597,6 +673,10 @@ public final class UserAgentUtils {
     public static boolean isIEPattern(String userAgent) {
         return IE11_TRIDENT_PATTERN.matcher(userAgent).find() || MSIE_9_10_PATTERN.matcher(userAgent).find() || MSIE_LEGACY_PATTERN.matcher(userAgent).find();
     }
+
+    /**
+     * Creat ep ise rgent.
+ */
 
     public static String createApiUserAgent(WURFLEngine wurflEngine) {
         String wurflVersion;
@@ -619,6 +699,10 @@ public final class UserAgentUtils {
         return (new StringBuilder(ResourceUtils.getBuildId())).append("/WURFL_JAVA_API/1.9.1.0 WURFL/").append(snapshotVersion).append(" Java/").append(JAVA_VERSION).append(" ").append(OS_NAME).append("/").append(OS_VERSION).toString();
     }
 
+    /**
+     * Returns the mobil eeywords.
+ */
+
     public static List<String> getMobileKeywords() {
         return Collections.unmodifiableList(MOBILE_KEYWORDS);
     }
@@ -626,6 +710,10 @@ public final class UserAgentUtils {
     public static boolean hasIIsLoggingStyle(String userAgent) {
         return StringUtils.countMatches(userAgent, " ") == 0 && StringUtils.countMatches(userAgent, "+") > 2;
     }
+
+    /**
+     * Returns whether this i sa wr lncoded.
+ */
 
     public static boolean isRawUrlEncoded(String userAgent) {
         return StringUtils.countMatches(userAgent, "%") > 2;
@@ -655,6 +743,10 @@ public final class UserAgentUtils {
             return new UserAgentWithNeedleCount("", 0, 0, false);
         }
     }
+
+    /**
+     * Returns the asci irintabl etring.
+ */
 
     public static String getAsciiPrintableString(String userAgent) {
         if (userAgent == null) {

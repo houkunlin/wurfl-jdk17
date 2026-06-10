@@ -9,6 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+/**
+ * Implementation of User Agent Normalizer Chain.
+ */
+
 public class UserAgentNormalizerChain implements UserAgentNormalizer {
     private static final Logger log = LoggerFactory.getLogger(UserAgentNormalizerChain.class);
     private final List<UserAgentNormalizer> normalizers;
@@ -28,6 +32,10 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
         this(Arrays.asList(normalizers));
     }
 
+    /**
+     * Plu s opac en dar kncoded.
+     */
+
     private static String plusToSpaceAndMarkEncoded(String userAgent, WURFLRequest request) {
         if (request != null) {
             request.setUrlEncoded(true);
@@ -36,6 +44,10 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
         return userAgent.replace("+", " ");
     }
 
+    /**
+     * Add.
+ */
+
     public UserAgentNormalizerChain add(UserAgentNormalizer normalizer) {
         ArrayList<UserAgentNormalizer> newNormalizers = new ArrayList<>(this.normalizers);
         newNormalizers.add(normalizer);
@@ -43,6 +55,12 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
     }
 
     @Override
+/**
+ * Normalizes the given User-Agent string.
+ * @param userAgent the raw User-Agent string
+ * @return the normalized User-Agent string
+ */
+
     public String normalize(String rawUserAgent) {
         return normalize(rawUserAgent, null);
     }
@@ -61,12 +79,20 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
         return this.applyChain(userAgent);
     }
 
+    /**
+     * Appl yhain.
+ */
+
     private String applyChain(String userAgent) {
         for (Iterator<UserAgentNormalizer> iterator = this.normalizers.iterator(); iterator.hasNext(); userAgent = iterator.next().normalize(userAgent)) {
         }
 
         return userAgent;
     }
+
+    /**
+     * Ra wecod e feeded.
+ */
 
     private String rawDecodeIfNeeded(String userAgent, WURFLRequest request) {
         try {
@@ -80,6 +106,10 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
 
         return userAgent;
     }
+
+    /**
+     * Returns the al lormalizers.
+ */
 
     public List<UserAgentNormalizer> getAllNormalizers() {
         return Collections.unmodifiableList(this.normalizers);

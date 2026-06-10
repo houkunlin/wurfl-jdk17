@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+/**
+ * Provides LRU Map Cache functionality.
+ */
+
 public class LRUMapCacheProvider implements CacheProvider {
     private static final Logger log = LoggerFactory.getLogger(LRUMapCacheProvider.class);
     private final Map<String, InternalDevice> cache;
@@ -25,6 +29,10 @@ public class LRUMapCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Clears all cached data.
+ */
+
     public void clear() {
         log.info("cache: size {}", this.cache.size());
         this.cache.clear();
@@ -32,11 +40,19 @@ public class LRUMapCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public InternalDevice getDevice(String key) {
         return this.cache.get(key);
     }
 
     @Override
+/**
+ * Pu tevice.
+ */
+
     public void putDevice(String key, InternalDevice device) {
         this.cache.put(key, device);
     }

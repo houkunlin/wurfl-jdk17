@@ -11,6 +11,10 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * Implementation of Default Device.
+ */
+
 public class DefaultDevice implements EnrichedDevice, Serializable {
     @Serial
     private static final long serialVersionUID = 11L;
@@ -53,41 +57,73 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns the virtua lapabilities.
+ */
+
     public Map<String, String> getVirtualCapabilities() {
         return this.virtualCapabilityHandler.getAllVirtualCapabilities(this);
     }
 
     @Override
+/**
+ * Returns the virtua lapability.
+ */
+
     public String getVirtualCapability(String virtualCapabilityName) {
         return this.virtualCapabilityHandler.getVirtualCapability(virtualCapabilityName, this);
     }
 
     @Override
+/**
+ * Returns the virtua lapabilit y snt.
+ */
+
     public int getVirtualCapabilityAsInt(String virtualCapabilityName) {
         return this.virtualCapabilityHandler.getVirtualCapabilityAsInt(virtualCapabilityName, this);
     }
 
     @Override
+/**
+ * Returns the virtua lapabilit y sool.
+ */
+
     public boolean getVirtualCapabilityAsBool(String virtualCapabilityName) {
         return this.virtualCapabilityHandler.getVirtualCapabilityAsBool(virtualCapabilityName, this);
     }
 
     @Override
+/**
+ * Returns the matc hype.
+ */
+
     public MatchType getMatchType() {
         return this.matchType;
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return this.bucketMatcherName;
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return this.matcherName;
     }
 
     @Override
+/**
+ * Returns the mar kp.
+ */
+
     public MarkUp getMarkUp() {
         if (this.markUp == null) {
             this.markUp = this.markupResolver.getMarkupForDevice(this);
@@ -97,11 +133,19 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return "[" + this.getId() + ", match=" + this.getMatchType() + ']';
     }
 
     @Override
+/**
+ * Returns the capability.
+ */
+
     public String getCapability(String capabilityName) {
         try {
             return this.internalDevice.getCapability(capabilityName);
@@ -115,16 +159,28 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns the id.
+ */
+
     public String getId() {
         return this.internalDevice.getId();
     }
 
     @Override
+/**
+ * Returns the wurfluse rgent.
+ */
+
     public String getWURFLUserAgent() {
         return this.internalDevice.getWURFLUserAgent();
     }
 
     @Override
+/**
+ * Returns the capabilit y snt.
+ */
+
     public int getCapabilityAsInt(String capabilityName) {
         try {
             return this.internalDevice.getCapabilityAsInt(capabilityName);
@@ -138,6 +194,10 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns the capabilit y sool.
+ */
+
     public boolean getCapabilityAsBool(String capabilityName) {
         try {
             return this.internalDevice.getCapabilityAsBool(capabilityName);
@@ -151,16 +211,28 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns the capabilities.
+ */
+
     public Map<String, String> getCapabilities() {
         return this.internalDevice.getCapabilities();
     }
 
     @Override
+/**
+ * Returns whether this i sctua levic eoot.
+ */
+
     public boolean isActualDeviceRoot() {
         return this.internalDevice.isActualDeviceRoot();
     }
 
     @Override
+/**
+ * Returns the devic eoo td.
+ */
+
     public String getDeviceRootId() {
         return this.internalDevice.getDeviceRootId();
     }
@@ -170,6 +242,10 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns the normalize dse rgent.
+ */
+
     public String getNormalizedUserAgent() {
         return this.normalizedUserAgent;
     }

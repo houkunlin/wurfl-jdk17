@@ -9,6 +9,10 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A task that performs Periodic Update.
+ */
+
 public class PeriodicUpdateTask implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(PeriodicUpdateTask.class);
     private final LinkedList<UpdateResult> lastResults = new LinkedList<>();
@@ -24,11 +28,19 @@ public class PeriodicUpdateTask implements Runnable {
         this.wurflEngine = wurflEngine;
     }
 
+    /**
+     * Sets the patc haths.
+     */
+
     public void setPatchPaths(String[] patchPaths) {
         this.patchPaths = patchPaths;
     }
 
     @Override
+/**
+ * Executes this task.
+ */
+
     public void run() {
         log.info("WURFL periodic update started");
 
@@ -63,6 +75,10 @@ public class PeriodicUpdateTask implements Runnable {
             log.error("Unexpected exception performing periodic update", e);
         }
     }
+
+    /**
+     * Returns the las tesults.
+ */
 
     public List<UpdateResult> getLastResults() {
         return this.lastResults;

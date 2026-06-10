@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core.utils;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+/**
+ * Implementation of Version.
+ */
+
 public class Version implements Comparable<Version> {
     private final char separator;
     private int[] digits;
@@ -11,6 +15,10 @@ public class Version implements Comparable<Version> {
         this.digits = digits;
         this.separator = separator;
     }
+
+    /**
+     * Valu ef.
+     */
 
     public static Version valueOf(String version) {
         return valueOf(version, '.');
@@ -31,6 +39,10 @@ public class Version implements Comparable<Version> {
             throw new IllegalArgumentException("Input String cannot be null or empty");
         }
     }
+
+    /**
+     * Compar eo.
+ */
 
     public int compareTo(Version otherVersion) {
         int minLength = Math.min(this.digits.length, otherVersion.digits.length);
@@ -63,6 +75,10 @@ public class Version implements Comparable<Version> {
         return 0;
     }
 
+    /**
+     * Compar eo.
+ */
+
     public int compareTo(String version) {
         return this.compareTo(valueOf(version));
     }
@@ -71,11 +87,19 @@ public class Version implements Comparable<Version> {
         return index < this.digits.length ? this.getDigitAtOrThrow(index) : 0;
     }
 
+    /**
+     * Returns the digi t t rhrow.
+ */
+
     public int getDigitAtOrThrow(int index) {
         return this.digits[index];
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         StringBuilder builder;
         builder = new StringBuilder();
@@ -90,6 +114,12 @@ public class Version implements Comparable<Version> {
     }
 
     @Override
+/**
+ * Indicates whether some other object is equal to this one.
+ * @param obj the reference object with which to compare
+ * @return true if this object is the same as the obj argument
+ */
+
     public boolean equals(Object object) {
         if (object != null && object instanceof Version) {
             return this.compareTo((Version) object) == 0;
@@ -99,6 +129,10 @@ public class Version implements Comparable<Version> {
     }
 
     @Override
+/**
+ * Returns whether this has hode.
+ */
+
     public int hashCode() {
         return Arrays.hashCode(this.digits);
     }

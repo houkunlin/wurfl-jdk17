@@ -7,6 +7,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Bot devices and browsers.
+ */
+
 final class BotMatcher extends AbstractMatcher {
     private static final String GOOGLE_IMAGE_PROXY = "google_image_proxy";
 
@@ -15,6 +19,10 @@ final class BotMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -24,11 +32,19 @@ final class BotMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return request._internalIsBot();
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String normalizedUserAgent) {
         int matchLength = normalizedUserAgent.startsWith("Mozilla")
                 ? StringMatchUtils.firstCloseParenthesis(normalizedUserAgent)
@@ -39,21 +55,37 @@ final class BotMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Appl yonclusiv eatch.
+ */
+
     protected String applyConclusiveMatch(WURFLRequest request) {
         return request.getCleanedDeviceUserAgent().contains("GoogleImageProxy") ? GOOGLE_IMAGE_PROXY : super.applyConclusiveMatch(request);
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         return "generic_web_crawler";
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "BotMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Bot";
     }

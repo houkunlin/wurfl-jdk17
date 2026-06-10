@@ -6,11 +6,19 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Implementation of Device Name.
+ */
+
 public class DeviceName implements VirtualCapabilityEvaluator, Serializable {
     @Serial
     private static final long serialVersionUID = 6339082037173595673L;
 
     @Override
+/**
+ * Eval.
+ */
+
     public String eval(Device device, WURFLRequest request) {
         StringBuilder builder = new StringBuilder(device.getCapability("brand_name"));
         String namePart;
@@ -24,6 +32,10 @@ public class DeviceName implements VirtualCapabilityEvaluator, Serializable {
     }
 
     @Override
+/**
+ * Returns the handle dirtua lapabilit yame.
+ */
+
     public String getHandledVirtualCapabilityName() {
         return "device_name";
     }

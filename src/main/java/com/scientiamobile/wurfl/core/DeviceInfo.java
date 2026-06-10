@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core;
 
 import com.scientiamobile.wurfl.core.matchers.MatchType;
 
+/**
+ * Information about a matched device, including its ID and match details.
+ */
+
 public class DeviceInfo {
     private final String id;
     private final MatchType matchType;
@@ -19,6 +23,10 @@ public class DeviceInfo {
         this.originalUserAgent = originalUserAgent;
     }
 
+    /**
+     * Returns the id.
+     */
+
     public String getId() {
         return this.id;
     }
@@ -27,6 +35,10 @@ public class DeviceInfo {
         return this.matchType;
     }
 
+    /**
+     * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return this.matcherName;
     }
@@ -34,6 +46,10 @@ public class DeviceInfo {
     public String getBucketMatcherName() {
         return this.bucketMatcherName;
     }
+
+    /**
+     * Returns the normalize dse rgent.
+ */
 
     public String getNormalizedUserAgent() {
         return this.normalizedUserAgent;
@@ -44,6 +60,10 @@ public class DeviceInfo {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         StringBuilder builder;
         builder = new StringBuilder("{id='");

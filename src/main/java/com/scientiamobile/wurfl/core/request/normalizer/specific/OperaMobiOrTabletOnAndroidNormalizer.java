@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 
+/**
+ * Normalizes User-Agent strings for Opera Mobi Or Tablet On Android.
+ */
+
 public class OperaMobiOrTabletOnAndroidNormalizer implements UserAgentNormalizer {
     @Override
     public String normalize(String userAgent) {

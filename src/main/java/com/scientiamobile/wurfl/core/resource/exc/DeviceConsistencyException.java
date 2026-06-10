@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when device consistency occurs.
+ */
+
 public abstract class DeviceConsistencyException extends WURFLConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -18,6 +22,10 @@ public abstract class DeviceConsistencyException extends WURFLConsistencyExcepti
         super("Device: " + device.getID() + " consistency error");
         this.device = device;
     }
+
+    /**
+     * Returns the device.
+     */
 
     public ModelDevice getDevice() {
         return this.device;

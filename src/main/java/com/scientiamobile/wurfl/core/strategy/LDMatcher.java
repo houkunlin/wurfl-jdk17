@@ -4,12 +4,20 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
+/**
+ * Matcher implementation for identifying LD devices and browsers.
+ */
+
 public final class LDMatcher {
     public static final LDMatcher INSTANCE = new LDMatcher();
 
     private LDMatcher() {
         LoggerFactory.getLogger(LDMatcher.class);
     }
+
+    /**
+     * Returns the levenshtei nistance.
+     */
 
     public static int getLevenshteinDistance(String firstValue, String secondValue, int firstLength, int secondLength, int maxDistance, int prefixLength) {
         if (firstValue == null || secondValue == null) {
@@ -67,16 +75,32 @@ public final class LDMatcher {
         return previousRow[firstLength];
     }
 
+    /**
+     * Returns the name.
+ */
+
     public final String getName() {
         return "LD";
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
+/**
+ * Attempts to match the given request to a device.
+ * @param request the WURFL request
+ * @return device info for the matched device
+ */
+
     public final String match(Collection candidates, String value, int maxDistance) {
         return this.match(candidates, value, maxDistance, 0);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
+/**
+ * Attempts to match the given request to a device.
+ * @param request the WURFL request
+ * @return device info for the matched device
+ */
+
     public final String match(Collection candidates, String value, int maxDistance, int commonPrefixLength) {
         String bestMatch = null;
         int bestDistance = maxDistance + 1;
@@ -98,6 +122,10 @@ public final class LDMatcher {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return this.getName();
     }

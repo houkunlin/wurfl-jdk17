@@ -6,11 +6,19 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
+/**
+ * Implementation of Model Devices Patch Merger.
+ */
+
 final class ModelDevicesPatchMerger {
     private static final Logger LOG = LoggerFactory.getLogger(ModelDevicesPatchMerger.class);
 
     private ModelDevicesPatchMerger() {
     }
+
+    /**
+     * Merge.
+     */
 
     public static ModelDevices merge(ModelDevices baseDevices, ModelDevices patchDevices) {
         ModelDevices mergedDevices = new ModelDevices(baseDevices);
@@ -25,6 +33,10 @@ final class ModelDevicesPatchMerger {
         }
         return mergedDevices;
     }
+
+    /**
+     * Merg eatc hevice.
+ */
 
     private static ModelDevice mergePatchDevice(ModelDevice baseDevice, ModelDevice patchDevice) {
         if (patchDevice.getUserAgent() == null) {

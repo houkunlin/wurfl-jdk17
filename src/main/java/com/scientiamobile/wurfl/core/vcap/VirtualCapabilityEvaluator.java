@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core.vcap;
 import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
+/**
+ * Implementation of Virtual Capability Evaluator.
+ */
+
 public interface VirtualCapabilityEvaluator {
     String TRUE = "true";
     String FALSE = "false";

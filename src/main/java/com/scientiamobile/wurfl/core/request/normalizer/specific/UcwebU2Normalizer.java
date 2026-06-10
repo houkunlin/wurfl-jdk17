@@ -6,6 +6,10 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for Ucweb U2.
+ */
+
 public class UcwebU2Normalizer implements UserAgentNormalizer {
     public static final Pattern IPHONE = Pattern.compile("iPh OS (\\d)_?(\\d)?[ _\\d]?.+; iPh(\\d), ?(\\d)\\) U2");
     public static final Pattern WINDOWS_PHONE = Pattern.compile("^UCWEB.+; wds (\\d+)\\.([\\d]+);.+; ([ A-Za-z0-9_-]+); ([ A-Za-z0-9_-]+)\\) U2");
@@ -15,6 +19,12 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
     private static final Pattern NOKIA_RM_MODEL_PATTERN = Pattern.compile("(NOKIA.RM-.+?)_.*");
 
     @Override
+/**
+ * Normalizes the given User-Agent string.
+ * @param userAgent the raw User-Agent string
+ * @return the normalized User-Agent string
+ */
+
     public String normalize(String userAgent) {
         String ucBrowserVersion;
         ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, true);

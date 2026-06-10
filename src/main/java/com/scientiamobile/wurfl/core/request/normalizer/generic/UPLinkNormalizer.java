@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core.request.normalizer.generic;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import org.apache.commons.lang3.Validate;
 
+/**
+ * Normalizes User-Agent strings for UP Link.
+ */
+
 public class UPLinkNormalizer implements UserAgentNormalizer {
     @Override
     public String normalize(String userAgent) {

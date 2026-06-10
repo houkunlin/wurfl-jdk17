@@ -5,6 +5,10 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for Maemo.
+ */
+
 public class MaemoNormalizer implements UserAgentNormalizer {
     private static final Pattern MAEMO_BROWSER_MODEL_PATTERN = Pattern.compile("Maemo [bB]rowser [\\d\\.]+ (.+)");
 

@@ -1,5 +1,9 @@
 package com.scientiamobile.wurfl.core.utils;
 
+/**
+ * Implementation of User Agent With Needle Count.
+ */
+
 public class UserAgentWithNeedleCount {
     private String asciiPrintableUserAgent;
     private int plusCharCount;
@@ -13,6 +17,10 @@ public class UserAgentWithNeedleCount {
         this.hasSpaceChars = hasSpaceChars;
     }
 
+    /**
+     * Returns the asci irintabl ese rgent.
+     */
+
     public String getAsciiPrintableUserAgent() {
         return this.asciiPrintableUserAgent;
     }
@@ -20,6 +28,10 @@ public class UserAgentWithNeedleCount {
     public int getPlusCharCount() {
         return this.plusCharCount;
     }
+
+    /**
+     * Returns the percentag eha rount.
+ */
 
     public int getPercentageCharCount() {
         return this.percentageCharCount;

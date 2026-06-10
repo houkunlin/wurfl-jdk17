@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of App Name.
+ */
+
 public class AppName implements VirtualCapabilityEvaluator, Serializable {
     private static final List<String> APP_INDICATOR_KEYWORDS = new ArrayList<>();
     private static final List<String> APP_NAMES = new ArrayList<>();
@@ -202,6 +206,10 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
     }
 
     @Override
+/**
+ * Eval.
+ */
+
     public String eval(Device device, WURFLRequest request) {
         String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
 
@@ -232,6 +240,10 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
     }
 
     @Override
+/**
+ * Returns the handle dirtua lapabilit yame.
+ */
+
     public String getHandledVirtualCapabilityName() {
         return "advertised_app_name";
     }

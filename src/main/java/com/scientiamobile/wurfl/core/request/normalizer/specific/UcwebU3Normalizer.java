@@ -6,11 +6,21 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for Ucweb U3.
+ */
+
 public class UcwebU3Normalizer implements UserAgentNormalizer {
     public static final Pattern IPHONE = Pattern.compile("iPhone OS (\\d+)_(\\d+)(?:_\\d+)* like");
     public static final Pattern IPAD = Pattern.compile("CPU OS (\\d+)_(\\d+)?.+like Mac.+; iPad([0-9,]+)\\) AppleWebKit");
 
     @Override
+/**
+ * Normalizes the given User-Agent string.
+ * @param userAgent the raw User-Agent string
+ * @return the normalized User-Agent string
+ */
+
     public String normalize(String userAgent) {
         String ucBrowserVersion;
         ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, false);

@@ -15,6 +15,10 @@ import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * Implementation of Check Connection.
+ */
+
 public class CheckConnection {
     private static final Logger logger = LoggerFactory.getLogger(CheckConnection.class);
     private final List<CheckConnectionObserver> observers = new ArrayList<>();
@@ -27,6 +31,10 @@ public class CheckConnection {
         this.platformName = resolvePlatformName();
         this.enabled = ResourceUtils.getFullBuildId().startsWith("ch");
     }
+
+    /**
+     * Resolv elatfor mame.
+     */
 
     private static String resolvePlatformName() {
         if (StringUtils.isNotEmpty(System.getProperty("jboss.boot.library.list"))) {
@@ -48,6 +56,10 @@ public class CheckConnection {
         return "Command line";
     }
 
+    /**
+     * Appen dso nield.
+ */
+
     private static StringBuilder appendJsonField(StringBuilder builder, String key, String value, boolean hasMoreFields) {
         builder.append("\"").append(key).append("\": \"").append(value).append("\"");
         if (hasMoreFields) {
@@ -59,6 +71,10 @@ public class CheckConnection {
         return builder;
     }
 
+    /**
+     * Returns the hos tam e rnknown.
+ */
+
     private static String getHostNameOrUnknown() {
         try {
             return InetAddress.getLocalHost().getHostName();
@@ -66,6 +82,10 @@ public class CheckConnection {
             return "unknown";
         }
     }
+
+    /**
+     * Sets the up.
+ */
 
     public void setup(WURFLEngine wurflEngine, WURFLModel wurflModel) {
         if (!this.enabled || !(wurflModel instanceof DefaultWURFLModel defaultWURFLModel)) {
@@ -76,6 +96,10 @@ public class CheckConnection {
         this.payloadJson = buildPayload(wurflSmid, wurflVersion);
     }
 
+    /**
+     * Extrac tersio nnfo.
+ */
+
     private static String extractVersionInfo(WURFLEngine wurflEngine) {
         String wurflVersion = wurflEngine.getWURFLUtils().getVersion();
         int versionIndex = wurflVersion.indexOf("for WURFL");
@@ -85,6 +109,10 @@ public class CheckConnection {
         int versionEnd = wurflVersion.indexOf(";");
         return versionEnd != -1 ? wurflVersion.substring(versionIndex, versionEnd) : wurflVersion.substring(versionIndex);
     }
+
+    /**
+     * Buil dayload.
+ */
 
     private String buildPayload(String wurflSmid, String wurflVersion) {
         StringBuilder payloadBuilder = appendJsonField(
@@ -112,6 +140,10 @@ public class CheckConnection {
         return payloadBuilder.toString();
     }
 
+    /**
+     * Check.
+ */
+
     public void check() {
         if (this.enabled) {
             ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -124,6 +156,10 @@ public class CheckConnection {
 
         }
     }
+
+    /**
+     * Ad dbserver.
+ */
 
     public synchronized void addObserver(CheckConnectionObserver observer) {
         this.observers.add(observer);
@@ -142,11 +178,19 @@ public class CheckConnection {
         return this.payloadJson;
     }
 
+    /**
+     * Returns the ap iame.
+ */
+
     public String getApiName() {
         String classPath;
         classPath = System.getProperty("java.class.path");
         return classPath != null && classPath.contains("wurfl-scala") ? "WURFL_Scala_API" : "WURFL_Java_API";
     }
+
+    /**
+     * Implementation of Check Connection Observer.
+ */
 
     public interface CheckConnectionObserver {
         void update(CheckConnection checkConnection, Object argument);

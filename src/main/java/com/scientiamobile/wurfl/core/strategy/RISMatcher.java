@@ -6,12 +6,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ListIterator;
 
+/**
+ * Matcher implementation for identifying RIS devices and browsers.
+ */
+
 public final class RISMatcher {
     public static final RISMatcher INSTANCE = new RISMatcher();
 
     private RISMatcher() {
         LoggerFactory.getLogger(RISMatcher.class);
     }
+
+    /**
+     * Commo nrefi xength.
+     */
 
     private static int commonPrefixLength(String first, String second) {
         int shorter = Math.min(first.length(), second.length());
@@ -23,11 +31,21 @@ public final class RISMatcher {
         return shorter;
     }
 
+    /**
+     * Returns the name.
+ */
+
     public String getName() {
         return "RIS";
     }
 
     @SuppressWarnings({"unchecked"})
+/**
+ * Attempts to match the given request to a device.
+ * @param request the WURFL request
+ * @return device info for the matched device
+ */
+
     public String match(Collection<?> candidates, String value, int threshold) {
         int valueLength = value.length();
         ArrayList<String> candidatesList = (ArrayList<String>) candidates;
@@ -75,6 +93,10 @@ public final class RISMatcher {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return this.getName();
     }

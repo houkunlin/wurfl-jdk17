@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when user agent consistency occurs.
+ */
+
 public abstract class UserAgentConsistencyException extends DeviceConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -18,6 +22,10 @@ public abstract class UserAgentConsistencyException extends DeviceConsistencyExc
         super(device, "Device: " + device.getID() + " user-agent: " + userAgent + " consistency exception");
         this.userAgent = userAgent;
     }
+
+    /**
+     * Returns the use rgent.
+     */
 
     public String getUserAgent() {
         return this.userAgent;

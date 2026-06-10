@@ -18,6 +18,10 @@ import java.util.Map;
 
 import static com.scientiamobile.wurfl.core.Constants.USER_AGENT;
 
+/**
+ * Implementation of Default WURFL Request.
+ */
+
 public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     private static final String[] USER_AGENT_HEADERS = new String[]{"Device-Stock-UA", "X-OperaMini-Phone-UA", "X-UCBrowser-Device-UA", USER_AGENT};
     @Serial
@@ -110,6 +114,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         this.applyUcBrowserDeviceUserAgentOverrideIfNeeded();
     }
 
+    /**
+     * Returns the firs tvailabl ese rgent.
+     */
+
     private static String getFirstAvailableUserAgent(WURFLHeaderProvider headerProvider) {
         for (String header : USER_AGENT_HEADERS) {
             String headerValue = headerProvider.getHeader(header);
@@ -121,6 +129,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         return null;
     }
 
+    /**
+     * Returns the firs tvailabl ese rgent.
+ */
+
     private static String getFirstAvailableUserAgent(Map<String, String> headers) {
         for (String header : USER_AGENT_HEADERS) {
             String headerValue = headers.get(header);
@@ -131,6 +143,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
         return null;
     }
+
+    /**
+     * Truncat ese rgent.
+ */
 
     private static String truncateUserAgent(String userAgent) {
         return userAgent != null && userAgent.length() > 255 ? userAgent.substring(0, 255) : userAgent;
@@ -144,31 +160,55 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * Returns the devic ese rgent.
+ */
+
     public String getDeviceUserAgent() {
         return this.deviceUserAgent;
     }
 
     @Override
+/**
+ * Returns the cleane devic ese rgent.
+ */
+
     public String getCleanedDeviceUserAgent() {
         return this.cleanedDeviceUserAgent;
     }
 
     @Override
+/**
+ * Returns the normalize devic ese rgent.
+ */
+
     public String getNormalizedDeviceUserAgent() {
         return this.normalizedDeviceUserAgent;
     }
 
     @Override
+/**
+ * Returns the browse rse rgent.
+ */
+
     public String getBrowserUserAgent() {
         return this.browserUserAgent;
     }
 
     @Override
+/**
+ * Returns the origina lse rgent.
+ */
+
     public String getOriginalUserAgent() {
         return this.userAgentPriority == UserAgentPriority.OverrideSideloadedBrowserUserAgent ? this.getDeviceUserAgent() : this.getBrowserUserAgent();
     }
 
     @Override
+/**
+ * Normaliz ese rgent.
+ */
+
     public void normalizeUserAgent(UserAgentNormalizer normalizer) {
         if (normalizer == null) {
             this.normalizedDeviceUserAgent = this.cleanedDeviceUserAgent;
@@ -178,16 +218,28 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * Returns whether this i sr lncoded.
+ */
+
     public boolean isUrlEncoded() {
         return this.urlEncoded;
     }
 
     @Override
+/**
+ * Sets the ur lncoded.
+ */
+
     public void setUrlEncoded(boolean urlEncoded) {
         this.urlEncoded = urlEncoded;
     }
 
     @Override
+/**
+ * Perfor meneri cormalization.
+ */
+
     public void performGenericNormalization() {
         if (this.genericNormalizer != null) {
             this.cleanedDeviceUserAgent = this.genericNormalizer.normalize(this.getOriginalUserAgent());
@@ -196,26 +248,46 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * Returns the use rgen trofile.
+ */
+
     public String getUserAgentProfile() {
         return this.userAgentProfile;
     }
 
     @Override
+/**
+ * Returns the header.
+ */
+
     public String getHeader(String headerName) {
         return this.headers.get(headerName);
     }
 
     @Override
+/**
+ * Returns the headers.
+ */
+
     public Map<String, String> getHeaders() {
         return Collections.unmodifiableMap(this.headers);
     }
 
     @Override
+/**
+ * Returns the engin earget.
+ */
+
     public EngineTarget getEngineTarget() {
         return this.engineTarget;
     }
 
     @Override
+/**
+ * _interna l sobil erowser.
+ */
+
     public boolean _internalIsMobileBrowser() {
         if (this.cachedIsMobileBrowser == null) {
             if (this._internalIsDesktopBrowser()) {
@@ -230,6 +302,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         return this.cachedIsMobileBrowser;
     }
 
+    /**
+     * Mobil eeyword setected.
+ */
+
     public boolean mobileKeywordsDetected() {
         if (this.cachedMobileKeywordsDetected == null) {
             this.cachedMobileKeywordsDetected = UserAgentUtils.mobileKeywordsDetected(this.cleanedDeviceUserAgent);
@@ -237,6 +313,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
         return this.cachedMobileKeywordsDetected;
     }
+
+    /**
+     * Scree niz eetected.
+ */
 
     public boolean screenSizeDetected() {
         if (this.cachedScreenSizeDetected == null) {
@@ -247,6 +327,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * _interna l seskto prowser.
+ */
+
     public boolean _internalIsDesktopBrowser() {
         if (this.cachedIsDesktopBrowser == null) {
             this.cachedIsDesktopBrowser = UserAgentUtils.isDesktopBrowser(this.cleanedDeviceUserAgent);
@@ -256,6 +340,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * _interna l smar t vrowser.
+ */
+
     public boolean _internalIsSmartTvBrowser() {
         if (this.cachedIsSmartTvBrowser == null) {
             this.cachedIsSmartTvBrowser = UserAgentUtils.isSmartTvBrowser(this.cleanedDeviceUserAgent);
@@ -265,6 +353,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * _interna l sot.
+ */
+
     public boolean _internalIsBot() {
         if (this.cachedIsBot == null) {
             this.cachedIsBot = UserAgentUtils.isBot(this.getOriginalUserAgent());
@@ -274,6 +366,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * _interna l seskto prowse reav yut ynalysis.
+ */
+
     public boolean _internalIsDesktopBrowserHeavyDutyAnalysis() {
         if (this.cachedIsDesktopBrowserHeavyDutyAnalysis != null) {
             return this.cachedIsDesktopBrowserHeavyDutyAnalysis;
@@ -307,12 +403,20 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         return cacheDesktopHeavyDuty(UserAgentUtils.isIEPattern(ua));
     }
 
+    /**
+     * Cach eeskto peav yuty.
+ */
+
     private boolean cacheDesktopHeavyDuty(boolean value) {
         this.cachedIsDesktopBrowserHeavyDutyAnalysis = value;
         return value;
     }
 
     @Override
+/**
+ * _interna l smai llient.
+ */
+
     public boolean _internalIsEmailClient() {
         if (this.cachedIsEmailClient == null) {
             this.cachedIsEmailClient = StringMatchUtils.containsAnyOf(this.cleanedDeviceUserAgent, EmailClientUserAgentMatcher.EMAIL_CLIENTS.toArray(new String[0]));
@@ -322,6 +426,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * Returns whether this has hode.
+ */
+
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(35, 79);
         hashCodeBuilder.append(this.getClass()).append(this.deviceUserAgent).append(this.userAgentProfile).toHashCode();
@@ -329,6 +437,12 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * Indicates whether some other object is equal to this one.
+ * @param obj the reference object with which to compare
+ * @return true if this object is the same as the obj argument
+ */
+
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -340,6 +454,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return "[userAgent: " + this.getOriginalUserAgent() + ", userAgentProfile: " + this.userAgentProfile + "]";
     }

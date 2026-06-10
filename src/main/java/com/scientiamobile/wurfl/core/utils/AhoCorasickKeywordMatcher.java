@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core.utils;
 
 import java.util.*;
 
+/**
+ * Matcher implementation for identifying Aho Corasick Keyword devices and browsers.
+ */
+
 public final class AhoCorasickKeywordMatcher {
     private final int[] failStateByState;
     private final boolean[] terminalByState;
@@ -44,6 +48,10 @@ public final class AhoCorasickKeywordMatcher {
         }
     }
 
+    /**
+     * Buil dailur einks.
+     */
+
     private static List<AcTrieNode> buildFailureLinks(AcTrieNode root) {
         List<AcTrieNode> nodes = new ArrayList<>();
         root.setFail(root);
@@ -79,6 +87,12 @@ public final class AhoCorasickKeywordMatcher {
 
     private static final int KEYWORD_FOUND = -1;
 
+    /**
+     * Checks whether the input contains any of the registered keywords.
+     * @param input the input string to check
+     * @return true if any keyword is found
+ */
+
     public boolean matchesAny(String input) {
         char[] chars = input.toLowerCase(Locale.ENGLISH).toCharArray();
         int state = 0;
@@ -91,6 +105,10 @@ public final class AhoCorasickKeywordMatcher {
         }
         return false;
     }
+
+    /**
+     * Advanc etate.
+ */
 
     private int advanceState(char c, int state) {
         while (true) {

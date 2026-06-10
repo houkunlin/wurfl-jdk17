@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when redefined device occurs.
+ */
+
 public class RedefinedDeviceException extends WURFLConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;

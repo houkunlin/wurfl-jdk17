@@ -16,6 +16,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Implementation of Matcher Manager.
+ */
+
 public final class MatcherManager {
     private static final Logger log = LoggerFactory.getLogger(MatcherManager.class);
     private MatcherChain matcherChain;
@@ -33,6 +37,10 @@ public final class MatcherManager {
     public MatcherManager(WURFLModel model) {
         this.matcherChain = this.buildMatcherChain(model);
     }
+
+    /**
+     * Buil datche rhain.
+     */
 
     private MatcherChain buildMatcherChain(WURFLModel model) {
         MatcherChain matcherChain = new MatcherChain();
@@ -153,6 +161,10 @@ public final class MatcherManager {
         return matcherChain;
     }
 
+    /**
+     * Reloa dodel.
+ */
+
     public final void reloadModel(WURFLModel model) {
         log.info("reloading the model");
         if (model == null) {
@@ -161,6 +173,10 @@ public final class MatcherManager {
             this.matcherChain = this.buildMatcherChain(model);
         }
     }
+
+    /**
+     * Matc hequest.
+ */
 
     public final DeviceInfo matchRequest(WURFLRequest request) {
         return this.matcherChain.match(request);

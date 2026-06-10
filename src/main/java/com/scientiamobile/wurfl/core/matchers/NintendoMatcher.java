@@ -7,12 +7,20 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Nintendo devices and browsers.
+ */
+
 final class NintendoMatcher extends MatcherBase {
     public NintendoMatcher(WURFLModel wurflModel) {
         super(wurflModel);
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add("nintendo_wii_u_ver1");
@@ -26,6 +34,10 @@ final class NintendoMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         if (request._internalIsDesktopBrowser()) {
@@ -38,6 +50,10 @@ final class NintendoMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yonclusiv eatch.
+ */
+
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("New Nintendo 3DS")) {
@@ -58,11 +74,19 @@ final class NintendoMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "NintendoMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Nintendo";
     }

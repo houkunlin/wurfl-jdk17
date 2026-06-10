@@ -11,6 +11,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Fennec On Android devices and browsers.
+ */
+
 final class FennecOnAndroidMatcher extends MatcherBase {
     private static final Pattern VERSION_PREFIX = Pattern.compile("^.+?\\(.+?rv:\\d+(\\.)");
     private static final String GENERIC_ANDROID_FENNEC_2 = "generic_android_ver2_0_fennec";
@@ -21,6 +25,10 @@ final class FennecOnAndroidMatcher extends MatcherBase {
     }    private Set<String> requiredDeviceIds = this.getRequiredDeviceIds();
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         if (this.requiredDeviceIds != null) {
             return this.requiredDeviceIds;
@@ -55,12 +63,20 @@ final class FennecOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Fennec", "Firefox");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String normalizedUserAgent) {
         Matcher versionPrefixMatcher = VERSION_PREFIX.matcher(normalizedUserAgent);
         int matchLength;
@@ -71,6 +87,10 @@ final class FennecOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceId = null;
         int androidMajorVersion = 0;
@@ -98,11 +118,19 @@ final class FennecOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "FennecOnAndroidMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "FennecOnAndroid";
     }

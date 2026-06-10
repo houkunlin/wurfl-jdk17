@@ -10,6 +10,10 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Implementation of Update Pipeline.
+ */
+
 public class UpdatePipeline {
     public static final String ENV_SCIENTIA_URL = "WURFL_UPDATE_URL";
     public static final String CLASSPATH_PREFIX = "classpath:";
@@ -58,6 +62,10 @@ public class UpdatePipeline {
         }
     }
 
+    /**
+     * Returns the connectio nimeou t s refault.
+     */
+
     public static Integer getConnectionTimeoutMsOrDefault(Map<String, Object> context) {
         String timeoutValue;
         timeoutValue = (String) context.get("CONN_TIMEOUT");
@@ -93,6 +101,10 @@ public class UpdatePipeline {
         }
     }
 
+    /**
+     * Sets the ap ise rgent.
+ */
+
     public void setApiUserAgent(String apiUserAgent) {
         this.apiUserAgent = apiUserAgent;
     }
@@ -100,6 +112,11 @@ public class UpdatePipeline {
     public void setConnectionTimeoutMs(Integer connectionTimeoutMs) {
         this.connectionTimeoutMs = connectionTimeoutMs;
     }
+
+    /**
+     * Executes this operation with the given context.
+     * @param context the execution context map
+ */
 
     public synchronized UpdateResult execute() {
         Map<String, Object> context = this.context;

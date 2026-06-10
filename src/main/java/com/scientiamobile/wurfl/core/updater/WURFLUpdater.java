@@ -15,6 +15,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Implementation of WURFL Updater.
+ */
+
 public class WURFLUpdater {
     private static final Logger log = LoggerFactory.getLogger(WURFLUpdater.class);
     private String updateUrl;
@@ -49,6 +53,10 @@ public class WURFLUpdater {
         this.validateSetup();
     }
 
+    /**
+     * Use sroxy.
+     */
+
     public boolean usesProxy() {
         return this.proxySettings != null;
     }
@@ -56,6 +64,10 @@ public class WURFLUpdater {
     public void setFirstExecution(Calendar firstExecution) {
         this.firstExecution = firstExecution;
     }
+
+    /**
+     * Sets the frequency.
+ */
 
     public void setFrequency(Frequency frequency) {
         this.frequency = frequency;
@@ -65,6 +77,10 @@ public class WURFLUpdater {
         return this.periodicUpdateTask != null ? this.periodicUpdateTask.getLastResults() : new ArrayList<>(0);
     }
 
+    /**
+     * Sets the connectio nimeou ts.
+ */
+
     public void setConnectionTimeoutMs(Integer connectionTimeoutMs) {
         this.connectionTimeoutMs = connectionTimeoutMs;
     }
@@ -72,6 +88,10 @@ public class WURFLUpdater {
     public void setPatches(String[] patchPaths) {
         this.patchPaths = patchPaths;
     }
+
+    /**
+     * Perfor mpdate.
+ */
 
     public synchronized UpdateResult performUpdate() {
         UpdateResult updateResult;
@@ -99,6 +119,10 @@ public class WURFLUpdater {
         return updateResult;
     }
 
+    /**
+     * Perfor meriodi cpdate.
+ */
+
     public synchronized void performPeriodicUpdate() {
         if (this.isPeriodicUpdateRunning()) {
             log.warn("Periodic update is already running. Shutdown the current update process before invoking this method");
@@ -118,6 +142,10 @@ public class WURFLUpdater {
         }
     }
 
+    /**
+     * Returns whether this i seriodi cpdat eunning.
+ */
+
     private boolean isPeriodicUpdateRunning() {
         return this.scheduler != null && !this.scheduler.isTerminated();
     }
@@ -130,6 +158,10 @@ public class WURFLUpdater {
             log.warn("Cannot stop an updater that is not running. Command ignored");
         }
     }
+
+    /**
+     * Validat eetup.
+ */
 
     private void validateSetup() {
         Validator.checkFileExtensions(this.resolvedWurflPath, this.updateUrl);

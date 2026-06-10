@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core.exc;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when capability not defined occurs.
+ */
+
 public class CapabilityNotDefinedException extends WURFLRuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -15,6 +19,10 @@ public class CapabilityNotDefinedException extends WURFLRuntimeException {
         super("Capability: " + capabilityName + " - " + message);
         this.capabilityName = capabilityName;
     }
+
+    /**
+     * Returns the capabilit yame.
+     */
 
     public String getCapabilityName() {
         return this.capabilityName;

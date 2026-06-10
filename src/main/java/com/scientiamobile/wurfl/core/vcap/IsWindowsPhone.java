@@ -6,16 +6,28 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Implementation of Is Windows Phone.
+ */
+
 public class IsWindowsPhone implements VirtualCapabilityEvaluator, Serializable {
     @Serial
     private static final long serialVersionUID = 7780353517392752318L;
 
     @Override
+/**
+ * Eval.
+ */
+
     public String eval(Device device, WURFLRequest request) {
         return Boolean.toString("Windows Phone OS".equals(device.getCapability("device_os")));
     }
 
     @Override
+/**
+ * Returns the handle dirtua lapabilit yame.
+ */
+
     public String getHandledVirtualCapabilityName() {
         return "is_windows_phone";
     }

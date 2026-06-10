@@ -8,6 +8,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Maemo devices and browsers.
+ */
+
 final class MaemoMatcher extends MatcherBase {
     private static final String GENERIC_OPERA_MOBI_MAEMO = "generic_opera_mobi_maemo";
     private static final String NOKIA_GENERIC_MAEMO_WITH_FIREFOX = "nokia_generic_maemo_with_firefox";
@@ -18,6 +22,10 @@ final class MaemoMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -28,11 +36,19 @@ final class MaemoMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return request.getCleanedDeviceUserAgent().contains("Maemo");
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent;
         normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
@@ -44,6 +60,10 @@ final class MaemoMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String normalizedUserAgent) {
         int matchLength;
         matchLength = normalizedUserAgent.indexOf("---");
@@ -53,11 +73,19 @@ final class MaemoMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "MaemoMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Maemo";
     }

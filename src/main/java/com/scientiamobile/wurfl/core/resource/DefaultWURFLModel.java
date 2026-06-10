@@ -15,6 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+/**
+ * Implementation of Default WURFL Model.
+ */
+
 public class DefaultWURFLModel implements WURFLModel {
     private static final Logger log = LoggerFactory.getLogger(DefaultWURFLModel.class);
     private final Map<String, String> deviceIdToAncestorIdCache;
@@ -38,6 +42,10 @@ public class DefaultWURFLModel implements WURFLModel {
         this.loadFromRootResource(rootResource, patchResources, includedCapabilities);
     }
 
+    /**
+     * Sets the ancestors.
+     */
+
     private static void setAncestors(ModelDevices devices) {
         if (devices != null) {
             for (ModelDevice device : devices.getDevices()) {
@@ -48,6 +56,10 @@ public class DefaultWURFLModel implements WURFLModel {
 
         }
     }
+
+    /**
+     * Loa dro moo tesource.
+ */
 
     private final synchronized void loadFromRootResource(WURFLResource rootResource, WURFLResources patchResources, String... includedCapabilities) {
         Validate.notNull(rootResource, "The root resource must be not null.");
@@ -71,6 +83,10 @@ public class DefaultWURFLModel implements WURFLModel {
         }
 
     }
+
+    /**
+     * Appl yatche sn debuild.
+ */
 
     private final synchronized void applyPatchesAndRebuild(WURFLResources patchResources, ModelDevices devices, String... includedCapabilities) {
         int genericDevicesCount = 0;
@@ -118,11 +134,19 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the version.
+ */
+
     public String getVersion() {
         return this.version;
     }
 
     @Override
+/**
+ * Returns the devic e yd.
+ */
+
     public ModelDevice getDeviceById(String deviceId) {
         Validate.notEmpty(deviceId, "The id must be not null");
         ModelDevice device = this.devicesById.get(deviceId);
@@ -134,6 +158,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the devices.
+ */
+
     public Set<ModelDevice> getDevices(Set<String> deviceIds) {
         Validate.notNull(deviceIds, "The devicesIds must be not null Set");
         Validate.noNullElements(deviceIds, "The devicesIds must not containing null elements");
@@ -146,6 +174,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the al levices.
+ */
+
     public Set<ModelDevice> getAllDevices() {
         TreeSet<ModelDevice> devices = new TreeSet<>(ModelDeviceUserAgentComparator.INSTANCE);
         devices.addAll(this.devicesById.values());
@@ -153,6 +185,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the al levice s sist.
+ */
+
     public List<ModelDevice> getAllDevicesAsList() {
         ArrayList<ModelDevice> devices = new ArrayList<>(this.deviceIdsByInsertionOrder.size());
         for (String id : this.deviceIdsByInsertionOrder) {
@@ -163,6 +199,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the al levice sd.
+ */
+
     public Set<String> getAllDevicesId() {
         HashSet<String> deviceIds = new HashSet<>();
         deviceIds.addAll(this.devicesById.keySet());
@@ -170,6 +210,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the devic eierarchy.
+ */
+
     public List<ModelDevice> getDeviceHierarchy(ModelDevice device) {
         Validate.notNull(device, "The device must be not null");
 
@@ -183,6 +227,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the devic eallback.
+ */
+
     public ModelDevice getDeviceFallback(ModelDevice device) {
         Validate.notNull(device, "The device must be not null");
 
@@ -195,6 +243,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the devic encestor.
+ */
+
     public ModelDevice getDeviceAncestor(ModelDevice device) {
         Validate.notNull(device, "The device must be not null");
         String deviceId = device.getID();
@@ -220,28 +272,48 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns whether this i sevic eefined.
+ */
+
     public boolean isDeviceDefined(String deviceId) {
         Validate.notEmpty(deviceId, "The deviceId must be not null");
         return this.devicesById.containsKey(deviceId);
     }
 
     @Override
+/**
+ * Size.
+ */
+
     public int size() {
         return this.devicesById.size();
     }
 
     @Override
+/**
+ * Returns the al lroups.
+ */
+
     public Set<String> getAllGroups() {
         return this.getGenericDevice().getGroups();
     }
 
     @Override
+/**
+ * Returns whether this i srou pefined.
+ */
+
     public boolean isGroupDefined(String groupId) {
         Validate.notEmpty(groupId, "The groupId must be not null");
         return this.getGenericDevice().defineGroup(groupId);
     }
 
     @Override
+/**
+ * Returns the grou p yapability.
+ */
+
     public String getGroupByCapability(String capabilityName) {
         Validate.notEmpty(capabilityName, "The capabilityName must be not null");
         ModelDevice genericDevice = this.getGenericDevice();
@@ -253,23 +325,39 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Reload.
+ */
+
     public void reload(WURFLResource rootResource, WURFLResources patchResources, String... includedCapabilities) {
         log.info("about to reload the WURFL Model");
         this.loadFromRootResource(rootResource, patchResources, includedCapabilities);
     }
 
     @Override
+/**
+ * Appl yatches.
+ */
+
     public void applyPatches(WURFLResources patchResources, String... includedCapabilities) {
         this.applyPatchesAndRebuild(patchResources, new ModelDevices(this.devicesById), includedCapabilities);
     }
 
     @Override
+/**
+ * Returns the al lapabilities.
+ */
+
     public Set<String> getAllCapabilities() {
         ModelDevice genericDevice = this.getGenericDevice();
         return new HashSet<>(genericDevice.getCapabilities().keySet());
     }
 
     @Override
+/**
+ * Returns the capabilit yount.
+ */
+
     public Integer getCapabilityCount() {
         if (this.capabilityCount == null || this.capabilityCount == 0) {
             this.capabilityCount = this.getAllCapabilities().size();
@@ -279,12 +367,20 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns whether this i sapabilit yefined.
+ */
+
     public boolean isCapabilityDefined(String capabilityName) {
         Validate.notEmpty(capabilityName, "The capability must be not null");
         return this.getGenericDevice().defineCapability(capabilityName);
     }
 
     @Override
+/**
+ * Returns the capabilitie so rroup.
+ */
+
     public Set<String> getCapabilitiesForGroup(String groupId) {
         Validate.notEmpty(groupId, "The groupId must be not null");
         ModelDevice genericDevice = this.getGenericDevice();
@@ -296,6 +392,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the devic eher eapabilit y sefined.
+ */
+
     public ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice rootDevice, String capabilityName) {
         Validate.notNull(rootDevice, "The rootDevice must be not null");
         Validate.notEmpty(capabilityName, "The name must be not null");
@@ -315,6 +415,10 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns the roo tevice sds.
+ */
+
     public Set<String> getRootDevicesIds() {
         HashSet<String> rootDeviceIds = new HashSet<>();
 
@@ -326,6 +430,10 @@ public class DefaultWURFLModel implements WURFLModel {
 
         return rootDeviceIds;
     }
+
+    /**
+     * Returns the generi cevice.
+ */
 
     private ModelDevice getGenericDevice() {
         if (this.genericDevice != null) {
@@ -343,12 +451,20 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         ToStringBuilder out;
         out = new ToStringBuilder(this);
         out.append(this.version);
         return out.toString();
     }
+
+    /**
+     * Returns the smid.
+ */
 
     public String getSmid() {
         return smid;

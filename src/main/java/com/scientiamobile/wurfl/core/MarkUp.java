@@ -1,5 +1,9 @@
 package com.scientiamobile.wurfl.core;
 
+/**
+ * Implementation of Mark Up.
+ */
+
 public final class MarkUp {
     public static final MarkUp WML = new MarkUp("WML", -1);
     public static final MarkUp CHTML = new MarkUp("CHTML", 0);
@@ -14,6 +18,10 @@ public final class MarkUp {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return this.name;
     }

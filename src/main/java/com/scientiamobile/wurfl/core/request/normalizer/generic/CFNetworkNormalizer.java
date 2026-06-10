@@ -7,6 +7,10 @@ import java.math.RoundingMode;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for CF Network.
+ */
+
 public class CFNetworkNormalizer implements UserAgentNormalizer {
     private static final Pattern CFNETWORK_VERSION_PATTERN = Pattern.compile("CFNetwork/(\\d+\\.?[0-9]*)");
 

@@ -8,6 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Samsung devices and browsers.
+ */
+
 final class SamsungMatcher extends MatcherBase {
     private static final String SAMSUNG = "Samsung";
     private static final String[] LEADING_SLASH_PREFIXES = new String[]{"SEC-", "SAMSUNG-", "SCH"};
@@ -19,6 +23,10 @@ final class SamsungMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add("generic");
@@ -26,6 +34,10 @@ final class SamsungMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         if (request.getOriginalUserAgent().contains("SamsungBrowser")) {
             return false;
@@ -37,6 +49,10 @@ final class SamsungMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         int matchLength;
         if (StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SLASH_PREFIXES)) {
@@ -53,6 +69,10 @@ final class SamsungMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         int samsungIndex = StringMatchUtils.indexOf(normalizedUserAgent, SAMSUNG);
@@ -62,11 +82,19 @@ final class SamsungMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "SamsungMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return SAMSUNG;
     }

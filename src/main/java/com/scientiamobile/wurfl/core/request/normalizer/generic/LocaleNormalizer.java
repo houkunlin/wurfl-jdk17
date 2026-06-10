@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for Locale.
+ */
+
 public class LocaleNormalizer implements UserAgentNormalizer {
     private static final Pattern LOCALE_PATTERN = Pattern.compile("; ?[a-z]{2}(?:-r?[a-zA-Z]{2})?(?:\\.utf8|\\.big5)?\\b-?(?!:)");
 

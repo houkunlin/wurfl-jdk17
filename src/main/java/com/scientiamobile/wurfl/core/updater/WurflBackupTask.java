@@ -7,6 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * A task that performs Wurfl Backup.
+ */
+
 public class WurflBackupTask implements UpdatePipelineTask {
     public void execute(Map<String, Object> context) {
         String originalWurflPath = (String) context.get("original_wurfl_path");

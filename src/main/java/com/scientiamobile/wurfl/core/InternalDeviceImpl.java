@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Implementation of Internal Device  Implementation.
+ */
+
 class InternalDeviceImpl implements InternalDevice, Serializable {
     @Serial
     private static final long serialVersionUID = 101L;
@@ -36,16 +40,28 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns the id.
+ */
+
     public String getId() {
         return this.id;
     }
 
     @Override
+/**
+ * Returns the wurfluse rgent.
+ */
+
     public String getWURFLUserAgent() {
         return this.wurflUserAgent;
     }
 
     @Override
+/**
+ * Returns the capability.
+ */
+
     public String getCapability(String capabilityName) {
         return this.capabilitiesHolder.getCapability(capabilityName);
     }
@@ -55,11 +71,19 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns the capabilit y snt.
+ */
+
     public int getCapabilityAsInt(String capabilityName) {
         return this.capabilitiesHolder.getCapabilityAsInt(capabilityName);
     }
 
     @Override
+/**
+ * Returns the capabilit y sool.
+ */
+
     public boolean getCapabilityAsBool(String capabilityName) {
         String originalCapabilityName = capabilityName;
         capabilityName = this.capabilitiesHolder.getCapability(capabilityName);
@@ -74,6 +98,10 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
 
     @Override
+/**
+ * Returns the capabilities.
+ */
+
     public Map<String, String> getCapabilities() {
         Map<String, String> allCapabilities = this.capabilitiesHolder.getCapabilities();
         HashMap<String, String> filteredCapabilities = new HashMap<>(allCapabilities.size());
@@ -90,11 +118,19 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns whether this i sctua levic eoot.
+ */
+
     public boolean isActualDeviceRoot() {
         return this.actualDeviceRoot;
     }
 
     @Override
+/**
+ * Returns the devic eoo td.
+ */
+
     public String getDeviceRootId() {
         String rootId = this.deviceRootId;
         if (this.deviceRootId.equals("generic")) {
@@ -105,6 +141,12 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     }
 
     @Override
+/**
+ * Indicates whether some other object is equal to this one.
+ * @param obj the reference object with which to compare
+ * @return true if this object is the same as the obj argument
+ */
+
     public boolean equals(Object other) {
         EqualsBuilder eb;
         eb = new EqualsBuilder();
@@ -117,11 +159,19 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     }
 
     @Override
+/**
+ * Returns whether this has hode.
+ */
+
     public int hashCode() {
         return (new HashCodeBuilder(63, 89)).append(this.getClass()).append(this.id).toHashCode();
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return "[" + this.id + ", match=, matcher=]";
     }

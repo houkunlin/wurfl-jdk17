@@ -7,12 +7,20 @@ import org.slf4j.LoggerFactory;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Implementation of Markup Resolver  Implementation.
+ */
+
 class MarkupResolverImpl implements MarkupResolver, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(MarkupResolverImpl.class);
 
     @Override
+/**
+ * Returns the marku po revice.
+ */
+
     public MarkUp getMarkupForDevice(InternalDevice device) {
         String xhtmlSupportLevel;
         String preferredMarkup;

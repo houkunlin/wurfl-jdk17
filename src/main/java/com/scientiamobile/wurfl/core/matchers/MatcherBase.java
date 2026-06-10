@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 
+/**
+ * Matcher implementation for identifying  devices and browsers.
+ */
+
 abstract class MatcherBase extends AbstractMatcher {
     protected MatcherBase() {
         super();

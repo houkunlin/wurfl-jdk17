@@ -9,6 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * A task that performs Cleanup.
+ */
+
 public class CleanupTask implements UpdatePipelineTask {
     private static final Logger log = LoggerFactory.getLogger(CleanupTask.class);
 

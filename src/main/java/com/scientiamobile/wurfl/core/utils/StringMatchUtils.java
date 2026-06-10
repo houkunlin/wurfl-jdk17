@@ -12,6 +12,10 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of String Match Utils.
+ */
+
 public final class StringMatchUtils {
     public static final String NULL_STRING;
     public static final String EMPTY_STRING = "";
@@ -25,6 +29,10 @@ public final class StringMatchUtils {
     private StringMatchUtils() {
     }
 
+    /**
+     * Firs tlash.
+     */
+
     public static int firstSlash(String value) {
         return ordinalIndexOfOrNotFound(value, "/", 1);
     }
@@ -33,6 +41,10 @@ public final class StringMatchUtils {
         return ordinalIndexOfOrNotFound(value, "/", 2);
     }
 
+    /**
+     * Firs tlos earenthesis.
+ */
+
     public static int firstCloseParenthesis(String value) {
         return ordinalIndexOfOrNotFound(value, ")", 1);
     }
@@ -40,6 +52,10 @@ public final class StringMatchUtils {
     public static int firstOpenParenthesis(String value) {
         return ordinalIndexOfOrNotFound(value, "(", 1);
     }
+
+    /**
+     * Firs tpace.
+ */
 
     public static int firstSpace(String value) {
         return ordinalIndexOfOrNotFound(value, " ", 1);
@@ -55,6 +71,10 @@ public final class StringMatchUtils {
         }
     }
 
+    /**
+     * Firs tem iolon.
+ */
+
     public static int firstSemiColon(String value) {
         return ordinalIndexOfOrLength(value, ";", 1);
     }
@@ -63,6 +83,10 @@ public final class StringMatchUtils {
         return indexOfOrLength(value, search, 0);
     }
 
+    /**
+     * Inde x f rength.
+ */
+
     public static int indexOfOrLength(String value, String search, int fromIndex) {
         return ordinalIndexOfOrLength(value, search, 1, fromIndex);
     }
@@ -70,6 +94,10 @@ public final class StringMatchUtils {
     public static int ordinalIndexOfOrLength(String value, String search, int ordinal) {
         return ordinalIndexOfOrLength(value, search, ordinal, 0);
     }
+
+    /**
+     * Ordina lnde x f rength.
+ */
 
     public static int ordinalIndexOfOrLength(String value, String search, int ordinal, int fromIndex) {
         String nonNullValue = StringUtils.defaultString(value);
@@ -88,6 +116,10 @@ public final class StringMatchUtils {
         }
     }
 
+    /**
+     * Ri satch.
+ */
+
     public static String risMatch(Collection<String> userAgents, String userAgent, int userAgentLength) {
         return RISMatcher.INSTANCE.match(userAgents, userAgent, userAgentLength);
     }
@@ -103,6 +135,10 @@ public final class StringMatchUtils {
         return out.toString();
     }
 
+    /**
+     * Inde xf.
+ */
+
     public static int indexOf(String value, String search) {
         return value != null && search != null ? value.indexOf(search) : -1;
     }
@@ -111,11 +147,19 @@ public final class StringMatchUtils {
         return value != null && search != null ? value.indexOf(search, fromIndex) : -1;
     }
 
+    /**
+     * Remov eubstrin gefore.
+ */
+
     public static String removeSubstringBefore(String value, String search) {
         int index;
         index = value.indexOf(search);
         return index > 0 ? value.substring(index) : value;
     }
+
+    /**
+     * Contain sn yf.
+ */
 
     public static boolean containsAnyOf(String value, String... searches) {
         for (String s : searches) {
@@ -126,6 +170,10 @@ public final class StringMatchUtils {
 
         return false;
     }
+
+    /**
+     * Contain sn y fgnor ease.
+ */
 
     public static boolean containsAnyOfIgnoreCase(String value, String... searches) {
         return containsAnyOf(value.toLowerCase(Locale.ENGLISH), searches);
@@ -141,6 +189,10 @@ public final class StringMatchUtils {
         return false;
     }
 
+    /**
+     * Inde x fn y rength.
+ */
+
     public static int indexOfAnyOrLength(String value, String... searches) {
         return indexOfAnyOrLength(value, searches, 0);
     }
@@ -155,6 +207,10 @@ public final class StringMatchUtils {
         }
     }
 
+    /**
+     * Contain sl lf.
+ */
+
     public static boolean containsAllOf(String value, String... searches) {
         for (String s : searches) {
             if (value.indexOf(s) == -1) {
@@ -164,6 +220,10 @@ public final class StringMatchUtils {
 
         return true;
     }
+
+    /**
+     * Contain sl lf.
+ */
 
     public static boolean containsAllOf(String value, List<String> searches) {
         for (String s : searches) {
@@ -175,6 +235,10 @@ public final class StringMatchUtils {
         return true;
     }
 
+    /**
+     * Format.
+ */
+
     public static String format(Set<String> lines) {
         StringBuilder out = new StringBuilder(64);
 
@@ -185,6 +249,10 @@ public final class StringMatchUtils {
         return out.toString();
     }
 
+    /**
+     * Rtrim.
+ */
+
     public static String rtrim(String value, char... trims) {
         int length;
         for (length = value.length(); length > 0 && ArrayUtils.contains(trims, value.charAt(length - 1)); --length) {
@@ -193,11 +261,19 @@ public final class StringMatchUtils {
         return value.substring(0, length);
     }
 
+    /**
+     * Firs thar.
+ */
+
     public static Integer firstChar(String value, char ch) {
         int index;
         index = value.indexOf(ch);
         return index != -1 ? index + 1 : -1;
     }
+
+    /**
+     * Rawdecode.
+ */
 
     public static String rawdecode(String value, String encoding) {
         if (StringUtils.isEmpty(value)) {
@@ -236,6 +312,10 @@ public final class StringMatchUtils {
         }
     }
 
+    /**
+     * Writ ehar.
+ */
+
     private static void writeChar(ByteArrayOutputStream buffer, String value, int index, String encoding) {
         char ch = value.charAt(index);
         String stringValue = new String(new char[]{ch});
@@ -247,6 +327,10 @@ public final class StringMatchUtils {
         }
     }
 
+    /**
+     * Cha r oyte stfcustom.
+ */
+
     public static byte[] charToBytesUTFCustom(char ch) {
         byte[] out;
         out = new byte[2];
@@ -254,6 +338,10 @@ public final class StringMatchUtils {
         out[1] = (byte) ch;
         return out;
     }
+
+    /**
+     * Rawdecode.
+ */
 
     public static String rawdecode(String value) {
         return rawdecode(value, "UTF-8");

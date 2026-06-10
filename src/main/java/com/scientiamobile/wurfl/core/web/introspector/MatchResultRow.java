@@ -1,5 +1,9 @@
 package com.scientiamobile.wurfl.core.web.introspector;
 
+/**
+ * A single row in the bucket match results, containing matcher info and User-Agent strings.
+ */
+
 final class MatchResultRow implements Comparable<MatchResultRow> {
     private final String matcherName;
     private final String deviceId;
@@ -14,6 +18,10 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         String matcherNameWithoutSuffix = this.matcherName;
         int matcherSuffixIndex;
@@ -24,6 +32,10 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
 
         return matcherNameWithoutSuffix + "\t" + this.deviceId + "\t" + this.normalizedUserAgent + "\t" + this.originalUserAgent;
     }
+
+    /**
+     * Compar eo.
+     */
 
     public final int compareTo(MatchResultRow other) {
         int c = this.matcherName.compareTo(other.matcherName);

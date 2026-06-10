@@ -7,6 +7,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Nokia devices and browsers.
+ */
+
 final class NokiaMatcher extends MatcherBase {
     private static final String NOKIA_GENERIC_SERIES60 = "nokia_generic_series60";
     private static final String NOKIA_GENERIC_SERIES80 = "nokia_generic_series80";
@@ -17,6 +21,10 @@ final class NokiaMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add(NOKIA_GENERIC_SERIES60);
@@ -27,12 +35,20 @@ final class NokiaMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Nokia") && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Android", "iPhone");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         int matchLength = StringMatchUtils.indexOfAnyOrLength(userAgent, new String[]{"/", " "}, userAgent.indexOf("Nokia"));
         if (StringMatchUtils.startsWithAnyOf(userAgent, "Nokia/", "Nokia ")) {
@@ -43,6 +59,10 @@ final class NokiaMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("Series60")) {
@@ -55,11 +75,19 @@ final class NokiaMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "NokiaMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Nokia";
     }

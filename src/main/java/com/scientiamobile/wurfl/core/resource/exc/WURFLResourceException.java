@@ -5,6 +5,10 @@ import com.scientiamobile.wurfl.core.resource.WURFLResource;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when wurfl resource occurs.
+ */
+
 public class WURFLResourceException extends WURFLRuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,6 +33,10 @@ public class WURFLResourceException extends WURFLRuntimeException {
         super(message, cause);
         this.resource = resource;
     }
+
+    /**
+     * Returns the resource.
+     */
 
     public WURFLResource getResource() {
         return this.resource;

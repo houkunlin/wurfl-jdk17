@@ -8,6 +8,10 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Firefox OS devices and browsers.
+ */
+
 final class FirefoxOSMatcher extends MatcherBase {
     private static final String FALLBACK_TABLET = "firefox_os_ver1_3_tablet";
     private static final String FALLBACK_GENERIC = "generic_firefox_os";
@@ -48,6 +52,10 @@ final class FirefoxOSMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICES);
         requiredDeviceIds.add(FALLBACK_TABLET);
@@ -56,18 +64,30 @@ final class FirefoxOSMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return cleanedDeviceUserAgent.contains("Firefox/") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Mobile", "Tablet");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         Matcher rvPrefixMatcher = VERSION_RV_PREFIX.matcher(userAgent);
         return rvPrefixMatcher.find() ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, rvPrefixMatcher.end(1)) : null;
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         String firefoxOsVersion = "1.0";
@@ -90,11 +110,19 @@ final class FirefoxOSMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "FirefoxOSMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "FirefoxOS";
     }

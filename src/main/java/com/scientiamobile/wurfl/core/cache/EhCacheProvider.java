@@ -6,6 +6,10 @@ import net.sf.ehcache.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Provides Eh Cache functionality.
+ */
+
 public class EhCacheProvider implements CacheProvider {
     private static final Logger log = LoggerFactory.getLogger(EhCacheProvider.class);
     private Cache cache;
@@ -21,6 +25,10 @@ public class EhCacheProvider implements CacheProvider {
         this(ehCacheManager.getDefaultCache());
     }
 
+    /**
+     * Returns the cache.
+     */
+
     public Cache getCache() {
         return this.cache;
     }
@@ -30,6 +38,10 @@ public class EhCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Clears all cached data.
+ */
+
     public void clear() {
         log.info("Cache size: {}", this.cache.getSize());
         this.cache.removeAll();
@@ -37,6 +49,10 @@ public class EhCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public InternalDevice getDevice(String key) {
         Element element = this.cache.get(key);
         InternalDevice device = null;
@@ -48,10 +64,18 @@ public class EhCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Pu tevice.
+ */
+
     public void putDevice(String key, InternalDevice device) {
         Element element = new Element(key, device);
         this.cache.put(element);
     }
+
+    /**
+     * Returns the interna levic ero mevic ed.
+ */
 
     public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
         return null;

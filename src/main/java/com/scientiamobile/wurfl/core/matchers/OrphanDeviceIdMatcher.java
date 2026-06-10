@@ -6,17 +6,29 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Orphan Device Id devices and browsers.
+ */
+
 public class OrphanDeviceIdMatcher extends MatcherBase {
     public OrphanDeviceIdMatcher(WURFLModel wurflModel) {
         super(wurflModel);
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return false;
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add("opwv_v6_generic");

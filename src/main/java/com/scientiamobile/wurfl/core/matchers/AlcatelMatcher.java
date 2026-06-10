@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 import java.util.Locale;
 
+/**
+ * Matcher implementation for identifying Alcatel devices and browsers.
+ */
+
 final class AlcatelMatcher extends MatcherBase {
     @Override
     public boolean canHandle(WURFLRequest request) {
@@ -11,11 +15,19 @@ final class AlcatelMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "AlcatelMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Alcatel";
     }

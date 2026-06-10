@@ -4,6 +4,10 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * Implementation of Ac Trie Node.
+ */
+
 final class AcTrieNode {
     private AcTrieNode fail;
     private final boolean keywordEnd;
@@ -18,6 +22,12 @@ final class AcTrieNode {
         this.fail = null;
         this.transitions = new TreeMap<>();
     }
+
+    /**
+     * Adds a keyword pattern to the Aho-Corasick trie.
+     *
+     * @param pattern the keyword pattern to add
+     */
 
     public void addPattern(String pattern) {
         AcTrieNode current = this;
@@ -37,6 +47,10 @@ final class AcTrieNode {
         }
     }
 
+    /**
+     * Returns the outgoin gap.
+ */
+
     public SortedMap<Character, AcTrieNode> getOutgoingMap() {
         return this.transitions;
     }
@@ -45,6 +59,10 @@ final class AcTrieNode {
         return this.keywordEnd;
     }
 
+    /**
+     * Returns the next.
+ */
+
     public AcTrieNode getNext(char c) {
         return this.transitions.get(c);
     }
@@ -52,6 +70,10 @@ final class AcTrieNode {
     public Set<Character> getNextChars() {
         return this.transitions.keySet();
     }
+
+    /**
+     * Returns the fail.
+ */
 
     public AcTrieNode getFail() {
         return this.fail;

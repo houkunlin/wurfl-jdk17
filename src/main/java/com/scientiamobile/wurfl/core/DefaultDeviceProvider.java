@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
+/**
+ * Provides Default Device functionality.
+ */
+
 class DefaultDeviceProvider implements DeviceProvider {
     private static boolean assertionsDisabled = !DefaultDeviceProvider.class.desiredAssertionStatus();
     private final MarkupResolver markupResolver;
@@ -51,6 +55,10 @@ class DefaultDeviceProvider implements DeviceProvider {
     }
 
     @Override
+/**
+ * Returns the interna levice.
+ */
+
     public InternalDevice getInternalDevice(String deviceId) {
         Validate.notNull(deviceId, "The deviceId must be not null");
         ModelDeviceWithAncestorId deviceWithAncestorId = this.getModelDeviceWithAncestorId(deviceId);
@@ -64,11 +72,19 @@ class DefaultDeviceProvider implements DeviceProvider {
     }
 
     @Override
+/**
+ * Buil device.
+ */
+
     public Device buildDevice(InternalDevice internalDevice, String userAgent, MatchType matchType, String matcherName, String bucketMatcherName) {
         return this.buildDevice(internalDevice, (WURFLRequest) (new DefaultWURFLRequest(userAgent, (UserAgentNormalizer) null, UserAgentPriority.OverrideSideloadedBrowserUserAgent, EngineTarget.fastDesktopBrowserMatch)), matchType, matcherName, bucketMatcherName);
     }
 
     @Override
+/**
+ * Buil device.
+ */
+
     public Device buildDevice(InternalDevice internalDevice, WURFLRequest request, MatchType matchType, String matcherName, String bucketMatcherName) {
         Validate.notNull(internalDevice, "The internal device must be not null");
         String deviceId;
@@ -81,6 +97,10 @@ class DefaultDeviceProvider implements DeviceProvider {
             return new DefaultDevice(internalDevice, this.markupResolver, matchType, matcherName, bucketMatcherName, request.getNormalizedDeviceUserAgent(), new VirtualCapabilityHandler(request));
         }
     }
+
+    /**
+     * Returns the mode levic eit hncesto rd.
+     */
 
     private ModelDeviceWithAncestorId getModelDeviceWithAncestorId(String deviceId) {
         ModelDevice modelDevice = this.wurflModel.getDeviceById(deviceId);

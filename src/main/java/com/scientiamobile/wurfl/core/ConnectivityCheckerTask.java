@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * A task that performs Connectivity Checker.
+ */
+
 final class ConnectivityCheckerTask implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(ConnectivityCheckerTask.class);
     private CheckConnection checkConnection;
@@ -18,6 +22,10 @@ final class ConnectivityCheckerTask implements Runnable {
     }
 
     @Override
+/**
+ * Executes this task.
+ */
+
     public void run() {
         try {
             HttpsURLConnection connection = createConnection();
@@ -36,6 +44,10 @@ final class ConnectivityCheckerTask implements Runnable {
         }
     }
 
+    /**
+     * Creat eonnection.
+     */
+
     private static HttpsURLConnection createConnection() throws IOException {
         URL url = URI.create("https://core.scientiamobile.com/api/v2/checkconnectivity/update").toURL();
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -48,6 +60,10 @@ final class ConnectivityCheckerTask implements Runnable {
         connection.setRequestProperty("Content-Type", "application/json");
         return connection;
     }
+
+    /**
+     * Sen dayload.
+ */
 
     private static void sendPayload(HttpsURLConnection connection, byte[] payloadBytes) throws IOException {
         connection.setRequestProperty("Content-Length", String.valueOf(payloadBytes.length));

@@ -5,6 +5,10 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 import java.util.Map;
 
+/**
+ * Implementation of WURFL Request.
+ */
+
 public interface WURFLRequest {
     String getDeviceUserAgent();
 

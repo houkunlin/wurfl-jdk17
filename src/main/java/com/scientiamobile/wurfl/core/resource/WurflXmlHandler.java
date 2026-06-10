@@ -10,6 +10,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Handler for Wurfl Xml operations.
+ */
+
 final class WurflXmlHandler extends DefaultHandler {
     private final Map<String, ModelDevice> actualDeviceRootsById;
     private int parseState;
@@ -38,11 +42,19 @@ final class WurflXmlHandler extends DefaultHandler {
         this.parseState = WurflXmlParseState.START_DOCUMENT;
     }
 
+    /**
+     * Star tocument.
+     */
+
     public final void startDocument() {
         this.seenUserAgents = new HashSet<>();
         this.seenDeviceIds = new HashSet<>();
         this.devices = new ModelDevices();
     }
+
+    /**
+     * En document.
+ */
 
     public final void endDocument() {
     }
@@ -161,6 +173,10 @@ final class WurflXmlHandler extends DefaultHandler {
         }
     }
 
+    /**
+     * En dlement.
+ */
+
     public final void endElement(String uri, String localName, String qName) {
         switch (this.parseState) {
             case WurflXmlParseState.WURFL:
@@ -226,6 +242,10 @@ final class WurflXmlHandler extends DefaultHandler {
         }
 
     }
+
+    /**
+     * Characters.
+ */
 
     public final void characters(char[] ch, int start, int length) {
         switch (this.parseState) {

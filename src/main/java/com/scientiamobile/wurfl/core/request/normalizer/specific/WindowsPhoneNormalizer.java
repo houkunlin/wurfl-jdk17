@@ -7,11 +7,21 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for Windows Phone.
+ */
+
 public class WindowsPhoneNormalizer implements UserAgentNormalizer {
     private static final Pattern WINDOWS_PHONE_AD_CLIENT_MODEL_PATTERN = Pattern.compile("Windows ?Phone ?Ad ?Client/[0-9\\.]+ ?\\(.+; ?Windows ?Phone(?: ?OS)? ?[0-9\\.]+; ?([^;\\)]+(; ?[^;\\)]+)?)");
     private static final Pattern WINDOWS_PHONE_APP_UA_PATTERN = Pattern.compile("^[^/]+/[0-9\\.-_]+ Windows Phone/([\\d\\.]+) (.+)$");
 
     @Override
+/**
+ * Normalizes the given User-Agent string.
+ * @param userAgent the raw User-Agent string
+ * @return the normalized User-Agent string
+ */
+
     public String normalize(String userAgent) {
         String windowsPhoneModel = null;
         String windowsPhoneVersion = null;

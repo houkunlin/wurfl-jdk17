@@ -1,5 +1,9 @@
 package com.scientiamobile.wurfl.core.resource;
 
+/**
+ * Implementation of Wurfl Xml Parse State.
+ */
+
 final class WurflXmlParseState {
     static final int START_DOCUMENT = 1;
     static final int WURFL = 2;

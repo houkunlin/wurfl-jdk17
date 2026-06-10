@@ -9,6 +9,10 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Apple devices and browsers.
+ */
+
 final class AppleMatcher extends AbstractMatcher {
     private static final String COREMEDIA_DEVICE_ID = "apple_iphone_coremedia_ver1";
     private static final String DEFAULT_IPHONE_DEVICE_ID = "apple_iphone_ver1";
@@ -523,6 +527,10 @@ final class AppleMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(SUPPORTED_DEVICE_IDS);
@@ -532,12 +540,20 @@ final class AppleMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, APPLE_DEVICE_KEYWORDS) && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Symbian", "Nintendo");
     }
 
     @Override
+/**
+ * Appl yonclusiv eatch.
+ */
+
     protected String applyConclusiveMatch(WURFLRequest request) {
         String userAgent = request.getNormalizedDeviceUserAgent();
         String subHw = null;
@@ -584,6 +600,10 @@ final class AppleMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String userAgent = request.getNormalizedDeviceUserAgent();
         Matcher versionMatcher = IOS_MAJOR_VERSION_PATTERN.matcher(userAgent);
@@ -613,11 +633,19 @@ final class AppleMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "AppleMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Apple";
     }

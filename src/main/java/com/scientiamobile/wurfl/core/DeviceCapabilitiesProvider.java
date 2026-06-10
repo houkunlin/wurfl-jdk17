@@ -9,6 +9,10 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides Device Capabilities functionality.
+ */
+
 class DeviceCapabilitiesProvider implements CapabilitiesProvider {
     private static final Logger log = LoggerFactory.getLogger(DeviceCapabilitiesProvider.class);
     private final WURFLModel wurflModel;
@@ -20,6 +24,10 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
     }
 
     @Override
+/**
+ * Returns the al lapabilities.
+ */
+
     public Map<String, String> getAllCapabilities() {
         HashMap<String, String> capabilities = new HashMap<>(this.wurflModel.getAllCapabilities().size());
 
@@ -37,6 +45,10 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
     }
 
     @Override
+/**
+ * Returns the capability.
+ */
+
     public String getCapability(Map<String, String> capabilities, String capabilityName) {
         Map<String, String> capabilitiesMap = capabilities;
         String capabilityValue = capabilitiesMap.get(capabilityName);

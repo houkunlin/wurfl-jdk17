@@ -9,6 +9,10 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Opera Mobi Or Tablet On Android devices and browsers.
+ */
+
 final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
     private static final String GENERIC_ANDROID_VER2_0_OPERA_MOBI = "generic_android_ver2_0_opera_mobi";
     private static final String GENERIC_ANDROID_VER2_1_OPERA_TABLET = "generic_android_ver2_1_opera_tablet";
@@ -41,17 +45,29 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         return new HashSet<>(SUPPORTED_ANDROID_OPERA_DEVICE_IDS);
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Opera Tablet", "Opera Mobi");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         int matchLength;
         matchLength = (matchLength = userAgent.indexOf("---")) == -1 ? userAgent.length() : matchLength + 3;
@@ -59,6 +75,10 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         boolean isOperaTablet = normalizedUserAgent.contains("Opera Tablet");
@@ -72,11 +92,19 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "OperaMobiOrTabletOnAndroidMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "OperaMobiOrTabletOnAndroid";
     }

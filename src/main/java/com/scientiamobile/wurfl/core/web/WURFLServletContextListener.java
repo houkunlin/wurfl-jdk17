@@ -17,12 +17,20 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * Implementation of WURFL Servlet Context Listener.
+ */
+
 public class WURFLServletContextListener implements WurflWebConstants, ServletContextListener {
     private String engineKeyAttributeName;
 
     public WURFLServletContextListener() {
         this.engineKeyAttributeName = WURFL_ENGINE_KEY;
     }
+
+    /**
+     * Resolv eesourc eri.
+     */
 
     private static URI resolveResourceUri(ServletContext servletContext, String resourcePath) {
         try {
@@ -42,6 +50,10 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
     }
 
     @Override
+/**
+ * Contex tnitialized.
+ */
+
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
         resolveEngineKey(servletContext);
@@ -58,6 +70,10 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
         servletContext.setAttribute(this.engineKeyAttributeName, wurflEngine);
     }
 
+    /**
+     * Resolv engin eey.
+ */
+
     private void resolveEngineKey(ServletContext servletContext) {
         String wurflEngineKey = servletContext.getInitParameter("wurflEngineKey");
         if (!StringUtils.isEmpty(wurflEngineKey)) {
@@ -65,10 +81,18 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
         }
     }
 
+    /**
+     * Creat em lesource.
+ */
+
     private static XMLResource createXmlResource(ServletContext servletContext, String path) {
         URI uri = resolveResourceUri(servletContext, path);
         return uri != null ? new XMLResource(uri) : new XMLResource(path);
     }
+
+    /**
+     * Creat eatc hesources.
+ */
 
     private static WURFLResources createPatchResources(ServletContext servletContext, String[] patchPaths) {
         WURFLResources resources = new WURFLResources();
@@ -79,6 +103,10 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
         }
         return resources;
     }
+
+    /**
+     * Configur eapabilit yilter.
+ */
 
     private static void configureCapabilityFilter(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
         String filterValue = servletContext.getInitParameter("capability-filter");
@@ -94,6 +122,10 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
         wurflEngine.setCapabilityFilter(capabilityFilter);
     }
 
+    /**
+     * Configur engin earget.
+ */
+
     private static void configureEngineTarget(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
         String value = servletContext.getInitParameter("wurflEngineTarget");
         if (value == null) {
@@ -107,6 +139,10 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
                             + EngineTarget.performance + " (default) and " + EngineTarget.accuracy, e);
         }
     }
+
+    /**
+     * Configur ese rgen triority.
+ */
 
     private static void configureUserAgentPriority(ServletContext servletContext, GeneralWURFLEngine wurflEngine) {
         String value = servletContext.getInitParameter("wurflUserAgentPriority");
@@ -122,6 +158,10 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
                             + UserAgentPriority.UsePlainUserAgent, e);
         }
     }
+
+    /**
+     * Contex testroyed.
+ */
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         servletContextEvent.getServletContext().removeAttribute(this.engineKeyAttributeName);

@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
+/**
+ * Normalizes User-Agent strings for Chrome.
+ */
+
 public class ChromeNormalizer implements UserAgentNormalizer {
     @Override
     public String normalize(String userAgent) {

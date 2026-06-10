@@ -23,6 +23,10 @@ import java.io.Serial;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of Introspector Servlet.
+ */
+
 public class IntrospectorServlet extends HttpServlet implements WurflWebConstants {
     public static final String ESCAPED_SPLIT_CHAR = "\\|";
     public static final String SPLIT_CHAR = "|";
@@ -74,6 +78,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
 
     private final transient ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Sets the wurflengine.
+     */
+
     public static void setWURFLEngine(WURFLEngine wurflEngine) {
         IntrospectorServlet.wurflEngine = wurflEngine;
     }
@@ -93,17 +101,29 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     }
 
     @Override
+/**
+ * Init.
+ */
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         this.getServletContext().getServerInfo();
     }
 
     @Override
+/**
+ * D oet.
+ */
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.doPost(request, response);
     }
 
     @Override
+/**
+ * D oost.
+ */
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String action = request.getParameter(ACTION);
         response.setContentType("text/plain");
@@ -126,6 +146,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         out.flush();
     }
 
+    /**
+     * Writ enf oesponse.
+ */
+
     private void writeInfoResponse(PrintWriter out) {
         if (wurflEngine == null) {
             writeMissingEngineError(out);
@@ -144,6 +168,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         String json = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody);
         out.println(json);
     }
+
+    /**
+     * Writ euckets.
+ */
 
     private void writeBuckets(PrintWriter out) {
         if (wurflEngine == null) {
@@ -165,6 +193,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             log.debug("{} - {}", e.getClass().getSimpleName(), e.getMessage());
         }
     }
+
+    /**
+     * Ru nucke tatching.
+ */
 
     private static List<String> runBucketMatching(WURFLModel wurflModel, WURFLService wurflService) {
         if (wurflModel == null || wurflService == null) {
@@ -190,6 +222,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         return resultLines;
     }
 
+    /**
+     * Collec tse rgents.
+ */
+
     private static ArrayList<String> collectUserAgents(WURFLModel wurflModel) {
         Set<ModelDevice> allDevices = wurflModel.getAllDevices();
         ArrayList<String> userAgents = new ArrayList<>(allDevices.size());
@@ -200,6 +236,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         }
         return userAgents;
     }
+
+    /**
+     * Matc hse rgents.
+ */
 
     private static ArrayList<MatchResultRow> matchUserAgents(ArrayList<String> userAgents, MatcherManager matcherManager) {
         ArrayList<MatchResultRow> matchResults = new ArrayList<>(userAgents.size());
@@ -218,6 +258,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         log.info("BUCKETS (1/3): finished matching. Took {} ms", System.currentTimeMillis() - start);
         return matchResults;
     }
+
+    /**
+     * Handl eequest.
+ */
 
     private void handleRequest(HttpServletRequest request, PrintWriter out) {
         if (wurflEngine == null) {
@@ -243,6 +287,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         out.println(json);
     }
 
+    /**
+     * Resolv e arofile.
+ */
+
     private static String resolveUaProfile(HttpServletRequest request) {
         String uaProfile = request.getParameter(UAPROF_PARAMNAME);
         if (uaProfile != null && !uaProfile.trim().isEmpty()) {
@@ -254,6 +302,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         }
         return request.getHeader(X_WAP_PROFILE);
     }
+
+    /**
+     * Buil deade rnl yequest.
+ */
 
     private static HeaderOnlyHttpServletRequest buildHeaderOnlyRequest(HttpServletRequest request) {
         HeaderOnlyHttpServletRequest headerOnlyRequest = new HeaderOnlyHttpServletRequest();
@@ -269,6 +321,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         return headerOnlyRequest;
     }
 
+    /**
+     * Cop yl leaders.
+ */
+
     private static void copyAllHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
         HashMap<String, String> headers = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
@@ -278,6 +334,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         }
         headerOnlyRequest.addHeaders(headers);
     }
+
+    /**
+     * Ad dor meaders.
+ */
 
     private static void addFormHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
         String userAgent = resolveFormUserAgent(request);
@@ -290,6 +350,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         }
     }
 
+    /**
+     * Resolv eor mse rgent.
+ */
+
     private static String resolveFormUserAgent(HttpServletRequest request) {
         String userAgent = request.getParameter("ua");
         if (userAgent != null && !userAgent.trim().isEmpty()) {
@@ -297,6 +361,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         }
         return request.getHeader(USER_AGENT);
     }
+
+    /**
+     * Ad deade rairs.
+ */
 
     private static void addHeaderPairs(String rawHeaders, HeaderOnlyHttpServletRequest headerOnlyRequest) {
         String[] headerPairs = LINE_BREAK_PATTERN.matcher(rawHeaders).replaceAll("|").split("\\|");
@@ -310,6 +378,10 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             }
         }
     }
+
+    /**
+     * Pars eapabilities.
+ */
 
     private static String[] parseCapabilities(String rawCapabilities) {
         if (rawCapabilities == null || rawCapabilities.trim().isEmpty()) {

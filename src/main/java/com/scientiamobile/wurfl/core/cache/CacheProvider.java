@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core.cache;
 
 import com.scientiamobile.wurfl.core.InternalDevice;
 
+/**
+ * Provides Cache functionality.
+ */
+
 public interface CacheProvider {
 
     InternalDevice getDevice(String deviceId);

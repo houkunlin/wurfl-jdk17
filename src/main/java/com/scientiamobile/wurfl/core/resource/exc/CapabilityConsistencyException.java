@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when capability consistency occurs.
+ */
+
 public abstract class CapabilityConsistencyException extends DeviceConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -18,6 +22,10 @@ public abstract class CapabilityConsistencyException extends DeviceConsistencyEx
         super(device, message);
         this.capabilityName = capabilityName;
     }
+
+    /**
+     * Returns the capability.
+     */
 
     public String getCapability() {
         return this.capabilityName;

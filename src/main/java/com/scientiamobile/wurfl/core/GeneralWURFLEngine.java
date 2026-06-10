@@ -18,6 +18,10 @@ import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * Implementation of General WURFL Engine.
+ */
+
 public class GeneralWURFLEngine implements WURFLEngine {
     private static final Logger log = LoggerFactory.getLogger(GeneralWURFLEngine.class);
     private static final List<String> ALWAYS_INCLUDED_CAPABILITIES = Arrays.asList("device_os", "device_os_version", "is_tablet", "is_wireless_device", "pointing_method", "preferred_markup", "resolution_height", "resolution_width", "ux_full_desktop", "xhtml_support_level", "is_smarttv", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "mobile_browser_version");
@@ -70,10 +74,18 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.patchResources = patchResources;
     }
 
+    /**
+     * Creat em lesource.
+     */
+
     private static WURFLResource createXmlResource(String path) {
         Validate.notEmpty(path, "The path is null");
         return new XMLResource(path);
     }
+
+    /**
+     * Creat em lesources.
+ */
 
     private static WURFLResources createXmlResources(String[] paths) {
         WURFLResources resources = new WURFLResources();
@@ -86,12 +98,20 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Reload.
+ */
+
     public void reload(String rootPath) {
         WURFLResource wurflResource = createXmlResource(rootPath);
         this.reload(wurflResource, (WURFLResources) null);
     }
 
     @Override
+/**
+ * Appl yatches.
+ */
+
     public void applyPatches(String... patchPaths) {
         if (patchPaths == null) {
             log.warn("null patches, do nothing...");
@@ -101,11 +121,19 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Appl yatches.
+ */
+
     public void applyPatches(WURFLResource... patchResources) {
         this.applyPatches(new WURFLResources(patchResources));
     }
 
     @Override
+/**
+ * Appl yatches.
+ */
+
     public void applyPatches(WURFLResources patchResources) {
         if (patchResources == null) {
             log.warn("null patches, do nothing...");
@@ -123,6 +151,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Reload.
+ */
+
     public void reload(String rootPath, String[] patchPaths) {
         WURFLResource wurflResource = createXmlResource(rootPath);
         WURFLResources wurflResources = createXmlResources(patchPaths);
@@ -130,11 +162,19 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Reload.
+ */
+
     public void reload(WURFLResource rootResource, WURFLResource... patchResources) {
         this.reload(rootResource, new WURFLResources(patchResources));
     }
 
     @Override
+/**
+ * Reload.
+ */
+
     public void reload(WURFLResource rootResource, WURFLResources patchResources) {
         this.rootPath = rootResource.getOriginalPath();
         this.ensureInitialized();
@@ -153,6 +193,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Replac eoot.
+ */
+
     public boolean replaceRoot(String newRootPath) {
         try {
             if (StringUtils.isBlank(newRootPath)) {
@@ -181,16 +225,28 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Sets the marku pesolver.
+ */
+
     public void setMarkupResolver(MarkupResolver markupResolver) {
         this.markupResolver = markupResolver;
     }
 
     @Override
+/**
+ * Sets the capabilitie solde ractory.
+ */
+
     public void setCapabilitiesHolderFactory(CapabilitiesHolderFactory capabilitiesHolderFactory) {
         this.capabilitiesHolderFactory = capabilitiesHolderFactory;
     }
 
     @Override
+/**
+ * Sets the wurf leques tactory.
+ */
+
     public void setWurflRequestFactory(WURFLRequestFactory requestFactory) {
         if (!(requestFactory instanceof WURFLRequestFactoryWithPriority)) {
             throw new UnsupportedOperationException("User-Agent priority is not supported if the custom request factory does not implement WURFLRequestFactoryWithPriority");
@@ -207,21 +263,37 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Sets the use rgen tesolver.
+ */
+
     public void setUserAgentResolver(UserAgentResolver userAgentResolver) {
         this.userAgentResolver = userAgentResolver;
     }
 
     @Override
+/**
+ * Sets the devic erovider.
+ */
+
     public void setDeviceProvider(DeviceProvider deviceProvider) {
         this.deviceProvider = deviceProvider;
     }
 
     @Override
+/**
+ * Sets the cach erovider.
+ */
+
     public void setCacheProvider(CacheProvider cacheProvider) {
         this.cacheProvider = cacheProvider;
     }
 
     @Override
+/**
+ * Returns the wurflutils.
+ */
+
     public WURFLUtils getWURFLUtils() {
         this.ensureInitialized();
         this.lock.readLock().lock();
@@ -231,26 +303,46 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Returns the devic e yd.
+ */
+
     public Device getDeviceById(String deviceId) {
         return this.getWURFLUtils().getDeviceById(deviceId);
     }
 
     @Override
+/**
+ * Returns the devic e yd.
+ */
+
     public Device getDeviceById(String deviceId, WURFLRequest request) {
         return this.getWURFLUtils().getDeviceById(deviceId, request);
     }
 
     @Override
+/**
+ * Returns the devic e yd.
+ */
+
     public Device getDeviceById(String deviceId, HttpServletRequest request) {
         this.ensureInitialized();
         return this.getWURFLUtils().getDeviceById(deviceId, (new DefaultWURFLRequestFactory(this.userAgentResolver, this.wurflService.getUserAgentPriority())).createRequest(request, this.wurflService.getEngineTarget()));
     }
 
     @Override
+/**
+ * Returns the al lirtua lapabilities.
+ */
+
     public Set<String> getAllVirtualCapabilities() {
         this.ensureInitialized();
         return new HashSet<>(VirtualCapabilityHandler.getAllVirtualCapabilities());
     }
+
+    /**
+     * Ensur enitialized.
+ */
 
     private void ensureInitialized() {
         if (this.initialized) return;
@@ -278,12 +370,20 @@ public class GeneralWURFLEngine implements WURFLEngine {
         }
     }
 
+    /**
+     * Ini todel.
+ */
+
     private void initModel() {
         if (this.wurflModel != null) return;
         this.wurflModel = new DefaultWURFLModel(this.rootResource, this.patchResources, this.capabilityFilter);
         this.rootResource = null;
         this.patchResources = null;
     }
+
+    /**
+     * Ini tervice.
+ */
 
     private void initService() {
         if (this.wurflService != null) {
@@ -305,6 +405,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
         }
     }
 
+    /**
+     * Ini teques tactory.
+ */
+
     private void initRequestFactory() {
         if (this.requestFactory != null) {
             log.info("wurflRequestFactory is custom: {}", this.requestFactory.getClass().getName());
@@ -318,10 +422,18 @@ public class GeneralWURFLEngine implements WURFLEngine {
         }
     }
 
+    /**
+     * Ini ttils.
+ */
+
     private void initUtils() {
         if (this.wurflUtils != null) return;
         this.wurflUtils = new WURFLUtils(this.wurflModel, this.deviceProvider, this.wurflService);
     }
+
+    /**
+     * Ini thec konnection.
+ */
 
     private void initCheckConnection() {
         try {
@@ -332,11 +444,19 @@ public class GeneralWURFLEngine implements WURFLEngine {
         }
     }
 
+    /**
+     * Lo g fnfo.
+ */
+
     private static void logIfInfo(boolean condition, String message, Object arg) {
         if (condition && log.isInfoEnabled()) {
             log.info(message, arg);
         }
     }
+
+    /**
+     * Ensur eevic erovide rnitialized.
+ */
 
     private void ensureDeviceProviderInitialized() {
         if (this.capabilitiesHolderFactory == null) {
@@ -358,29 +478,49 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Returns the devic eo request.
+ */
+
     public Device getDeviceForRequest(HttpServletRequest request) {
         this.ensureInitialized();
         return this.wurflService.getDevice(request);
     }
 
     @Override
+/**
+ * Returns the devic eo request.
+ */
+
     public Device getDeviceForRequest(WURFLRequest request) {
         this.ensureInitialized();
         return this.wurflService.getDevice(request);
     }
 
     @Override
+/**
+ * Returns the devic eo request.
+ */
+
     public Device getDeviceForRequest(String userAgent) {
         this.ensureInitialized();
         return this.wurflService.getDevice(userAgent);
     }
 
     @Override
+/**
+ * Loads and initializes the engine.
+ */
+
     public void load() {
         this.ensureInitialized();
     }
 
     @Override
+/**
+ * Returns the engin earget.
+ */
+
     public EngineTarget getEngineTarget() {
         synchronized (this.initLock) {
             if (this.wurflService != null) {
@@ -392,6 +532,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Sets the engin earget.
+ */
+
     public void setEngineTarget(EngineTarget engineTarget) {
         synchronized (this.initLock) {
             this.engineTarget = engineTarget;
@@ -403,6 +547,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Returns the use rgen triority.
+ */
+
     public UserAgentPriority getUserAgentPriority() {
         synchronized (this.initLock) {
             if (this.wurflService != null) {
@@ -416,6 +564,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Sets the use rgen triority.
+ */
+
     public void setUserAgentPriority(UserAgentPriority userAgentPriority) {
         synchronized (this.initLock) {
             this.userAgentPriority = userAgentPriority;
@@ -429,16 +581,28 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Sets the capabilit yilter.
+ */
+
     public void setCapabilityFilter(String... capabilityFilter) {
         this.capabilityFilter = buildCapabilityFilter(Arrays.asList(capabilityFilter));
     }
 
     @Override
+/**
+ * Sets the capabilit yilter.
+ */
+
     public void setCapabilityFilter(Collection<String> capabilityFilter) {
         if (capabilityFilter != null) {
             this.capabilityFilter = buildCapabilityFilter(capabilityFilter);
         }
     }
+
+    /**
+     * Buil dapabilit yilter.
+ */
 
     private static String[] buildCapabilityFilter(Collection<String> input) {
         ArrayList<String> capabilities = new ArrayList<>(input);
@@ -451,17 +615,29 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Returns the apiversion.
+ */
+
     public String getAPIVersion() {
         return "1.9.1.0";
     }
 
     @Override
+/**
+ * Returns the al landator yapabilities.
+ */
+
     public Set<String> getAllMandatoryCapabilities() {
         this.ensureInitialized();
         return new HashSet<>(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
     }
 
     @Override
+/**
+ * Returns the al lapabilities.
+ */
+
     public Set<String> getAllCapabilities() {
         this.ensureInitialized();
         HashSet<String> capabilities = new HashSet<>();
@@ -475,6 +651,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     @Override
+/**
+ * Returns the roo tath.
+ */
+
     public String getRootPath() {
         return this.rootPath;
     }
@@ -482,6 +662,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public String getApiVersion() {
         return "1.9.1.0";
     }
+
+    /**
+     * Returns the wurf lodel.
+ */
 
     public WURFLModel getWurflModel() {
         return wurflModel;

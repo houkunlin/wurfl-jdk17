@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core.web;
 
 import com.scientiamobile.wurfl.core.WURFLEngine;
 
+/**
+ * Implementation of Wurfl Web Constants.
+ */
+
 public interface WurflWebConstants {
     String WURFL_ENGINE_KEY_PARAM = "wurflEngineKey";
     String WURFL_ENGINE_KEY = WURFLEngine.class.getName();

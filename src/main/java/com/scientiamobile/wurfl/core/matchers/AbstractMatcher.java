@@ -14,6 +14,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Abstract devices and browsers.
+ */
+
 abstract class AbstractMatcher implements Matcher {
     protected static final Logger LOG = LoggerFactory.getLogger(AbstractMatcher.class);
     private static final List<UserAgentFallbackRule> CATCH_ALL_FALLBACKS;
@@ -73,11 +77,19 @@ abstract class AbstractMatcher implements Matcher {
         this.validateRequiredDeviceIds(model);
     }
 
+    /**
+     * Returns whether this i slan k reneric.
+     */
+
     private static boolean isBlankOrGeneric(String deviceId) {
         return StringUtils.isBlank(deviceId) || "generic".equals(deviceId);
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return this.getClass().getSimpleName();
     }
@@ -85,6 +97,10 @@ abstract class AbstractMatcher implements Matcher {
     protected Set<String> getRequiredDeviceIds() {
         return new HashSet<>();
     }
+
+    /**
+     * Validat eequire devic eds.
+ */
 
     private void validateRequiredDeviceIds(WURFLModel model) {
         if (model != null) {
@@ -99,6 +115,10 @@ abstract class AbstractMatcher implements Matcher {
 
     }
 
+    /**
+     * Returns the filter.
+ */
+
     public final MatcherFilter getFilter() {
         if (this.filter == null) {
             this.filter = new DefaultMatcherFilter(this);
@@ -107,11 +127,21 @@ abstract class AbstractMatcher implements Matcher {
         return this.filter;
     }
 
+    /**
+     * Sets the filter.
+ */
+
     public final void setFilter(MatcherFilter filter) {
         this.filter = filter;
     }
 
     @Override
+/**
+ * Attempts to match the given request to a device.
+ * @param request the WURFL request
+ * @return device info for the matched device
+ */
+
     public DeviceInfo match(WURFLRequest request) {
         request.normalizeUserAgent(this.normalizer);
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -145,6 +175,10 @@ abstract class AbstractMatcher implements Matcher {
                 request.getOriginalUserAgent(), normalizedUserAgent);
     }
 
+    /**
+     * Resolv eallbac kevice.
+ */
+
     private static String resolveFallbackDevice(WURFLRequest request) {
         if (request._internalIsDesktopBrowserHeavyDutyAnalysis()) {
             return "generic_web_browser";
@@ -163,6 +197,10 @@ abstract class AbstractMatcher implements Matcher {
         return "generic_xhtml";
     }
 
+    /**
+     * Appl yonclusiv eatch.
+ */
+
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         normalizedDeviceUserAgent = this.risMatch(normalizedDeviceUserAgent);
@@ -178,17 +216,31 @@ abstract class AbstractMatcher implements Matcher {
         return deviceId;
     }
 
+    /**
+     * Ri satch.
+ */
+
     protected String risMatch(String value) {
         int firstSlashIndex;
         firstSlashIndex = StringMatchUtils.firstSlash(value);
         return firstSlashIndex == -1 ? StringMatchUtils.NULL_STRING : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), value, firstSlashIndex);
     }
 
+    /**
+     * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         return "generic";
     }
 
     @Override
+/**
+ * Normalizes the given User-Agent string.
+ * @param userAgent the raw User-Agent string
+ * @return the normalized User-Agent string
+ */
+
     public String normalize(String value) {
         return this.normalizer == null ? value : this.normalizer.normalize(value);
     }
@@ -198,6 +250,10 @@ abstract class AbstractMatcher implements Matcher {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return this.getClass().getSimpleName();
     }

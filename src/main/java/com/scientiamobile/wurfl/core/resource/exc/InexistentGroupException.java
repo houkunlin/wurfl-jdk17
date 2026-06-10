@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when inexistent group occurs.
+ */
+
 public class InexistentGroupException extends GroupConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;

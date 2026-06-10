@@ -9,6 +9,10 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Implementation of Model Devices.
+ */
+
 public class ModelDevices implements Serializable, Iterable<ModelDevice> {
     @Serial
     private static final long serialVersionUID = 10L;
@@ -51,6 +55,10 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         this(Arrays.asList(devices));
     }
 
+    /**
+     * Size.
+     */
+
     public int size() {
         return this.devicesById.size();
     }
@@ -58,6 +66,10 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
     public boolean contains(ModelDevice device) {
         return this.devicesById.containsValue(device);
     }
+
+    /**
+     * Contain sd.
+ */
 
     public boolean containsId(String deviceId) {
         return this.devicesById.containsKey(deviceId);
@@ -67,11 +79,19 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         return new HashSet<>(this.devicesById.values());
     }
 
+    /**
+     * Returns the device s yd.
+ */
+
     public Map<String, ModelDevice> getDevicesById() {
         return Collections.unmodifiableMap(this.devicesById);
     }
 
     @Override
+/**
+ * Returns an iterator over elements of this collection.
+ */
+
     public Iterator<ModelDevice> iterator() {
         return this.getDevicesById().values().iterator();
     }
@@ -80,6 +100,10 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         return this.devicesById.get(deviceId);
     }
 
+    /**
+     * Add.
+ */
+
     public void add(ModelDevice device) {
         this.devicesById.put(device.getID(), device);
         if (this.devicesById.size() > this.deviceIdsByInsertionOrder.size()) {
@@ -87,6 +111,10 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         }
 
     }
+
+    /**
+     * Returns the devic ed s ynsertio nrder.
+ */
 
     public List<String> getDeviceIdsByInsertionOrder() {
         return this.deviceIdsByInsertionOrder;
@@ -102,6 +130,10 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
 
     }
 
+    /**
+     * Ad dll.
+ */
+
     public void addAll(ModelDevices devices) {
         this.devicesById.putAll(devices.devicesById);
     }
@@ -110,12 +142,20 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         this.devicesById.remove(device.getID());
     }
 
+    /**
+     * Remov ell.
+ */
+
     public void removeAll(Collection<ModelDevice> devices) {
         for (ModelDevice device : devices) {
             this.devicesById.remove(device.getID());
         }
 
     }
+
+    /**
+     * Remov ell.
+ */
 
     public void removeAll(ModelDevices devices) {
         for (ModelDevice device : devices) {
@@ -124,11 +164,19 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
 
     }
 
+    /**
+     * Clears all cached data.
+ */
+
     public void clear() {
         this.devicesById.clear();
     }
 
     @Override
+/**
+ * Returns whether this has hode.
+ */
+
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder;
         hashCodeBuilder = new HashCodeBuilder();
@@ -137,6 +185,12 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
     }
 
     @Override
+/**
+ * Indicates whether some other object is equal to this one.
+ * @param obj the reference object with which to compare
+ * @return true if this object is the same as the obj argument
+ */
+
     public boolean equals(Object object) {
         if (this == object) {
             return true;

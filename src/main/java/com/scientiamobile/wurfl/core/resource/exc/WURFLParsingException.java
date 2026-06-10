@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when wurfl parsing occurs.
+ */
+
 public class WURFLParsingException extends WURFLRuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;

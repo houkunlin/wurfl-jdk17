@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * Implementation of WURFL Service  Implementation.
+ */
+
 class WURFLServiceImpl implements WURFLService {
     private static final Logger log = LoggerFactory.getLogger(WURFLServiceImpl.class);
     private final WURFLModel wurflModel;
@@ -51,17 +55,29 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Returns the matche ranager.
+ */
+
     public MatcherManager getMatcherManager() {
         return this.matcherManager;
     }
 
     @Override
+/**
+ * Sets the cach erovider.
+ */
+
     public void setCacheProvider(CacheProvider cacheProvider) {
         log.info("feeding {}", cacheProvider);
         this.cacheProvider = cacheProvider;
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public Device getDevice(WURFLRequest request) {
         this.modelLock.readLock().lock();
         try {
@@ -77,12 +93,20 @@ class WURFLServiceImpl implements WURFLService {
         }
     }
 
+    /**
+     * Buil dache device.
+     */
+
     private Device buildCachedDevice(InternalDevice internalDevice, WURFLRequest request) {
         DeviceInfo deviceInfo = new DeviceInfo(internalDevice.getId(), MatchType.cached, "Cache", "Cache",
                 request.getOriginalUserAgent(), "");
         return this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(),
                 deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
     }
+
+    /**
+     * Matc hn dach eevice.
+ */
 
     private Device matchAndCacheDevice(WURFLRequest request) {
         request.performGenericNormalization();
@@ -104,6 +128,10 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public Device getDevice(HttpServletRequest request) {
         Validate.notNull(request, "The request must be not null");
         WURFLRequest wurflRequest = this.requestFactory.createRequest(request, this.engineTarget);
@@ -111,11 +139,19 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public Device getDevice(String userAgent) {
         Validate.notNull(userAgent, "The userAgent must be not null");
         WURFLRequest wurflRequest = this.requestFactory.createRequest(userAgent, this.engineTarget);
         return this.getDevice(wurflRequest);
     }
+
+    /**
+     * Ensur each erovider.
+ */
 
     private void ensureCacheProvider() {
         if (this.cacheProvider == null) {
@@ -130,11 +166,19 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Returns the engin earget.
+ */
+
     public EngineTarget getEngineTarget() {
         return this.engineTarget;
     }
 
     @Override
+/**
+ * Sets the engin earget.
+ */
+
     public void setEngineTarget(EngineTarget engineTarget) {
         if (engineTarget != EngineTarget.fastDesktopBrowserMatch) {
             this.engineTarget = EngineTarget.defaultTarget;
@@ -144,22 +188,38 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Returns the use rgen triority.
+ */
+
     public UserAgentPriority getUserAgentPriority() {
         return this.requestFactory.getUserAgentPriority();
     }
 
     @Override
+/**
+ * Sets the use rgen triority.
+ */
+
     public void setUserAgentPriority(UserAgentPriority priority) {
         this.requestFactory.setUserAgentPriority(priority);
     }
 
     @Override
+/**
+ * Returns the devic e yd.
+ */
+
     public Device getDeviceById(String deviceId) {
         InternalDevice internalDevice = this.deviceProvider.getInternalDevice(deviceId);
         String userAgent = resolveUserAgent(internalDevice);
         WURFLRequest request = this.requestFactory.createRequest(userAgent, this.engineTarget);
         return this.getDeviceById(deviceId, request);
     }
+
+    /**
+     * Resolv ese rgent.
+ */
 
     private static String resolveUserAgent(InternalDevice internalDevice) {
         String userAgentFromModel = internalDevice.getWURFLUserAgent();
@@ -174,6 +234,10 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Returns the devic e yd.
+ */
+
     public Device getDeviceById(String deviceId, HttpServletRequest request) {
         Validate.notNull(request, "The request must be not null");
         WURFLRequest wurflRequest = this.requestFactory.createRequest(request, this.engineTarget);
@@ -181,6 +245,10 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Returns the devic e yd.
+ */
+
     public Device getDeviceById(String deviceId, WURFLRequest request) {
         Validate.notNull(request, "The request must be not null");
         request.performGenericNormalization();
@@ -188,6 +256,10 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Reload.
+ */
+
     public void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches) {
         this.modelLock.writeLock().lock();
         log.info("reloading service");
@@ -202,6 +274,10 @@ class WURFLServiceImpl implements WURFLService {
 
     }
 
+    /**
+     * Clea rach erovider.
+ */
+
     private void clearCacheProvider() {
         log.info("about to clear cache provider");
         this.ensureCacheProvider();
@@ -209,6 +285,10 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
+/**
+ * Appl yatches.
+ */
+
     public void applyPatches(WURFLResources wurflResources, String... patches) {
         log.info("before applying patches {}", wurflResources);
         this.modelLock.writeLock().lock();
@@ -223,6 +303,10 @@ class WURFLServiceImpl implements WURFLService {
         }
 
     }
+
+    /**
+     * Sets the reques tactory.
+ */
 
     public final void setRequestFactory(WURFLRequestFactoryWithPriority requestFactory) {
         this.requestFactory = requestFactory;

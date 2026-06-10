@@ -7,6 +7,10 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A pair of name and version values, used to represent OS or browser identification.
+ */
+
 public final class NameVersionPair implements Serializable {
     @Serial
     private static final long serialVersionUID = 4934582187956400034L;
@@ -17,6 +21,10 @@ public final class NameVersionPair implements Serializable {
     public NameVersionPair() {
     }
 
+    /**
+     * Returns the name.
+     */
+
     public final String getName() {
         return this.name;
     }
@@ -25,6 +33,10 @@ public final class NameVersionPair implements Serializable {
         this.name = name;
     }
 
+    /**
+     * Returns the version.
+ */
+
     public final String getVersion() {
         return this.version;
     }
@@ -32,6 +44,10 @@ public final class NameVersionPair implements Serializable {
     public final void setVersion(String version) {
         this.version = version;
     }
+
+    /**
+     * Matc hn det.
+ */
 
     public final boolean matchAndSet(Pattern pattern, String input, String matchedName, String matchedVersion) {
         if (this.find(pattern, input) != null) {
@@ -47,6 +63,10 @@ public final class NameVersionPair implements Serializable {
         }
     }
 
+    /**
+     * Matc hn de tam ero mroup.
+ */
+
     public final boolean matchAndSetNameFromGroup(Pattern pattern, String input, int nameGroupIndex) {
         Matcher matcher;
         matcher = this.find(pattern, input);
@@ -59,6 +79,10 @@ public final class NameVersionPair implements Serializable {
         }
     }
 
+    /**
+     * Matc hn de tersio nro mroup.
+ */
+
     public final boolean matchAndSetVersionFromGroup(Pattern pattern, String input, int versionGroupIndex) {
         Matcher matcher;
         matcher = this.find(pattern, input);
@@ -70,6 +94,10 @@ public final class NameVersionPair implements Serializable {
             return false;
         }
     }
+
+    /**
+     * Matc hn de troup.
+ */
 
     public final boolean matchAndSetGroup(Pattern pattern, String input, String matchedName, int versionGroupIndex) {
         Matcher matcher;
@@ -88,6 +116,10 @@ public final class NameVersionPair implements Serializable {
         }
     }
 
+    /**
+     * Matc hn de tam en droup.
+ */
+
     public final boolean matchAndSetNameAndGroup(Pattern pattern, String input, int nameGroupIndex) {
         Matcher matcher;
         matcher = this.find(pattern, input);
@@ -101,6 +133,10 @@ public final class NameVersionPair implements Serializable {
         }
     }
 
+    /**
+     * Contain sn de tame.
+ */
+
     public final boolean containsAndSetName(String input, String needle, String matchedName) {
         if (StringMatchUtils.indexOf(input, needle) >= 0) {
             this.name = matchedName.trim();
@@ -109,6 +145,10 @@ public final class NameVersionPair implements Serializable {
             return false;
         }
     }
+
+    /**
+     * Find.
+ */
 
     private Matcher find(Pattern pattern, String input) {
         Matcher matcher;
@@ -127,11 +167,19 @@ public final class NameVersionPair implements Serializable {
         }
     }
 
+    /**
+     * Returns the group.
+ */
+
     public final String getGroup(int groupIndex) {
         return this.lastRegexGroups == null ? null : this.lastRegexGroups[groupIndex];
     }
 
     @Override
+/**
+ * Returns a string representation of this object.
+ */
+
     public String toString() {
         return "[name: " + this.name + " - version: " + this.version + "]";
     }

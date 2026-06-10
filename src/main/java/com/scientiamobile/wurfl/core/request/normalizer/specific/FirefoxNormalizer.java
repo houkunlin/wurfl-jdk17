@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Normalizes User-Agent strings for Firefox.
+ */
+
 public class FirefoxNormalizer implements UserAgentNormalizer {
     @Override
     public String normalize(String userAgent) {

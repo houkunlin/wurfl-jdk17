@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+/**
+ * Provides Double LRU Map Cache functionality.
+ */
+
 public class DoubleLRUMapCacheProvider implements CacheProvider {
     private static final Logger log = LoggerFactory.getLogger(DoubleLRUMapCacheProvider.class);
     private final Map<String, String> deviceIdByUserAgent;
@@ -28,6 +32,10 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Clears all cached data.
+ */
+
     public void clear() {
         log.info("UA cache: size {}", this.deviceIdByUserAgent.size());
         this.deviceIdByUserAgent.clear();
@@ -38,6 +46,10 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Returns the device.
+ */
+
     public InternalDevice getDevice(String userAgent) {
         String deviceId = this.deviceIdByUserAgent.get(userAgent);
         if (deviceId == null) {
@@ -48,6 +60,10 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
     }
 
     @Override
+/**
+ * Pu tevice.
+ */
+
     public void putDevice(String userAgent, InternalDevice device) {
         try {
             this.deviceById.put(device.getId(), device);
@@ -56,6 +72,10 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
             log.error("Could not cache {}", userAgent, e);
         }
     }
+
+    /**
+     * Returns the interna levic ero mevic ed.
+     */
 
     public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
         return this.deviceById.get(deviceId);

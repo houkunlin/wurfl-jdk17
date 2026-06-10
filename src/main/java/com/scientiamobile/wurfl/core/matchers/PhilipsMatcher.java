@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core.matchers;
 
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
+/**
+ * Matcher implementation for identifying Philips devices and browsers.
+ */
+
 final class PhilipsMatcher extends MatcherBase {
     @Override
     public boolean canHandle(WURFLRequest request) {
@@ -10,11 +14,19 @@ final class PhilipsMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "PhilipsMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Philips";
     }

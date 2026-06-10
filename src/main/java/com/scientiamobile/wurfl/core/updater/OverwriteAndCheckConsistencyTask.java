@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Map;
 
+/**
+ * A task that performs Overwrite And Check Consistency.
+ */
+
 public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
     private static final Logger log = LoggerFactory.getLogger(OverwriteAndCheckConsistencyTask.class);
     private String[] patchPaths;
@@ -21,6 +25,12 @@ public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
     public OverwriteAndCheckConsistencyTask(String[] patchPaths) {
         this.patchPaths = patchPaths;
     }
+
+    /**
+     * Executes this operation with the given context.
+     *
+     * @param context the execution context map
+     */
 
     public void execute(Map<String, Object> context) {
         String newWurflTempPath;

@@ -6,6 +6,10 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Smart Tv devices and browsers.
+ */
+
 final class SmartTvMatcher extends MatcherBase {
     private static final String GOOGLE_TV_BROWSER = "generic_smarttv_googletv_browser";
     private static final String APPLE_TV_BROWSER = "generic_smarttv_appletv_browser";
@@ -22,6 +26,10 @@ final class SmartTvMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add(GENERIC_SMARTTV_BROWSER);
@@ -29,16 +37,28 @@ final class SmartTvMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return request._internalIsSmartTvBrowser();
     }
 
     @Override
+/**
+ * Appl yonclusiv eatch.
+ */
+
     protected String applyConclusiveMatch(WURFLRequest request) {
         return null;
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("Tizen 3.0")) {
@@ -63,11 +83,19 @@ final class SmartTvMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "SmartTvMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "SmartTV";
     }

@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 import java.util.regex.Pattern;
 
+/**
+ * Normalizes User-Agent strings for Mozilla.
+ */
+
 public class MozillaNormalizer implements UserAgentNormalizer {
     private static final Pattern LOCALE_PATTERN = Pattern.compile("(; [a-z]{2}(-[a-zA-Z]{0,2})?)");
 

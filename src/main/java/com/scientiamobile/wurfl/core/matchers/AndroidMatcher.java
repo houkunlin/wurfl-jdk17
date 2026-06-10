@@ -9,6 +9,10 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Matcher implementation for identifying Android devices and browsers.
+ */
+
 final class AndroidMatcher extends AbstractMatcher {
     private static final String GENERIC_ANDROID = "generic_android";
     private static final String GENERIC_ANDROID_VER2_2 = "generic_android_ver2_2";
@@ -76,6 +80,10 @@ final class AndroidMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -86,6 +94,10 @@ final class AndroidMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "like Android", "Symbian")
@@ -93,6 +105,10 @@ final class AndroidMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String normalizedUserAgent) {
         int matchLength;
         matchLength = normalizedUserAgent.indexOf("---");
@@ -118,6 +134,10 @@ final class AndroidMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         String androidVersion = UserAgentUtils.getAndroidVersion(normalizedDeviceUserAgent, true).replaceAll("\\.", "_");
@@ -135,11 +155,19 @@ final class AndroidMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "AndroidMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Android";
     }

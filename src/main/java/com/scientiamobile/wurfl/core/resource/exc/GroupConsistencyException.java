@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.resource.ModelDevice;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when group consistency occurs.
+ */
+
 public abstract class GroupConsistencyException extends DeviceConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -18,6 +22,10 @@ public abstract class GroupConsistencyException extends DeviceConsistencyExcepti
         super(device, message);
         this.groupId = groupId;
     }
+
+    /**
+     * Returns the group.
+     */
 
     public String getGroup() {
         return this.groupId;

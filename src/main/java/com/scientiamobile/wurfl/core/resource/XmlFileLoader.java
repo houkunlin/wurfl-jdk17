@@ -6,6 +6,10 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Implementation of Xml File Loader.
+ */
+
 public class XmlFileLoader {
     private final ResourceInput resourceInput;
     private final DefaultHandler handler;
@@ -14,6 +18,10 @@ public class XmlFileLoader {
         this.resourceInput = new ResourceInput(path);
         this.handler = handler;
     }
+
+    /**
+     * Pars eile.
+     */
 
     public final boolean parseFile() {
         InputStream inputStream = this.resourceInput.openInputStream();

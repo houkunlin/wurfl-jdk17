@@ -11,6 +11,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Tizen devices and browsers.
+ */
+
 public class TizenMatcher extends MatcherBase {
     private static final String GENERIC_TIZEN = "generic_tizen";
     private static final Pattern TIZEN_VERSION_PATTERN = Pattern.compile("Tizen (\\d+?\\.\\d+?)");
@@ -39,6 +43,10 @@ public class TizenMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICE_IDS);
         requiredDeviceIds.add(GENERIC_TIZEN);
@@ -46,18 +54,30 @@ public class TizenMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return cleanedDeviceUserAgent.startsWith("Mozilla") && cleanedDeviceUserAgent.contains("Tizen");
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String userAgent) {
         int appleWebKitIndex = userAgent.indexOf("AppleWebKit/");
         return appleWebKitIndex >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, appleWebKitIndex + 12) : null;
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         Matcher versionMatcher = TIZEN_VERSION_PATTERN.matcher(normalizedUserAgent);
@@ -67,11 +87,19 @@ public class TizenMatcher extends MatcherBase {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "TizenMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "Tizen";
     }

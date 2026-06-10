@@ -6,6 +6,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.io.Serial;
 import java.util.List;
 
+/**
+ * Exception thrown when circular hierarchy occurs.
+ */
+
 public class CircularHierarchyException extends HierarchyConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;

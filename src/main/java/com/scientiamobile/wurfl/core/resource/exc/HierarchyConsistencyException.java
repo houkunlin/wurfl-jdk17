@@ -6,6 +6,10 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.io.Serial;
 import java.util.List;
 
+/**
+ * Exception thrown when hierarchy consistency occurs.
+ */
+
 public abstract class HierarchyConsistencyException extends WURFLConsistencyException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -20,6 +24,10 @@ public abstract class HierarchyConsistencyException extends WURFLConsistencyExce
         super("Consistency exception in hierarchy: [" + StringMatchUtils.hierarchyAsString(hierarchy) + "]");
         this.hierarchy = hierarchy;
     }
+
+    /**
+     * Returns the hierarchy.
+     */
 
     public List<ModelDevice> getHierarchy() {
         return this.hierarchy;

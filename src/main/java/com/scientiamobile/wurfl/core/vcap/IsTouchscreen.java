@@ -7,17 +7,29 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Implementation of Is Touchscreen.
+ */
+
 public class IsTouchscreen implements VirtualCapabilityEvaluator, Serializable {
     @Serial
     private static final long serialVersionUID = 3516513258503645772L;
 
     @Override
+/**
+ * Eval.
+ */
+
     public String eval(Device device, WURFLRequest request) {
         String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
         return Boolean.toString("touchscreen".equals(device.getCapability("pointing_method")) || StringMatchUtils.containsAllOf(userAgent, "Trident", "Touch"));
     }
 
     @Override
+/**
+ * Returns the handle dirtua lapabilit yame.
+ */
+
     public String getHandledVirtualCapabilityName() {
         return "is_touchscreen";
     }

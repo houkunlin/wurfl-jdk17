@@ -4,6 +4,10 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * Implementation of Model Device User Agent Comparator.
+ */
+
 final class ModelDeviceUserAgentComparator implements Serializable, Comparator<ModelDevice> {
     static final ModelDeviceUserAgentComparator INSTANCE = new ModelDeviceUserAgentComparator();
     @Serial
@@ -11,6 +15,10 @@ final class ModelDeviceUserAgentComparator implements Serializable, Comparator<M
 
     private ModelDeviceUserAgentComparator() {
     }
+
+    /**
+     * Compare.
+     */
 
     public final int compare(ModelDevice left, ModelDevice right) {
         return left.getUserAgent().compareTo(right.getUserAgent());

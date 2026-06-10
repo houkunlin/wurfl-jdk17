@@ -10,6 +10,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of Is App.
+ */
+
 public class IsApp extends AbstractVirtualCapabilityEvaluator {
     static final Pattern ANDROID_UA_PREFIX_PATTERN = Pattern.compile("^.+Mozilla/5.0 \\(Linux; Android ");
     static final Pattern ANDROID_SAFARI_SUFFIX_PATTERN = Pattern.compile(" (?:Mobile )?Safari/[\\d\\.+]+[^\\d\\.+]+");
@@ -26,6 +30,10 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
         HASH_APP_INDICATOR_PATTERNS.put("#net(?:\\.[a-z]+){2,}", DOT_NET_PACKAGE_SIGNATURE_PATTERN);
     }
 
+    /**
+     * Pars en t rinu sne.
+     */
+
     private static int parseIntOrMinusOne(String value) {
         try {
             return Integer.parseInt(value);
@@ -35,6 +43,10 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
     }
 
     @Override
+/**
+ * Eval.
+ */
+
     public String eval(Device device, WURFLRequest request) {
         String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
         if (StringMatchUtils.containsAnyOf(userAgent, NON_APP_BROWSER_KEYWORDS.toArray(new String[0]))) {
@@ -88,6 +100,10 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
     }
 
     @Override
+/**
+ * Returns the handle dirtua lapabilit yame.
+ */
+
     public String getHandledVirtualCapabilityName() {
         return "is_app";
     }

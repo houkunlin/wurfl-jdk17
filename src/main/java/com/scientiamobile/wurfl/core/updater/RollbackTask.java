@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Map;
 
+/**
+ * A task that performs Rollback.
+ */
+
 public class RollbackTask implements UpdatePipelineTask {
     private static final Logger log = LoggerFactory.getLogger(RollbackTask.class);
 

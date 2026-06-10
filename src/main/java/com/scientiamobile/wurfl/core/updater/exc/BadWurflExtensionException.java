@@ -4,6 +4,10 @@ import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when bad wurfl extension occurs.
+ */
+
 public class BadWurflExtensionException extends WURFLRuntimeException {
     @Serial
     private static final long serialVersionUID = -6562761498439936698L;

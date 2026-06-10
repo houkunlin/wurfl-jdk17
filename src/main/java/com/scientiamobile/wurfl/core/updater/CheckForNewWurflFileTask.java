@@ -13,6 +13,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
 
+/**
+ * A task that performs Check For New Wurfl File.
+ */
+
 public class CheckForNewWurflFileTask implements UpdatePipelineTask {
     static final SimpleDateFormat LAST_MODIFIED_FORMAT;
     private static final Logger log = LoggerFactory.getLogger(CheckForNewWurflFileTask.class);
@@ -30,6 +34,12 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
     public CheckForNewWurflFileTask(ProxySettings proxySettings) {
         this.proxySettings = proxySettings;
     }
+
+    /**
+     * Executes this operation with the given context.
+     *
+     * @param context the execution context map
+     */
 
     public void execute(Map<String, Object> context) {
         String originalWurflPath = (String) context.get("original_wurfl_path");

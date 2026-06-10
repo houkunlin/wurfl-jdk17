@@ -3,6 +3,10 @@ package com.scientiamobile.wurfl.core;
 import com.scientiamobile.wurfl.core.matchers.MatchType;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
+/**
+ * Provides Device functionality.
+ */
+
 public interface DeviceProvider {
     InternalDevice getInternalDevice(String deviceId);
 

@@ -8,10 +8,18 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Implementation of Matcher Chain.
+ */
+
 class MatcherChain implements Matcher, MatcherFilter {
     private static final Logger logger = LoggerFactory.getLogger(MatcherChain.class);
     private List<Matcher> matchers = new LinkedList<>();
     private List<MatcherFilter> filters = new LinkedList<>();
+
+    /**
+     * Ad datcher.
+     */
 
     public final void addMatcher(Matcher matcher) {
         this.matchers.add(matcher);
@@ -19,6 +27,12 @@ class MatcherChain implements Matcher, MatcherFilter {
     }
 
     @Override
+/**
+ * Attempts to match the given request to a device.
+ * @param request the WURFL request
+ * @return device info for the matched device
+ */
+
     public DeviceInfo match(WURFLRequest request) {
 
         for (Matcher value : this.matchers) {
@@ -38,11 +52,21 @@ class MatcherChain implements Matcher, MatcherFilter {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         return true;
     }
 
     @Override
+/**
+ * Normalizes the given User-Agent string.
+ * @param userAgent the raw User-Agent string
+ * @return the normalized User-Agent string
+ */
+
     public String normalize(String userAgent) {
         return userAgent;
     }
@@ -52,6 +76,10 @@ class MatcherChain implements Matcher, MatcherFilter {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "MatcherChain";
     }
@@ -70,6 +98,10 @@ class MatcherChain implements Matcher, MatcherFilter {
         return false;
     }
 
+    /**
+     * Returns the index.
+ */
+
     public final FilteredDeviceIndex getIndex() {
         logger.warn("A Filter of type MatcherChain should never be asked for its FilteredDevices set.");
         FilteredDeviceIndex filteredDeviceIndex = new FilteredDeviceIndex(this);
@@ -82,6 +114,10 @@ class MatcherChain implements Matcher, MatcherFilter {
 
         return filteredDeviceIndex;
     }
+
+    /**
+     * Sor tll.
+ */
 
     public final void sortAll() {
         for (MatcherFilter matcherFilter : this.filters) {

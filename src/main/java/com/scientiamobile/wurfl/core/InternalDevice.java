@@ -2,6 +2,10 @@ package com.scientiamobile.wurfl.core;
 
 import java.util.Map;
 
+/**
+ * Implementation of Internal Device.
+ */
+
 public interface InternalDevice {
     String getId();
 

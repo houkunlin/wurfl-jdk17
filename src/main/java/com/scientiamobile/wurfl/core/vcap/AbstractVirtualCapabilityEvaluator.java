@@ -12,6 +12,10 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Abstract Implementation of Abstract Virtual Capability Evaluator.
+ */
+
 abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEvaluator, Serializable {
     protected static final Pattern ANDROID_WEBKIT_KHTML_PATTERN = Pattern.compile("Mozilla/5.0 \\(Linux;( U;)? Android.*AppleWebKit.*\\(KHTML, like Gecko\\)");
     protected static final Pattern ANDROID_LEGACY_SAFARI_UA_PATTERN;
@@ -101,6 +105,10 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
         NON_APP_BROWSER_KEYWORDS.add("Firefox");
     }
 
+    /**
+     * Returns whether this i so so nafari.
+     */
+
     protected static boolean isIosNonSafari(String deviceOs, String userAgent) {
         return "iOS".equals(deviceOs) && !userAgent.contains("Safari");
     }
@@ -110,6 +118,10 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
         return "Mac OS X".equals(virtualCapabilityDevice.getOsPairName()) && !userAgent.contains("Safari");
     }
 
+    /**
+     * Returns whether this i sequeste dit hp package.
+ */
+
     protected static boolean isRequestedWithAppPackage(String expectedOs, String deviceOs, WURFLRequest request) {
         return isRequestedWithAppPackage(expectedOs, deviceOs, request.getHeader("X-Requested-With"));
     }
@@ -117,6 +129,10 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
     protected static boolean isRequestedWithAppPackage(String expectedOs, String deviceOs, String requestedWith) {
         return expectedOs.equals(deviceOs) && StringUtils.isNotEmpty(requestedWith) && ANDROID_REQUESTED_WITH_APP_PACKAGES.contains(requestedWith);
     }
+
+    /**
+     * Returns whether this i sobot.
+ */
 
     protected static boolean isRobot(WURFLRequest request) {
         Map<String, String> headers = request.getHeaders();
@@ -135,6 +151,10 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
             return request._internalIsBot();
         }
     }
+
+    /**
+     * Returns whether this i smartphone.
+ */
 
     protected static boolean isSmartphone(Device device) {
         int resolutionWidth;

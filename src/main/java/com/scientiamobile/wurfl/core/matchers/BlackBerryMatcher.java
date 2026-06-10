@@ -11,6 +11,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher implementation for identifying Black Berry devices and browsers.
+ */
+
 final class BlackBerryMatcher extends AbstractMatcher {
     private static final String BLACKBERRY_GENERIC_VER10 = "blackberry_generic_ver10";
     private static final String BLACKBERRY_GENERIC_VER10_TABLET = "blackberry_generic_ver10_tablet";
@@ -45,6 +49,10 @@ final class BlackBerryMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns the require devic eds.
+ */
+
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -55,6 +63,10 @@ final class BlackBerryMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns whether this ca nandle.
+ */
+
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         boolean isBlackBerryUserAgent = cleanedDeviceUserAgent != null && (
@@ -65,6 +77,10 @@ final class BlackBerryMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Ri satch.
+ */
+
     protected String risMatch(String normalizedUserAgent) {
         int matchLength;
         if (normalizedUserAgent.contains("BB10")) {
@@ -85,6 +101,10 @@ final class BlackBerryMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Appl yecover yatch.
+ */
+
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         Matcher osVersionMatcher = BLACKBERRY_OS_VERSION.matcher(normalizedDeviceUserAgent);
@@ -107,11 +127,19 @@ final class BlackBerryMatcher extends AbstractMatcher {
     }
 
     @Override
+/**
+ * Returns the matche rame.
+ */
+
     public String getMatcherName() {
         return "BlackBerryMatcher";
     }
 
     @Override
+/**
+ * Returns the bucke tatche rame.
+ */
+
     public String getBucketMatcherName() {
         return "BlackBerry";
     }

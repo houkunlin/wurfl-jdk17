@@ -5,10 +5,18 @@ import net.sf.ehcache.CacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Implementation of Simple Eh Cache Manager.
+ */
+
 public class SimpleEhCacheManager implements EhCacheManager {
     public static final String DEFAULT_CACHE_NAME = "com.scientiamobile.wurfl.core.InternalDevice";
     private static final Logger logger = LoggerFactory.getLogger(SimpleEhCacheManager.class);
     private final CacheManager cacheManager = new CacheManager();
+
+    /**
+     * Returns the defaul tache.
+     */
 
     public Cache getDefaultCache() {
         return this.getCache("com.scientiamobile.wurfl.core.InternalDevice");
@@ -17,6 +25,10 @@ public class SimpleEhCacheManager implements EhCacheManager {
     public Cache getCache(String cacheName) {
         return this.cacheManager.getCache(cacheName);
     }
+
+    /**
+     * Shutdown.
+ */
 
     public void shutdown() {
         logger.info("shutting down cache manager");
