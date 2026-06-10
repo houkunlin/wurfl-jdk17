@@ -10,7 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher implementation for identifying Desktop Application devices and browsers.
+ * 桌面应用程序匹配器。
+ * <p>识别桌面应用程序的 User-Agent，主要包括 Microsoft Office 系列（MSOffice、
+ * Microsoft Office）和其他包含 "office" 或 "DesktopApp " 的桌面应用。
+ * 通过检查请求是否非移动浏览器且 User-Agent 包含相关关键字来识别。</p>
  */
 
 public final class DesktopApplicationMatcher extends MatcherBase {
@@ -32,7 +35,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -43,7 +46,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -52,7 +55,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -78,9 +81,13 @@ public final class DesktopApplicationMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 包含 "Office"/"office" 或 "DesktopApp " 关键字
+     * 返回对应的桌面应用程序通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();
@@ -93,7 +100,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -102,7 +109,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

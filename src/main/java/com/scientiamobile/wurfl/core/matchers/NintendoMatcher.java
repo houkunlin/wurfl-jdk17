@@ -8,7 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Nintendo devices and browsers.
+ * Nintendo（任天堂）游戏设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 Nintendo 来识别任天堂品牌的游戏设备，包括 Wii U、Wii、DSi、DS、3DS、New 3DS 和 Switch 等型号。</p>
  */
 
 final class NintendoMatcher extends MatcherBase {
@@ -18,7 +19,7 @@ final class NintendoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -35,7 +36,7 @@ final class NintendoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -50,9 +51,14 @@ final class NintendoMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yonclusiv eatch.
- */
+    /**
+     * 确定匹配策略：根据 User-Agent 中包含的 Nintendo 设备型号关键字直接返回对应的设备 ID。
+     * <p>依次检查 "New Nintendo 3DS"、"Nintendo 3DS"、"Nintendo WiiU"、"Nintendo Wii"、
+     * "Nintendo DSi"、"Nintendo Switch"，最后检查 Nitro + Opera 组合（DS 浏览器）。</p>
+     *
+     * @param request WURFL 请求对象
+     * @return 匹配到的设备 ID，无法确定时返回 "nintendo_wii_ver1"
+     */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -75,7 +81,7 @@ final class NintendoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -84,7 +90,7 @@ final class NintendoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

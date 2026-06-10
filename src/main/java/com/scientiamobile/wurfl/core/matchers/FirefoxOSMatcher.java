@@ -9,7 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher implementation for identifying Firefox OS devices and browsers.
+ * Firefox OS 操作系统匹配器（Mozilla 开发的 Web 移动操作系统）。
+ * <p>通过检查 User-Agent 包含 "Firefox/" 且同时包含 "Mobile" 或 "Tablet" 来识别。
+ * 根据 Gecko 渲染引擎版本（rv:）映射到对应的 Firefox OS 版本，区分手机和平板形态。</p>
  */
 
 final class FirefoxOSMatcher extends MatcherBase {
@@ -53,7 +55,7 @@ final class FirefoxOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -65,7 +67,7 @@ final class FirefoxOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -75,7 +77,7 @@ final class FirefoxOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -85,7 +87,7 @@ final class FirefoxOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -111,7 +113,7 @@ final class FirefoxOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -120,7 +122,7 @@ final class FirefoxOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Smart Tv devices and browsers.
+ * 智能电视（Smart TV）浏览器匹配器。
+ * <p>通过调用 WURFLRequest#_internalIsSmartTvBrowser() 来判断请求是否来自智能电视。恢复匹配支持 Tizen、SmartTV、GoogleTV、AppleTV、BoxeeBox、Chromecast 等平台。</p>
  */
 
 final class SmartTvMatcher extends MatcherBase {
@@ -27,7 +28,7 @@ final class SmartTvMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -38,7 +39,7 @@ final class SmartTvMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -46,18 +47,24 @@ final class SmartTvMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yonclusiv eatch.
- */
+    /**
+     * SmartTV 匹配器不执行确定匹配，直接返回 {@code null}，让流程进入恢复匹配阶段。
+     *
+     * @param request WURFL 请求对象
+     * @return 始终返回 {@code null}
+     */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
         return null;
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 中包含的智能电视平台关键字返回对应的通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -84,7 +91,7 @@ final class SmartTvMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -93,7 +100,7 @@ final class SmartTvMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

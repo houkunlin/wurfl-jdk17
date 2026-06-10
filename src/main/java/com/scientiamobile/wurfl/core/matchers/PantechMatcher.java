@@ -5,7 +5,9 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 /**
- * Matcher implementation for identifying Pantech devices and browsers.
+ * Pantech（泛泰）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 "Pantech"、"PT-"、"PANTECH" 或 "PG-" 开头
+ * 来识别 Pantech 品牌的移动设备。</p>
  */
 
 final class PantechMatcher extends MatcherBase {
@@ -15,7 +17,7 @@ final class PantechMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -26,7 +28,7 @@ final class PantechMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -35,7 +37,7 @@ final class PantechMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

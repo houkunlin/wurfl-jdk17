@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Opera Mobi Or Tablet On Android devices and browsers.
+ * Android 平台上的 Opera Mobile 或 Opera Tablet 浏览器匹配器。
+ * <p>通过检查 User-Agent 同时包含 Android 和 Opera Tablet 或 Opera Mobi 来识别。恢复匹配根据 Android 版本号构造对应的 Opera 设备 ID，区分手机和平板形态。</p>
  */
 
 final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
@@ -46,7 +47,7 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -55,7 +56,7 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -65,7 +66,7 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -75,9 +76,13 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 Android 版本号和 Opera 类型（Tablet/Mobi）拼接设备 ID。
+     * 如果拼接的设备 ID 不在支持的列表中，则返回对应类型的默认值。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -93,7 +98,7 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -102,7 +107,7 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

@@ -8,7 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Skyfire devices and browsers.
+ * Skyfire 浏览器匹配器。
+ * <p>通过检查 User-Agent 是否包含 Skyfire 来识别 Skyfire 移动浏览器。支持 Skyfire v1 和 v2 的恢复匹配。</p>
  */
 
 final class SkyfireMatcher extends MatcherBase {
@@ -21,7 +22,7 @@ final class SkyfireMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -33,7 +34,7 @@ final class SkyfireMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -42,7 +43,7 @@ final class SkyfireMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -52,9 +53,12 @@ final class SkyfireMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 是否包含 "Skyfire/2." 返回对应的版本。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         return request.getNormalizedDeviceUserAgent().contains("Skyfire/2.") ? GENERIC_SKYFIRE_VERSION2 : GENERIC_SKYFIRE_VERSION1;
@@ -62,7 +66,7 @@ final class SkyfireMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -71,7 +75,7 @@ final class SkyfireMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

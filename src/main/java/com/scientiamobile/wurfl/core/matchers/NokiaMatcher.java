@@ -8,7 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Nokia devices and browsers.
+ * Nokia（诺基亚）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 Nokia 来识别诺基亚品牌的移动设备。支持 Series60、Series80 和 MeeGo 平台的恢复匹配。</p>
  */
 
 final class NokiaMatcher extends MatcherBase {
@@ -22,7 +23,7 @@ final class NokiaMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -36,7 +37,7 @@ final class NokiaMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -44,10 +45,13 @@ final class NokiaMatcher extends MatcherBase {
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Nokia") && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Android", "iPhone");
     }
 
-    @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：找到 "Nokia" 关键字后的斜杠或空格位置作为截断点。
+     * <p>如果 User-Agent 以 "Nokia/" 或 "Nokia " 开头，则使用完整的字符串长度进行匹配。</p>
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String userAgent) {
         int matchLength = StringMatchUtils.indexOfAnyOrLength(userAgent, new String[]{"/", " "}, userAgent.indexOf("Nokia"));
@@ -58,10 +62,13 @@ final class NokiaMatcher extends MatcherBase {
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
 
-    @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 中包含的平台关键字返回对应的通用设备 ID。
+     * <p>分别处理 Series60、Series80 和 MeeGo 平台。</p>
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -76,7 +83,7 @@ final class NokiaMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -85,7 +92,7 @@ final class NokiaMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

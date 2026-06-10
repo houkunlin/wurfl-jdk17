@@ -8,7 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Catch All Mozilla devices and browsers.
+ * Catch-All Mozilla 匹配器，作为所有 Mozilla 系浏览器的最终兜底。
+ * <p>当所有更专业的匹配器都未能处理时，此匹配器处理以 Mozilla/3、Mozilla/4 或 Mozilla/5 开头的请求。</p>
  */
 
 final class CatchAllMozillaMatcher extends AbstractMatcher {
@@ -18,7 +19,7 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -30,7 +31,7 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -38,9 +39,12 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
     }
 
     @Override
-/**
- * Appl yonclusiv eatch.
- */
+    /**
+     * 确定匹配策略：以第一个右括号位置截断执行 RIS 匹配，如果匹配失败则返回 "generic"。
+     *
+     * @param request WURFL 请求对象
+     * @return 匹配到的设备 ID
+     */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -62,7 +66,7 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -71,7 +75,7 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

@@ -8,8 +8,9 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Implementation of Matcher Chain.
+/*/**
+ * 匹配器链，实现了责任链（Chain of Responsibility）模式。
+ * <p>持有一个有序的匹配器列表，依次尝试每个匹配器直到找到第一个能处理该请求的匹配器。</p>
  */
 
 class MatcherChain implements Matcher, MatcherFilter {
@@ -18,7 +19,7 @@ class MatcherChain implements Matcher, MatcherFilter {
     private List<MatcherFilter> filters = new LinkedList<>();
 
     /**
-     * Ad datcher.
+     * 添加匹配器.
      */
 
     public final void addMatcher(Matcher matcher) {
@@ -53,7 +54,7 @@ class MatcherChain implements Matcher, MatcherFilter {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -61,11 +62,12 @@ class MatcherChain implements Matcher, MatcherFilter {
     }
 
     @Override
-/**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
- */
+    /**
+     * 匹配器链的归一化方法直接返回原始 User-Agent，不做任何处理。
+     *
+     * @param userAgent 原始 User-Agent 字符串
+     * @return 未经修改的 User-Agent 字符串
+     */
 
     public String normalize(String userAgent) {
         return userAgent;
@@ -77,7 +79,7 @@ class MatcherChain implements Matcher, MatcherFilter {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -99,7 +101,7 @@ class MatcherChain implements Matcher, MatcherFilter {
     }
 
     /**
-     * Returns the index.
+     * 获取设备索引.
  */
 
     public final FilteredDeviceIndex getIndex() {
@@ -116,8 +118,9 @@ class MatcherChain implements Matcher, MatcherFilter {
     }
 
     /**
-     * Sor tll.
- */
+     * 对所有过滤器中的 User-Agent 索引进行排序。
+     * <p>如果某个过滤器是 {@link MatcherChain} 类型，则递归调用其 {@code sortAll()} 方法。</p>
+     */
 
     public final void sortAll() {
         for (MatcherFilter matcherFilter : this.filters) {

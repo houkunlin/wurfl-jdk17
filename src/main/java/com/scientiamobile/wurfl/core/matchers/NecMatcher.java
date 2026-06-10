@@ -5,7 +5,8 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 /**
- * Matcher implementation for identifying Nec devices and browsers.
+ * NEC（日本电气）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 NEC- 或 KGT 开头来识别 NEC 品牌的移动设备。</p>
  */
 
 final class NecMatcher extends MatcherBase {
@@ -14,9 +15,12 @@ final class NecMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Returns whether this ca nandle.
- */
+    /**
+     * 判断 User-Agent 是否以 "NEC-" 或 "KGT" 开头且非桌面浏览器。
+     *
+     * @param request WURFL 请求对象
+     * @return 如果是 NEC 设备则返回 {@code true}
+     */
 
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "NEC-", "KGT");
@@ -24,7 +28,7 @@ final class NecMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -33,7 +37,7 @@ final class NecMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

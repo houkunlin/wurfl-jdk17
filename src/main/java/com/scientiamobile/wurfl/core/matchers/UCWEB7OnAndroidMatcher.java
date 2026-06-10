@@ -11,7 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying UCWEB7On Android devices and browsers.
+ * UCWEB 7 浏览器（Android 平台）匹配器。
+ * <p>通过检查 User-Agent 同时包含 "Android" 和 "UCWEB7" 来识别。
+ * 支持 Android 1.6、2.1、2.2、2.3 四个版本的 UCWEB7 浏览器映射。</p>
  */
 
 final class UCWEB7OnAndroidMatcher extends MatcherBase {
@@ -32,7 +34,7 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -44,7 +46,7 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -54,7 +56,7 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -63,7 +65,7 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -74,7 +76,7 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -83,7 +85,7 @@ final class UCWEB7OnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

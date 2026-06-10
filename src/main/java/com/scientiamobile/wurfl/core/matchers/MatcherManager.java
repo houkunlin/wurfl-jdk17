@@ -16,8 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-/**
- * Implementation of Matcher Manager.
+/*/**
+ * 匹配器管理器，负责构建和管理匹配器链。
+ * <p>该类是 WURFL 引擎的核心组件，负责创建所有内置匹配器、初始化规范化器、加载模型数据到匹配器索引中。</p>
  */
 
 public final class MatcherManager {
@@ -39,7 +40,7 @@ public final class MatcherManager {
     }
 
     /**
-     * Buil datche rhain.
+     * 构建匹配器链.
      */
 
     private MatcherChain buildMatcherChain(WURFLModel model) {
@@ -162,8 +163,12 @@ public final class MatcherManager {
     }
 
     /**
-     * Reloa dodel.
- */
+     * 热重载 WURFL 模型。
+     * <p>当 WURFL 数据更新时调用此方法，会重新构建整个匹配器链以反映最新的设备数据。</p>
+     *
+     * @param model 新的 WURFL 数据模型
+     * @throws IllegalArgumentException 如果模型为 {@code null}
+     */
 
     public final void reloadModel(WURFLModel model) {
         log.info("reloading the model");
@@ -175,8 +180,12 @@ public final class MatcherManager {
     }
 
     /**
-     * Matc hequest.
- */
+     * 匹配请求，返回设备信息。
+     * <p>将请求委托给内部的匹配器链执行匹配。</p>
+     *
+     * @param request WURFL 请求对象
+     * @return 匹配到的设备信息
+     */
 
     public final DeviceInfo matchRequest(WURFLRequest request) {
         return this.matcherChain.match(request);

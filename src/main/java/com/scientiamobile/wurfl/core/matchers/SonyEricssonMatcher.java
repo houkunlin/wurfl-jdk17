@@ -5,7 +5,9 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 /**
- * Matcher implementation for identifying Sony Ericsson devices and browsers.
+ * Sony Ericsson（索尼爱立信）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 "Sony" 来识别索尼爱立信品牌的移动设备。
+ * RIS 匹配根据 User-Agent 是否以 "SonyEricsson" 开头采用不同的截断策略。</p>
  */
 
 final class SonyEricssonMatcher extends MatcherBase {
@@ -15,7 +17,7 @@ final class SonyEricssonMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -24,7 +26,7 @@ final class SonyEricssonMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -41,7 +43,7 @@ final class SonyEricssonMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -50,7 +52,7 @@ final class SonyEricssonMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

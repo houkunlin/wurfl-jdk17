@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Chrome devices and browsers.
+ * Google Chrome 桌面浏览器匹配器。
+ * <p>通过检查 User-Agent 是否包含 "Chrome"（排除移动浏览器场景）来识别 Chrome 桌面浏览器。
+ * RIS 匹配以第一个点号位置截断，恢复匹配统一返回 {@code "google_chrome"}。</p>
  */
 
 final class ChromeMatcher extends MatcherBase {
@@ -21,7 +23,7 @@ final class ChromeMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -33,7 +35,7 @@ final class ChromeMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -43,7 +45,7 @@ final class ChromeMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -56,7 +58,7 @@ final class ChromeMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -65,7 +67,7 @@ final class ChromeMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -74,7 +76,7 @@ final class ChromeMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

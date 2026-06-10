@@ -9,7 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Maemo devices and browsers.
+ * Maemo 操作系统匹配器（诺基亚 N900 等设备）。
+ * <p>通过检查 User-Agent 是否包含 Maemo 来识别。恢复匹配根据浏览器类型（Opera Mobi 或 Firefox）返回对应的通用设备 ID。</p>
  */
 
 final class MaemoMatcher extends MatcherBase {
@@ -23,7 +24,7 @@ final class MaemoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -37,7 +38,7 @@ final class MaemoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -45,9 +46,12 @@ final class MaemoMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 是否包含 "Opera Mobi" 或 "Firefox" 返回不同的通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent;
@@ -60,9 +64,12 @@ final class MaemoMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：以 "---" 分隔符位置加 3 截断，如果没有则退回到基类的 RIS 方法。
+     *
+     * @param normalizedUserAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String normalizedUserAgent) {
         int matchLength;
@@ -74,7 +81,7 @@ final class MaemoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -83,7 +90,7 @@ final class MaemoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

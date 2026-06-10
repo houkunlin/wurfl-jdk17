@@ -3,7 +3,9 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 /**
- * Matcher implementation for identifying Portalmmm devices and browsers.
+ * Portalmmm 品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 "portalmmm" 开头来识别 Portalmmm 品牌的移动设备。</p>
+ * <p>注意：该匹配器的 {@link #risMatch} 方法返回 {@code null}，即不参与 RIS 确定匹配流程。</p>
  */
 
 final class PortalmmmMatcher extends MatcherBase {
@@ -14,7 +16,7 @@ final class PortalmmmMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -23,7 +25,7 @@ final class PortalmmmMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {
@@ -32,7 +34,7 @@ final class PortalmmmMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {

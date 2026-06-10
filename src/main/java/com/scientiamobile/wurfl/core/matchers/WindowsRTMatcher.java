@@ -8,7 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Windows RT devices and browsers.
+ * Windows RT 操作系统匹配器。
+ * <p>Windows RT 是微软针对 ARM 架构设备推出的操作系统版本。
+ * 该匹配器通过检查 User-Agent 同时包含 "Windows NT"、"ARM" 和 "Trident/" 来识别。
+ * 区分包含 "like Gecko"（IE 11+）和不包含（IE 10）两种场景的恢复匹配。</p>
  */
 
 final class WindowsRTMatcher extends AbstractMatcher {
@@ -21,7 +24,7 @@ final class WindowsRTMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -33,7 +36,7 @@ final class WindowsRTMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -42,7 +45,7 @@ final class WindowsRTMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -64,9 +67,12 @@ final class WindowsRTMatcher extends AbstractMatcher {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据是否包含 "like Gecko"（IE 引擎版本）选择对应的 Windows RT 通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         return request.getNormalizedDeviceUserAgent().contains("like Gecko") ? WINDOWS_8_RT_VER1_SUBOS81 : GENERIC_WINDOWS_8_RT;
@@ -74,7 +80,7 @@ final class WindowsRTMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -83,7 +89,7 @@ final class WindowsRTMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

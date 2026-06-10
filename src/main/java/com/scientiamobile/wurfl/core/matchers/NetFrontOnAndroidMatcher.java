@@ -11,7 +11,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Net Front On Android devices and browsers.
+ * NetFront Life Browser（Android 平台）匹配器。
+ * <p>NetFront Life Browser 是 ACCESS 公司开发的 Android 平台浏览器。
+ * 通过检查 User-Agent 同时包含 "Android" 和 "NetFrontLifeBrowser/2.2" 来识别。
+ * 支持 Android 2.1、2.2、2.3 的版本映射。</p>
  */
 
 final class NetFrontOnAndroidMatcher extends MatcherBase {
@@ -31,7 +34,7 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -42,7 +45,7 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -52,7 +55,7 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -61,7 +64,7 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -72,7 +75,7 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -81,7 +84,7 @@ final class NetFrontOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

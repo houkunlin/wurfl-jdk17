@@ -9,7 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying HTC Mac devices and browsers.
+ * HTC Mac 伪装匹配器，用于识别伪装成 Macintosh 的 HTC Android 设备。
+ * <p>某些 HTC Android 设备的 User-Agent 以 Macintosh 开头但包含 HTC 标识。该匹配器专门处理此类伪装设备。</p>
  */
 
 final class HTCMacMatcher extends MatcherBase {
@@ -21,7 +22,7 @@ final class HTCMacMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -33,7 +34,7 @@ final class HTCMacMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -41,20 +42,24 @@ final class HTCMacMatcher extends MatcherBase {
         return cleanedDeviceUserAgent.startsWith("Mozilla/5.0 (Macintosh") && cleanedDeviceUserAgent.contains("HTC");
     }
 
-    @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：以 "---" 分隔符位置作为截断点。
+     *
+     * @param normalizedUserAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String normalizedUserAgent) {
         int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "---");
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
     }
 
-    @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：统一返回 HTC Android 伪装为 Mac 的通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         return GENERIC_HTC_ANDROID_DISGUISED_AS_MAC;
@@ -62,7 +67,7 @@ final class HTCMacMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -71,7 +76,7 @@ final class HTCMacMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying LG devices and browsers.
+ * LG（LG 电子）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 "lg"（不区分大小写）开头来识别 LG 品牌的移动设备。
+ * RIS 匹配找到 "LG" 关键字后的斜杠位置截断，恢复匹配使用固定长度 7 截断。</p>
  */
 
 final class LGMatcher extends MatcherBase {
@@ -19,7 +21,7 @@ final class LGMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -31,7 +33,7 @@ final class LGMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -40,9 +42,12 @@ final class LGMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：找到 "LG" 关键字后的斜杠位置作为截断点。
+     *
+     * @param normalizedUserAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String normalizedUserAgent) {
         int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "/", normalizedUserAgent.indexOf("LG"));
@@ -51,7 +56,7 @@ final class LGMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -66,7 +71,7 @@ final class LGMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -75,7 +80,7 @@ final class LGMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

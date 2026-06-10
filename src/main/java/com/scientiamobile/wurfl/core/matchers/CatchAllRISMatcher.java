@@ -6,7 +6,13 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Collection;
 
 /**
- * Matcher implementation for identifying Catch All RIS devices and browsers.
+ * Catch-All RIS 匹配器，作为所有非 Mozilla 系 User-Agent 的最终兜底。
+ * <p>该匹配器可以处理任何请求（{@link #canHandle} 始终返回 {@code true}）。
+ * 根据 User-Agent 的开头不同选择不同的截断策略：</p>
+ * <ul>
+ *   <li>以 "CFNetwork" 开头 → 以第一个空格位置截断</li>
+ *   <li>其他 → 以第一个斜杠位置截断</li>
+ * </ul>
  */
 
 final class CatchAllRISMatcher extends AbstractMatcher {
@@ -17,7 +23,7 @@ final class CatchAllRISMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -39,7 +45,7 @@ final class CatchAllRISMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -48,7 +54,7 @@ final class CatchAllRISMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

@@ -10,7 +10,8 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * Matcher implementation for identifying Email Client User Agent devices and browsers.
+ * 电子邮件客户端 User-Agent 匹配器。
+ * <p>识别各种电子邮件客户端程序，包括 Thunderbird、Outlook、Lotus Notes、Eudora、Evolution、PocoMail、The Bat!、Postbox、Airmail、Spark 等。</p>
  */
 
 public class EmailClientUserAgentMatcher extends MatcherBase {
@@ -51,7 +52,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -61,7 +62,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -70,7 +71,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {
@@ -79,7 +80,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -101,7 +102,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -109,9 +110,14 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 中包含的邮件客户端标识返回对应的设备 ID。
+     * <p>支持 Thunderbird、Outlook（多平台）、Lotus Notes、Eudora、Evolution、PocoMail、
+     * The Bat!、Postbox、Airmail、Spark 等客户端的识别。</p>
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();

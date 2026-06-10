@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Ubuntu Touch OS devices and browsers.
+ * Ubuntu Touch 操作系统匹配器（Canonical 开发的移动操作系统）。
+ * <p>通过检查 User-Agent 包含 "Ubuntu" 且同时包含 "Mobile" 或 "Tablet" 来识别。
+ * 支持手机和平板两种形态的恢复匹配。</p>
  */
 
 public class UbuntuTouchOSMatcher extends MatcherBase {
@@ -21,7 +23,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -33,7 +35,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -43,7 +45,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -61,7 +63,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -70,7 +72,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -79,7 +81,7 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

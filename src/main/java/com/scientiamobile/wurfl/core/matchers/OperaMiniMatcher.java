@@ -11,7 +11,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Matcher implementation for identifying Opera Mini devices and browsers.
+ * Opera Mini 移动浏览器匹配器。
+ * <p>Opera Mini 是 Opera 公司推出的移动端浏览器，通过代理服务器压缩网页内容以节省流量。支持 Opera Mini v1 到 v7 的版本映射。</p>
  */
 
 final class OperaMiniMatcher extends MatcherBase {
@@ -34,7 +35,7 @@ final class OperaMiniMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -45,7 +46,7 @@ final class OperaMiniMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -53,9 +54,17 @@ final class OperaMiniMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：按优先级尝试以下截断位置：
+     * <ul>
+     *   <li>"---" 分隔符</li>
+     *   <li>"Opera Mini" 关键字后的点号位置</li>
+     *   <li>第一个斜杠位置</li>
+     * </ul>
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String userAgent) {
         int matchLength;
@@ -72,7 +81,7 @@ final class OperaMiniMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -88,7 +97,7 @@ final class OperaMiniMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -97,7 +106,7 @@ final class OperaMiniMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

@@ -11,7 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Ucweb U2 devices and browsers.
+ * UCWeb U2 内核浏览器匹配器。
+ * <p>UCWeb U2 是 UC 浏览器的旧版内核，运行在多种移动平台上。
+ * 通过检查 User-Agent 是否以 "UCWEB" 开头且包含 "UCBrowser" 来识别。
+ * RIS 匹配根据不同平台（Android、iOS、Windows Phone、Symbian、Java）验证设备信息后匹配。</p>
  */
 
 final class UcwebU2Matcher extends MatcherBase {
@@ -21,7 +24,7 @@ final class UcwebU2Matcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -32,7 +35,7 @@ final class UcwebU2Matcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -41,9 +44,13 @@ final class UcwebU2Matcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：通过 "---" 分隔符定位，根据不同平台（Adr/Android、iPh OS/iOS、
+     * wds/Windows Phone、Symbian、Java）验证设备信息完整性后进行匹配。
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String userAgent) {
         if (UserAgentUtils.getUcBrowserVersion(userAgent, true) == null) {
@@ -82,9 +89,12 @@ final class UcwebU2Matcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：统一返回通用 UCWeb 设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 固定返回 {@code "generic_ucweb"}
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         return "generic_ucweb";
@@ -92,7 +102,7 @@ final class UcwebU2Matcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -101,7 +111,7 @@ final class UcwebU2Matcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

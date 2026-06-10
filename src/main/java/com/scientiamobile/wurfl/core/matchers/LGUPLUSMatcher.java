@@ -10,7 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying LGUPLUS devices and browsers.
+ * LG U+（韩国运营商）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 "lgtelecom" 或 "LGUPLUS" 来识别 LG U+ 品牌设备。
+ * 恢复匹配根据 User-Agent 中包含的操作系统和浏览器特征选择对应的通用设备 ID，
+ * 支持 RexOS、Windows Mobile 和 Android 平台。</p>
  */
 
 final class LGUPLUSMatcher extends MatcherBase {
@@ -31,7 +34,7 @@ final class LGUPLUSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -44,7 +47,7 @@ final class LGUPLUSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -53,7 +56,7 @@ final class LGUPLUSMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yonclusiv eatch.
+ * 执行确定匹配.
  */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
@@ -61,9 +64,13 @@ final class LGUPLUSMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：遍历预定义的设备规则，根据 User-Agent 中是否包含特定的操作系统和浏览器特征
+     * 返回对应的 LG U+ 通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
@@ -78,7 +85,7 @@ final class LGUPLUSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -87,7 +94,7 @@ final class LGUPLUSMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

@@ -3,18 +3,27 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 /**
- * Matcher implementation for identifying Konqueror devices and browsers.
+ * Konqueror 浏览器匹配器。
+ * <p>Konqueror 是 KDE 桌面环境下的原生网页浏览器。
+ * 该匹配器通过检查 User-Agent 是否包含 "Konqueror" 来识别，且仅用于非移动浏览器场景。</p>
  */
 
 final class KonquerorMatcher extends MatcherBase {
     @Override
+    /**
+     * 判断 User-Agent 是否包含 "Konqueror" 且非移动浏览器。
+     *
+     * @param request WURFL 请求对象
+     * @return 如果是 Konqueror 浏览器则返回 {@code true}
+     */
+
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsMobileBrowser() && request.getCleanedDeviceUserAgent().contains("Konqueror");
     }
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -23,7 +32,7 @@ final class KonquerorMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

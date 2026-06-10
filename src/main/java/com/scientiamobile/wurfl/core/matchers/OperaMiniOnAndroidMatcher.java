@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Opera Mini On Android devices and browsers.
+ * Android 平台上的 Opera Mini 浏览器匹配器。
+ * <p>通过检查 User-Agent 同时包含 "Android" 和 "Opera Mini" 来识别。
+ * RIS 匹配以 " Build/" 分隔或预定义的前缀长度截断。</p>
  */
 
 final class OperaMiniOnAndroidMatcher extends MatcherBase {
@@ -21,7 +23,7 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -32,7 +34,7 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -41,7 +43,7 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -60,9 +62,12 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：统一返回 Android Opera Mini v5 通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 固定返回 {@code "generic_opera_mini_android_version5"}
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         return GENERIC_OPERA_MINI_ANDROID_VERSION5;
@@ -70,7 +75,7 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -79,7 +84,7 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

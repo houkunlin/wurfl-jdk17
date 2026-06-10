@@ -9,7 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Samsung devices and browsers.
+ * Samsung（三星）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 SEC-、SPH、SGH、SCH 等前缀开头或包含 samsung 来识别三星品牌的移动设备。</p>
  */
 
 final class SamsungMatcher extends MatcherBase {
@@ -24,7 +25,7 @@ final class SamsungMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -35,7 +36,7 @@ final class SamsungMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -50,7 +51,15 @@ final class SamsungMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 根据 User-Agent 的前缀特征选择不同的截断位置执行 RIS 匹配。
+ * <ul>
+ *   <li>以 "SEC-"、"SAMSUNG-"、"SCH" 开头的 → 取第一个斜杠位置</li>
+ *   <li>以 "Samsung"、"SPH"、"SGH" 开头的 → 取第一个空格位置</li>
+ *   <li>其他情况 → 取第二个斜杠位置</li>
+ * </ul>
+ *
+ * @param userAgent 要匹配的 User-Agent 字符串
+ * @return RIS 匹配结果
  */
 
     protected String risMatch(String userAgent) {
@@ -68,10 +77,12 @@ final class SamsungMatcher extends MatcherBase {
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
 
-    @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：找到 "Samsung" 关键字后的斜杠位置，基于该长度尝试 RIS 匹配。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID，未匹配则返回 "generic"
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -83,7 +94,7 @@ final class SamsungMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -91,9 +102,11 @@ final class SamsungMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Returns the bucke tatche rame.
- */
+    /**
+     * 获取桶匹配器名称。
+     *
+     * @return 固定返回 {@code "Samsung"}
+     */
 
     public String getBucketMatcherName() {
         return SAMSUNG;

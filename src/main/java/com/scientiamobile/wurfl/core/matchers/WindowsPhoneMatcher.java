@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Windows Phone devices and browsers.
+ * Windows Phone 移动操作系统匹配器。
+ * <p>通过检查 User-Agent 是否包含 Windows Phone、WindowsPhone、ZuneWP7、WPDesktop、NativeHost 或同时包含 Windows NT、ARM、Edge/ 来识别 Windows Phone 设备。</p>
  */
 
 final class WindowsPhoneMatcher extends AbstractMatcher {
@@ -37,7 +38,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -52,7 +53,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -61,9 +62,13 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
     }
 
     @Override
-/**
- * Appl yonclusiv eatch.
- */
+    /**
+     * 确定匹配策略：如果 User-Agent 包含 "---" 分隔符或 "NativeHost" 关键字，
+     * 则特殊处理（NativeHost 直接返回 Windows Phone 7 通用设备 ID），否则退回到基类方法。
+     *
+     * @param request WURFL 请求对象
+     * @return 匹配到的设备 ID
+     */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -78,7 +83,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -91,7 +96,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -115,7 +120,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -124,7 +129,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

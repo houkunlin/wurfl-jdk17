@@ -15,7 +15,17 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Abstract devices and browsers.
+ * 抽象匹配器基类，提供了 User-Agent 匹配流程的骨架实现。
+ * <p>该类实现了模板方法模式，定义了匹配的标准流程：</p>
+ * <ol>
+ *   <li>规范化 User-Agent</li>
+ *   <li>尝试精确匹配（精确命中索引）</li>
+ *   <li>尝试确定匹配（RIS 算法）</li>
+ *   <li>尝试恢复匹配（基于版本号的兜底）</li>
+ *   <li>尝试回退设备匹配（最终兜底，如 Catch-All 规则）</li>
+ * </ol>
+ * <p>子类通常只需覆盖 {@link #canHandle}、{@link #risMatch}、{@link #applyRecoveryMatch} 等方法
+ * 即可实现特定的设备或浏览器匹配逻辑。</p>
  */
 
 abstract class AbstractMatcher implements Matcher {
@@ -128,8 +138,11 @@ abstract class AbstractMatcher implements Matcher {
     }
 
     /**
-     * Sets the filter.
- */
+     * 设置自定义的匹配器过滤器。
+     * <p>允许外部注入替代的过滤器实现，用于特殊场景下的索引管理。</p>
+     *
+     * @param filter 匹配器过滤器实例
+     */
 
     public final void setFilter(MatcherFilter filter) {
         this.filter = filter;
@@ -198,7 +211,7 @@ abstract class AbstractMatcher implements Matcher {
     }
 
     /**
-     * Appl yonclusiv eatch.
+     * 执行确定匹配.
  */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
@@ -217,7 +230,7 @@ abstract class AbstractMatcher implements Matcher {
     }
 
     /**
-     * Ri satch.
+     * 执行 RIS 匹配.
  */
 
     protected String risMatch(String value) {
@@ -227,8 +240,12 @@ abstract class AbstractMatcher implements Matcher {
     }
 
     /**
-     * Appl yecover yatch.
- */
+     * 执行恢复匹配（Recovery Match），作为确定匹配失败后的兜底策略。
+     * <p>基类默认返回 "generic"，子类应覆盖此方法以提供基于版本号或关键字的恢复匹配逻辑。</p>
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配到的设备 ID，默认返回 "generic"
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         return "generic";
@@ -236,9 +253,12 @@ abstract class AbstractMatcher implements Matcher {
 
     @Override
 /**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
+ * 规范化给定的 User-Agent 字符串。
+ * <p>如果当前匹配器配置了 {@link UserAgentNormalizer}，则调用其规范化方法；
+ * 否则直接返回原始值。</p>
+ *
+ * @param value 原始 User-Agent 字符串
+ * @return 规范化后的 User-Agent 字符串
  */
 
     public String normalize(String value) {
@@ -251,7 +271,7 @@ abstract class AbstractMatcher implements Matcher {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {

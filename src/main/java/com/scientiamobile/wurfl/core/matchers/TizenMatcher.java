@@ -12,7 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher implementation for identifying Tizen devices and browsers.
+ * Tizen 操作系统匹配器（三星主导的 Linux 移动/智能设备操作系统）。
+ * <p>通过检查 User-Agent 是否以 Mozilla 开头且包含 Tizen 来识别。支持 Tizen 1.0 到 3.0 的版本映射。</p>
  */
 
 public class TizenMatcher extends MatcherBase {
@@ -44,7 +45,7 @@ public class TizenMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -55,7 +56,7 @@ public class TizenMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -65,7 +66,7 @@ public class TizenMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String userAgent) {
@@ -74,9 +75,12 @@ public class TizenMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：从 User-Agent 中提取 Tizen 版本号，构造对应的通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -88,7 +92,7 @@ public class TizenMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -97,7 +101,7 @@ public class TizenMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

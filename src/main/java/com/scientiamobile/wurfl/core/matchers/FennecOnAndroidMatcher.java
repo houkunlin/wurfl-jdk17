@@ -12,7 +12,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher implementation for identifying Fennec On Android devices and browsers.
+ * Fennec（Firefox for Android）浏览器匹配器。
+ * <p>Fennec 是 Mozilla 为 Android 平台开发的 Firefox 移动浏览器。
+ * 通过检查 User-Agent 同时包含 "Android" 和 "Fennec" 或 "Firefox" 来识别。
+ * 支持 Android 2.x 到 9.x 的手机、平板和桌面三种形态的版本映射。
+ * RIS 匹配使用 Gecko 渲染引擎版本（rv:）后的点号位置截断。</p>
  */
 
 final class FennecOnAndroidMatcher extends MatcherBase {
@@ -26,7 +30,7 @@ final class FennecOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -64,7 +68,7 @@ final class FennecOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -74,7 +78,7 @@ final class FennecOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -87,9 +91,12 @@ final class FennecOnAndroidMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 Android 版本号和浏览器类型（手机/平板/桌面）构造对应的 Fennec 通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceId = null;
@@ -119,7 +126,7 @@ final class FennecOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -128,7 +135,7 @@ final class FennecOnAndroidMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

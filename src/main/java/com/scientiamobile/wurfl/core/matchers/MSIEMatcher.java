@@ -12,7 +12,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher implementation for identifying MSIE devices and browsers.
+ * Microsoft Internet Explorer 和 Edge 浏览器匹配器。
+ * <p>通过检查 User-Agent 是否包含 "MSIE"、"Trident"+"rv:" 或 " Edge/" 来识别
+ * IE 和 Edge 桌面浏览器（排除移动浏览器和特定平台）。使用三个正则表达式依次尝试匹配：
+ * Edge 格式、Trident 格式和 MSIE 格式。支持 IE v4 到 v12 及 Edge v13 到 v17 的版本映射。</p>
  */
 
 final class MSIEMatcher extends MatcherBase {
@@ -47,7 +50,7 @@ final class MSIEMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -61,7 +64,7 @@ final class MSIEMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -75,7 +78,7 @@ final class MSIEMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yonclusiv eatch.
+ * 执行确定匹配.
  */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
@@ -118,9 +121,12 @@ final class MSIEMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：先去除不重要的标记，然后以 "Trident" 关键字位置截断。
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String userAgent) {
         String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(userAgent).replaceFirst("");
@@ -130,7 +136,7 @@ final class MSIEMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -140,7 +146,7 @@ final class MSIEMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -149,7 +155,7 @@ final class MSIEMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

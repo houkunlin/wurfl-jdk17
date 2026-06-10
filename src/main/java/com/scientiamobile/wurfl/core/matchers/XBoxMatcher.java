@@ -7,7 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying X Box devices and browsers.
+ * Microsoft Xbox 游戏设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 "Xbox" 来识别微软的 Xbox 游戏主机，
+ * 包括 Xbox 360 和 Xbox One。根据 User-Agent 中的 MSIE 版本和 Xbox 型号
+ * 区分不同的设备版本。</p>
  */
 
 final class XBoxMatcher extends AbstractMatcher {
@@ -21,7 +24,7 @@ final class XBoxMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -34,7 +37,7 @@ final class XBoxMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -43,7 +46,7 @@ final class XBoxMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Appl yonclusiv eatch.
+ * 执行确定匹配.
  */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
@@ -51,9 +54,12 @@ final class XBoxMatcher extends AbstractMatcher {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 是否包含 "MSIE 10.0" 和 "Xbox One" 返回对应的通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -66,7 +72,7 @@ final class XBoxMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -75,7 +81,7 @@ final class XBoxMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

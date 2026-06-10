@@ -10,7 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher implementation for identifying HTC devices and browsers.
+ * HTC（宏达电）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 HTC 或 XV6875 来识别 HTC 品牌的移动设备。RIS 匹配使用正则表达式提取 HTC 前缀作为截断点。</p>
  */
 
 final class HTCMatcher extends MatcherBase {
@@ -22,7 +23,7 @@ final class HTCMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -35,7 +36,7 @@ final class HTCMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -44,7 +45,7 @@ final class HTCMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -58,10 +59,12 @@ final class HTCMatcher extends MatcherBase {
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
     }
 
-    @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：如果 User-Agent 包含 Windows CE 平台信息，返回 Windows Mobile 通用设备 ID。
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         return request.getNormalizedDeviceUserAgent().contains("Windows CE;") ? "generic_ms_mobile" : "generic";
@@ -69,7 +72,7 @@ final class HTCMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -78,7 +81,7 @@ final class HTCMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

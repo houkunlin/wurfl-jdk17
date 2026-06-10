@@ -7,7 +7,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Java Midlet devices and browsers.
+ * Java MIDlet（移动信息设备小程序）匹配器。
+ * <p>通过检查 User-Agent 是否包含 "UNTRUSTED/1.0" 来识别基于 Java ME 平台的 MIDlet 应用。
+ * 该匹配器的确定匹配直接返回通用 MIDP MIDlet 设备 ID。</p>
  */
 
 final class JavaMidletMatcher extends MatcherBase {
@@ -19,7 +21,7 @@ final class JavaMidletMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -31,7 +33,7 @@ final class JavaMidletMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -39,9 +41,12 @@ final class JavaMidletMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yonclusiv eatch.
- */
+    /**
+     * Java MIDlet 匹配器直接返回固定的通用设备 ID，不执行实际的 User-Agent 匹配。
+     *
+     * @param request WURFL 请求对象
+     * @return 固定的 {@code "generic_midp_midlet"}
+     */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
         return GENERIC_MIDP_MIDLET;
@@ -49,7 +54,7 @@ final class JavaMidletMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -58,7 +63,7 @@ final class JavaMidletMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

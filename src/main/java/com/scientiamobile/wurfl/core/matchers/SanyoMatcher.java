@@ -7,7 +7,9 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.Locale;
 
 /**
- * Matcher implementation for identifying Sanyo devices and browsers.
+ * Sanyo（三洋）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 "sanyo"（不区分大小写）开头或包含 "MobilePhone"
+ * 来识别 Sanyo 品牌的移动设备。</p>
  */
 
 final class SanyoMatcher extends MatcherBase {
@@ -17,7 +19,7 @@ final class SanyoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -28,7 +30,7 @@ final class SanyoMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -42,7 +44,7 @@ final class SanyoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -51,7 +53,7 @@ final class SanyoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

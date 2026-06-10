@@ -10,7 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Kindle devices and browsers.
+ * Amazon Kindle 设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 "Kindle" 或 "Silk" 来识别 Amazon 的 Kindle 系列设备。
+ * 对于包含 "Android" + "/Kindle" 或 "Silk" 的 User-Agent 不做处理（由 Android 匹配器处理）。
+ * 支持 Kindle 1/2/3、Kindle Fire 和 Silk 浏览器的映射。</p>
  */
 
 final class KindleMatcher extends MatcherBase {
@@ -32,7 +35,7 @@ final class KindleMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -44,7 +47,7 @@ final class KindleMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -53,9 +56,17 @@ final class KindleMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：按优先级尝试以下截断位置：
+     * <ul>
+     *   <li>"Build/" 关键字位置</li>
+     *   <li>"Kindle/" + 版本号（仅限 v1-v3）位置</li>
+     *   <li>"PlayStation Vita" 关键字位置</li>
+     * </ul>
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String userAgent) {
         int matchLength;
@@ -80,7 +91,7 @@ final class KindleMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -97,7 +108,7 @@ final class KindleMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -106,7 +117,7 @@ final class KindleMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

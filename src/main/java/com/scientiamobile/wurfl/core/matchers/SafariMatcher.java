@@ -9,7 +9,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Safari devices and browsers.
+ * Apple Safari 桌面浏览器匹配器。
+ * <p>通过检查 User-Agent 是否包含 "Safari" 且以 "Mozilla/5.0 (Macintosh" 或
+ * "Mozilla/5.0 (Windows" 开头来识别 Safari 桌面浏览器（排除移动浏览器场景）。
+ * RIS 匹配以 "---" 分隔符位置截断。</p>
  */
 
 final class SafariMatcher extends MatcherBase {
@@ -19,7 +22,7 @@ final class SafariMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -31,7 +34,7 @@ final class SafariMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -40,9 +43,12 @@ final class SafariMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：以 "---" 分隔符位置加 3 作为截断点。
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String userAgent) {
         int matchLength;
@@ -52,7 +58,7 @@ final class SafariMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -62,7 +68,7 @@ final class SafariMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -71,7 +77,7 @@ final class SafariMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

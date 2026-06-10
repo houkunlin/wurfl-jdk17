@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Do Co Mo devices and browsers.
+ * DoCoMo（NTT docomo）日本运营商品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 "DoCoMo" 开头来识别 docomo 品牌的移动设备。
+ * 支持 DoCoMo/2 和 DoCoMo/1 两个协议版本的恢复匹配。</p>
  */
 
 final class DoCoMoMatcher extends MatcherBase {
@@ -21,7 +23,7 @@ final class DoCoMoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -34,7 +36,7 @@ final class DoCoMoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -43,7 +45,7 @@ final class DoCoMoMatcher extends MatcherBase {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -60,7 +62,7 @@ final class DoCoMoMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -69,7 +71,7 @@ final class DoCoMoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -78,7 +80,7 @@ final class DoCoMoMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

@@ -5,7 +5,8 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 /**
- * Matcher implementation for identifying SPV devices and browsers.
+ * SPV（Orange 旗下品牌）设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 SPV 来识别 SPV 品牌的移动设备。</p>
  */
 
 final class SPVMatcher extends MatcherBase {
@@ -15,7 +16,7 @@ final class SPVMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -23,9 +24,12 @@ final class SPVMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：找到 "SPV" 关键字后的分号位置作为截断点。
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String userAgent) {
         int matchLength = StringMatchUtils.indexOfOrLength(userAgent, ";", StringMatchUtils.indexOfOrLength(userAgent, "SPV"));
@@ -34,7 +38,7 @@ final class SPVMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -43,7 +47,7 @@ final class SPVMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

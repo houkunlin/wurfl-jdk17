@@ -4,7 +4,8 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 
 /**
- * Matcher implementation for identifying Vodafone devices and browsers.
+ * Vodafone（沃达丰）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 "Vodafone" 开头来识别 Vodafone 品牌的移动设备。</p>
  */
 
 final class VodafoneMatcher extends MatcherBase {
@@ -13,9 +14,12 @@ final class VodafoneMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Returns whether this ca nandle.
- */
+    /**
+     * 判断 User-Agent 是否以 "Vodafone" 开头且非桌面浏览器。
+     *
+     * @param request WURFL 请求对象
+     * @return 如果是 Vodafone 设备则返回 {@code true}
+     */
 
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("Vodafone");
@@ -23,7 +27,7 @@ final class VodafoneMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -32,7 +36,7 @@ final class VodafoneMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

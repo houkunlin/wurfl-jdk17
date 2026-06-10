@@ -10,7 +10,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Android devices and browsers.
+ * Android 操作系统设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 "Android" 或 "android"（排除 "like Android" 和 "Symbian"）
+ * 来识别 Android 设备。支持手机和平板两种形态的恢复匹配，根据 Android 版本号返回对应的通用设备 ID。</p>
+ * <p>RIS 匹配策略包括：</p>
+ * <ul>
+ *   <li>查找 "---" 分隔符</li>
+ *   <li>查找 Android 设备型号（Model）</li>
+ *   <li>在 " Build/" 或 " AppleWebKit" 位置截断</li>
+ * </ul>
  */
 
 final class AndroidMatcher extends AbstractMatcher {
@@ -81,7 +89,10 @@ final class AndroidMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合。
+ * <p>包括所有支持的 Android 手机和平板通用设备 ID。</p>
+ *
+ * @return 必需的设备 ID 集合
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -95,7 +106,7 @@ final class AndroidMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -106,7 +117,7 @@ final class AndroidMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -134,9 +145,14 @@ final class AndroidMatcher extends AbstractMatcher {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 中的 Android 版本号构造通用设备 ID。
+     * <p>如果 User-Agent 包含 "Safari" 但不含 "Mobile" 且不是 Android 3.x，则识别为平板，
+     * 返回对应的平板通用设备 ID，否则返回手机通用设备 ID。</p>
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
@@ -156,7 +172,7 @@ final class AndroidMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -164,9 +180,11 @@ final class AndroidMatcher extends AbstractMatcher {
     }
 
     @Override
-/**
- * Returns the bucke tatche rame.
- */
+    /**
+     * 获取桶匹配器名称。
+     *
+     * @return 固定返回 {@code "Android"}
+     */
 
     public String getBucketMatcherName() {
         return "Android";

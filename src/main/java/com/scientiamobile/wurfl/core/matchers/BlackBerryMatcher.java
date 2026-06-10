@@ -12,7 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher implementation for identifying Black Berry devices and browsers.
+ * BlackBerry（黑莓）品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否包含 blackberry、(BB10; 或 (PlayBook 来识别黑莓品牌的移动设备。支持 BlackBerry OS 2.x 到 10.x 的版本映射。</p>
  */
 
 final class BlackBerryMatcher extends AbstractMatcher {
@@ -50,7 +51,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -64,7 +65,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -78,7 +79,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Ri satch.
+ * 执行 RIS 匹配.
  */
 
     protected String risMatch(String normalizedUserAgent) {
@@ -101,9 +102,13 @@ final class BlackBerryMatcher extends AbstractMatcher {
     }
 
     @Override
-/**
- * Appl yecover yatch.
- */
+    /**
+     * 恢复匹配策略：根据 User-Agent 中的 BlackBerry 版本信息返回对应的通用设备 ID。
+     * <p>分别处理 BB10、PlayBook 和传统 BlackBerry OS 三种场景。</p>
+     *
+     * @param request WURFL 请求对象
+     * @return 恢复匹配的设备 ID
+     */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
@@ -128,7 +133,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -137,7 +142,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

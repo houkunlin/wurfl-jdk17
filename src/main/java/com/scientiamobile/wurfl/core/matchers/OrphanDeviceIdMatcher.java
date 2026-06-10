@@ -7,7 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Orphan Device Id devices and browsers.
+ * 孤儿设备 ID 匹配器，用于验证 WURFL 模型中是否包含所有必需的通用设备 ID。
+ * <p>该匹配器的 {@link #canHandle} 始终返回 {@code false}，因此不会实际参与匹配流程。
+ * 它的存在价值在于：通过构造函数中传入 {@link WURFLModel}，触发
+ * {@link AbstractMatcher#validateRequiredDeviceIds} 校验，
+ * 确保模型中包含 {@link AbstractMatcher} 的 {@code CATCH_ALL_FALLBACKS} 列表
+ * 和 {@link #getRequiredDeviceIds()} 中定义的所有回退设备 ID。</p>
+ * <p>如果缺少这些设备 ID，将在引擎启动时立即抛出异常，实现快速失败。</p>
  */
 
 public class OrphanDeviceIdMatcher extends MatcherBase {
@@ -17,7 +23,7 @@ public class OrphanDeviceIdMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -26,7 +32,7 @@ public class OrphanDeviceIdMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {

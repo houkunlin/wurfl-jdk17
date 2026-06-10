@@ -5,8 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-/**
- * Implementation of Filtered Device Index.
+/*/**
+ * 过滤后的设备索引，维护匹配器能处理的 User-Agent 与设备 ID 的映射。
+ * <p>使用 TreeMap 确保有序性，同时维护独立的 List 支持高效遍历和排序。</p>
  */
 
 final class FilteredDeviceIndex {
@@ -22,7 +23,9 @@ final class FilteredDeviceIndex {
     }
 
     /**
-     * Returns the use rgents.
+     * 获取所有 User-Agent 的集合视图。
+     *
+     * @return User-Agent 列表集合
      */
 
     public final Collection<String> getUserAgents() {
@@ -34,8 +37,12 @@ final class FilteredDeviceIndex {
     }
 
     /**
-     * Returns the devic e d yse rgent.
- */
+     * 根据 User-Agent 从索引中获取对应的设备 ID。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 对应的设备 ID，如果不存在则返回 {@code null}
+     * @throws NullPointerException 如果 userAgent 为 {@code null}
+     */
 
     public final String getDeviceIdByUserAgent(String userAgent) {
         Validate.notNull(userAgent, "The userAgent is empty");

@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Reksio devices and browsers.
+ * Reksio 品牌设备匹配器。
+ * <p>通过检查 User-Agent 是否以 Reksio 开头来识别 Reksio 品牌的移动设备。确定匹配直接返回 generic_reksio。</p>
  */
 
 final class ReksioMatcher extends MatcherBase {
@@ -19,7 +20,7 @@ final class ReksioMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -30,7 +31,7 @@ final class ReksioMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -38,9 +39,12 @@ final class ReksioMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Appl yonclusiv eatch.
- */
+    /**
+     * Reksio 匹配器直接返回固定的通用设备 ID，不执行实际的 User-Agent 匹配。
+     *
+     * @param request WURFL 请求对象
+     * @return 固定的 {@code "generic_reksio"}
+     */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
         return REKSIO_DEVICE_ID;
@@ -48,7 +52,7 @@ final class ReksioMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -57,7 +61,7 @@ final class ReksioMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {

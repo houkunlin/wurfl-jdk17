@@ -8,7 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Matcher implementation for identifying Nokia Ovi Browser devices and browsers.
+ * Nokia Ovi 浏览器匹配器。
+ * <p>Ovi 浏览器运行在诺基亚 Series40 和 Series30+ 功能手机平台上。通过检查 User-Agent 是否包含 S40OviBrowser 来识别。</p>
  */
 
 final class NokiaOviBrowserMatcher extends MatcherBase {
@@ -21,7 +22,7 @@ final class NokiaOviBrowserMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the require devic eds.
+ * 返回所需验证的设备 ID 集合.
  */
 
     protected Set<String> getRequiredDeviceIds() {
@@ -33,7 +34,7 @@ final class NokiaOviBrowserMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns whether this ca nandle.
+ * 判断当前匹配器能否处理该请求.
  */
 
     public boolean canHandle(WURFLRequest request) {
@@ -41,9 +42,12 @@ final class NokiaOviBrowserMatcher extends MatcherBase {
     }
 
     @Override
-/**
- * Ri satch.
- */
+    /**
+     * 执行 RIS 匹配：找到 "Nokia" 关键字后的斜杠或空格位置作为截断点。
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
 
     protected String risMatch(String userAgent) {
         int matchLength = StringMatchUtils.indexOfAnyOrLength(userAgent, new String[]{"/", " "}, userAgent.indexOf("Nokia"));
@@ -52,7 +56,7 @@ final class NokiaOviBrowserMatcher extends MatcherBase {
 
     @Override
 /**
- * Appl yecover yatch.
+ * 执行恢复匹配.
  */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
@@ -61,7 +65,7 @@ final class NokiaOviBrowserMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the matche rame.
+ * 获取匹配器名称.
  */
 
     public String getMatcherName() {
@@ -70,7 +74,7 @@ final class NokiaOviBrowserMatcher extends MatcherBase {
 
     @Override
 /**
- * Returns the bucke tatche rame.
+ * 获取桶匹配器名称.
  */
 
     public String getBucketMatcherName() {
