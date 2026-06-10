@@ -7,7 +7,9 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Implementation of Is Windows Phone.
+ * 判断设备是否为 Windows Phone 的虚拟能力评估器。
+ * <p>通过检查 WURFL 设备数据库中的 {@code device_os} 能力值
+ * 是否等于 "Windows Phone OS" 来识别 Windows Phone 设备。</p>
  */
 
 public class IsWindowsPhone implements VirtualCapabilityEvaluator, Serializable {
@@ -15,19 +17,11 @@ public class IsWindowsPhone implements VirtualCapabilityEvaluator, Serializable 
     private static final long serialVersionUID = 7780353517392752318L;
 
     @Override
-/**
- * Eval.
- */
-
     public String eval(Device device, WURFLRequest request) {
         return Boolean.toString("Windows Phone OS".equals(device.getCapability("device_os")));
     }
 
     @Override
-/**
- * Returns the handle dirtua lapabilit yame.
- */
-
     public String getHandledVirtualCapabilityName() {
         return "is_windows_phone";
     }

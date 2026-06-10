@@ -7,7 +7,10 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Implementation of Device Name.
+ * 设备名称虚拟能力评估器。
+ * <p>将 WURFL 设备数据库中的 {@code brand_name} 和显示名称拼接为
+ * 简洁的设备名称。优先使用 {@code marketing_name} 作为显示名称，
+ * 如果 marketing_name 为空则回退到 {@code model_name}。</p>
  */
 
 public class DeviceName implements VirtualCapabilityEvaluator, Serializable {
@@ -15,10 +18,6 @@ public class DeviceName implements VirtualCapabilityEvaluator, Serializable {
     private static final long serialVersionUID = 6339082037173595673L;
 
     @Override
-/**
- * Eval.
- */
-
     public String eval(Device device, WURFLRequest request) {
         StringBuilder builder = new StringBuilder(device.getCapability("brand_name"));
         String namePart;
@@ -32,10 +31,6 @@ public class DeviceName implements VirtualCapabilityEvaluator, Serializable {
     }
 
     @Override
-/**
- * Returns the handle dirtua lapabilit yame.
- */
-
     public String getHandledVirtualCapabilityName() {
         return "device_name";
     }

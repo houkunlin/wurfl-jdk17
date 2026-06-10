@@ -8,7 +8,12 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 
 /**
- * Implementation of Is App Webview.
+ * 判断请求是否来自 App 内嵌 WebView 的虚拟能力评估器。
+ * <p>与 {@link IsApp} 类似但判断条件更为严格，
+ * 旨在识别那些在原生应用中通过 WebView 加载页面的请求。
+ * 检测策略包括排除已知浏览器关键词、检测 {@code ; wv) } 标识、
+ * 检查 {@code X-Requested-With} 头、分析 Chrome 版本以及
+ * 识别旧版 Android WebView 的 User-Agent 模式。</p>
  */
 
 public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEvaluator, Serializable {
@@ -16,10 +21,6 @@ public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements 
     private static final long serialVersionUID = 165298984131843694L;
 
     @Override
-/**
- * Eval.
- */
-
     public String eval(Device device, WURFLRequest request) {
         String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
 
@@ -71,10 +72,6 @@ public class IsAppWebview extends AbstractVirtualCapabilityEvaluator implements 
     }
 
     @Override
-/**
- * Returns the handle dirtua lapabilit yame.
- */
-
     public String getHandledVirtualCapabilityName() {
         return "is_app_webview";
     }

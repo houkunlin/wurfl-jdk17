@@ -13,21 +13,50 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Abstract Implementation of Abstract Virtual Capability Evaluator.
+ * 虚拟能力评估器的抽象基类。
+ * <p>提供多个子类共享的静态工具方法，包括 Android/iOS User-Agent 模式匹配、
+ * App 检测、机器人检测、智能手机判定等。子类继承该类后可直接使用
+ * 这些受保护的静态方法，无需重复实现。
+ * 该类实现了 {@link Serializable} 以支持分布式环境下的序列化需求。</p>
  */
 
 abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEvaluator, Serializable {
+
+    /**
+     * 匹配 Android WebKit 内核浏览器的基础 User-Agent 模式
+     */
     protected static final Pattern ANDROID_WEBKIT_KHTML_PATTERN = Pattern.compile("Mozilla/5.0 \\(Linux;( U;)? Android.*AppleWebKit.*\\(KHTML, like Gecko\\)");
+
+    /**
+     * 匹配 Android 旧版 Safari 浏览器的完整 User-Agent 模式（Android 1-4）
+     */
     protected static final Pattern ANDROID_LEGACY_SAFARI_UA_PATTERN;
+
+    /** 匹配 Chrome 浏览器主版本号 */
     protected static final Pattern CHROME_MAJOR_VERSION_PATTERN;
+
+    /** 匹配 Android 1.x-4.x 的旧版本号模式 */
     protected static final Pattern ANDROID_LEGACY_VERSION_PATTERN;
+
+    /** 用于识别 App 请求的关键词模式列表（支持前缀匹配和包含匹配） */
     protected static final List<String> APP_INDICATOR_PATTERNS;
+
+    /** Android 系统内置浏览器的包名集合 */
     static final Set<String> ANDROID_BROWSER_PACKAGE_NAMES;
+
+    /** 明确标记为非 App 浏览器的关键词集合 */
     static final Set<String> NON_APP_BROWSER_KEYWORDS;
+
     @Serial
     private static final long serialVersionUID = 8192401578396133213L;
+
+    /** 提取主版本号和次版本号的正则模式（如 "4.3" 或 "10"） */
     private static final Pattern MAJOR_MINOR_VERSION_PATTERN;
+
+    /** Android 应用中 X-Requested-With 头值为 App 包的集合 */
     private static final Set<String> ANDROID_REQUESTED_WITH_APP_PACKAGES;
+
+    /** 在机器人检测中需要排除的误判关键词 */
     private static final List<String> BOT_EXCLUSION_KEYWORDS;
 
     static {
@@ -106,34 +135,69 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
     }
 
     /**
-     * Returns whether this i so so nafari.
+     * 判断设备是否为 iOS 且非 Safari 浏览器。
+     * <p>iOS 设备如果 User-Agent 中不包含 "Safari" 标识，
+     * 通常意味着请求来自 App 内嵌 WebView 或非 Safari 浏览器。</p>
+     *
+     * @param deviceOs 设备操作系统名称
+     * @param userAgent User-Agent 字符串
+     * @return 如果是 iOS 且非 Safari 则返回 {@code true}
      */
-
     protected static boolean isIosNonSafari(String deviceOs, String userAgent) {
         return "iOS".equals(deviceOs) && !userAgent.contains("Safari");
     }
 
+    /**
+     * 判断设备是否为 macOS 且非 Safari 浏览器。
+     *
+     * @param device   设备对象
+     * @param userAgent User-Agent 字符串
+     * @param request  请求对象
+     * @return 如果是 macOS 且非 Safari 则返回 {@code true}
+     */
     protected static boolean isMacOsNonSafari(Device device, String userAgent, WURFLRequest request) {
         VirtualCapabilityDevice virtualCapabilityDevice = VirtualCapabilityUserAgentTool.getInstance().assignProperties(request, device);
         return "Mac OS X".equals(virtualCapabilityDevice.getOsPairName()) && !userAgent.contains("Safari");
     }
 
     /**
-     * Returns whether this i sequeste dit hp package.
- */
-
+     * 检查请求的 X-Requested-With 头是否匹配已知的 App 包名。
+     *
+     * @param expectedOs 期望的操作系统
+     * @param deviceOs   实际设备操作系统
+     * @param request    请求对象
+     * @return 如果匹配已知 App 包名则返回 {@code true}
+     */
     protected static boolean isRequestedWithAppPackage(String expectedOs, String deviceOs, WURFLRequest request) {
         return isRequestedWithAppPackage(expectedOs, deviceOs, request.getHeader("X-Requested-With"));
     }
 
+    /**
+     * 检查 X-Requested-With 头的具体值是否匹配已知的 App 包名。
+     * <p>Android App 在发起 WebView 请求时通常会设置该头为自身的包名。
+     * 通过预先维护的已知 App 包名集合，可以判断请求是否来自特定应用。</p>
+     *
+     * @param expectedOs    期望的操作系统
+     * @param deviceOs      实际设备操作系统
+     * @param requestedWith X-Requested-With 头的值
+     * @return 如果匹配已知 App 包名则返回 {@code true}
+     */
     protected static boolean isRequestedWithAppPackage(String expectedOs, String deviceOs, String requestedWith) {
         return expectedOs.equals(deviceOs) && StringUtils.isNotEmpty(requestedWith) && ANDROID_REQUESTED_WITH_APP_PACKAGES.contains(requestedWith);
     }
 
     /**
-     * Returns whether this i sobot.
- */
-
+     * 判断当前请求是否来自网络爬虫或机器人程序。
+     * <p>检测逻辑包括：
+     * <ul>
+     *   <li>检查 Accept-Encoding 头中是否缺少 deflate（IE 的 Trident 引擎特征之一）</li>
+     *   <li>排除 User-Agent 中包含 CUBOT/Cubot/Botswana 等误报关键词的设备</li>
+     *   <li>委托 {@link WURFLRequest#_internalIsBot()} 进行进一步检测</li>
+     * </ul></p>
+     *
+     * @param request 请求对象
+     * @return 如果是机器人则返回 {@code true}
+     */
     protected static boolean isRobot(WURFLRequest request) {
         Map<String, String> headers = request.getHeaders();
         String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
@@ -153,9 +217,22 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
     }
 
     /**
-     * Returns whether this i smartphone.
- */
-
+     * 综合判断设备是否为智能手机。
+     * <p>检查维度包括：
+     * <ul>
+     *   <li>分辨率宽度（>= 320px）</li>
+     *   <li>是否为无线设备</li>
+     *   <li>非平板设备</li>
+     *   <li>可以分配电话号码</li>
+     *   <li>触屏输入方式</li>
+     *   <li>操作系统及版本号要求：iOS >= 3.0, Android >= 2.2,
+     *       Windows Phone / webOS / MeeGo 任意版本,
+     *       RIM OS >= 7.0, Bada OS >= 2.0</li>
+     * </ul></p>
+     *
+     * @param device 设备对象
+     * @return 如果是智能手机则返回 {@code true}
+     */
     protected static boolean isSmartphone(Device device) {
         int resolutionWidth;
         try {

@@ -11,17 +11,38 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Implementation of App Name.
+ * 广告投放所需的应用程序名称虚拟能力评估器。
+ * <p>通过分析 User-Agent 字符串推断请求来自哪个具体的原生应用程序。
+ * 支持识别 Android Dalvik 应用、iOS CFNetwork 应用、Windows Phone 应用、
+ * WebViewApp 以及超过 100 种已知 App 特征关键词。
+ * 当无法识别具体应用时，返回 "Stock Browser"（系统内置浏览器）。</p>
  */
 
 public class AppName implements VirtualCapabilityEvaluator, Serializable {
+
+    /**
+     * 用于识别 App 的关键词列表，与 {@link #APP_NAMES} 索引一一对应
+     */
     private static final List<String> APP_INDICATOR_KEYWORDS = new ArrayList<>();
+
+    /**
+     * 与 {@link #APP_INDICATOR_KEYWORDS} 对应的 App 名称列表
+     */
     private static final List<String> APP_NAMES = new ArrayList<>();
+
     @Serial
     private static final long serialVersionUID = 7704959740704532442L;
+
+    /** 匹配 "WebViewApp 应用名/" 格式的模式 */
     private static final Pattern WEBVIEW_APP_PATTERN = Pattern.compile("WebViewApp ([^/]+)/");
+
+    /** 匹配 Android Dalvik 应用的模式，如 "应用名/版本 Dalvik/" */
     private static final Pattern ANDROID_DALVIK_APP_PATTERN = Pattern.compile("^([^/]+)/.+? Dalvik/");
+
+    /** 匹配 iOS CFNetwork 应用的模式，如 "应用名/版本 iPhone3,1 iOS/ CFNetwork/" */
     private static final Pattern IOS_CFNETWORK_APP_PATTERN = Pattern.compile("^([^/]+)/[\\d\\.-_]+ i(?:Phone|Pad|Pod)\\d+?,\\d+? iOS/[\\d_]+ CFNetwork/[\\d\\.]+");
+
+    /** 匹配 Windows Phone 应用的模式，如 "应用名/版本 Windows Phone/" */
     private static final Pattern WINDOWS_PHONE_APP_PATTERN = Pattern.compile("^([^/]+)/[0-9\\.-_]+ Windows Phone/[\\d\\.]+");
 
     static {
@@ -206,17 +227,15 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
     }
 
     @Override
-/**
- * Eval.
- */
-
     public String eval(Device device, WURFLRequest request) {
         String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
 
+        // 优先尝试 WebViewApp 格式
         if (userAgent.contains("WebViewApp")) {
             Matcher webViewAppMatcher = WEBVIEW_APP_PATTERN.matcher(userAgent);
             return webViewAppMatcher.find() ? webViewAppMatcher.group(1) : "WebView";
         } else {
+            // 依次尝试 Android Dalvik、iOS CFNetwork、Windows Phone 三种主流 App 格式
             Matcher appNameMatcher;
             appNameMatcher = ANDROID_DALVIK_APP_PATTERN.matcher(userAgent);
             if (appNameMatcher.find()) {
@@ -228,6 +247,7 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
             if (appNameMatcher.find()) {
                 return appNameMatcher.group(1);
             } else {
+                // 在预定义的关键词列表中查找匹配项，返回对应的 App 名称
                 for (int i = 0; i < APP_INDICATOR_KEYWORDS.size(); ++i) {
                     if (userAgent.contains(APP_INDICATOR_KEYWORDS.get(i))) {
                         return APP_NAMES.get(i);
@@ -240,10 +260,6 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
     }
 
     @Override
-/**
- * Returns the handle dirtua lapabilit yame.
- */
-
     public String getHandledVirtualCapabilityName() {
         return "advertised_app_name";
     }

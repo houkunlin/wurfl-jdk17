@@ -4,7 +4,11 @@ import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 /**
- * Implementation of Virtual Capability Evaluator.
+ * 虚拟能力评估器接口。
+ * <p>定义了 WURFL 虚拟能力（Virtual Capability）的评估契约。
+ * 每个实现类负责计算一项特定的虚拟能力值，如设备是否为 Android、
+ * 操作系统版本号、浏览器名称等。
+ * 该接口中同时定义了实现类所需的常量能力名称和必备能力列表。</p>
  */
 
 public interface VirtualCapabilityEvaluator {
@@ -32,7 +36,19 @@ public interface VirtualCapabilityEvaluator {
     String MOBILE_BROWSER_VERSION = "mobile_browser_version";
     String[] MANDATORY_CAPABILITIES = new String[]{"device_os", "ux_full_desktop", "xhtml_support_level", "preferred_markup", "is_smarttv", "is_wireless_device", "is_tablet", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "resolution_width", "resolution_height", "pointing_method", "device_os_version", "mobile_browser_version"};
 
+    /**
+     * 根据设备和请求信息评估虚拟能力的值。
+     *
+     * @param device  经过 WURFL 匹配的设备对象
+     * @param request 当前 HTTP 请求信息
+     * @return 虚拟能力的值（通常为 "true"、"false" 或具体的字符串值）
+     */
     String eval(Device device, WURFLRequest request);
 
+    /**
+     * 获取当前评估器负责的虚拟能力名称。
+     *
+     * @return 虚拟能力名称，如 "is_android"、"advertised_device_os"
+     */
     String getHandledVirtualCapabilityName();
 }

@@ -6,7 +6,12 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import java.io.Serial;
 
 /**
- * Implementation of Form Factor.
+ * 设备形态因子（Form Factor）虚拟能力评估器。
+ * <p>根据设备的多项能力值综合判断设备的形态类别，返回以下之一：
+ * {@code Robot}、{@code Desktop}、{@code Smart-TV}、
+ * {@code Other Non-Mobile}、{@code Tablet}、{@code Smartphone}、
+ * {@code Feature Phone}、{@code Other Mobile}。
+ * 判断顺序按照从特殊到常规的优先级执行。</p>
  */
 
 public class FormFactor extends AbstractVirtualCapabilityEvaluator {
@@ -14,10 +19,6 @@ public class FormFactor extends AbstractVirtualCapabilityEvaluator {
     private static final long serialVersionUID = -3936563826288495198L;
 
     @Override
-/**
- * Eval.
- */
-
     public String eval(Device device, WURFLRequest request) {
         if (device.getVirtualCapabilityAsBool("is_robot")) {
             return "Robot";
@@ -37,10 +38,6 @@ public class FormFactor extends AbstractVirtualCapabilityEvaluator {
     }
 
     @Override
-/**
- * Returns the handle dirtua lapabilit yame.
- */
-
     public String getHandledVirtualCapabilityName() {
         return "form_factor";
     }

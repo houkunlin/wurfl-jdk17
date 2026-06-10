@@ -7,7 +7,9 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Implementation of Is Mobile.
+ * 判断设备是否为移动设备的虚拟能力评估器。
+ * <p>直接返回 WURFL 设备数据库中 {@code is_wireless_device} 能力值。
+ * 该值由 WURFL 数据文件根据设备特征预定义，覆盖手机、平板等无线设备。</p>
  */
 
 public class IsMobile implements VirtualCapabilityEvaluator, Serializable {
@@ -15,19 +17,11 @@ public class IsMobile implements VirtualCapabilityEvaluator, Serializable {
     private static final long serialVersionUID = -3052242731391430427L;
 
     @Override
-/**
- * Eval.
- */
-
     public String eval(Device device, WURFLRequest request) {
         return device.getCapability("is_wireless_device");
     }
 
     @Override
-/**
- * Returns the handle dirtua lapabilit yame.
- */
-
     public String getHandledVirtualCapabilityName() {
         return "is_mobile";
     }
