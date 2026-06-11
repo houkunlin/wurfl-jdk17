@@ -37,6 +37,7 @@ final class JavaMidletMatcher extends MatcherBase {
     public boolean canHandle(WURFLRequest request) {
         return request.getCleanedDeviceUserAgent().contains("UNTRUSTED/1.0");
     }
+
     /**
      * Java MIDlet 匹配器直接返回固定的通用设备 ID，不执行实际的 User-Agent 匹配。
      *

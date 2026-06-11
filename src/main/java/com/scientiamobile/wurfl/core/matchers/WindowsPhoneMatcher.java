@@ -58,6 +58,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, WP_DESKTOP, "ZuneWP7") || StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/") || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Windows Phone", "WindowsPhone", "NativeHost"));
     }
+
     /**
      * 确定匹配策略：如果 User-Agent 包含 "---" 分隔符或 "NativeHost" 关键字，
      * 则特殊处理（NativeHost 直接返回 Windows Phone 7 通用设备 ID），否则退回到基类方法。

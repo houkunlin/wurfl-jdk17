@@ -25,15 +25,25 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
      * 设备 ID
      */
     private final String id;
-    /** WURFL 数据中定义的设备 User-Agent 字符串 */
+    /**
+     * WURFL 数据中定义的设备 User-Agent 字符串
+     */
     private final String wurflUserAgent;
-    /** 是否为设备树的实际根节点 */
+    /**
+     * 是否为设备树的实际根节点
+     */
     private final boolean actualDeviceRoot;
-    /** 设备所属树的根节点 ID */
+    /**
+     * 设备所属树的根节点 ID
+     */
     private final String deviceRootId;
-    /** 能力持有器，用于按需获取能力值 */
+    /**
+     * 能力持有器，用于按需获取能力值
+     */
     private final transient CapabilitiesHolder capabilitiesHolder;
-    /** 祖先模型设备 */
+    /**
+     * 祖先模型设备
+     */
     private ModelDevice ancestorModelDevice;
 
     protected InternalDeviceImpl(ModelDevice modelDevice, String ancestorId, CapabilitiesHolder capabilitiesHolder) {
@@ -49,6 +59,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
         this.deviceRootId = deviceRootId;
         this.capabilitiesHolder = capabilitiesHolder;
     }
+
     /**
      * 获取设备 ID。
      *
@@ -58,6 +69,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     public String getId() {
         return this.id;
     }
+
     /**
      * 获取 WURFL 数据中定义的设备 User-Agent。
      *
@@ -67,6 +79,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     public String getWURFLUserAgent() {
         return this.wurflUserAgent;
     }
+
     /**
      * 获取指定能力名称的值。
      *
@@ -86,6 +99,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     final ModelDevice getAncestorModelDevice() {
         return this.ancestorModelDevice;
     }
+
     /**
      * 获取能力值并转换为整数。
      *
@@ -96,6 +110,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     public int getCapabilityAsInt(String capabilityName) {
         return this.capabilitiesHolder.getCapabilityAsInt(capabilityName);
     }
+
     /**
      * 获取能力值并转换为布尔值。
      * <p>值 {@code true}（不区分大小写）对应 {@code true}，其他值抛出异常。</p>
@@ -116,6 +131,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
             throw new NumberFormatException("WURFL invalid capability value: " + originalCapabilityName + " expected \"true\" or \"false\", received: \"" + capabilityName + "\"");
         }
     }
+
     /**
      * 获取设备的所有能力映射（排除控制能力）。
      *
@@ -136,6 +152,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
         return filteredCapabilities;
     }
+
     /**
      * 判断该设备是否是其设备树的实际根节点。
      *
@@ -145,6 +162,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     public boolean isActualDeviceRoot() {
         return this.actualDeviceRoot;
     }
+
     /**
      * 获取该设备所属设备树的根节点 ID。
      * <p>如果根节点是 {@code generic}，则返回空字符串。</p>
@@ -160,6 +178,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
         return rootId;
     }
+
     /**
      * 判断两个设备是否相等（基于设备 ID 比较）。
      *
@@ -177,6 +196,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
         return eb.isEquals();
     }
+
     /**
      * 计算该设备的哈希码（基于设备 ID 和类）。
      *
@@ -186,6 +206,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     public int hashCode() {
         return (new HashCodeBuilder(63, 89)).append(this.getClass()).append(this.id).toHashCode();
     }
+
     /**
      * 返回设备的字符串表示，格式为 {@code [设备ID, match=, matcher=]}。
      *

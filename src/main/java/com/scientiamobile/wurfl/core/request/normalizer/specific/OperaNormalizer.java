@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public class OperaNormalizer implements UserAgentNormalizer {
     private static final Pattern OPERA_VERSION_PATTERN = Pattern.compile("Version/(\\d+\\.\\d+)");
     private static final Pattern OPERA_CHROMIUM_VERSION_PATTERN = Pattern.compile("OPR/(\\d+\\.\\d+)");
+
     /**
      * 规范化 Opera 浏览器的 User-Agent。
      * <p>古典 Opera：将 {@code Opera/9.80 ... Version/N.M} 替换为 {@code Opera/N.M ...}。</p>

@@ -52,6 +52,7 @@ final class KindleMatcher extends MatcherBase {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "/Kindle", "Silk") ? false : StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Kindle", "Silk");
     }
+
     /**
      * 执行 RIS 匹配：按优先级尝试以下截断位置：
      * <ul>

@@ -10,7 +10,9 @@ final class UserAgentFallbackRule {
      * 用于匹配 User-Agent 的关键字
      */
     final String keyword;
-    /** 匹配成功时返回的通用设备 ID */
+    /**
+     * 匹配成功时返回的通用设备 ID
+     */
     final String deviceId;
 
     /**

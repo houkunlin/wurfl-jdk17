@@ -70,6 +70,7 @@ public class TizenMatcher extends MatcherBase {
         int appleWebKitIndex = userAgent.indexOf("AppleWebKit/");
         return appleWebKitIndex >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, appleWebKitIndex + 12) : null;
     }
+
     /**
      * 恢复匹配策略：从 User-Agent 中提取 Tizen 版本号，构造对应的通用设备 ID。
      *

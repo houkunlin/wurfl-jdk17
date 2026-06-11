@@ -52,6 +52,7 @@ final class DefaultMatcherFilter implements MatcherFilter {
     public final FilteredDeviceIndex getIndex() {
         return this.index;
     }
+
     /**
      * 获取关联的匹配器名称。
      *

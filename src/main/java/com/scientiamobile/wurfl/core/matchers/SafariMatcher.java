@@ -39,6 +39,7 @@ final class SafariMatcher extends MatcherBase {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Safari") && StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Macintosh", "Mozilla/5.0 (Windows");
     }
+
     /**
      * 执行 RIS 匹配：以 "---" 分隔符位置加 3 作为截断点。
      *

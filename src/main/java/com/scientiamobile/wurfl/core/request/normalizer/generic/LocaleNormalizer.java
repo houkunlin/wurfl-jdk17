@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class LocaleNormalizer implements UserAgentNormalizer {
     private static final Pattern LOCALE_PATTERN = Pattern.compile("; ?[a-z]{2}(?:-r?[a-zA-Z]{2})?(?:\\.utf8|\\.big5)?\\b-?(?!:)");
+
     /**
      * 将 User-Agent 中的语言区域标记统一替换为 "{@code ; xx-xx}"。
      *

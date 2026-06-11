@@ -21,6 +21,7 @@ final class SPVMatcher extends MatcherBase {
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().contains("SPV");
     }
+
     /**
      * 执行 RIS 匹配：找到 "SPV" 关键字后的分号位置作为截断点。
      *

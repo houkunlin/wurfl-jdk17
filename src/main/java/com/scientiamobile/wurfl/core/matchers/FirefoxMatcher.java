@@ -41,6 +41,7 @@ final class FirefoxMatcher extends MatcherBase {
                 && cleanedDeviceUserAgent.contains("Firefox")
                 && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Tablet", "Sony", "Novarra", "Opera");
     }
+
     /**
      * 执行 RIS 匹配：截取从 "Firefox" 关键字开始到第一个点号后一位的子串进行匹配。
      *

@@ -47,6 +47,7 @@ final class NintendoMatcher extends MatcherBase {
             return cleanedDeviceUserAgent.startsWith("Mozilla/") && StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Nitro", "Opera");
         }
     }
+
     /**
      * 确定匹配策略：根据 User-Agent 中包含的 Nintendo 设备型号关键字直接返回对应的设备 ID。
      * <p>依次检查 "New Nintendo 3DS"、"Nintendo 3DS"、"Nintendo WiiU"、"Nintendo Wii"、

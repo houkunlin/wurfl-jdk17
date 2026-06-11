@@ -50,6 +50,7 @@ final class OperaMiniMatcher extends MatcherBase {
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera Mini", "OperaMini", "Opera Mobi", "OperaMobi");
     }
+
     /**
      * 执行 RIS 匹配：按优先级尝试以下截断位置：
      * <ul>

@@ -23,6 +23,7 @@ public class HttpServletRequestHeaderProvider implements WURFLHeaderProvider {
     public HttpServletRequestHeaderProvider(HttpServletRequest request) {
         this.request = request;
     }
+
     /**
      * 从 Servlet 请求中获取指定请求头的值。
      *
@@ -33,6 +34,7 @@ public class HttpServletRequestHeaderProvider implements WURFLHeaderProvider {
     public String getHeader(String headerName) {
         return this.request.getHeader(headerName);
     }
+
     /**
      * 获取 Servlet 请求中所有请求头名称的枚举。
      *

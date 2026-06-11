@@ -13,6 +13,7 @@ final class NecMatcher extends MatcherBase {
     public NecMatcher(WURFLModel wurflModel) {
         super(wurflModel);
     }
+
     /**
      * 判断 User-Agent 是否以 "NEC-" 或 "KGT" 开头且非桌面浏览器。
      *

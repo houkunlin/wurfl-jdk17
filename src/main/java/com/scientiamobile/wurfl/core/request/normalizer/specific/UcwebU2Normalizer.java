@@ -20,6 +20,7 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
     public static final Pattern JAVA = Pattern.compile("^UCWEB[^\\(]+\\(Java; .+; (.+)\\) U2");
     private static final Pattern SEMICOLON_WITHOUT_SPACE_PATTERN = Pattern.compile(";(?! )");
     private static final Pattern NOKIA_RM_MODEL_PATTERN = Pattern.compile("(NOKIA.RM-.+?)_.*");
+
     /**
      * 规范化 UC 浏览器 U2 内核的 User-Agent。
      * <p>根据平台类型分别处理：</p>

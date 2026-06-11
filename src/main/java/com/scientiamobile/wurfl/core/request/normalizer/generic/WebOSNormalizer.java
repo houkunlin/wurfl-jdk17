@@ -20,6 +20,7 @@ public class WebOSNormalizer implements UserAgentNormalizer {
      * 匹配 webOS 主版本号模式，如 "hpwOS/3." 或 "webOS/1."。
      */
     private static final Pattern WEBOS_MAJOR_VERSION_PATTERN = Pattern.compile("(?:hpw|web)OS.(\\d)\\.");
+
     /**
      * 规范化 webOS 设备的 User-Agent：
      * <ol>

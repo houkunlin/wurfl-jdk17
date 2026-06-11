@@ -62,6 +62,7 @@ final class WindowsRTMatcher extends AbstractMatcher {
 
         return null;
     }
+
     /**
      * 恢复匹配策略：根据是否包含 "like Gecko"（IE 引擎版本）选择对应的 Windows RT 通用设备 ID。
      *

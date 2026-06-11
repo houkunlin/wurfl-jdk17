@@ -95,6 +95,7 @@ final class OperaMatcher extends MatcherBase {
         int matchLength = StringMatchUtils.indexOfOrLength(userAgent, ".", operaIndex);
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
+
     /**
      * 恢复匹配策略：从 User-Agent 中提取 Opera 版本号，根据主版本号返回对应的设备 ID。
      *

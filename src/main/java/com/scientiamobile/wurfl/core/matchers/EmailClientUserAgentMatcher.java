@@ -103,6 +103,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
     protected Set<String> getRequiredDeviceIds() {
         return new HashSet<>(REQUIRED_DEVICE_IDS);
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 中包含的邮件客户端标识返回对应的设备 ID。
      * <p>支持 Thunderbird、Outlook（多平台）、Lotus Notes、Eudora、Evolution、PocoMail、

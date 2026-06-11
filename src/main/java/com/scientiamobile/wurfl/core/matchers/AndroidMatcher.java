@@ -140,6 +140,7 @@ final class AndroidMatcher extends AbstractMatcher {
             }
         }
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 中的 Android 版本号构造通用设备 ID。
      * <p>如果 User-Agent 包含 "Safari" 但不含 "Mobile" 且不是 Android 3.x，则识别为平板，
@@ -172,6 +173,7 @@ final class AndroidMatcher extends AbstractMatcher {
     public String getMatcherName() {
         return "AndroidMatcher";
     }
+
     /**
      * 获取桶匹配器名称。
      *

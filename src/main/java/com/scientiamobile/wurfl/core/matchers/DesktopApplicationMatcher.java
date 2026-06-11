@@ -76,6 +76,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
 
         return "generic";
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 包含 "Office"/"office" 或 "DesktopApp " 关键字
      * 返回对应的桌面应用程序通用设备 ID。

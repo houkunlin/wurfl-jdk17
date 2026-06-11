@@ -38,6 +38,7 @@ final class LGMatcher extends MatcherBase {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent != null && cleanedDeviceUserAgent.regionMatches(true, 0, "lg", 0, 2);
     }
+
     /**
      * 执行 RIS 匹配：找到 "LG" 关键字后的斜杠位置作为截断点。
      *

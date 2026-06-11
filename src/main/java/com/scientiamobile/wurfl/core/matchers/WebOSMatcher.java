@@ -48,6 +48,7 @@ final class WebOSMatcher extends AbstractMatcher {
         int matchLength = StringMatchUtils.indexOfOrLength(userAgent, "---");
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
+
     /**
      * 恢复匹配策略：根据是否包含 "hpwOS/3"（WebOS 3.x，平板版本）返回对应的通用设备 ID。
      *

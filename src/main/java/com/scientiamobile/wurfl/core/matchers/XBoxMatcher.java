@@ -49,6 +49,7 @@ final class XBoxMatcher extends AbstractMatcher {
     protected String applyConclusiveMatch(WURFLRequest request) {
         return null;
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 是否包含 "MSIE 10.0" 和 "Xbox One" 返回对应的通用设备 ID。
      *

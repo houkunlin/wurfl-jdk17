@@ -42,6 +42,7 @@ final class MaemoMatcher extends MatcherBase {
     public boolean canHandle(WURFLRequest request) {
         return request.getCleanedDeviceUserAgent().contains("Maemo");
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 是否包含 "Opera Mobi" 或 "Firefox" 返回不同的通用设备 ID。
      *
@@ -58,6 +59,7 @@ final class MaemoMatcher extends MatcherBase {
             return normalizedDeviceUserAgent.contains("Firefox") ? NOKIA_GENERIC_MAEMO_WITH_FIREFOX : NOKIA_GENERIC_MAEMO;
         }
     }
+
     /**
      * 执行 RIS 匹配：以 "---" 分隔符位置加 3 截断，如果没有则退回到基类的 RIS 方法。
      *

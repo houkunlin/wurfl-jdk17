@@ -86,13 +86,13 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     /**
      * 构造函数，创建默认设备实例（参数顺序不同的重载版本）。
      *
-     * @param internalDevice            内部设备实例
-     * @param markupResolver            标记语言解析器
-     * @param matchType                 匹配类型
-     * @param matcherName               匹配器名称
-     * @param bucketMatcherName         桶匹配器名称
-     * @param normalizedUserAgent       归一化后的 User-Agent
-     * @param virtualCapabilityHandler  虚拟能力处理器
+     * @param internalDevice           内部设备实例
+     * @param markupResolver           标记语言解析器
+     * @param matchType                匹配类型
+     * @param matcherName              匹配器名称
+     * @param bucketMatcherName        桶匹配器名称
+     * @param normalizedUserAgent      归一化后的 User-Agent
+     * @param virtualCapabilityHandler 虚拟能力处理器
      */
     public DefaultDevice(InternalDevice internalDevice, MarkupResolver markupResolver, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent, VirtualCapabilityHandler virtualCapabilityHandler) {
         Validate.notNull(virtualCapabilityHandler, "The capabilitiesHandler must be not null");

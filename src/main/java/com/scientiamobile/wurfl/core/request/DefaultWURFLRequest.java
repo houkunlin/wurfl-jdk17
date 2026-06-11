@@ -359,6 +359,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     public void setUrlEncoded(boolean urlEncoded) {
         this.urlEncoded = urlEncoded;
     }
+
     /**
      * 执行通用规范化处理。
      * <p>使用构造函数中传入的 genericNormalizer 对原始 User-Agent 进行基础规范化，
@@ -390,6 +391,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     public String getHeader(String headerName) {
         return this.headers.get(headerName);
     }
+
     /**
      * 获取所有请求头的只读视图。
      *
@@ -409,6 +411,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     public EngineTarget getEngineTarget() {
         return this.engineTarget;
     }
+
     /**
      * 内部方法：判断当前请求是否来自移动浏览器。
      * <p>判断逻辑如下：</p>
@@ -481,6 +484,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
         return this.cachedIsDesktopBrowser;
     }
+
     /**
      * 内部方法：判断当前请求是否来自智能电视浏览器。
      * <p>使用 {@link UserAgentUtils#isSmartTvBrowser(String)} 进行检测，
@@ -496,6 +500,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
         return this.cachedIsSmartTvBrowser;
     }
+
     /**
      * 内部方法：判断当前请求是否来自爬虫/机器人。
      * <p>使用 {@link UserAgentUtils#isBot(String)} 对原始 User-Agent 进行检测，
@@ -561,6 +566,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         this.cachedIsDesktopBrowserHeavyDutyAnalysis = value;
         return value;
     }
+
     /**
      * 内部方法：判断当前请求是否来自邮件客户端。
      * <p>通过检查 User-Agent 中是否包含 {@link EmailClientUserAgentMatcher#EMAIL_CLIENTS}
@@ -589,6 +595,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         hashCodeBuilder.append(this.getClass()).append(this.deviceUserAgent).append(this.userAgentProfile).toHashCode();
         return hashCodeBuilder.toHashCode();
     }
+
     /**
      * 比较当前对象与另一个对象是否相等。
      * <p>基于设备 User-Agent 和 UAProfile 两个字段进行比较，</p>
@@ -606,6 +613,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
             return (new EqualsBuilder()).append(this.deviceUserAgent, other.deviceUserAgent).append(this.userAgentProfile, other.userAgentProfile).isEquals();
         }
     }
+
     /**
      * 返回当前对象的字符串表示，包含原始 User-Agent 和 UAProfile。
      *

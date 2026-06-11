@@ -71,6 +71,7 @@ final class OperaMobiOrTabletOnAndroidMatcher extends MatcherBase {
         matchLength = (matchLength = userAgent.indexOf("---")) == -1 ? userAgent.length() : matchLength + 3;
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
+
     /**
      * 恢复匹配策略：根据 Android 版本号和 Opera 类型（Tablet/Mobi）拼接设备 ID。
      * 如果拼接的设备 ID 不在支持的列表中，则返回对应类型的默认值。

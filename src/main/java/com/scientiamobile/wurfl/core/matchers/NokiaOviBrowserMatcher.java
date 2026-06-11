@@ -38,6 +38,7 @@ final class NokiaOviBrowserMatcher extends MatcherBase {
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().contains("S40OviBrowser");
     }
+
     /**
      * 执行 RIS 匹配：找到 "Nokia" 关键字后的斜杠或空格位置作为截断点。
      *

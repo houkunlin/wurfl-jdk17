@@ -163,6 +163,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
         return resources;
     }
+
     /**
      * 使用新的根数据文件路径重新加载引擎。
      *
@@ -173,6 +174,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         WURFLResource wurflResource = createXmlResource(rootPath);
         this.reload(wurflResource, (WURFLResources) null);
     }
+
     /**
      * 应用指定的补丁文件。
      * <p>如果补丁路径数组为 {@code null}，则忽略该操作。</p>
@@ -187,6 +189,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
             this.applyPatches(createXmlResources(patchPaths));
         }
     }
+
     /**
      * 应用指定的补丁资源。
      * <p>如果补丁资源数组为 {@code null}，则忽略该操作。</p>
@@ -197,6 +200,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void applyPatches(WURFLResource... patchResources) {
         this.applyPatches(new WURFLResources(patchResources));
     }
+
     /**
      * 应用指定集合中的补丁资源。
      * <p>在写锁保护下执行补丁应用操作，确保线程安全。</p>
@@ -219,11 +223,12 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
         }
     }
+
     /**
      * 使用新的根数据文件和补丁文件路径重新加载引擎。
      *
-     * @param rootPath    新的根数据文件路径
-     * @param patchPaths  新的补丁文件路径数组
+     * @param rootPath   新的根数据文件路径
+     * @param patchPaths 新的补丁文件路径数组
      */
     @Override
     public void reload(String rootPath, String[] patchPaths) {
@@ -231,6 +236,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         WURFLResources wurflResources = createXmlResources(patchPaths);
         this.reload(wurflResource, wurflResources);
     }
+
     /**
      * 使用新的根资源和补丁资源重新加载引擎。
      *
@@ -241,6 +247,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void reload(WURFLResource rootResource, WURFLResource... patchResources) {
         this.reload(rootResource, new WURFLResources(patchResources));
     }
+
     /**
      * 使用新的根资源和补丁资源集合重新加载引擎。
      * <p>在写锁保护下执行重载操作，确保线程安全。</p>
@@ -265,6 +272,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         }
 
     }
+
     /**
      * 替换引擎的根数据文件。
      * <p>将新路径的 WURFL 数据文件复制到当前根路径，然后重新加载引擎。
@@ -300,6 +308,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
             return false;
         }
     }
+
     /**
      * 设置标记语言解析器。
      *
@@ -309,6 +318,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void setMarkupResolver(MarkupResolver markupResolver) {
         this.markupResolver = markupResolver;
     }
+
     /**
      * 设置能力持有器工厂。
      *
@@ -318,6 +328,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void setCapabilitiesHolderFactory(CapabilitiesHolderFactory capabilitiesHolderFactory) {
         this.capabilitiesHolderFactory = capabilitiesHolderFactory;
     }
+
     /**
      * 设置 WURFL 请求工厂。
      * <p>如果自定义的请求工厂未实现 {@link WURFLRequestFactoryWithPriority} 接口，
@@ -341,6 +352,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
             }
         }
     }
+
     /**
      * 设置 User-Agent 解析器。
      *
@@ -350,6 +362,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void setUserAgentResolver(UserAgentResolver userAgentResolver) {
         this.userAgentResolver = userAgentResolver;
     }
+
     /**
      * 设置设备提供者。
      *
@@ -359,6 +372,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void setDeviceProvider(DeviceProvider deviceProvider) {
         this.deviceProvider = deviceProvider;
     }
+
     /**
      * 设置缓存提供者。
      *
@@ -368,6 +382,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void setCacheProvider(CacheProvider cacheProvider) {
         this.cacheProvider = cacheProvider;
     }
+
     /**
      * 获取 WURFL 工具类实例，用于查询模型中的设备、能力和版本信息。
      *
@@ -381,6 +396,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.lock.readLock().unlock();
         return out;
     }
+
     /**
      * 根据设备 ID 获取设备实例（使用默认请求）。
      *
@@ -391,6 +407,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public Device getDeviceById(String deviceId) {
         return this.getWURFLUtils().getDeviceById(deviceId);
     }
+
     /**
      * 根据设备 ID 和 WURFL 请求获取设备实例。
      *
@@ -402,6 +419,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public Device getDeviceById(String deviceId, WURFLRequest request) {
         return this.getWURFLUtils().getDeviceById(deviceId, request);
     }
+
     /**
      * 根据设备 ID 和 HTTP Servlet 请求获取设备实例。
      *
@@ -414,6 +432,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.ensureInitialized();
         return this.getWURFLUtils().getDeviceById(deviceId, (new DefaultWURFLRequestFactory(this.userAgentResolver, this.wurflService.getUserAgentPriority())).createRequest(request, this.wurflService.getEngineTarget()));
     }
+
     /**
      * 获取所有虚拟能力的名称集合。
      *
@@ -572,6 +591,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
         }
     }
+
     /**
      * 根据 HTTP Servlet 请求进行设备检测。
      *
@@ -583,6 +603,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.ensureInitialized();
         return this.wurflService.getDevice(request);
     }
+
     /**
      * 根据 WURFL 请求进行设备检测。
      *
@@ -594,6 +615,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.ensureInitialized();
         return this.wurflService.getDevice(request);
     }
+
     /**
      * 根据 User-Agent 字符串进行设备检测。
      *
@@ -605,6 +627,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.ensureInitialized();
         return this.wurflService.getDevice(userAgent);
     }
+
     /**
      * 加载并初始化引擎。
      * <p>如果引擎尚未初始化，则执行完整的初始化流程（加载模型、注册服务等）。</p>
@@ -613,6 +636,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void load() {
         this.ensureInitialized();
     }
+
     /**
      * 获取当前的引擎目标匹配模式。
      *
@@ -628,6 +652,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
             return this.engineTarget;
         }
     }
+
     /**
      * 设置引擎目标匹配模式。
      * <p>如果 WURFL 服务已初始化，则同时将模式设置到服务中。</p>
@@ -644,6 +669,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
         }
     }
+
     /**
      * 获取当前的 User-Agent 优先级策略。
      *
@@ -661,6 +687,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
             return this.userAgentPriority;
         }
     }
+
     /**
      * 设置 User-Agent 优先级策略。
      * <p>如果 WURFL 服务已初始化，则同时将策略设置到服务中；
@@ -680,6 +707,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
         }
     }
+
     /**
      * 设置能力过滤器，限制引擎加载的能力集合。
      * <p>传入的能力名列表会自动补充始终包含的必备能力。</p>
@@ -690,6 +718,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public void setCapabilityFilter(String... capabilityFilter) {
         this.capabilityFilter = buildCapabilityFilter(Arrays.asList(capabilityFilter));
     }
+
     /**
      * 设置能力过滤器，限制引擎加载的能力集合。
      * <p>传入的能力名集合会自动补充始终包含的必备能力。</p>
@@ -720,6 +749,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         }
         return capabilities.toArray(new String[0]);
     }
+
     /**
      * 获取 WURFL API 版本号。
      *
@@ -729,6 +759,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public String getAPIVersion() {
         return "1.9.1.0";
     }
+
     /**
      * 获取所有必备能力的名称集合。
      *
@@ -739,6 +770,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.ensureInitialized();
         return new HashSet<>(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
     }
+
     /**
      * 获取模型中定义的所有能力名称（排除控制能力）。
      *
@@ -756,6 +788,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
         return capabilities;
     }
+
     /**
      * 获取引擎根数据文件的路径。
      *

@@ -35,6 +35,7 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
     public boolean canHandle(WURFLRequest request) {
         return StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "Mozilla/3", "Mozilla/4", "Mozilla/5");
     }
+
     /**
      * 确定匹配策略：以第一个右括号位置截断执行 RIS 匹配，如果匹配失败则返回 "generic"。
      *

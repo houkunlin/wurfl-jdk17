@@ -19,6 +19,7 @@ public class CFNetworkNormalizer implements UserAgentNormalizer {
      * 匹配 CFNetwork 版本号的正则表达式。
      */
     private static final Pattern CFNETWORK_VERSION_PATTERN = Pattern.compile("CFNetwork/(\\d+\\.?[0-9]*)");
+
     /**
      * 规范化 CFNetwork 标识：
      * <ol>

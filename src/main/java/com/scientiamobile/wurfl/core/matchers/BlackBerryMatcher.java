@@ -97,6 +97,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
                 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
                 : StringMatchUtils.NULL_STRING;
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 中的 BlackBerry 版本信息返回对应的通用设备 ID。
      * <p>分别处理 BB10、PlayBook 和传统 BlackBerry OS 三种场景。</p>

@@ -43,6 +43,7 @@ final class SmartTvMatcher extends MatcherBase {
     public boolean canHandle(WURFLRequest request) {
         return request._internalIsSmartTvBrowser();
     }
+
     /**
      * SmartTV 匹配器不执行确定匹配，直接返回 {@code null}，让流程进入恢复匹配阶段。
      *
@@ -53,6 +54,7 @@ final class SmartTvMatcher extends MatcherBase {
     protected String applyConclusiveMatch(WURFLRequest request) {
         return null;
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 中包含的智能电视平台关键字返回对应的通用设备 ID。
      *

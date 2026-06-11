@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 public class SerialNumberNormalizer implements UserAgentNormalizer {
     private static final Pattern SN_PATTERN = Pattern.compile("/SN[\\dX]+");
     private static final Pattern ST_TF_NT_PATTERN = Pattern.compile("\\[(ST|TF|NT)[\\dX]+\\]");
+
     /**
      * 将 User-Agent 中的序列号替换为固定掩码字符串：
      * <ul>

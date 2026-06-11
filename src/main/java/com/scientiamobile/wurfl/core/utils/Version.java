@@ -140,6 +140,7 @@ public class Version implements Comparable<Version> {
     public int getDigitAtOrThrow(int index) {
         return this.digits[index];
     }
+
     /**
      * 返回版本号的字符串表示形式，各段之间以分隔符连接。
      *
@@ -158,6 +159,7 @@ public class Version implements Comparable<Version> {
 
         return builder.toString();
     }
+
     /**
      * 判断两个版本号是否相等。
      * <p>通过 {@link #compareTo(Version)} 方法判断是否返回 0，
@@ -174,6 +176,7 @@ public class Version implements Comparable<Version> {
             return false;
         }
     }
+
     /**
      * 基于版本号各段数值数组计算哈希码。
      *

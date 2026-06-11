@@ -553,6 +553,7 @@ final class AppleMatcher extends AbstractMatcher {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, APPLE_DEVICE_KEYWORDS) && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Symbian", "Nintendo");
     }
+
     /**
      * 执行确定匹配：先尝试从 User-Agent 中解析硬件标识（如 iPhone7,2），
      * 如果有则映射到具体的子型号 ID（例如 "apple_iphone_ver7_subhw6"）。
@@ -606,6 +607,7 @@ final class AppleMatcher extends AbstractMatcher {
             return null;
         }
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 中的 iOS 主版本号构造对应的通用设备 ID。
      * <p>分别处理 CoreMedia、iPod、iPad 和 iPhone 四种情况，
@@ -650,6 +652,7 @@ final class AppleMatcher extends AbstractMatcher {
     public String getMatcherName() {
         return "AppleMatcher";
     }
+
     /**
      * 获取桶匹配器名称。
      *

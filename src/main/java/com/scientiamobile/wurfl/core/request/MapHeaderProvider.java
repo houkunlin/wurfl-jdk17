@@ -17,6 +17,7 @@ public class MapHeaderProvider implements WURFLHeaderProvider {
     public MapHeaderProvider(Map<String, String> headers) {
         this.headers = headers;
     }
+
     /**
      * 获取指定请求头的值。
      *

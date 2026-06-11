@@ -93,6 +93,7 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
     private static UserAgentNormalizerChain createDefaultNormalizerChain() {
         return new UserAgentNormalizerChain(new UserAgentNormalizer[]{new UCWebNormalizer(), new UPLinkNormalizer(), new SerialNumberNormalizer(), new LocaleNormalizer(), new CFNetworkNormalizer(), new BlackBerryNormalizer(), new GenericAndroidNormalizer(), new TransferEncodingNormalizer()});
     }
+
     /**
      * 从 HttpServletRequest 创建 WURFL 请求对象。
      * <p>自动解析请求中的 User-Agent 和 UAProfile，并提取所有请求头。</p>
@@ -144,6 +145,7 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
     public WURFLRequest createRequest(WURFLHeaderProvider headerProvider, EngineTarget engineTarget) {
         return new DefaultWURFLRequest(this.userAgentNormalizer, headerProvider, this.userAgentPriority, engineTarget);
     }
+
     /**
      * 获取当前的 User-Agent 优先级策略。
      *
@@ -153,6 +155,7 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
     public UserAgentPriority getUserAgentPriority() {
         return this.userAgentPriority;
     }
+
     /**
      * 设置 User-Agent 优先级策略。
      *

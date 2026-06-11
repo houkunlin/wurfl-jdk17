@@ -12,6 +12,7 @@ final class VodafoneMatcher extends MatcherBase {
     public VodafoneMatcher(WURFLModel wurflModel) {
         super(wurflModel);
     }
+
     /**
      * 判断 User-Agent 是否以 "Vodafone" 开头且非桌面浏览器。
      *

@@ -10,6 +10,7 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 public class EncriptionLevelNormalizer implements UserAgentNormalizer {
     private static final CharSequence ENCRIPTION_LEVEL_TOKEN = new String(" U;");
+
     /**
      * 移除 User-Agent 中的加密级别标记 "{@code  U;}"。
      *

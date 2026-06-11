@@ -76,6 +76,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
         newNormalizers.add(normalizer);
         return new UserAgentNormalizerChain(newNormalizers);
     }
+
     /**
      * 对原始 User-Agent 字符串执行规范化处理（不关联 WURFLRequest 对象）。
      *

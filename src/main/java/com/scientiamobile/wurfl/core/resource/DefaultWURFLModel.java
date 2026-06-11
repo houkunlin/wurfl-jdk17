@@ -236,6 +236,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取模型中所有设备的集合，按 User-Agent 排序。
+     *
      * @return 所有设备的集合
      */
     @Override
@@ -247,6 +248,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取模型中所有设备的列表，按插入顺序排列。
+     *
      * @return 设备列表
      */
     @Override
@@ -261,6 +263,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取模型中所有设备 ID 的集合。
+     *
      * @return 设备 ID 集合
      */
     @Override
@@ -272,6 +275,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取指定设备的完整继承链（从 generic 到该设备）。
+     *
      * @param device 目标设备
      * @return 从 generic 到该设备的继承链列表
      */
@@ -290,6 +294,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取设备的 fall_back（回退）设备。
+     *
      * @param device 目标设备
      * @return fall_back 设备
      * @throws DeviceNotInModelException 如果 fall_back ID 不在模型中
@@ -310,6 +315,7 @@ public class DefaultWURFLModel implements WURFLModel {
      * 获取设备的最接近的祖先设备。
      * <p>沿继承链向上查找第一个标记为 actual_device_root 的设备，
      * 如果都未标记则返回 generic。结果会被缓存。</p>
+     *
      * @param device 目标设备
      * @return 祖先设备
      */
@@ -343,6 +349,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 判断指定设备 ID 是否在模型中定义。
+     *
      * @param deviceId 设备 ID
      * @return 如果设备存在则返回 true
      */
@@ -354,6 +361,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取模型中定义的设备总数。
+     *
      * @return 设备数量
      */
     @Override
@@ -363,6 +371,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取模型中定义的所有组的名称集合。
+     *
      * @return 所有组名称的集合
      */
     @Override
@@ -372,6 +381,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 判断指定组是否在模型中定义。
+     *
      * @param groupId 组名称
      * @return 如果组存在则返回 true
      */
@@ -383,6 +393,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取指定功能点所属的组名称。
+     *
      * @param capabilityName 功能点名称
      * @return 所属的组名称
      * @throws com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException 如果功能点未定义
@@ -400,6 +411,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 重新加载 WURFL 模型，替换当前所有数据。
+     *
      * @param rootResource         主 WURFL 资源
      * @param patchResources       补丁资源集合
      * @param includedCapabilities 可选的功能点过滤列表
@@ -412,6 +424,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 应用补丁资源到当前模型。
+     *
      * @param patchResources       补丁资源集合
      * @param includedCapabilities 可选的功能点过滤列表
      */
@@ -422,6 +435,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取模型中定义的所有功能点的名称集合。
+     *
      * @return 所有功能点名称的集合
      */
     @Override
@@ -432,6 +446,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取模型中定义的功能点总数（惰性计算并缓存）。
+     *
      * @return 功能点数量
      */
     @Override
@@ -445,6 +460,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 判断指定功能点是否在模型中定义。
+     *
      * @param capabilityName 功能点名称
      * @return 如果功能点存在则返回 true
      */
@@ -456,6 +472,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取指定组中的所有功能点名称。
+     *
      * @param groupId 组名称
      * @return 该组中的功能点名称集合
      * @throws com.scientiamobile.wurfl.core.exc.GroupNotDefinedException 如果组未定义
@@ -475,8 +492,9 @@ public class DefaultWURFLModel implements WURFLModel {
      * 在设备的继承链中查找定义了指定功能点的设备。
      * <p>从继承链顶部（最接近 generic）向当前设备方向搜索，
      * 找到第一个定义了该功能的设备。</p>
-     * @param rootDevice      起始设备
-     * @param capabilityName  功能点名称
+     *
+     * @param rootDevice     起始设备
+     * @param capabilityName 功能点名称
      * @return 定义了该功能点的设备
      * @throws com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException 如果功能点未在任何设备中定义
      */
@@ -503,6 +521,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 获取所有根设备（标记为 actual_device_root 的设备）的 ID 集合。
+     *
      * @return 根设备 ID 集合
      */
     @Override
@@ -543,6 +562,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * 返回模型的字符串表示。
+     *
      * @return 包含版本号的字符串
      */
     @Override

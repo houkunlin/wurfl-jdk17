@@ -48,6 +48,7 @@ final class SkyfireMatcher extends MatcherBase {
         int matchLength = StringMatchUtils.indexOfOrLength(userAgent, ".", skyfireIndex);
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
+
     /**
      * 恢复匹配策略：根据 User-Agent 是否包含 "Skyfire/2." 返回对应的版本。
      *

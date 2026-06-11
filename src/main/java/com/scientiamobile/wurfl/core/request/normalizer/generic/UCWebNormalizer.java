@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 public class UCWebNormalizer implements UserAgentNormalizer {
     private static final Pattern JUC_ANDROID_VERSION_PATTERN = Pattern.compile("^(JUC \\(Linux; U;)(?= \\d)");
     private static final Pattern MISSING_SPACE_PATTERN = Pattern.compile("(Android|JUC|[;\\)])(?=[\\w|\\(])");
+
     /**
      * 修正 UC 浏览器 UA 的格式问题：
      * <ol>

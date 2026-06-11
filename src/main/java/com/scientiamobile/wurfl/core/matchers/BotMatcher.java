@@ -41,6 +41,7 @@ final class BotMatcher extends AbstractMatcher {
     public boolean canHandle(WURFLRequest request) {
         return request._internalIsBot();
     }
+
     /**
      * 爬虫匹配器的 RIS 匹配策略取决于 User-Agent 的开头：
      * <ul>
@@ -60,6 +61,7 @@ final class BotMatcher extends AbstractMatcher {
                 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
                 : StringMatchUtils.NULL_STRING;
     }
+
     /**
      * 确定匹配策略：如果 User-Agent 包含 "GoogleImageProxy"，则直接返回对应的设备 ID。
      *
@@ -70,6 +72,7 @@ final class BotMatcher extends AbstractMatcher {
     protected String applyConclusiveMatch(WURFLRequest request) {
         return request.getCleanedDeviceUserAgent().contains("GoogleImageProxy") ? GOOGLE_IMAGE_PROXY : super.applyConclusiveMatch(request);
     }
+
     /**
      * 恢复匹配策略：统一返回通用网络爬虫设备 ID。
      *
@@ -80,6 +83,7 @@ final class BotMatcher extends AbstractMatcher {
     protected String applyRecoveryMatch(WURFLRequest request) {
         return "generic_web_crawler";
     }
+
     /**
      * 获取匹配器名称。
      *
@@ -89,6 +93,7 @@ final class BotMatcher extends AbstractMatcher {
     public String getMatcherName() {
         return "BotMatcher";
     }
+
     /**
      * 获取桶匹配器名称。
      *

@@ -75,8 +75,8 @@ public class VirtualCapabilityDevice implements Serializable {
     /**
      * 构造函数，使用指定的 UA 字符串创建虚拟能力设备。
      *
-     * @param deviceUserAgent       设备 User-Agent 字符串
-     * @param browserUserAgent      浏览器 User-Agent 字符串
+     * @param deviceUserAgent        设备 User-Agent 字符串
+     * @param browserUserAgent       浏览器 User-Agent 字符串
      * @param cleanedDeviceUserAgent 清理后的设备 User-Agent 字符串
      */
     public VirtualCapabilityDevice(String deviceUserAgent, String browserUserAgent, String cleanedDeviceUserAgent) {

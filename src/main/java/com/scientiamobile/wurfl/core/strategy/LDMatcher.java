@@ -36,11 +36,11 @@ public final class LDMatcher {
      *   <li>支持指定公共前缀长度，跳过前缀部分的计算</li>
      * </ul>
      *
-     * @param firstValue  第一个待比较字符串（建议为较短的字符串）
-     * @param secondValue 第二个待比较字符串
-     * @param firstLength 第一个字符串的长度
+     * @param firstValue   第一个待比较字符串（建议为较短的字符串）
+     * @param secondValue  第二个待比较字符串
+     * @param firstLength  第一个字符串的长度
      * @param secondLength 第二个字符串的长度
-     * @param maxDistance 允许的最大编辑距离，超过此距离则提前返回 {@link Integer#MAX_VALUE}
+     * @param maxDistance  允许的最大编辑距离，超过此距离则提前返回 {@link Integer#MAX_VALUE}
      * @param prefixLength 公共前缀长度，前 {@code prefixLength} 个字符不计入距离计算
      * @return 两个字符串之间的编辑距离；如果距离超过 {@code maxDistance} 则返回 {@link Integer#MAX_VALUE}
      * @throws IllegalArgumentException 如果任一参数为 {@code null}

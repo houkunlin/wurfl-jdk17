@@ -57,6 +57,7 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
 
         return matchLength >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength) : null;
     }
+
     /**
      * 恢复匹配策略：统一返回 Android Opera Mini v5 通用设备 ID。
      *

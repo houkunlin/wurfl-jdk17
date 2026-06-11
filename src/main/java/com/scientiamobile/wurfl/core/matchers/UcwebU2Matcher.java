@@ -40,6 +40,7 @@ final class UcwebU2Matcher extends MatcherBase {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.startsWith("UCWEB") && cleanedDeviceUserAgent.contains("UCBrowser");
     }
+
     /**
      * 执行 RIS 匹配：通过 "---" 分隔符定位，根据不同平台（Adr/Android、iPh OS/iOS、
      * wds/Windows Phone、Symbian、Java）验证设备信息完整性后进行匹配。
@@ -83,6 +84,7 @@ final class UcwebU2Matcher extends MatcherBase {
             return null;
         }
     }
+
     /**
      * 恢复匹配策略：统一返回通用 UCWeb 设备 ID。
      *

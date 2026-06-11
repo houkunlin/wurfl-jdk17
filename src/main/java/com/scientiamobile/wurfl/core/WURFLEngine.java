@@ -71,16 +71,16 @@ public interface WURFLEngine {
     /**
      * 使用新的根资源和补丁资源重新加载引擎。
      *
-     * @param wurflResource   新的根资源
-     * @param patchResources  新的补丁资源数组
+     * @param wurflResource  新的根资源
+     * @param patchResources 新的补丁资源数组
      */
     void reload(WURFLResource wurflResource, WURFLResource... patchResources);
 
     /**
      * 使用新的根资源和补丁资源集合重新加载引擎。
      *
-     * @param wurflResource   新的根资源
-     * @param patchResources  新的补丁资源集合
+     * @param wurflResource  新的根资源
+     * @param patchResources 新的补丁资源集合
      */
     void reload(WURFLResource wurflResource, WURFLResources patchResources);
 

@@ -21,6 +21,7 @@ public class UcwebU3Normalizer implements UserAgentNormalizer {
      * 匹配 iPad 平台 UC U3 UA 中的 iOS 版本号和设备型号。
      */
     public static final Pattern IPAD = Pattern.compile("CPU OS (\\d+)_(\\d+)?.+like Mac.+; iPad([0-9,]+)\\) AppleWebKit");
+
     /**
      * 规范化 UC 浏览器 U3 内核的 User-Agent。
      * <p>根据平台类型分别处理：</p>

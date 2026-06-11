@@ -27,25 +27,45 @@ public final class MatcherManager {
      * 匹配器链，按优先级顺序排列所有匹配器
      */
     private MatcherChain matcherChain;
-    /** Windows Phone 的 User-Agent 规范化器 */
+    /**
+     * Windows Phone 的 User-Agent 规范化器
+     */
     private UserAgentNormalizer windowsPhoneNormalizer;
-    /** Opera Mobile/Tablet on Android 的 User-Agent 规范化器 */
+    /**
+     * Opera Mobile/Tablet on Android 的 User-Agent 规范化器
+     */
     private UserAgentNormalizer operaMobiOrTabletOnAndroidNormalizer;
-    /** Android 的 User-Agent 规范化器 */
+    /**
+     * Android 的 User-Agent 规范化器
+     */
     private UserAgentNormalizer androidNormalizer;
-    /** LG 设备的 User-Agent 规范化器 */
+    /**
+     * LG 设备的 User-Agent 规范化器
+     */
     private UserAgentNormalizer lgNormalizer;
-    /** Maemo 设备的 User-Agent 规范化器 */
+    /**
+     * Maemo 设备的 User-Agent 规范化器
+     */
     private UserAgentNormalizer maemoNormalizer;
-    /** Firefox 的 User-Agent 规范化器 */
+    /**
+     * Firefox 的 User-Agent 规范化器
+     */
     private UserAgentNormalizer firefoxNormalizer;
-    /** Safari 的 User-Agent 规范化器 */
+    /**
+     * Safari 的 User-Agent 规范化器
+     */
     private UserAgentNormalizer safariNormalizer;
-    /** HTC MAC 设备的 User-Agent 规范化器 */
+    /**
+     * HTC MAC 设备的 User-Agent 规范化器
+     */
     private UserAgentNormalizer htcMacNormalizer;
-    /** WebOS 的 User-Agent 规范化器 */
+    /**
+     * WebOS 的 User-Agent 规范化器
+     */
     private UserAgentNormalizer webOSNormalizer;
-    /** Opera 的 User-Agent 规范化器 */
+    /**
+     * Opera 的 User-Agent 规范化器
+     */
     private UserAgentNormalizer operaNormalizer;
 
     /**
