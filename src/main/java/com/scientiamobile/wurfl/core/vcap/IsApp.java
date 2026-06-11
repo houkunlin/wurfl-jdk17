@@ -33,16 +33,24 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
     @Serial
     private static final long serialVersionUID = -2020126634302389944L;
 
-    /** 支持哈希前缀的 App 特征模式映射（将 "#" 开头的指示符映射为对应的 Pattern） */
+    /**
+     * 支持哈希前缀的 App 特征模式映射（将 "#" 开头的指示符映射为对应的 Pattern）
+     */
     private static final Map<String, Pattern> HASH_APP_INDICATOR_PATTERNS = new HashMap<>(3);
 
-    /** 匹配 iOS 设备标识模式，如 "iPhone3,1"、"iPad2,5" */
+    /**
+     * 匹配 iOS 设备标识模式，如 "iPhone3,1"、"iPad2,5"
+     */
     private static final Pattern IOS_DEVICE_SIGNATURE_PATTERN = Pattern.compile("iP(hone|od|ad)[\\d],[\\d]");
 
-    /** 匹配 Java 包名模式，如 "com.example.app" */
+    /**
+     * 匹配 Java 包名模式，如 "com.example.app"
+     */
     private static final Pattern JAVA_PACKAGE_SIGNATURE_PATTERN = Pattern.compile("com(?:\\.[a-z]+){2,}");
 
-    /** 匹配 .NET 包名模式，如 "net.example.app" */
+    /**
+     * 匹配 .NET 包名模式，如 "net.example.app"
+     */
     private static final Pattern DOT_NET_PACKAGE_SIGNATURE_PATTERN = Pattern.compile("net(?:\\.[a-z]+){2,}");
 
     static {

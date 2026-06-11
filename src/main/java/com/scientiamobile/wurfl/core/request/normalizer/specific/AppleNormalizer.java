@@ -19,10 +19,10 @@ public class AppleNormalizer implements UserAgentNormalizer {
     private static final Pattern CPU_OS_LIKE_PATTERN = Pattern.compile("(CPU(?: iPhone)? OS [\\d\\.]+ like)");
 
     private static final Pattern[] IOS_VERSION_PATTERNS = {
-        IOS_APP_UA_PATTERN,
-        SERVER_BAG_PATTERN,
-        IOS_DEVICE_MODEL_VERSION_PATTERN,
-        IOS_DEVICE_MODEL_IOS_VERSION_PATTERN,
+            IOS_APP_UA_PATTERN,
+            SERVER_BAG_PATTERN,
+            IOS_DEVICE_MODEL_VERSION_PATTERN,
+            IOS_DEVICE_MODEL_IOS_VERSION_PATTERN,
     };
 
     /**
@@ -58,7 +58,7 @@ public class AppleNormalizer implements UserAgentNormalizer {
 
     /**
      * Buil dosua.
- */
+     */
 
     private static String buildIOSUA(String userAgent, String iosVersion) {
         if (userAgent.contains("iPad")) {
@@ -98,8 +98,8 @@ public class AppleNormalizer implements UserAgentNormalizer {
             }
             if (findMatcher(userAgent, CPU_IOS_PATTERN) != null) {
                 String rewrittenUserAgent = userAgent.contains("iPad")
-                    ? userAgent.replace("CPU iOS", "CPU OS")
-                    : userAgent.replace("CPU iOS", "CPU iPhone OS");
+                        ? userAgent.replace("CPU iOS", "CPU OS")
+                        : userAgent.replace("CPU iOS", "CPU iPhone OS");
                 Matcher versionMatcher = findMatcher(rewrittenUserAgent, CPU_OS_LIKE_PATTERN);
                 if (versionMatcher != null) {
                     String cpuOsLike = versionMatcher.group(1).replace(".", "_");

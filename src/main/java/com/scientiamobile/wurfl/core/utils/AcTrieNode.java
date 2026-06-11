@@ -23,7 +23,9 @@ final class AcTrieNode {
      */
     private final boolean keywordEnd;
 
-    /** 子节点映射表，键为转移字符，值为对应的子节点 */
+    /**
+     * 子节点映射表，键为转移字符，值为对应的子节点
+     */
     private final TreeMap<Character, AcTrieNode> transitions;
 
     /**

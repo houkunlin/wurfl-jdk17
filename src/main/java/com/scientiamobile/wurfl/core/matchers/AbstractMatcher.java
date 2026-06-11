@@ -110,7 +110,7 @@ abstract class AbstractMatcher implements Matcher {
 
     /**
      * Validat eequire devic eds.
- */
+     */
 
     private void validateRequiredDeviceIds(WURFLModel model) {
         if (model != null) {
@@ -127,7 +127,7 @@ abstract class AbstractMatcher implements Matcher {
 
     /**
      * Returns the filter.
- */
+     */
 
     public final MatcherFilter getFilter() {
         if (this.filter == null) {
@@ -190,7 +190,7 @@ abstract class AbstractMatcher implements Matcher {
 
     /**
      * Resolv eallbac kevice.
- */
+     */
 
     private static String resolveFallbackDevice(WURFLRequest request) {
         if (request._internalIsDesktopBrowserHeavyDutyAnalysis()) {
@@ -212,7 +212,7 @@ abstract class AbstractMatcher implements Matcher {
 
     /**
      * 执行确定匹配.
- */
+     */
 
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
@@ -231,7 +231,7 @@ abstract class AbstractMatcher implements Matcher {
 
     /**
      * 执行 RIS 匹配.
- */
+     */
 
     protected String risMatch(String value) {
         int firstSlashIndex;

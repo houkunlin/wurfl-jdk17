@@ -134,8 +134,8 @@ public final class VirtualCapabilityUserAgentTool {
      * <p>通过解析 User-Agent 字符串，识别操作系统和浏览器的名称及版本，
      * 并构建 {@link VirtualCapabilityDevice} 返回。</p>
      *
-     * @param request         WURFL 请求
-     * @param internalDevice  内部设备实例（用于获取设备能力值）
+     * @param request        WURFL 请求
+     * @param internalDevice 内部设备实例（用于获取设备能力值）
      * @return 包含识别结果的虚拟能力设备
      */
 

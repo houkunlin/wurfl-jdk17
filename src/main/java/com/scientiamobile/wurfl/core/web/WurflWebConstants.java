@@ -17,14 +17,24 @@ public interface WurflWebConstants {
      * WURFL 引擎实例在 ServletContext 中的默认属性键名
      */
     String WURFL_ENGINE_KEY = WURFLEngine.class.getName();
-    /** Servlet 初始化参数名：WURFL 补丁文件路径 */
+    /**
+     * Servlet 初始化参数名：WURFL 补丁文件路径
+     */
     String WURFL_PATCH = "wurflPatch";
-    /** Servlet 初始化参数名：WURFL 主数据文件路径 */
+    /**
+     * Servlet 初始化参数名：WURFL 主数据文件路径
+     */
     String WURFL = "wurfl";
-    /** WURFL 数据文件在 Web 应用中的默认存放位置 */
+    /**
+     * WURFL 数据文件在 Web 应用中的默认存放位置
+     */
     String WURFL_DEFAULT_LOCATION = "/WEB-INF/wurfl.zip";
-    /** Servlet 初始化参数名：引擎目标匹配模式 */
+    /**
+     * Servlet 初始化参数名：引擎目标匹配模式
+     */
     String WURFL_ENGINE_TARGET_KEY = "wurflEngineTarget";
-    /** Servlet 初始化参数名：User-Agent 优先级策略 */
+    /**
+     * Servlet 初始化参数名：User-Agent 优先级策略
+     */
     String WURFL_USER_AGENT_PRIORITY_KEY = "wurflUserAgentPriority";
 }

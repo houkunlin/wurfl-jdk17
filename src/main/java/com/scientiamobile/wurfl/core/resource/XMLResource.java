@@ -34,9 +34,13 @@ public class XMLResource implements WURFLResource {
      * 解析得到的版本号
      */
     private String version;
-    /** 需要包含的功能点集合 */
+    /**
+     * 需要包含的功能点集合
+     */
     private Set<String> includedCapabilities;
-    /** 资源的原始路径 */
+    /**
+     * 资源的原始路径
+     */
     private String originalPath;
 
     /**

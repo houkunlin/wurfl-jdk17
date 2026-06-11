@@ -67,7 +67,7 @@ public class WURFLUpdater {
 
     /**
      * Sets the frequency.
- */
+     */
 
     public void setFrequency(Frequency frequency) {
         this.frequency = frequency;
@@ -79,7 +79,7 @@ public class WURFLUpdater {
 
     /**
      * Sets the connectio nimeou ts.
- */
+     */
 
     public void setConnectionTimeoutMs(Integer connectionTimeoutMs) {
         this.connectionTimeoutMs = connectionTimeoutMs;
@@ -124,7 +124,7 @@ public class WURFLUpdater {
 
     /**
      * Perfor meriodi cpdate.
- */
+     */
 
     public synchronized void performPeriodicUpdate() {
         if (this.isPeriodicUpdateRunning()) {

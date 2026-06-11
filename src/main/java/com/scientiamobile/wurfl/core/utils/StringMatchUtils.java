@@ -129,8 +129,8 @@ public final class StringMatchUtils {
     /**
      * 从指定位置开始查找子串首次出现的索引位置；如果未找到，则返回字符串长度。
      *
-     * @param value    输入字符串
-     * @param search   要查找的子串
+     * @param value     输入字符串
+     * @param search    要查找的子串
      * @param fromIndex 起始搜索位置
      * @return 首次出现的索引，若不存在则返回字符串长度
      */
@@ -374,8 +374,8 @@ public final class StringMatchUtils {
     /**
      * 移除字符串右侧出现的所有指定字符。
      *
-     * @param value  输入字符串
-     * @param trims  需要从右侧移除的字符集合
+     * @param value 输入字符串
+     * @param trims 需要从右侧移除的字符集合
      * @return 移除右侧指定字符后的字符串
      */
     public static String rtrim(String value, char... trims) {

@@ -45,8 +45,8 @@ final class SamsungMatcher extends MatcherBase {
         }
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser()
-            && (StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, CAN_HANDLE_PREFIXES)
-            || cleanedDeviceUserAgent.toLowerCase().contains("samsung"));
+                && (StringMatchUtils.startsWithAnyOf(cleanedDeviceUserAgent, CAN_HANDLE_PREFIXES)
+                || cleanedDeviceUserAgent.toLowerCase().contains("samsung"));
     }
 
     @Override

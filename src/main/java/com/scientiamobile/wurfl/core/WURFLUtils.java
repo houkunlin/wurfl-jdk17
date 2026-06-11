@@ -147,8 +147,8 @@ public class WURFLUtils {
     /**
      * 在设备继承链上查找定义指定能力的设备节点。
      *
-     * @param rootDevice      起始设备
-     * @param capabilityName  能力名称
+     * @param rootDevice     起始设备
+     * @param capabilityName 能力名称
      * @return 定义了该能力的设备节点
      */
 

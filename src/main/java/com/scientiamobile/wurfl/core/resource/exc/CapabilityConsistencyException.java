@@ -17,7 +17,7 @@ public abstract class CapabilityConsistencyException extends DeviceConsistencyEx
     /**
      * 存在一致性问题的功能点名称
      */
-   private final String capabilityName;
+    private final String capabilityName;
 
     /**
      * 使用指定设备、功能点名称构造异常，异常消息会自动包含设备和功能点信息。

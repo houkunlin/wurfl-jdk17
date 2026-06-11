@@ -17,9 +17,13 @@ final class IntrospectorRequestResponse {
      * 请求中使用的 User-Agent
      */
     String userAgent;
-    /** 请求类型：{@code request}（自动检测）或 {@code form}（表单提交） */
+    /**
+     * 请求类型：{@code request}（自动检测）或 {@code form}（表单提交）
+     */
     String requestType;
-    /** 请求的能力名称到值的映射 */
+    /**
+     * 请求的能力名称到值的映射
+     */
     Map<String, String> capabilities;
 }
 

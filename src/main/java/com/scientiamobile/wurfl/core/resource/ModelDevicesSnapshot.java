@@ -27,13 +27,21 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
      * 版本号
      */
     private final String version;
-    /** 是否为补丁数据 */
+    /**
+     * 是否为补丁数据
+     */
     private final boolean patch;
-    /** 设备集合 */
+    /**
+     * 设备集合
+     */
     private final ModelDevices devices;
-    /** 缓存的计算得到的快照键 */
+    /**
+     * 缓存的计算得到的快照键
+     */
     private transient String cachedKey;
-    /** WURFL SMID（安全模型标识符） */
+    /**
+     * WURFL SMID（安全模型标识符）
+     */
     private final String smid;
 
     /**

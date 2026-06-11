@@ -27,9 +27,13 @@ public class HashMapCacheProvider implements CacheProvider {
      * 缓存的初始容量
      */
     private int initialCapacity;
-    /** 哈希表的负载因子 */
+    /**
+     * 哈希表的负载因子
+     */
     private float loadFactor;
-    /** 并发写入的预估线程数，用于优化 ConcurrentHashMap 的分段锁 */
+    /**
+     * 并发写入的预估线程数，用于优化 ConcurrentHashMap 的分段锁
+     */
     private int concurrentWrites;
 
     /**
@@ -61,8 +65,8 @@ public class HashMapCacheProvider implements CacheProvider {
     /**
      * 使用完整参数创建缓存提供者。
      *
-     * @param initialCapacity 缓存的初始容量
-     * @param loadFactor      哈希表的负载因子
+     * @param initialCapacity  缓存的初始容量
+     * @param loadFactor       哈希表的负载因子
      * @param concurrentWrites 并发写入的预估线程数
      */
     public HashMapCacheProvider(int initialCapacity, float loadFactor, int concurrentWrites) {

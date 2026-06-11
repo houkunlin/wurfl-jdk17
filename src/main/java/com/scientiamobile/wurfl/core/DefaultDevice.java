@@ -35,17 +35,29 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
      * 桶匹配器的名称
      */
     private final String bucketMatcherName;
-    /** 最终匹配器的名称 */
+    /**
+     * 最终匹配器的名称
+     */
     private final String matcherName;
-    /** 归一化后的 User-Agent */
+    /**
+     * 归一化后的 User-Agent
+     */
     private final String normalizedUserAgent;
-    /** 标记语言解析器（暂态，不参与序列化） */
+    /**
+     * 标记语言解析器（暂态，不参与序列化）
+     */
     private final transient MarkupResolver markupResolver;
-    /** 内部设备实例，提供物理能力数据 */
+    /**
+     * 内部设备实例，提供物理能力数据
+     */
     private final transient InternalDevice internalDevice;
-    /** 计算出的标记语言类型 */
+    /**
+     * 计算出的标记语言类型
+     */
     private transient MarkUp markUp;
-    /** 虚拟能力处理器（暂态，不参与序列化） */
+    /**
+     * 虚拟能力处理器（暂态，不参与序列化）
+     */
     private final transient VirtualCapabilityHandler virtualCapabilityHandler;
 
     public DefaultDevice(InternalDevice internalDevice, VirtualCapabilityHandler virtualCapabilityHandler, MarkupResolver markupResolver, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent) {

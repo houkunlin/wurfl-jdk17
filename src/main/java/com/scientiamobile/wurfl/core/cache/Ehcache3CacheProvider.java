@@ -30,16 +30,26 @@ public class Ehcache3CacheProvider implements CacheProvider {
      * User-Agent 映射缓存在 Ehcache 中的名称
      */
     private static final String UA_CACHE = "wurfl-ua-cache";
-    /** 默认的堆内存大小（MB） */
+    /**
+     * 默认的堆内存大小（MB）
+     */
     private static final long HEAP_SIZE_MB = 20;
 
-    /** Ehcache 3.x 缓存管理器，负责管理所有缓存的声明周期 */
+    /**
+     * Ehcache 3.x 缓存管理器，负责管理所有缓存的声明周期
+     */
     private final CacheManager cacheManager;
-    /** 缓存设备 ID 到设备对象的映射 */
+    /**
+     * 缓存设备 ID 到设备对象的映射
+     */
     private final Cache<String, InternalDevice> deviceIdCache;
-    /** 缓存 User-Agent 到设备 ID 的映射 */
+    /**
+     * 缓存 User-Agent 到设备 ID 的映射
+     */
     private final Cache<String, String> userAgentToIdCache;
-    /** 确保 close 方法只执行一次，避免重复释放资源 */
+    /**
+     * 确保 close 方法只执行一次，避免重复释放资源
+     */
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
     /**

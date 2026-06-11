@@ -99,8 +99,8 @@ public final class NameVersionPair implements Serializable {
     /**
      * 使用正则表达式匹配输入字符串，从指定分组中提取版本。
      *
-     * @param pattern          正则模式
-     * @param input            输入字符串
+     * @param pattern           正则模式
+     * @param input             输入字符串
      * @param versionGroupIndex 版本所在的分组索引
      * @return 如果匹配成功返回 {@code true}
      */
@@ -120,9 +120,9 @@ public final class NameVersionPair implements Serializable {
     /**
      * 使用正则表达式匹配输入字符串，从指定分组中提取版本，名称使用固定值。
      *
-     * @param pattern          正则模式
-     * @param input            输入字符串
-     * @param matchedName      匹配成功后设置的名称（可为 {@code null}）
+     * @param pattern           正则模式
+     * @param input             输入字符串
+     * @param matchedName       匹配成功后设置的名称（可为 {@code null}）
      * @param versionGroupIndex 版本所在的分组索引
      * @return 如果匹配成功返回 {@code true}
      */
@@ -147,9 +147,9 @@ public final class NameVersionPair implements Serializable {
     /**
      * 使用正则表达式匹配输入字符串，从分组 1 提取名称，从指定分组提取版本。
      *
-     * @param pattern          正则模式
-     * @param input            输入字符串
-     * @param nameGroupIndex   版本所在的分组索引（名称始终从分组 1 获取）
+     * @param pattern        正则模式
+     * @param input          输入字符串
+     * @param nameGroupIndex 版本所在的分组索引（名称始终从分组 1 获取）
      * @return 如果匹配成功返回 {@code true}
      */
 
@@ -169,9 +169,9 @@ public final class NameVersionPair implements Serializable {
     /**
      * 在输入字符串中查找指定内容，若存在则设置名称。
      *
-     * @param input        输入字符串
-     * @param needle       要查找的内容
-     * @param matchedName  匹配成功后设置的名称
+     * @param input       输入字符串
+     * @param needle      要查找的内容
+     * @param matchedName 匹配成功后设置的名称
      * @return 如果找到指定内容返回 {@code true}
      */
 

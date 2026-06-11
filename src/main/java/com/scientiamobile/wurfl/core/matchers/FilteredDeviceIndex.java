@@ -51,7 +51,7 @@ final class FilteredDeviceIndex {
 
     /**
      * Put.
- */
+     */
 
     public final void put(String userAgent, String deviceId) {
         Validate.notNull(userAgent, "user-agent cannot be null");

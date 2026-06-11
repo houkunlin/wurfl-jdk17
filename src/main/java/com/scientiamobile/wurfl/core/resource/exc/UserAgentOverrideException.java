@@ -17,7 +17,7 @@ public class UserAgentOverrideException extends UserAgentConsistencyException {
     /**
      * 基础设备中原有的 User-Agent
      */
-   private final String existingUserAgent;
+    private final String existingUserAgent;
 
     /**
      * 构造 User-Agent 覆盖异常。

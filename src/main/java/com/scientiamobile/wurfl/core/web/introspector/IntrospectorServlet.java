@@ -43,62 +43,118 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
      * header 对的分隔符
      */
     public static final String SPLIT_CHAR = "|";
-    /** 键值对中的冒号分隔符 */
+    /**
+     * 键值对中的冒号分隔符
+     */
     public static final String COLON = ":";
-    /** 制表符，用于格式化输出 */
+    /**
+     * 制表符，用于格式化输出
+     */
     public static final String TABULATION = "\t";
-    /** 请求参数名：操作类型 */
+    /**
+     * 请求参数名：操作类型
+     */
     public static final String ACTION = "action";
-    /** 请求参数名：User-Agent */
+    /**
+     * 请求参数名：User-Agent
+     */
     public static final String USER_AGENT_PARAMNAME = "ua";
-    /** 请求参数名：UAProfile URL */
+    /**
+     * 请求参数名：UAProfile URL
+     */
     public static final String UAPROF_PARAMNAME = "uaprof";
-    /** 请求参数名：自定义请求头 */
+    /**
+     * 请求参数名：自定义请求头
+     */
     public static final String HEADERS = "headers";
-    /** 请求参数名：需要查询的能力列表 */
+    /**
+     * 请求参数名：需要查询的能力列表
+     */
     public static final String CAPABILITIES = "capabilities";
-    /** 请求参数名：设备 ID */
+    /**
+     * 请求参数名：设备 ID
+     */
     public static final String ID = "id";
-    /** JSON 响应中的能力映射字段名 */
+    /**
+     * JSON 响应中的能力映射字段名
+     */
     public static final String CAPABILITY_MAP = "capabilityMap";
-    /** 设备 UAProfile 请求头名（首字母大写形式） */
+    /**
+     * 设备 UAProfile 请求头名（首字母大写形式）
+     */
     public static final String X_WAP_PROFILE = "X-Wap-Profile";
-    /** 设备 UAProfile 请求头名（小写形式） */
+    /**
+     * 设备 UAProfile 请求头名（小写形式）
+     */
     public static final String X_WAP_PROFILE_LC = "x-wap-profile";
-    /** User-Agent 请求头名（小写） */
+    /**
+     * User-Agent 请求头名（小写）
+     */
     public static final String USER_AGENT_LC = "user-agent";
-    /** User-Agent 请求头名 */
+    /**
+     * User-Agent 请求头名
+     */
     public static final String USER_AGENT = "User-Agent";
-    /** 设备原始 UA 请求头名 */
+    /**
+     * 设备原始 UA 请求头名
+     */
     public static final String DEVICE_STOCK_UA = "Device-Stock-UA";
-    /** 操作类型：普通请求匹配 */
+    /**
+     * 操作类型：普通请求匹配
+     */
     public static final String REQUEST = "Request";
-    /** 操作类型：性能模式请求匹配 */
+    /**
+     * 操作类型：性能模式请求匹配
+     */
     public static final String REQUEST_PERFORMANCE = "RequestPerformance";
-    /** 操作类型：精度模式请求匹配 */
+    /**
+     * 操作类型：精度模式请求匹配
+     */
     public static final String REQUEST_ACCURACY = "RequestAccuracy";
-    /** 操作类型：返回引擎和服务器信息 */
+    /**
+     * 操作类型：返回引擎和服务器信息
+     */
     public static final String INFO = "Info";
-    /** 操作类型：返回桶匹配统计 */
+    /**
+     * 操作类型：返回桶匹配统计
+     */
     public static final String BUCKETS = "Buckets";
-    /** 序列化版本号 */
+    /**
+     * 序列化版本号
+     */
     @Serial
     private static final long serialVersionUID = 1L;
-    /** 运行时的操作系统名称 */
+    /**
+     * 运行时的操作系统名称
+     */
     private static final String OS_NAME = System.getProperty("os.name");
-    /** 运行时的操作系统版本 */
+    /**
+     * 运行时的操作系统版本
+     */
     private static final String OS_VERSION = System.getProperty("os.version");
-    /** Java 运行环境的供应商 */
+    /**
+     * Java 运行环境的供应商
+     */
     private static final String JAVA_VENDOR = System.getProperty("java.vendor");
-    /** Java 运行环境版本 */
+    /**
+     * Java 运行环境版本
+     */
     private static final String JAVA_VERSION_PROP = System.getProperty("java.version");
-    /** 用于匹配换行符的正则模式 */
+    /**
+     * 用于匹配换行符的正则模式
+     */
     private static final Pattern LINE_BREAK_PATTERN = Pattern.compile("[\r\n]+");
-    /** 日志记录器 */
+    /**
+     * 日志记录器
+     */
     private static final Logger log = LoggerFactory.getLogger(IntrospectorServlet.class);
-    /** WURFL 引擎静态实例，通过 {@link #setWURFLEngine(WURFLEngine)} 注入 */
+    /**
+     * WURFL 引擎静态实例，通过 {@link #setWURFLEngine(WURFLEngine)} 注入
+     */
     private static WURFLEngine wurflEngine = null;
-    /** WURFL API 版本号 */
+    /**
+     * WURFL API 版本号
+     */
     private static String apiVersion;
 
     static {
@@ -117,7 +173,9 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         log.info("WURFL core library running version {}", pomProperties.get("version"));
     }
 
-    /** Jackson JSON 对象映射器，用于序列化响应体 */
+    /**
+     * Jackson JSON 对象映射器，用于序列化响应体
+     */
     private final transient ObjectMapper objectMapper = new ObjectMapper();
 
     /**
@@ -270,8 +328,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
      * 对模型中所有设备的 User-Agent 执行桶匹配。
      * <p>先收集所有设备的 UA，然后逐一匹配，最后对匹配结果排序。</p>
      *
-     * @param wurflModel    WURFL 数据模型
-     * @param wurflService  WURFL 服务实例
+     * @param wurflModel   WURFL 数据模型
+     * @param wurflService WURFL 服务实例
      * @return 排序后的匹配结果行列表
      */
 
@@ -320,7 +378,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     /**
      * 对收集到的 User-Agent 逐一执行匹配，生成匹配结果行。
      *
-     * @param userAgents    需要匹配的 User-Agent 列表
+     * @param userAgents     需要匹配的 User-Agent 列表
      * @param matcherManager 匹配器管理器
      * @return 匹配结果行列表
      */
@@ -421,8 +479,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     /**
      * 从原始请求中复制所有请求头到 HeaderOnlyHttpServletRequest。
      *
-     * @param request            原始 HTTP 请求
-     * @param headerOnlyRequest  目标请求头对象
+     * @param request           原始 HTTP 请求
+     * @param headerOnlyRequest 目标请求头对象
      */
 
     private static void copyAllHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
@@ -439,8 +497,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
      * 从表单参数中提取请求头信息。
      * <p>获取表单提交的 User-Agent 和自定义请求头（格式为 {@code headerName:headerValue}，以竖线或换行分隔）。</p>
      *
-     * @param request            原始 HTTP 请求
-     * @param headerOnlyRequest  目标请求头对象
+     * @param request           原始 HTTP 请求
+     * @param headerOnlyRequest 目标请求头对象
      */
 
     private static void addFormHeaders(HttpServletRequest request, HeaderOnlyHttpServletRequest headerOnlyRequest) {
@@ -473,8 +531,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
      * 按 {@code name:value} 格式解析 header 键值对字符串，添加到请求头对象中。
      * <p>每个 header 对以竖线或换行分隔。</p>
      *
-     * @param rawHeaders         原始 header 字符串
-     * @param headerOnlyRequest  目标请求头对象
+     * @param rawHeaders        原始 header 字符串
+     * @param headerOnlyRequest 目标请求头对象
      */
 
     private static void addHeaderPairs(String rawHeaders, HeaderOnlyHttpServletRequest headerOnlyRequest) {
@@ -483,8 +541,8 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
             int colonIndex = headerPair.indexOf(':');
             if (colonIndex > 0) {
                 headerOnlyRequest.addHeader(
-                    headerPair.substring(0, colonIndex).trim(),
-                    headerPair.substring(colonIndex + 1).trim()
+                        headerPair.substring(0, colonIndex).trim(),
+                        headerPair.substring(colonIndex + 1).trim()
                 );
             }
         }

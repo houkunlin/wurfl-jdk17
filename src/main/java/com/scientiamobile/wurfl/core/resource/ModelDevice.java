@@ -29,15 +29,25 @@ public class ModelDevice implements Serializable {
      * 设备的唯一标识 ID
      */
     private String id;
-    /** 回退设备的 ID，形成设备继承链 */
+    /**
+     * 回退设备的 ID，形成设备继承链
+     */
     private String fallBack;
-    /** 是否为实际的设备根节点（即该设备自身就是匹配目标，而非中间节点） */
+    /**
+     * 是否为实际的设备根节点（即该设备自身就是匹配目标，而非中间节点）
+     */
     private boolean actualDeviceRoot;
-    /** 设备定义的功能点名称到值的映射 */
+    /**
+     * 设备定义的功能点名称到值的映射
+     */
     private Map<String, String> capabilities;
-    /** 功能点名称到所属组 ID 的映射 */
+    /**
+     * 功能点名称到所属组 ID 的映射
+     */
     private Map<String, String> groupsByCapability;
-    /** 缓存的最接近的祖先设备 */
+    /**
+     * 缓存的最接近的祖先设备
+     */
     private ModelDevice ancestor;
 
     protected ModelDevice() {

@@ -17,13 +17,21 @@ public class DeviceInfo {
      * 匹配类型
      */
     private final MatchType matchType;
-    /** 最终匹配器的名称 */
+    /**
+     * 最终匹配器的名称
+     */
     private final String matcherName;
-    /** 桶匹配器的名称 */
+    /**
+     * 桶匹配器的名称
+     */
     private final String bucketMatcherName;
-    /** 归一化后的 User-Agent */
+    /**
+     * 归一化后的 User-Agent
+     */
     private final String normalizedUserAgent;
-    /** 原始的 User-Agent */
+    /**
+     * 原始的 User-Agent
+     */
     private final String originalUserAgent;
 
     public DeviceInfo(String id, MatchType matchType, String matcherName, String bucketMatcherName, String normalizedUserAgent, String originalUserAgent) {
@@ -69,7 +77,7 @@ public class DeviceInfo {
      * 获取桶匹配器的名称。
      *
      * @return 桶匹配器名称
- */
+     */
 
     public String getBucketMatcherName() {
         return this.bucketMatcherName;

@@ -17,7 +17,7 @@ public class UserAgentNotUniqueException extends UserAgentConsistencyException {
     /**
      * 已先定义了该 User-Agent 的设备
      */
-   private final ModelDevice definingDevice;
+    private final ModelDevice definingDevice;
 
     /**
      * 构造 User-Agent 不唯一异常。

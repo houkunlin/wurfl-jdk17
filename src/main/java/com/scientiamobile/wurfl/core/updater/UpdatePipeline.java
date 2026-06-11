@@ -27,19 +27,33 @@ public class UpdatePipeline {
      * 环境变量键名，用于指定 WURFL 更新 URL
      */
     public static final String ENV_SCIENTIA_URL = "WURFL_UPDATE_URL";
-    /** classpath 资源前缀标识 */
+    /**
+     * classpath 资源前缀标识
+     */
     public static final String CLASSPATH_PREFIX = "classpath:";
-    /** 按顺序执行的更新任务列表 */
+    /**
+     * 按顺序执行的更新任务列表
+     */
     private List<UpdatePipelineTask> tasks;
-    /** 管线执行上下文，用于在各任务间传递数据 */
+    /**
+     * 管线执行上下文，用于在各任务间传递数据
+     */
     private Map<String, Object> context = new HashMap<>();
-    /** 新 WURFL 文件的下载 URL */
+    /**
+     * 新 WURFL 文件的下载 URL
+     */
     private String newWurflUrl;
-    /** 原始 WURFL 文件的路径 */
+    /**
+     * 原始 WURFL 文件的路径
+     */
     private String originalWurflPath;
-    /** API 请求时使用的 User-Agent */
+    /**
+     * API 请求时使用的 User-Agent
+     */
     private String apiUserAgent;
-    /** 连接超时时间，默认 10000 毫秒 */
+    /**
+     * 连接超时时间，默认 10000 毫秒
+     */
     private Integer connectionTimeoutMs = 10000;
 
     /**

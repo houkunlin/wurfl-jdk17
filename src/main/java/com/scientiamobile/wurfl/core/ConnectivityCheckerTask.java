@@ -76,8 +76,8 @@ final class ConnectivityCheckerTask implements Runnable {
     /**
      * 向连接发送 JSON 负载数据。
      *
-     * @param connection     HTTPS 连接
-     * @param payloadBytes   负载字节数组
+     * @param connection   HTTPS 连接
+     * @param payloadBytes 负载字节数组
      * @throws IOException 发送失败
      */
 

@@ -39,9 +39,9 @@ public class CaffeineCacheProvider implements CacheProvider {
     /**
      * 使用指定参数创建 Caffeine 缓存提供者，时间单位默认为分钟。
      *
-     * @param deviceCacheSize     设备缓存的最大条目数
-     * @param userAgentCacheSize  User-Agent 缓存的最大条目数
-     * @param expireAfterMinutes  写入后过期时间（分钟），小于等于 0 表示不过期
+     * @param deviceCacheSize    设备缓存的最大条目数
+     * @param userAgentCacheSize User-Agent 缓存的最大条目数
+     * @param expireAfterMinutes 写入后过期时间（分钟），小于等于 0 表示不过期
      */
     public CaffeineCacheProvider(int deviceCacheSize, int userAgentCacheSize, int expireAfterMinutes) {
         this(deviceCacheSize, userAgentCacheSize, expireAfterMinutes, TimeUnit.MINUTES);
@@ -52,10 +52,10 @@ public class CaffeineCacheProvider implements CacheProvider {
      * <p>两个缓存均启用统计功能（recordStats），可通过 {@link #estimatedDeviceCacheSize()} 等方法
      * 获取缓存大小估算值。</p>
      *
-     * @param deviceCacheSize     设备缓存的最大条目数
-     * @param userAgentCacheSize  User-Agent 缓存的最大条目数
-     * @param expireAfterMinutes  写入后过期时间，小于等于 0 表示不过期
-     * @param timeUnit            过期时间的时间单位
+     * @param deviceCacheSize    设备缓存的最大条目数
+     * @param userAgentCacheSize User-Agent 缓存的最大条目数
+     * @param expireAfterMinutes 写入后过期时间，小于等于 0 表示不过期
+     * @param timeUnit           过期时间的时间单位
      */
     public CaffeineCacheProvider(int deviceCacheSize, int userAgentCacheSize, int expireAfterMinutes, TimeUnit timeUnit) {
         Caffeine<Object, Object> deviceBuilder = Caffeine.newBuilder()

@@ -15,9 +15,13 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
      * 匹配到的设备 ID
      */
     private final String deviceId;
-    /** 经过归一化处理后的 User-Agent 字符串 */
+    /**
+     * 经过归一化处理后的 User-Agent 字符串
+     */
     private final String normalizedUserAgent;
-    /** 原始的 User-Agent 字符串 */
+    /**
+     * 原始的 User-Agent 字符串
+     */
     private final String originalUserAgent;
 
     MatchResultRow(String matcherName, String deviceId, String normalizedUserAgent, String originalUserAgent) {

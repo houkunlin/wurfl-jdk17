@@ -30,9 +30,13 @@ class DefaultDeviceProvider implements DeviceProvider {
      * 标记语言解析器
      */
     private final MarkupResolver markupResolver;
-    /** 能力持有器工厂 */
+    /**
+     * 能力持有器工厂
+     */
     private final CapabilitiesHolderFactory capabilitiesHolderFactory;
-    /** WURFL 数据模型 */
+    /**
+     * WURFL 数据模型
+     */
     private final WURFLModel wurflModel;
 
     public DefaultDeviceProvider(WURFLModel wurflModel, CapabilitiesHolderFactory capabilitiesHolderFactory, MarkupResolver markupResolver) {

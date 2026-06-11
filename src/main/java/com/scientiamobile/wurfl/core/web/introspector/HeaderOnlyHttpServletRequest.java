@@ -568,7 +568,7 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
      *
      * @param response HTTP 响应
      * @return 始终返回 {@code false}
-     * @throws IOException 不会抛出，但保留接口签名
+     * @throws IOException      不会抛出，但保留接口签名
      * @throws ServletException 不会抛出，但保留接口签名
      */
     public final boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
@@ -697,8 +697,8 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
      * 该方法在此实现中不被支持，始终返回 {@code null}。
      *
      * @param handlerClass HTTP 升级处理器类型
+     * @param <T>          HTTP 升级处理器类型
      * @return 始终返回 {@code null}
-     * @param <T> HTTP 升级处理器类型
      */
     public final <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) {
         return null;

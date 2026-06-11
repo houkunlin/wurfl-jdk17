@@ -32,17 +32,29 @@ public class DefaultWURFLModel implements WURFLModel {
      * 家族设备（fallback 为 generic 或 generic_mobile）的 ID 集合
      */
     private final Set<String> familyDeviceIds;
-    /** 设备 ID 到设备对象的映射 */
+    /**
+     * 设备 ID 到设备对象的映射
+     */
     private Map<String, ModelDevice> devicesById;
-    /** 按插入顺序排列的设备 ID 列表 */
+    /**
+     * 按插入顺序排列的设备 ID 列表
+     */
     private List<String> deviceIdsByInsertionOrder;
-    /** 缓存的 generic 设备实例 */
+    /**
+     * 缓存的 generic 设备实例
+     */
     private ModelDevice genericDevice;
-    /** 模型的版本号 */
+    /**
+     * 模型的版本号
+     */
     private String version;
-    /** WURFL SMID（安全模型标识符） */
+    /**
+     * WURFL SMID（安全模型标识符）
+     */
     private String smid;
-    /** 缓存的能力总数 */
+    /**
+     * 缓存的能力总数
+     */
     private Integer capabilityCount;
 
     /**
@@ -88,7 +100,7 @@ public class DefaultWURFLModel implements WURFLModel {
 
     /**
      * Loa dro moo tesource.
- */
+     */
 
     private final synchronized void loadFromRootResource(WURFLResource rootResource, WURFLResources patchResources, String... includedCapabilities) {
         Validate.notNull(rootResource, "The root resource must be not null.");

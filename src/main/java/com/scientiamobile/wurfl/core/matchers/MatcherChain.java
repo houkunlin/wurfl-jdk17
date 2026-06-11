@@ -102,7 +102,7 @@ class MatcherChain implements Matcher, MatcherFilter {
 
     /**
      * 获取设备索引.
- */
+     */
 
     public final FilteredDeviceIndex getIndex() {
         logger.warn("A Filter of type MatcherChain should never be asked for its FilteredDevices set.");

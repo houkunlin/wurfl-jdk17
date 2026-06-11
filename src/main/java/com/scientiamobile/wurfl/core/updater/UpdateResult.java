@@ -36,7 +36,7 @@ public class UpdateResult {
 
     /**
      * Returns whether this i spdat eroces successful.
- */
+     */
 
     public boolean isUpdateProcessSuccessful() {
         return this.resultStatus == UpdateResultStatus.UPDATED || this.resultStatus == UpdateResultStatus.UPDATE_SKIPPED;
@@ -48,7 +48,7 @@ public class UpdateResult {
 
     /**
      * Returns the resul ttatus.
- */
+     */
 
     public UpdateResultStatus getResultStatus() {
         return this.resultStatus;

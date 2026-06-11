@@ -15,19 +15,33 @@ final class IntrospectorInfoResponse {
      * WURFL 数据文件版本号
      */
     String wurflVersion;
-    /** 引擎目标匹配模式 */
+    /**
+     * 引擎目标匹配模式
+     */
     String engineTarget;
-    /** User-Agent 优先级策略 */
+    /**
+     * User-Agent 优先级策略
+     */
     String userAgentPriority;
-    /** Servlet 容器服务器信息 */
+    /**
+     * Servlet 容器服务器信息
+     */
     String serverInfo;
-    /** 操作系统名称 */
+    /**
+     * 操作系统名称
+     */
     String osName;
-    /** 操作系统版本 */
+    /**
+     * 操作系统版本
+     */
     String osVersion;
-    /** Java 运行环境供应商 */
+    /**
+     * Java 运行环境供应商
+     */
     String javaVendor;
-    /** Java 运行环境版本 */
+    /**
+     * Java 运行环境版本
+     */
     String javaVersion;
 }
 

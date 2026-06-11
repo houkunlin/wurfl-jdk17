@@ -35,163 +35,269 @@ public final class UserAgentUtils {
      */
     public static final Pattern NAMESPACE_NUMBER_PATTERN;
 
-    /** WURFL 官方认可的 Android 版本号集合 */
+    /**
+     * WURFL 官方认可的 Android 版本号集合
+     */
     private static final SortedSet<String> SUPPORTED_ANDROID_VERSIONS;
 
-    /** 当前 JVM 的 Java 版本 */
+    /**
+     * 当前 JVM 的 Java 版本
+     */
     private static final String JAVA_VERSION = System.getProperty("java.version");
 
-    /** 当前操作系统名称 */
+    /**
+     * 当前操作系统名称
+     */
     private static final String OS_NAME = System.getProperty("os.name");
 
-    /** 当前操作系统版本 */
+    /**
+     * 当前操作系统版本
+     */
     private static final String OS_VERSION = System.getProperty("os.version");
 
-    /** 匹配 "Android/2.3" 格式的版本号 */
+    /**
+     * 匹配 "Android/2.3" 格式的版本号
+     */
     private static final Pattern ANDROID_VERSION_SLASH_PATTERN;
 
-    /** 匹配 "Android 2.3" 格式的版本号 */
+    /**
+     * 匹配 "Android 2.3" 格式的版本号
+     */
     private static final Pattern ANDROID_VERSION_SPACE_PATTERN;
 
-    /** 匹配 Amazon 设备 ":::Android_2.3" 格式的版本号 */
+    /**
+     * 匹配 Amazon 设备 ":::Android_2.3" 格式的版本号
+     */
     private static final Pattern AMAZON_ANDROID_VERSION_PATTERN;
 
-    /** 匹配 Opera on Android 的主版本号 */
+    /**
+     * 匹配 Opera on Android 的主版本号
+     */
     private static final Pattern OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN;
 
-    /** 匹配 "Model Linux Android Release" 格式中的设备型号 */
+    /**
+     * 匹配 "Model Linux Android Release" 格式中的设备型号
+     */
     private static final Pattern ANDROID_MODEL_LINUX_ANDROID_RELEASE_PATTERN;
 
-    /** 匹配 "Model Android/Linux" 格式中的设备型号 */
+    /**
+     * 匹配 "Model Android/Linux" 格式中的设备型号
+     */
     private static final Pattern ANDROID_MODEL_ANDROID_LINUX_PATTERN;
 
-    /** 匹配 Android User-Agent 中 "Build/" 或 "MIUI/" 前的设备型号 */
+    /**
+     * 匹配 Android User-Agent 中 "Build/" 或 "MIUI/" 前的设备型号
+     */
     private static final Pattern ANDROID_MODEL_BUILD_PATTERN;
 
-    /** 匹配 Amazon 购物应用的设备型号 */
+    /**
+     * 匹配 Amazon 购物应用的设备型号
+     */
     private static final Pattern ANDROID_MODEL_AMAZON_APP_PATTERN;
 
-    /** 匹配 GIONEE 品牌设备型号 */
+    /**
+     * 匹配 GIONEE 品牌设备型号
+     */
     private static final Pattern GIONEE_MODEL_PATTERN;
 
-    /** 用于修复分号后缺少空格的 User-Agent 字符串 */
+    /**
+     * 用于修复分号后缺少空格的 User-Agent 字符串
+     */
     private static final Pattern SEMICOLON_WITHOUT_SPACE_PATTERN;
 
-    /** 匹配 Amazon 购物平台 User-Agent 中的设备型号 */
+    /**
+     * 匹配 Amazon 购物平台 User-Agent 中的设备型号
+     */
     private static final Pattern AMAZON_SHOPPING_MODEL_PATTERN;
 
-    /** 匹配 User-Agent 中的 "xx-xx" 区域设置占位符 */
+    /**
+     * 匹配 User-Agent 中的 "xx-xx" 区域设置占位符
+     */
     private static final Pattern XX_XX_LOCALE_PATTERN;
 
-    /** 匹配中国移动定制后缀（_CMCC_TD, _CMCC, _TD） */
+    /**
+     * 匹配中国移动定制后缀（_CMCC_TD, _CMCC, _TD）
+     */
     private static final Pattern CMCC_SUFFIX_PATTERN;
 
-    /** 匹配华为品牌前缀 "HW-HUAWEI_" */
+    /**
+     * 匹配华为品牌前缀 "HW-HUAWEI_"
+     */
     private static final Pattern HUAWEI_PREFIX_PATTERN;
 
-    /** 匹配酷派品牌前缀 "YL-Coolpad_" */
+    /**
+     * 匹配酷派品牌前缀 "YL-Coolpad_"
+     */
     private static final Pattern COOLPAD_PREFIX_PATTERN;
 
-    /** 匹配 HTC 品牌前缀 */
+    /**
+     * 匹配 HTC 品牌前缀
+     */
     private static final Pattern HTC_PREFIX_PATTERN;
 
-    /** 匹配版本号后缀（如 " V2.3"） */
+    /**
+     * 匹配版本号后缀（如 " V2.3"）
+     */
     private static final Pattern VERSION_SUFFIX_PATTERN;
 
-    /** 匹配 UC 浏览器主版本号 */
+    /**
+     * 匹配 UC 浏览器主版本号
+     */
     private static final Pattern UC_BROWSER_MAJOR_VERSION_PATTERN;
 
-    /** 匹配 "Adr 4.0.3" 格式的 Android 版本 */
+    /**
+     * 匹配 "Adr 4.0.3" 格式的 Android 版本
+     */
     private static final Pattern ADR_ANDROID_VERSION_PATTERN;
 
-    /** 匹配 UC 浏览器 User-Agent 中的 Android 设备型号 */
+    /**
+     * 匹配 UC 浏览器 User-Agent 中的 Android 设备型号
+     */
     private static final Pattern UC_ANDROID_MODEL_PATTERN;
 
-    /** 匹配末尾多余版本号信息 */
+    /**
+     * 匹配末尾多余版本号信息
+     */
     private static final Pattern VERSION_TRAILING_PATTERN;
 
-    /** 匹配 "/..." 到最后的部分 */
+    /**
+     * 匹配 "/..." 到最后的部分
+     */
     private static final Pattern SLASH_TO_END_PATTERN;
 
-    /** 匹配三星设备型号 */
+    /**
+     * 匹配三星设备型号
+     */
     private static final Pattern SAMSUNG_MODEL_PATTERN;
 
-    /** 匹配 Orange 后缀 */
+    /**
+     * 匹配 Orange 后缀
+     */
     private static final Pattern ORANGE_SUFFIX_PATTERN;
 
-    /** 匹配 LG 设备型号（带可选连字符） */
+    /**
+     * 匹配 LG 设备型号（带可选连字符）
+     */
     private static final Pattern LG_MODEL_PATTERN;
 
-    /** 匹配 LG 设备型号（连字符可选） */
+    /**
+     * 匹配 LG 设备型号（连字符可选）
+     */
     private static final Pattern LG_MODEL_OPTIONAL_HYPHEN_PATTERN;
 
-    /** 匹配时间戳标记 "[1234567890]" */
+    /**
+     * 匹配时间戳标记 "[1234567890]"
+     */
     private static final Pattern TIMESTAMP_IN_BRACKETS_PATTERN;
 
-    /** 匹配设备品牌前缀（SAMSUNG/SonyEricsson/Sony/HUAWEI） */
+    /**
+     * 匹配设备品牌前缀（SAMSUNG/SonyEricsson/Sony/HUAWEI）
+     */
     private static final Pattern BRAND_PREFIX_PATTERN;
 
-    /** 匹配 Windows Phone 设备的型号 */
+    /**
+     * 匹配 Windows Phone 设备的型号
+     */
     private static final Pattern WINDOWS_PHONE_MODEL_PATTERN;
 
-    /** 匹配 Edge 浏览器 User-Agent 中的 Windows Phone 型号 */
+    /**
+     * 匹配 Edge 浏览器 User-Agent 中的 Windows Phone 型号
+     */
     private static final Pattern WINDOWS_PHONE_EDGE_MODEL_PATTERN;
 
-    /** 匹配 Windows Phone OS 版本号 */
+    /**
+     * 匹配 Windows Phone OS 版本号
+     */
     private static final Pattern WINDOWS_PHONE_VERSION_PATTERN;
 
-    /** 匹配 Windows NT 版本号 */
+    /**
+     * 匹配 Windows NT 版本号
+     */
     private static final Pattern WINDOWS_NT_VERSION_PATTERN;
 
-    /** 匹配 Windows Phone Desktop 模式下的设备型号 */
+    /**
+     * 匹配 Windows Phone Desktop 模式下的设备型号
+     */
     private static final Pattern WINDOWS_PHONE_DESKTOP_MODEL_PATTERN;
 
-    /** 匹配 ARM 架构 Edge 浏览器的 Windows Phone 型号 */
+    /**
+     * 匹配 ARM 架构 Edge 浏览器的 Windows Phone 型号
+     */
     private static final Pattern WINDOWS_PHONE_ARM_EDGE_MODEL_PATTERN;
 
-    /** 匹配诺基亚 RM 设备型号 */
+    /**
+     * 匹配诺基亚 RM 设备型号
+     */
     private static final Pattern NOKIA_RM_MODEL_PATTERN;
 
-    /** 匹配微软 RM 设备型号 */
+    /**
+     * 匹配微软 RM 设备型号
+     */
     private static final Pattern MICROSOFT_RM_MODEL_PATTERN;
 
-    /** 用于检测移动设备的关键词列表 */
+    /**
+     * 用于检测移动设备的关键词列表
+     */
     private static final List<String> MOBILE_KEYWORDS;
 
-    /** 用于检测桌面浏览器的关键词列表 */
+    /**
+     * 用于检测桌面浏览器的关键词列表
+     */
     private static final List<String> DESKTOP_KEYWORDS;
 
-    /** 用于检测智能电视的关键词列表 */
+    /**
+     * 用于检测智能电视的关键词列表
+     */
     private static final List<String> SMART_TV_KEYWORDS;
 
-    /** 用于检测爬虫/机器人程序的关键词列表 */
+    /**
+     * 用于检测爬虫/机器人程序的关键词列表
+     */
     private static final List<String> BOT_KEYWORDS;
 
-    /** 移动设备关键词的 Aho-Corasick 匹配器 */
+    /**
+     * 移动设备关键词的 Aho-Corasick 匹配器
+     */
     private static final AhoCorasickKeywordMatcher MOBILE_KEYWORDS_MATCHER;
 
-    /** 桌面浏览器关键词的 Aho-Corasick 匹配器 */
+    /**
+     * 桌面浏览器关键词的 Aho-Corasick 匹配器
+     */
     private static final AhoCorasickKeywordMatcher DESKTOP_BROWSER_MATCHER;
 
-    /** 智能电视关键词的 Aho-Corasick 匹配器 */
+    /**
+     * 智能电视关键词的 Aho-Corasick 匹配器
+     */
     private static final AhoCorasickKeywordMatcher SMART_TV_BROWSER_MATCHER;
 
-    /** 爬虫关键词的 Aho-Corasick 匹配器 */
+    /**
+     * 爬虫关键词的 Aho-Corasick 匹配器
+     */
     private static final AhoCorasickKeywordMatcher BOT_MATCHER;
 
-    /** 匹配桌面 Safari 浏览器的标准 User-Agent 模式 */
+    /**
+     * 匹配桌面 Safari 浏览器的标准 User-Agent 模式
+     */
     private static final Pattern DESKTOP_SAFARI_PATTERN;
 
-    /** 匹配 IE11 及以上版本的 Trident 引擎标识 */
+    /**
+     * 匹配 IE11 及以上版本的 Trident 引擎标识
+     */
     private static final Pattern IE11_TRIDENT_PATTERN;
 
-    /** 匹配 MSIE 9 和 10 */
+    /**
+     * 匹配 MSIE 9 和 10
+     */
     private static final Pattern MSIE_9_10_PATTERN;
 
-    /** 匹配旧版 MSIE 浏览器 */
+    /**
+     * 匹配旧版 MSIE 浏览器
+     */
     private static final Pattern MSIE_LEGACY_PATTERN;
 
-    /** 匹配屏幕尺寸标识（如 "480x800"） */
+    /**
+     * 匹配屏幕尺寸标识（如 "480x800"）
+     */
     private static final Pattern SCREEN_SIZE_PATTERN;
 
     static {

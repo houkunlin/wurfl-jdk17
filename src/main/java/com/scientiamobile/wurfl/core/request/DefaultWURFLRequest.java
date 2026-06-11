@@ -430,7 +430,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
     /**
      * Mobil eeyword setected.
- */
+     */
 
     public boolean mobileKeywordsDetected() {
         if (this.cachedMobileKeywordsDetected == null) {
@@ -442,7 +442,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
     /**
      * Scree niz eetected.
- */
+     */
 
     public boolean screenSizeDetected() {
         if (this.cachedScreenSizeDetected == null) {
@@ -537,7 +537,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
     /**
      * Cach eeskto peav yuty.
- */
+     */
 
     private boolean cacheDesktopHeavyDuty(boolean value) {
         this.cachedIsDesktopBrowserHeavyDutyAnalysis = value;

@@ -29,7 +29,9 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
      * 能力提供者，用于按需获取能力值
      */
     private transient CapabilitiesProvider capabilitiesProvider;
-    /** 已获取的能力缓存映射 */
+    /**
+     * 已获取的能力缓存映射
+     */
     private Map<String, String> capabilitiesCache;
 
     public CachingCapabilitiesHolder(CapabilitiesProvider capabilitiesProvider, int minCacheSize) {

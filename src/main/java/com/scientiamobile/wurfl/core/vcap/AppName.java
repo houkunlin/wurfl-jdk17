@@ -33,16 +33,24 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
     @Serial
     private static final long serialVersionUID = 7704959740704532442L;
 
-    /** 匹配 "WebViewApp 应用名/" 格式的模式 */
+    /**
+     * 匹配 "WebViewApp 应用名/" 格式的模式
+     */
     private static final Pattern WEBVIEW_APP_PATTERN = Pattern.compile("WebViewApp ([^/]+)/");
 
-    /** 匹配 Android Dalvik 应用的模式，如 "应用名/版本 Dalvik/" */
+    /**
+     * 匹配 Android Dalvik 应用的模式，如 "应用名/版本 Dalvik/"
+     */
     private static final Pattern ANDROID_DALVIK_APP_PATTERN = Pattern.compile("^([^/]+)/.+? Dalvik/");
 
-    /** 匹配 iOS CFNetwork 应用的模式，如 "应用名/版本 iPhone3,1 iOS/ CFNetwork/" */
+    /**
+     * 匹配 iOS CFNetwork 应用的模式，如 "应用名/版本 iPhone3,1 iOS/ CFNetwork/"
+     */
     private static final Pattern IOS_CFNETWORK_APP_PATTERN = Pattern.compile("^([^/]+)/[\\d\\.-_]+ i(?:Phone|Pad|Pod)\\d+?,\\d+? iOS/[\\d_]+ CFNetwork/[\\d\\.]+");
 
-    /** 匹配 Windows Phone 应用的模式，如 "应用名/版本 Windows Phone/" */
+    /**
+     * 匹配 Windows Phone 应用的模式，如 "应用名/版本 Windows Phone/"
+     */
     private static final Pattern WINDOWS_PHONE_APP_PATTERN = Pattern.compile("^([^/]+)/[0-9\\.-_]+ Windows Phone/[\\d\\.]+");
 
     static {

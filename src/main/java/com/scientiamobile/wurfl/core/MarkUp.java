@@ -20,13 +20,21 @@ public final class MarkUp {
      * 压缩 HTML（CHTML），i-mode 设备常用
      */
     public static final MarkUp CHTML = new MarkUp("CHTML", 0);
-    /** 简单 XHTML 支持 */
+    /**
+     * 简单 XHTML 支持
+     */
     public static final MarkUp XHTML_SIMPLE = new MarkUp("XHTML_SIMPLE", 1);
-    /** 高级 XHTML 支持 */
+    /**
+     * 高级 XHTML 支持
+     */
     public static final MarkUp XHTML_ADVANCED = new MarkUp("XHTML_ADVANCED", 2);
-    /** 标记语言的数值等级 */
+    /**
+     * 标记语言的数值等级
+     */
     private int value;
-    /** 标记语言的名称 */
+    /**
+     * 标记语言的名称
+     */
     private String name;
 
     private MarkUp(String name, int value) {
@@ -49,7 +57,7 @@ public final class MarkUp {
      * 获取标记语言的数值等级。
      *
      * @return 数值等级（WML=-1, CHTML=0, XHTML_SIMPLE=1, XHTML_ADVANCED=2）
- */
+     */
 
     public final int toValue() {
         return this.value;

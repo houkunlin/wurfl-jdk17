@@ -54,7 +54,7 @@ final class WurflXmlHandler extends DefaultHandler {
 
     /**
      * En document.
- */
+     */
 
     public final void endDocument() {
     }
@@ -175,7 +175,7 @@ final class WurflXmlHandler extends DefaultHandler {
 
     /**
      * En dlement.
- */
+     */
 
     public final void endElement(String uri, String localName, String qName) {
         switch (this.parseState) {

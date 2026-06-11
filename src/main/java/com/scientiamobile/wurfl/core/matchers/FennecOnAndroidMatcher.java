@@ -24,9 +24,12 @@ final class FennecOnAndroidMatcher extends MatcherBase {
     private static final String GENERIC_ANDROID_FENNEC_2 = "generic_android_ver2_0_fennec";
     private static final String GENERIC_ANDROID_FENNEC_2_TABLET = "generic_android_ver2_0_fennec_tablet";
     private static final String GENERIC_ANDROID_FENNEC_2_DESKTOP = "generic_android_ver2_0_fennec_desktop";
+
     public FennecOnAndroidMatcher(WURFLModel wurflModel) {
         super(wurflModel);
-    }    private Set<String> requiredDeviceIds = this.getRequiredDeviceIds();
+    }
+
+    private Set<String> requiredDeviceIds = this.getRequiredDeviceIds();
 
     @Override
 /**

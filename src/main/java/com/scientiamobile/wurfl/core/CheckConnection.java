@@ -31,13 +31,21 @@ public class CheckConnection {
      * 连通性检查观察者列表
      */
     private final List<CheckConnectionObserver> observers = new ArrayList<>();
-    /** 发送给服务端的 JSON 负载字符串 */
+    /**
+     * 发送给服务端的 JSON 负载字符串
+     */
     private String payloadJson;
-    /** 操作系统名称和版本 */
+    /**
+     * 操作系统名称和版本
+     */
     private String osNameAndVersion = System.getProperty("os.name") + " " + System.getProperty("os.version");
-    /** 解析出的应用服务器平台名称（如 Tomcat、Jetty 等） */
+    /**
+     * 解析出的应用服务器平台名称（如 Tomcat、Jetty 等）
+     */
     private String platformName;
-    /** 是否启用连通性检查 */
+    /**
+     * 是否启用连通性检查
+     */
     private boolean enabled;
 
     public CheckConnection() {
@@ -74,9 +82,9 @@ public class CheckConnection {
     /**
      * 向 JSON 构建器追加一个键值对字段。
      *
-     * @param builder      JSON 字符串构建器
-     * @param key          字段名
-     * @param value        字段值
+     * @param builder       JSON 字符串构建器
+     * @param key           字段名
+     * @param value         字段值
      * @param hasMoreFields 是否还有后续字段（添加逗号分隔符）
      * @return 构建器实例
      */

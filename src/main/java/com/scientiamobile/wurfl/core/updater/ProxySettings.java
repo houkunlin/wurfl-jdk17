@@ -18,7 +18,9 @@ public class ProxySettings {
      * 代理服务器端口号
      */
     private Integer port;
-    /** 代理类型（如 HTTP、SOCKS） */
+    /**
+     * 代理类型（如 HTTP、SOCKS）
+     */
     private Proxy.Type type;
 
     public ProxySettings(String host, Integer port, Proxy.Type type) {

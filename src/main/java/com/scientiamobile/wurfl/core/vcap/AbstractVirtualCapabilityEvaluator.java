@@ -32,31 +32,47 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
      */
     protected static final Pattern ANDROID_LEGACY_SAFARI_UA_PATTERN;
 
-    /** 匹配 Chrome 浏览器主版本号 */
+    /**
+     * 匹配 Chrome 浏览器主版本号
+     */
     protected static final Pattern CHROME_MAJOR_VERSION_PATTERN;
 
-    /** 匹配 Android 1.x-4.x 的旧版本号模式 */
+    /**
+     * 匹配 Android 1.x-4.x 的旧版本号模式
+     */
     protected static final Pattern ANDROID_LEGACY_VERSION_PATTERN;
 
-    /** 用于识别 App 请求的关键词模式列表（支持前缀匹配和包含匹配） */
+    /**
+     * 用于识别 App 请求的关键词模式列表（支持前缀匹配和包含匹配）
+     */
     protected static final List<String> APP_INDICATOR_PATTERNS;
 
-    /** Android 系统内置浏览器的包名集合 */
+    /**
+     * Android 系统内置浏览器的包名集合
+     */
     static final Set<String> ANDROID_BROWSER_PACKAGE_NAMES;
 
-    /** 明确标记为非 App 浏览器的关键词集合 */
+    /**
+     * 明确标记为非 App 浏览器的关键词集合
+     */
     static final Set<String> NON_APP_BROWSER_KEYWORDS;
 
     @Serial
     private static final long serialVersionUID = 8192401578396133213L;
 
-    /** 提取主版本号和次版本号的正则模式（如 "4.3" 或 "10"） */
+    /**
+     * 提取主版本号和次版本号的正则模式（如 "4.3" 或 "10"）
+     */
     private static final Pattern MAJOR_MINOR_VERSION_PATTERN;
 
-    /** Android 应用中 X-Requested-With 头值为 App 包的集合 */
+    /**
+     * Android 应用中 X-Requested-With 头值为 App 包的集合
+     */
     private static final Set<String> ANDROID_REQUESTED_WITH_APP_PACKAGES;
 
-    /** 在机器人检测中需要排除的误判关键词 */
+    /**
+     * 在机器人检测中需要排除的误判关键词
+     */
     private static final List<String> BOT_EXCLUSION_KEYWORDS;
 
     static {
@@ -139,7 +155,7 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
      * <p>iOS 设备如果 User-Agent 中不包含 "Safari" 标识，
      * 通常意味着请求来自 App 内嵌 WebView 或非 Safari 浏览器。</p>
      *
-     * @param deviceOs 设备操作系统名称
+     * @param deviceOs  设备操作系统名称
      * @param userAgent User-Agent 字符串
      * @return 如果是 iOS 且非 Safari 则返回 {@code true}
      */
@@ -150,9 +166,9 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
     /**
      * 判断设备是否为 macOS 且非 Safari 浏览器。
      *
-     * @param device   设备对象
+     * @param device    设备对象
      * @param userAgent User-Agent 字符串
-     * @param request  请求对象
+     * @param request   请求对象
      * @return 如果是 macOS 且非 Safari 则返回 {@code true}
      */
     protected static boolean isMacOsNonSafari(Device device, String userAgent, WURFLRequest request) {

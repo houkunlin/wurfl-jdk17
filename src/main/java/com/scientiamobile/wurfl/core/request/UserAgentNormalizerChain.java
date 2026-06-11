@@ -62,7 +62,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
 
     /**
      * Add.
- */
+     */
 
     public UserAgentNormalizerChain add(UserAgentNormalizer normalizer) {
         ArrayList<UserAgentNormalizer> newNormalizers = new ArrayList<>(this.normalizers);
@@ -97,7 +97,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
 
     /**
      * Appl yhain.
- */
+     */
 
     private String applyChain(String userAgent) {
         for (Iterator<UserAgentNormalizer> iterator = this.normalizers.iterator(); iterator.hasNext(); userAgent = iterator.next().normalize(userAgent)) {
@@ -130,7 +130,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
 
     /**
      * Returns the al lormalizers.
- */
+     */
 
     public List<UserAgentNormalizer> getAllNormalizers() {
         return Collections.unmodifiableList(this.normalizers);

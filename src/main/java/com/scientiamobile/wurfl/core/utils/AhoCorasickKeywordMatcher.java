@@ -23,10 +23,14 @@ public final class AhoCorasickKeywordMatcher {
      */
     private final boolean[] terminalByState;
 
-    /** 每个状态的可用转移字符列表（字符数组） */
+    /**
+     * 每个状态的可用转移字符列表（字符数组）
+     */
     private final char[][] transitionCharsByState;
 
-    /** 每个状态的转移目标状态列表（与 transitionCharsByState 一一对应） */
+    /**
+     * 每个状态的转移目标状态列表（与 transitionCharsByState 一一对应）
+     */
     private final int[][] transitionTargetsByState;
 
     /**
@@ -117,7 +121,9 @@ public final class AhoCorasickKeywordMatcher {
         return nodes;
     }
 
-    /** 标记状态：表示已找到关键词（匹配终止） */
+    /**
+     * 标记状态：表示已找到关键词（匹配终止）
+     */
     private static final int KEYWORD_FOUND = -1;
 
     /**

@@ -20,10 +20,14 @@ public class UserAgentWithNeedleCount {
      */
     private int plusCharCount;
 
-    /** 字符串中 '%' 字符的出现次数 */
+    /**
+     * 字符串中 '%' 字符的出现次数
+     */
     private int percentageCharCount;
 
-    /** 字符串中是否包含空格字符 */
+    /**
+     * 字符串中是否包含空格字符
+     */
     private boolean hasSpaceChars;
 
     /**
