@@ -12,7 +12,10 @@ import java.util.Collection;
 import java.util.Set;
 
 /**
- * Implementation of WURFL Engine.
+ * WURFL 引擎接口，定义设备检测的核心 API。
+ * <p>提供了根据 {@link HttpServletRequest}、{@link WURFLRequest} 或 User-Agent 字符串
+ * 进行设备检测的方法，以及引擎生命周期管理（加载、重载、补丁应用）、
+ * 配置管理（引擎目标、UA 优先级、能力过滤器、缓存策略）和模型查询等功能。</p>
  */
 
 public interface WURFLEngine {

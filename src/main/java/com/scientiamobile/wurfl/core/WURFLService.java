@@ -9,7 +9,9 @@ import com.scientiamobile.wurfl.core.resource.WURFLResources;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Implementation of WURFL Service.
+ * WURFL 服务接口，定义设备检测服务的核心操作。
+ * <p>提供设备匹配、缓存管理、引擎目标配置、数据模型重载和补丁应用等功能。
+ * 是 {@link WURFLEngine} 的下层服务抽象，负责协调匹配器、设备提供者和缓存提供者。</p>
  */
 
 public interface WURFLService {

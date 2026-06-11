@@ -12,7 +12,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Implementation of Virtual Capability Device.
+ * 虚拟能力设备实现，提供操作系统和浏览器的名称/版本识别功能。
+ * <p>通过解析 User-Agent 字符串，利用正则匹配和规则库识别设备的操作系统
+ * （如 Windows、macOS、Android、iOS 等）和浏览器（如 Chrome、Firefox、Safari 等），
+ * 并对识别结果进行归一化处理（如将 Windows NT 版本号转换为可读名称）。</p>
  */
 
 public class VirtualCapabilityDevice implements Serializable {
@@ -76,7 +79,9 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Returns the devic ese rgent.
+     * 获取设备 User-Agent 字符串。
+     *
+     * @return 设备 UA 字符串
      */
 
     public String getDeviceUserAgent() {
@@ -88,8 +93,10 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Returns the cleane devic ese rgent.
- */
+     * 获取清理后的设备 User-Agent 字符串。
+     *
+     * @return 清理后的 UA 字符串
+     */
 
     public String getCleanedDeviceUserAgent() {
         return this.cleanedDeviceUserAgent;
@@ -100,8 +107,10 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Returns the o sai rame.
- */
+     * 获取操作系统名称。
+     *
+     * @return 操作系统名称
+     */
 
     public String getOsPairName() {
         return this.osPair.getName();
@@ -112,8 +121,10 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Returns the browse rai rersion.
- */
+     * 获取浏览器版本。
+     *
+     * @return 浏览器版本字符串
+     */
 
     public String getBrowserPairVersion() {
         return this.browserPair.getVersion();
@@ -124,8 +135,10 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Returns the o sair.
- */
+     * 获取操作系统名称-版本对。
+     *
+     * @return 操作系统名称-版本对
+     */
 
     public NameVersionPair getOsPair() {
         return this.osPair;
@@ -140,8 +153,11 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Normaliz eindow ss.
- */
+     * 归一化 Windows 操作系统名称和版本。
+     * <p>将 Windows NT 版本号映射为可读的名称（如 6.1 → 7、10.0 → 10）。</p>
+     *
+     * @return 如果成功识别为 Windows 操作系统返回 {@code true}
+     */
 
     private boolean normalizeWindowsOs() {
         if (this.osPair.getName() == null || StringMatchUtils.indexOf(this.deviceUserAgent, "Windows") < 0) {
@@ -158,8 +174,9 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Normaliz eindow shon eersion.
- */
+     * 归一化 Windows Phone 版本号。
+     * <p>将内部版本号映射为用户可读的版本（如 7.10 → 7.5、8.10 → 8.1）。</p>
+     */
 
     private void normalizeWindowsPhoneVersion() {
         if (StringMatchUtils.indexOf(this.osPair.getName(), "Windows Phone") < 0 || this.osPair.getVersion() == null) {
@@ -172,8 +189,8 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Normaliz ea c rallbac ks.
- */
+     * 在 Mac 操作系统和其他回退策略之间选择归一化路径。
+     */
 
     private void normalizeMacOrFallbackOs() {
         if (tryMatchMacVersion()) return;
@@ -181,8 +198,11 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Tr yatc ha cersion.
- */
+     * 尝试匹配 Mac 操作系统版本。
+     * <p>支持 PPC Mac OS X、Intel Mac OS X 和通用 Mac OS X 格式。</p>
+     *
+     * @return 如果成功匹配返回 {@code true}
+     */
 
     private boolean tryMatchMacVersion() {
         if (this.osPair.matchAndSetGroup(PPC_OS_X_VERSION_PATTERN, this.deviceUserAgent, MAC_OS_X, 1)) {
@@ -207,8 +227,10 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Replac enderscor e nersion.
- */
+     * 将版本字符串中的下划线替换为点号。
+     *
+     * @return 始终返回 {@code true}
+     */
 
     private boolean replaceUnderscoreInVersion() {
         if (this.osPair.getVersion() != null) {
@@ -218,8 +240,11 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Returns whether this i sa cs10o rater.
- */
+     * 判断是否为 macOS 10.12 或更高版本。
+     * <p>用于区分旧版 Mac OS X 和 macOS 命名。</p>
+     *
+     * @return 如果是 macOS 10.12+ 返回 {@code true}
+     */
 
     private boolean isMacOS10OrLater() {
         String[] majorMinor = DOT_SPLIT_PATTERN.split(this.osPair.getVersion());
@@ -229,8 +254,9 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Tr yallbac ks.
- */
+     * 尝试使用回退策略识别操作系统。
+     * <p>当常规匹配无法识别操作系统时，尝试通过字符串包含检测来判断。</p>
+     */
 
     private void tryFallbackOs() {
         if (this.osPair.containsAndSetName(this.deviceUserAgent, "Mac_PowerPC", MAC_OS_X)) return;
@@ -255,8 +281,10 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
-     * Normaliz erowser.
- */
+     * 归一化浏览器名称和版本。
+     * <p>针对 IE 浏览器，通过 Trident 版本号推断实际的 IE 版本号，
+     * 如 Trident/7.0 → IE 11.0。如果检测到兼容性视图，会在版本后添加标记。</p>
+     */
 
     public void normalizeBrowser() {
         if (!"IE".equals(this.browserPair.getName())) {

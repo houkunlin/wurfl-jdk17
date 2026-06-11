@@ -15,7 +15,10 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * Implementation of WURFL Service  Implementation.
+ * WURFL 服务实现，负责设备匹配、缓存和设备信息查询的核心服务层。
+ * <p>协调匹配器管理器（{@link MatcherManager}）、设备提供者（{@link DeviceProvider}）
+ * 和缓存提供者（{@link CacheProvider}）完成设备检测流程。
+ * 支持通过读写锁保证重载和查询操作的线程安全。</p>
  */
 
 class WURFLServiceImpl implements WURFLService {
@@ -55,18 +58,22 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Returns the matche ranager.
- */
+    /**
+     * 获取匹配器管理器实例。
+     *
+     * @return 匹配器管理器
+     */
 
     public MatcherManager getMatcherManager() {
         return this.matcherManager;
     }
 
     @Override
-/**
- * Sets the cach erovider.
- */
+    /**
+     * 设置缓存提供者，用于缓存已检测设备的匹配结果。
+     *
+     * @param cacheProvider 缓存提供者
+     */
 
     public void setCacheProvider(CacheProvider cacheProvider) {
         log.info("feeding {}", cacheProvider);
@@ -74,9 +81,13 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Returns the device.
- */
+    /**
+     * 根据 WURFL 请求进行设备检测。
+     * <p>优先从缓存中查找设备，未命中时执行匹配并缓存结果。</p>
+     *
+     * @param request WURFL 请求
+     * @return 设备实例
+     */
 
     public Device getDevice(WURFLRequest request) {
         this.modelLock.readLock().lock();
@@ -94,7 +105,12 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     /**
-     * Buil dache device.
+     * 从缓存数据构建设备实例。
+     * <p>匹配类型标记为 {@link MatchType#cached}，匹配器名称为 Cache。</p>
+     *
+     * @param internalDevice 内部设备实例
+     * @param request        WURFL 请求
+     * @return 设备实例
      */
 
     private Device buildCachedDevice(InternalDevice internalDevice, WURFLRequest request) {
@@ -105,8 +121,13 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     /**
-     * Matc hn dach eevice.
- */
+     * 执行设备匹配并将结果缓存。
+     * <p>如果引擎目标为快速桌面浏览器匹配且满足条件，则直接返回通用桌面浏览器设备；
+     * 否则通过匹配器管理器进行标准匹配。</p>
+     *
+     * @param request WURFL 请求
+     * @return 设备实例
+     */
 
     private Device matchAndCacheDevice(WURFLRequest request) {
         request.performGenericNormalization();
@@ -128,9 +149,12 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Returns the device.
- */
+    /**
+     * 根据 HTTP Servlet 请求进行设备检测。
+     *
+     * @param request HTTP Servlet 请求
+     * @return 设备实例
+     */
 
     public Device getDevice(HttpServletRequest request) {
         Validate.notNull(request, "The request must be not null");
@@ -139,9 +163,12 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Returns the device.
- */
+    /**
+     * 根据 User-Agent 字符串进行设备检测。
+     *
+     * @param userAgent User-Agent 字符串
+     * @return 设备实例
+     */
 
     public Device getDevice(String userAgent) {
         Validate.notNull(userAgent, "The userAgent must be not null");
@@ -150,8 +177,9 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     /**
-     * Ensur each erovider.
- */
+     * 确保缓存提供者已初始化。
+     * <p>如果未设置缓存提供者，则使用默认的 {@link DoubleLRUMapCacheProvider}。</p>
+     */
 
     private void ensureCacheProvider() {
         if (this.cacheProvider == null) {
@@ -166,18 +194,24 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Returns the engin earget.
- */
+    /**
+     * 获取当前的引擎目标匹配模式。
+     *
+     * @return 引擎目标模式
+     */
 
     public EngineTarget getEngineTarget() {
         return this.engineTarget;
     }
 
     @Override
-/**
- * Sets the engin earget.
- */
+    /**
+     * 设置引擎目标匹配模式。
+     * <p>仅接受 {@link EngineTarget#fastDesktopBrowserMatch} 作为非默认值，
+     * 其他值均视为 {@link EngineTarget#defaultTarget}。</p>
+     *
+     * @param engineTarget 引擎目标模式
+     */
 
     public void setEngineTarget(EngineTarget engineTarget) {
         if (engineTarget != EngineTarget.fastDesktopBrowserMatch) {
@@ -188,27 +222,34 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Returns the use rgen triority.
- */
+    /**
+     * 获取当前的 User-Agent 优先级策略。
+     *
+     * @return User-Agent 优先级策略
+     */
 
     public UserAgentPriority getUserAgentPriority() {
         return this.requestFactory.getUserAgentPriority();
     }
 
     @Override
-/**
- * Sets the use rgen triority.
- */
+    /**
+     * 设置 User-Agent 优先级策略。
+     *
+     * @param priority User-Agent 优先级策略
+     */
 
     public void setUserAgentPriority(UserAgentPriority priority) {
         this.requestFactory.setUserAgentPriority(priority);
     }
 
     @Override
-/**
- * Returns the devic e yd.
- */
+    /**
+     * 根据设备 ID 获取设备实例（使用默认的 User-Agent）。
+     *
+     * @param deviceId 设备 ID
+     * @return 设备实例
+     */
 
     public Device getDeviceById(String deviceId) {
         InternalDevice internalDevice = this.deviceProvider.getInternalDevice(deviceId);
@@ -218,8 +259,12 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     /**
-     * Resolv ese rgent.
- */
+     * 解析内部设备的 User-Agent。
+     * <p>如果设备自身的 UA 以 {@code DO_NOT_MATCH} 开头，则沿继承链向上查找祖先的 UA。</p>
+     *
+     * @param internalDevice 内部设备实例
+     * @return User-Agent 字符串
+     */
 
     private static String resolveUserAgent(InternalDevice internalDevice) {
         String userAgentFromModel = internalDevice.getWURFLUserAgent();
@@ -234,9 +279,13 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Returns the devic e yd.
- */
+    /**
+     * 根据设备 ID 和 HTTP Servlet 请求获取设备实例。
+     *
+     * @param deviceId 设备 ID
+     * @param request  HTTP Servlet 请求
+     * @return 设备实例
+     */
 
     public Device getDeviceById(String deviceId, HttpServletRequest request) {
         Validate.notNull(request, "The request must be not null");
@@ -245,9 +294,14 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Returns the devic e yd.
- */
+    /**
+     * 根据设备 ID 和 WURFL 请求获取设备实例。
+     * <p>使用指定的请求上下文（包含归一化 UA 等信息）构建设备实例。</p>
+     *
+     * @param deviceId 设备 ID
+     * @param request  WURFL 请求
+     * @return 设备实例
+     */
 
     public Device getDeviceById(String deviceId, WURFLRequest request) {
         Validate.notNull(request, "The request must be not null");
@@ -256,9 +310,14 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Reload.
- */
+    /**
+     * 重新加载 WURFL 数据模型和相关组件。
+     * <p>在写锁保护下执行重载，包括重新加载模型、刷新匹配器和清空缓存。</p>
+     *
+     * @param wurflResource    WURFL 根资源
+     * @param wurflResources   补丁资源集合
+     * @param patches          能力过滤器
+     */
 
     public void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches) {
         this.modelLock.writeLock().lock();
@@ -275,8 +334,8 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     /**
-     * Clea rach erovider.
- */
+     * 清空缓存提供者中的所有缓存数据。
+     */
 
     private void clearCacheProvider() {
         log.info("about to clear cache provider");
@@ -285,9 +344,13 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     @Override
-/**
- * Appl yatches.
- */
+    /**
+     * 应用补丁资源到 WURFL 数据模型。
+     * <p>在写锁保护下执行，包括应用补丁、刷新匹配器和清空缓存。</p>
+     *
+     * @param wurflResources 补丁资源集合
+     * @param patches        能力过滤器
+     */
 
     public void applyPatches(WURFLResources wurflResources, String... patches) {
         log.info("before applying patches {}", wurflResources);
@@ -305,8 +368,10 @@ class WURFLServiceImpl implements WURFLService {
     }
 
     /**
-     * Sets the reques tactory.
- */
+     * 设置请求工厂。
+     *
+     * @param requestFactory 带优先级支持的请求工厂
+     */
 
     public final void setRequestFactory(WURFLRequestFactoryWithPriority requestFactory) {
         this.requestFactory = requestFactory;

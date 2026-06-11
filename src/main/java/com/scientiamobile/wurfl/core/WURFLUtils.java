@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Implementation of WURFL Utils.
+ * WURFL 工具类，提供设备模型查询和元数据访问的便捷方法。
+ * <p>封装了 {@link WURFLModel}、{@link DeviceProvider} 和 {@link WURFLService} 的常用查询操作，
+ * 包括设备 ID 查询、能力查询、分组查询、设备层次结构遍历等功能。</p>
  */
 
 public class WURFLUtils {
@@ -26,7 +28,9 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the version.
+     * 获取 WURFL 数据文件的版本信息。
+     *
+     * @return 版本字符串
      */
 
     public String getVersion() {
@@ -39,8 +43,11 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the mode levic e yd.
- */
+     * 根据设备 ID 获取对应的模型设备对象。
+     *
+     * @param deviceId 设备 ID
+     * @return 模型设备对象
+     */
 
     public ModelDevice getModelDeviceById(String deviceId) {
         Validate.notEmpty(deviceId, "The id must be not null Set");
@@ -48,8 +55,11 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the mode levices.
- */
+     * 根据设备 ID 集合获取对应的模型设备对象集合。
+     *
+     * @param deviceIds 设备 ID 集合
+     * @return 模型设备对象集合
+     */
 
     public Set<ModelDevice> getModelDevices(Set<String> deviceIds) {
         Validate.notNull(deviceIds, "The ids must be not null Set");
@@ -58,8 +68,10 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the al levice sd.
- */
+     * 获取模型中所有设备的 ID 集合。
+     *
+     * @return 设备 ID 集合
+     */
 
     public Set<String> getAllDevicesId() {
         return this.wurflModel.getAllDevicesId();
@@ -70,8 +82,11 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the mode levic eierarchy.
- */
+     * 获取指定设备的继承层次结构。
+     *
+     * @param rootDevice 根设备
+     * @return 设备层次结构列表（从子到父）
+     */
 
     public List<ModelDevice> getModelDeviceHierarchy(ModelDevice rootDevice) {
         Validate.notNull(rootDevice, "The root ModelDevice must be not null");
@@ -79,8 +94,11 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the mode levic eallback.
- */
+     * 获取指定设备的回退（fallback）设备。
+     *
+     * @param targetDevice 目标设备
+     * @return 回退设备对象
+     */
 
     public ModelDevice getModelDeviceFallback(ModelDevice targetDevice) {
         Validate.notNull(targetDevice, "The target ModelDevice must be not null");
@@ -88,8 +106,11 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the mode levic encestor.
- */
+     * 获取指定设备的祖先设备。
+     *
+     * @param rootDevice 目标设备
+     * @return 祖先设备对象
+     */
 
     public ModelDevice getModelDeviceAncestor(ModelDevice rootDevice) {
         Validate.notNull(rootDevice, "The root ModelDevice must be not null");
@@ -97,8 +118,11 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns whether this i sapabilit yefined.
- */
+     * 判断指定能力名称是否在模型中定义。
+     *
+     * @param capabilityName 能力名称
+     * @return 如果已定义返回 {@code true}
+     */
 
     public boolean isCapabilityDefined(String capabilityName) {
         Validate.notEmpty(capabilityName, "The capabilityName must be not null");
@@ -106,8 +130,10 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the al lapabilities.
- */
+     * 获取模型中定义的所有能力名称集合。
+     *
+     * @return 能力名称集合
+     */
 
     public Set<String> getAllCapabilities() {
         return this.wurflModel.getAllCapabilities();
@@ -119,8 +145,12 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the mode levic eher eapabilit y sefined.
- */
+     * 在设备继承链上查找定义指定能力的设备节点。
+     *
+     * @param rootDevice      起始设备
+     * @param capabilityName  能力名称
+     * @return 定义了该能力的设备节点
+     */
 
     public ModelDevice getModelDeviceWhereCapabilityIsDefined(ModelDevice rootDevice, String capabilityName) {
         Validate.notNull(rootDevice, "The rootDevice must be not null Set");
@@ -129,8 +159,11 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns whether this i srou pefined.
- */
+     * 判断指定分组名称是否在模型中定义。
+     *
+     * @param groupName 分组名称
+     * @return 如果已定义返回 {@code true}
+     */
 
     public boolean isGroupDefined(String groupName) {
         Validate.notEmpty(groupName, "The groupName must be not null");
@@ -138,8 +171,10 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the al lroups.
- */
+     * 获取模型中定义的所有分组名称集合。
+     *
+     * @return 分组名称集合
+     */
 
     public Set<String> getAllGroups() {
         return this.wurflModel.getAllGroups();
@@ -151,8 +186,11 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the interna levic e yd.
- */
+     * 根据设备 ID 获取内部设备实例。
+     *
+     * @param deviceId 设备 ID
+     * @return 内部设备实例
+     */
 
     public InternalDevice getInternalDeviceById(String deviceId) {
         return this.deviceProvider.getInternalDevice(deviceId);
@@ -163,8 +201,12 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the devic e yd.
- */
+     * 根据设备 ID 和 WURFL 请求获取设备实例。
+     *
+     * @param deviceId 设备 ID
+     * @param request  WURFL 请求
+     * @return 设备实例
+     */
 
     public Device getDeviceById(String deviceId, WURFLRequest request) {
         return this.wurflService.getDeviceById(deviceId, request);
@@ -175,8 +217,10 @@ public class WURFLUtils {
     }
 
     /**
-     * Returns the al levices.
- */
+     * 获取模型中所有设备的实例集合。
+     *
+     * @return 设备实例集合
+     */
 
     public Set<Device> getAllDevices() {
         Set<String> allDeviceIds = this.getAllDevicesId();

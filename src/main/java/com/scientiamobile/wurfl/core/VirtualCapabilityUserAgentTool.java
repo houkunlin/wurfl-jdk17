@@ -6,7 +6,11 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.regex.Pattern;
 
 /**
- * Implementation of Virtual Capability User Agent Tool.
+ * 虚拟能力 User-Agent 工具类，负责从 User-Agent 中解析设备属性和浏览器信息。
+ * <p>单例类，维护了大量正则表达式模式，用于识别各种操作系统（Android、iOS、Windows Phone、
+ * BlackBerry、Symbian、Linux、macOS 等）和浏览器（Chrome、Firefox、Safari、Opera、IE、Edge、
+ * UC Browser、Samsung Browser 等）。输出的 {@link VirtualCapabilityDevice} 包含了
+ * 归一化后的操作系统名称/版本和浏览器名称/版本信息。</p>
  */
 
 public final class VirtualCapabilityUserAgentTool {
@@ -112,7 +116,9 @@ public final class VirtualCapabilityUserAgentTool {
     }
 
     /**
-     * Returns the instance.
+     * 获取单例实例。
+     *
+     * @return 单例实例
      */
 
     public static VirtualCapabilityUserAgentTool getInstance() {
@@ -124,8 +130,14 @@ public final class VirtualCapabilityUserAgentTool {
     }
 
     /**
-     * Assig nroperties.
- */
+     * 为指定的 User-Agent 请求分配设备和浏览器的属性。
+     * <p>通过解析 User-Agent 字符串，识别操作系统和浏览器的名称及版本，
+     * 并构建 {@link VirtualCapabilityDevice} 返回。</p>
+     *
+     * @param request         WURFL 请求
+     * @param internalDevice  内部设备实例（用于获取设备能力值）
+     * @return 包含识别结果的虚拟能力设备
+     */
 
     public final VirtualCapabilityDevice assignProperties(WURFLRequest request, InternalDevice internalDevice) {
         VirtualCapabilityDevice virtualCapabilityDevice = new VirtualCapabilityDevice(request);

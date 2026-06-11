@@ -84,12 +84,16 @@ public final class LDMatcher {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-/**
- * Attempts to match the given request to a device.
- * @param request the WURFL request
- * @return device info for the matched device
- */
-
+    /**
+     * 在候选列表中查找与目标值编辑距离最小的设备标识（不指定公共前缀长度）。
+     * <p>该方法委托给 {@link #match(Collection, String, int, int)}，
+     * 并将公共前缀长度设为 0，即从头开始计算编辑距离。</p>
+     *
+     * @param candidates  候选设备标识列表
+     * @param value       待匹配的目标 User-Agent 字符串
+     * @param maxDistance 允许的最大编辑距离
+     * @return 最匹配的候选字符串，如果无匹配项则返回 {@code null}
+     */
     public final String match(Collection candidates, String value, int maxDistance) {
         return this.match(candidates, value, maxDistance, 0);
     }

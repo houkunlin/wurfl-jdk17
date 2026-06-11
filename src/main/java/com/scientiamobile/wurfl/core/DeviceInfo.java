@@ -3,7 +3,9 @@ package com.scientiamobile.wurfl.core;
 import com.scientiamobile.wurfl.core.matchers.MatchType;
 
 /**
- * Information about a matched device, including its ID and match details.
+ * 设备匹配结果信息，包含设备 ID 和匹配过程的详细信息。
+ * <p>记录匹配到的设备 ID、匹配类型、匹配器名称、桶匹配器名称、
+ * 归一化前后的 User-Agent 字符串，用于分析和调试设备检测结果。</p>
  */
 
 public class DeviceInfo {

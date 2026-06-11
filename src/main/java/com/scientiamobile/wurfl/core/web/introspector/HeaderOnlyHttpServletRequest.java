@@ -21,251 +21,388 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
      */
     private final Map<String, String> headers = new HashMap<>();
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param attributeName 属性名称
+     * @return 始终返回 {@code null}
+     */
     public final Object getAttribute(String attributeName) {
         return null;
     }
 
     /**
-     * Returns the attribut eames.
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
      */
-
     public final Enumeration<String> getAttributeNames() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getCharacterEncoding() {
         return null;
     }
 
     /**
-     * Sets the characte rncoding.
- */
-
+     * 该方法在此实现中不做任何操作，字符编码设置被忽略。
+     *
+     * @param encoding 字符编码
+     */
     public final void setCharacterEncoding(String encoding) {
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 0。
+     *
+     * @return 始终返回 0
+     */
     public final int getContentLength() {
         return 0;
     }
 
     /**
-     * Returns the conten tengt hong.
- */
-
+     * 该方法在此实现中不被支持，始终返回 0L。
+     *
+     * @return 始终返回 0L
+     */
     public final long getContentLengthLong() {
         return 0L;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getContentType() {
         return null;
     }
 
     /**
-     * Returns the inpu ttream.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final ServletInputStream getInputStream() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param parameterName 参数名称
+     * @return 始终返回 {@code null}
+     */
     public final String getParameter(String parameterName) {
         return null;
     }
 
     /**
-     * Returns the paramete rames.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final Enumeration<String> getParameterNames() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param parameterName 参数名称
+     * @return 始终返回 {@code null}
+     */
     public final String[] getParameterValues(String parameterName) {
         return null;
     }
 
     /**
-     * Returns the paramete rap.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final Map<String, String[]> getParameterMap() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getProtocol() {
         return null;
     }
 
     /**
-     * Returns the protoco leques td.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getProtocolRequestId() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getScheme() {
         return null;
     }
 
     /**
-     * Returns the serve rame.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getServerName() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 0。
+     *
+     * @return 始终返回 0
+     */
     public final int getServerPort() {
         return 0;
     }
 
     /**
-     * Returns the reader.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final BufferedReader getReader() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getRemoteAddr() {
         return null;
     }
 
     /**
-     * Returns the remot eost.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getRemoteHost() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不做任何操作，属性设置被忽略。
+     *
+     * @param attributeName 属性名称
+     * @param value         属性值
+     */
     public final void setAttribute(String attributeName, Object value) {
     }
 
     /**
-     * Remov ettribute.
- */
-
+     * 该方法在此实现中不做任何操作，属性移除被忽略。
+     *
+     * @param attributeName 属性名称
+     */
     public final void removeAttribute(String attributeName) {
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final Locale getLocale() {
         return null;
     }
 
     /**
-     * Returns the locales.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final Enumeration<Locale> getLocales() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @return 始终返回 {@code false}
+     */
     public final boolean isSecure() {
         return false;
     }
 
     /**
-     * Returns the reques tispatcher.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param path 请求转发路径
+     * @return 始终返回 {@code null}
+     */
     public final RequestDispatcher getRequestDispatcher(String path) {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param path 虚拟路径
+     * @return 始终返回 {@code null}
+     */
     public final String getRealPath(String path) {
         return null;
     }
 
     /**
-     * Returns the remot eort.
- */
-
+     * 该方法在此实现中不被支持，始终返回 0。
+     *
+     * @return 始终返回 0
+     */
     public final int getRemotePort() {
         return 0;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getLocalName() {
         return null;
     }
 
     /**
-     * Returns the loca lddr.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getLocalAddr() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 0。
+     *
+     * @return 始终返回 0
+     */
     public final int getLocalPort() {
         return 0;
     }
 
     /**
-     * Returns the servle tontext.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final ServletContext getServletContext() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     * @throws IllegalStateException 不会抛出，但保留接口签名
+     */
     public final AsyncContext startAsync() throws IllegalStateException {
         return null;
     }
 
     /**
-     * Star tsync.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param request  Servlet 请求
+     * @param response Servlet 响应
+     * @return 始终返回 {@code null}
+     * @throws IllegalStateException 不会抛出，但保留接口签名
+     */
     public final AsyncContext startAsync(ServletRequest request, ServletResponse response) throws IllegalStateException {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @return 始终返回 {@code false}
+     */
     public final boolean isAsyncStarted() {
         return false;
     }
 
     /**
-     * Returns whether this i ssyn cupported.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @return 始终返回 {@code false}
+     */
     public final boolean isAsyncSupported() {
         return false;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final AsyncContext getAsyncContext() {
         return null;
     }
 
     /**
-     * Returns the dispatche rype.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final DispatcherType getDispatcherType() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final ServletConnection getServletConnection() {
         return null;
     }
 
     /**
-     * Returns the aut hype.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getAuthType() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final Cookie[] getCookies() {
         return null;
     }
 
     /**
-     * Returns the dat eeader.
- */
-
+     * 该方法在此实现中不被支持，始终返回 0L。
+     *
+     * @param name 请求头名称
+     * @return 始终返回 0L
+     */
     public final long getDateHeader(String name) {
         return 0L;
     }
@@ -308,9 +445,11 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
 
     @Override
 /**
- * Returns the headers.
+ * 该方法在此实现中不被支持，始终返回 {@code null}。
+ *
+ * @param name 请求头名称
+ * @return 始终返回 {@code null}
  */
-
     public Enumeration<String> getHeaders(String name) {
         return null;
     }
@@ -333,159 +472,253 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
     }
 
     /**
-     * Returns the in teader.
- */
-
+     * 该方法在此实现中不被支持，始终返回 0。
+     *
+     * @param name 请求头名称
+     * @return 始终返回 0
+     */
     public final int getIntHeader(String name) {
         return 0;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getMethod() {
         return null;
     }
 
     /**
-     * Returns the pat hnfo.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getPathInfo() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getPathTranslated() {
         return null;
     }
 
     /**
-     * Returns the contex tath.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getContextPath() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getQueryString() {
         return null;
     }
 
     /**
-     * Returns the remot eser.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getRemoteUser() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getRequestId() {
         return null;
     }
 
     /**
-     * Returns whether this i sse r nole.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @param role 角色名称
+     * @return 始终返回 {@code false}
+     */
     public final boolean isUserInRole(String role) {
         return false;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String changeSessionId() {
         return null;
     }
 
     /**
-     * Authenticate.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @param response HTTP 响应
+     * @return 始终返回 {@code false}
+     * @throws IOException 不会抛出，但保留接口签名
+     * @throws ServletException 不会抛出，但保留接口签名
+     */
     public final boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
         return false;
     }
 
+    /**
+     * 该方法在此实现中不做任何操作，登录逻辑被忽略。
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @throws ServletException 不会抛出，但保留接口签名
+     */
     public final void login(String username, String password) throws ServletException {
     }
 
     /**
-     * Logout.
- */
-
+     * 该方法在此实现中不做任何操作，登出逻辑被忽略。
+     *
+     * @throws ServletException 不会抛出，但保留接口签名
+     */
     public final void logout() throws ServletException {
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final Principal getUserPrincipal() {
         return null;
     }
 
     /**
-     * Returns the requeste dessio nd.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getRequestedSessionId() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getRequestURI() {
         return null;
     }
 
     /**
-     * Returns the reques trl.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final StringBuffer getRequestURL() {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final String getServletPath() {
         return null;
     }
 
     /**
-     * Returns the session.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param create 是否创建新会话
+     * @return 始终返回 {@code null}
+     */
     public final HttpSession getSession(boolean create) {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final HttpSession getSession() {
         return null;
     }
 
     /**
-     * Returns whether this i sequeste dessio n dalid.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @return 始终返回 {@code false}
+     */
     public final boolean isRequestedSessionIdValid() {
         return false;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @return 始终返回 {@code false}
+     */
     public final boolean isRequestedSessionIdFromCookie() {
         return false;
     }
 
     /**
-     * Returns whether this i sequeste dessio n dro mrl.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @return 始终返回 {@code false}
+     */
     public final boolean isRequestedSessionIdFromURL() {
         return false;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code false}。
+     *
+     * @return 始终返回 {@code false}
+     */
     public final boolean isRequestedSessionIdFromUrl() {
         return false;
     }
 
     /**
-     * Upgrade.
- */
-
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param handlerClass HTTP 升级处理器类型
+     * @return 始终返回 {@code null}
+     * @param <T> HTTP 升级处理器类型
+     */
     public final <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param name 表单字段名称
+     * @return 始终返回 {@code null}
+     */
     public final Part getPart(String name) {
         return null;
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @return 始终返回 {@code null}
+     */
     public final java.util.Collection<Part> getParts() {
         return null;
     }
