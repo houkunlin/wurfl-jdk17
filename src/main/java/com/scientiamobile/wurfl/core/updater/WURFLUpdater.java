@@ -16,7 +16,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Implementation of WURFL Updater.
+ * WURFL 更新器。
+ * <p>提供 WURFL 文件的自动更新能力，支持单次手动更新和定时定期更新两种模式。
+ * 通过与 {@link UpdatePipeline} 管线协作，完成检查更新、下载、备份、覆盖和校验
+ * 的完整流程。定期更新使用 {@link java.util.concurrent.ScheduledExecutorService}
+ * 按配置的频率周期性执行。</p>
  */
 
 public class WURFLUpdater {
@@ -78,7 +82,9 @@ public class WURFLUpdater {
     }
 
     /**
-     * Sets the connectio nimeou ts.
+     * 设置连接超时时间。
+     *
+     * @param connectionTimeoutMs 连接超时毫秒数
      */
 
     public void setConnectionTimeoutMs(Integer connectionTimeoutMs) {
@@ -123,7 +129,9 @@ public class WURFLUpdater {
     }
 
     /**
-     * Perfor meriodi cpdate.
+     * 启动定期更新调度器。
+     * <p>创建 {@link ScheduledExecutorService} 线程池，按照配置的更新频率
+     * 定期执行 {@link PeriodicUpdateTask}。如果已有定期更新正在运行，则忽略本次请求。</p>
      */
 
     public synchronized void performPeriodicUpdate() {

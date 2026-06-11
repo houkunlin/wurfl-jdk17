@@ -37,6 +37,12 @@ public class WURFLUtils {
         return this.wurflModel.getVersion();
     }
 
+    /**
+     * 判断指定设备 ID 是否在模型中定义。
+     *
+     * @param deviceId 设备 ID
+     * @return 如果设备已定义返回 {@code true}
+     */
     public boolean isDeviceDefined(String deviceId) {
         Validate.notEmpty(deviceId, "deviceId must be not null");
         return this.wurflModel.isDeviceDefined(deviceId);
@@ -77,6 +83,11 @@ public class WURFLUtils {
         return this.wurflModel.getAllDevicesId();
     }
 
+    /**
+     * 获取模型中所有模型设备对象的集合。
+     *
+     * @return 模型设备对象集合
+     */
     public Set<ModelDevice> getAllModelDevices() {
         return this.wurflModel.getAllDevices();
     }
@@ -139,6 +150,12 @@ public class WURFLUtils {
         return this.wurflModel.getAllCapabilities();
     }
 
+    /**
+     * 根据能力名称获取其所属的分组名称。
+     *
+     * @param capabilityName 能力名称
+     * @return 分组名称
+     */
     public String getGroupByCapability(String capabilityName) {
         Validate.notEmpty(capabilityName, "The capabilityName must be not null");
         return this.wurflModel.getGroupByCapability(capabilityName);
@@ -180,6 +197,12 @@ public class WURFLUtils {
         return this.wurflModel.getAllGroups();
     }
 
+    /**
+     * 获取指定分组中定义的所有能力名称集合。
+     *
+     * @param groupName 分组名称
+     * @return 能力名称集合
+     */
     public Set<String> getCapabilitiesForGroup(String groupName) {
         Validate.notEmpty(groupName, "The groupName must be not null");
         return this.wurflModel.getCapabilitiesForGroup(groupName);
@@ -196,6 +219,12 @@ public class WURFLUtils {
         return this.deviceProvider.getInternalDevice(deviceId);
     }
 
+    /**
+     * 根据设备 ID 获取设备实例（使用默认 User-Agent）。
+     *
+     * @param deviceId 设备 ID
+     * @return 设备实例
+     */
     public Device getDeviceById(String deviceId) {
         return this.wurflService.getDeviceById(deviceId);
     }
@@ -212,6 +241,13 @@ public class WURFLUtils {
         return this.wurflService.getDeviceById(deviceId, request);
     }
 
+    /**
+     * 根据设备 ID 和 HTTP Servlet 请求获取设备实例。
+     *
+     * @param deviceId 设备 ID
+     * @param request  HTTP Servlet 请求
+     * @return 设备实例
+     */
     public Device getDeviceById(String deviceId, HttpServletRequest request) {
         return this.wurflService.getDeviceById(deviceId, request);
     }

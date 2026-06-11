@@ -14,13 +14,22 @@ import java.net.URI;
 import java.net.URL;
 
 /**
- * Implementation of Validator.
+ * WURFL 更新配置的校验器。
+ * <p>提供 WURFL 更新前的静态校验方法，包括文件扩展名检查、
+ * 本地文件可写性验证以及远程 URL 可达性验证。</p>
  */
 
 public class Validator {
     private Validator() {
     }
 
+    /**
+     * 检查本地和远程 WURFL 文件的扩展名是否为 .zip 或 .gz。
+     *
+     * @param localWurflPath  本地 WURFL 文件路径
+     * @param remoteWurflPath 远程 WURFL 文件 URL
+     * @throws BadWurflExtensionException 如果扩展名不是 .zip 或 .gz
+     */
     public static void checkFileExtensions(String localWurflPath, String remoteWurflPath) {
         if (!localWurflPath.endsWith(".gz") && !localWurflPath.endsWith(".zip") || !remoteWurflPath.endsWith(".gz") && !remoteWurflPath.endsWith(".zip")) {
             throw new BadWurflExtensionException("WURFL local and remote path must have either .zip or .gz extension. Updater will not start");
@@ -70,6 +79,17 @@ public class Validator {
         }
     }
 
+    /**
+     * 验证远程 WURFL URL 是否可达且有效。
+     * <p>发送 HEAD 请求到远程 URL，检查响应状态码。仅允许访问 scientiamobile.com
+     * 域名或本地地址。如果响应码为 402 表示许可证过期，
+     * 如果响应码为 4xx 表示 URL 无效。</p>
+     *
+     * @param remoteWurflUrl 远程 WURFL 文件的 URL
+     * @param wurflEngine    WURFL 引擎实例（用于构造 User-Agent）
+     * @param proxySettings  代理设置，可以为 {@code null}
+     * @throws WURFLRuntimeException 如果 URL 验证失败
+     */
     static void validateRemoteUrl(String remoteWurflUrl, WURFLEngine wurflEngine, ProxySettings proxySettings) {
         URL remoteUrl;
         try {

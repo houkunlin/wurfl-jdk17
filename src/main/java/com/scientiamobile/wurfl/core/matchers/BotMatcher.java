@@ -7,7 +7,7 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-/*/**
+/**
  * 网络爬虫（Bot/Crawler）匹配器。
  * <p>通过调用 WURFLRequest#_internalIsBot() 判断请求是否来自已知网络爬虫。支持 Google 图片代理的特殊处理。</p>
  */

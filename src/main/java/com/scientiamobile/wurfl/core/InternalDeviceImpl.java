@@ -21,11 +21,19 @@ import java.util.Map;
 class InternalDeviceImpl implements InternalDevice, Serializable {
     @Serial
     private static final long serialVersionUID = 101L;
+    /**
+     * 设备 ID
+     */
     private final String id;
+    /** WURFL 数据中定义的设备 User-Agent 字符串 */
     private final String wurflUserAgent;
+    /** 是否为设备树的实际根节点 */
     private final boolean actualDeviceRoot;
+    /** 设备所属树的根节点 ID */
     private final String deviceRootId;
+    /** 能力持有器，用于按需获取能力值 */
     private final transient CapabilitiesHolder capabilitiesHolder;
+    /** 祖先模型设备 */
     private ModelDevice ancestorModelDevice;
 
     protected InternalDeviceImpl(ModelDevice modelDevice, String ancestorId, CapabilitiesHolder capabilitiesHolder) {
@@ -70,6 +78,11 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
         return this.capabilitiesHolder.getCapability(capabilityName);
     }
 
+    /**
+     * 获取祖先模型设备。
+     *
+     * @return 祖先模型设备实例
+     */
     final ModelDevice getAncestorModelDevice() {
         return this.ancestorModelDevice;
     }

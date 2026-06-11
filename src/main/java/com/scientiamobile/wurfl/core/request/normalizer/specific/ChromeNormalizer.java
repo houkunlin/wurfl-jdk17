@@ -3,7 +3,9 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 /**
- * Normalizes User-Agent strings for Chrome.
+ * Chrome 浏览器的 User-Agent 特定规范化器。
+ * <p>截取 UA 字符串中从 "Chrome" 关键字开始的部分，移除浏览器标识之前
+ * 的操作系统和设备描述信息，使同一 Chrome 版本号的 UA 具有更高的一致性。</p>
  */
 
 public class ChromeNormalizer implements UserAgentNormalizer {

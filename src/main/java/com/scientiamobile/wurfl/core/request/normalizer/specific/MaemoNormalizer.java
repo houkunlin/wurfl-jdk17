@@ -6,7 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for Maemo.
+ * Maemo 设备的 User-Agent 特定规范化器。
+ * <p>Maemo 是诺基亚 N900 等设备使用的 Linux 操作系统平台，
+ * 该规范化器从 UA 中提取设备型号信息，构建统一格式的前缀以提高匹配准确性。</p>
  */
 
 public class MaemoNormalizer implements UserAgentNormalizer {

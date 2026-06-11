@@ -48,6 +48,9 @@ public class CheckConnection {
      */
     private boolean enabled;
 
+    /**
+     * 默认构造函数，初始化平台名称并检查连通性是否启用
+     */
     public CheckConnection() {
         this.platformName = resolvePlatformName();
         this.enabled = ResourceUtils.getFullBuildId().startsWith("ch");
@@ -211,6 +214,11 @@ public class CheckConnection {
         this.observers.add(observer);
     }
 
+    /**
+     * 通知所有已注册的观察者。
+     *
+     * @param argument 通知参数
+     */
     public synchronized void notifyObservers(Object argument) {
 
         for (CheckConnectionObserver observer : this.observers) {
@@ -220,6 +228,11 @@ public class CheckConnection {
 
     }
 
+    /**
+     * 获取 JSON 负载字符串。
+     *
+     * @return JSON 格式的负载数据
+     */
     final String getPayloadJson() {
         return this.payloadJson;
     }
@@ -242,6 +255,12 @@ public class CheckConnection {
      */
 
     public interface CheckConnectionObserver {
+        /**
+         * 当连通性检查完成时，通知观察者。
+         *
+         * @param checkConnection 连通性检查器实例
+         * @param argument        通知参数（通常为 HTTP 响应码）
+         */
         void update(CheckConnection checkConnection, Object argument);
     }
 }

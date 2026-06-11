@@ -23,12 +23,21 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 class WURFLServiceImpl implements WURFLService {
     private static final Logger log = LoggerFactory.getLogger(WURFLServiceImpl.class);
+    /**
+     * WURFL 数据模型
+     */
     private final WURFLModel wurflModel;
+    /** 模型读写锁，保证重载和查询的线程安全 */
     private ReentrantReadWriteLock modelLock;
+    /** 缓存提供者，缓存已检测设备的匹配结果 */
     private volatile CacheProvider cacheProvider;
+    /** 匹配器管理器 */
     private final MatcherManager matcherManager;
+    /** 设备提供者 */
     private final DeviceProvider deviceProvider;
+    /** 带优先级支持的请求工厂 */
     private WURFLRequestFactoryWithPriority requestFactory;
+    /** 引擎目标匹配模式 */
     private EngineTarget engineTarget;
 
     public WURFLServiceImpl(WURFLModel wurflModel, MatcherManager matcherManager, DeviceProvider deviceProvider, WURFLRequestFactoryWithPriority requestFactory, EngineTarget engineTarget) {

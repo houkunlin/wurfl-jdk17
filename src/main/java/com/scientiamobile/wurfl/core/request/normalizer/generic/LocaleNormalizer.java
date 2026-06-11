@@ -5,7 +5,9 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for Locale.
+ * User-Agent 语言区域信息规范化器。
+ * <p>将 UA 中的语言区域标记（如 "en-US"、"zh-CN"、"fr" 等）统一替换为 "{@code ; xx-xx}"，
+ * 消除因设备语言设置不同导致的 UA 差异，提高匹配一致性。</p>
  */
 
 public class LocaleNormalizer implements UserAgentNormalizer {

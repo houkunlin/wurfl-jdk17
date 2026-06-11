@@ -4,7 +4,9 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import org.apache.commons.lang3.Validate;
 
 /**
- * Normalizes User-Agent strings for UP Link.
+ * UP.Link 代理 User-Agent 规范化器。
+ * <p>部分运营商使用 UP.Link 代理服务器，会在原始 UA 后追加代理相关信息，
+ * 该规范化器移除 "UP.Link" 标记及其之后的所有内容，还原真实的设备 UA。</p>
  */
 
 public class UPLinkNormalizer implements UserAgentNormalizer {

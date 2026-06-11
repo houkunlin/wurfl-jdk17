@@ -42,12 +42,20 @@ public class UpdateResult {
         return this.resultStatus == UpdateResultStatus.UPDATED || this.resultStatus == UpdateResultStatus.UPDATE_SKIPPED;
     }
 
+    /**
+     * 判断 WURFL 文件是否实际被更新。
+     *
+     * @return 如果文件已更新则返回 {@code true}
+     */
+
     final boolean isUpdated() {
         return this.resultStatus == UpdateResultStatus.UPDATED;
     }
 
     /**
-     * Returns the resul ttatus.
+     * 获取更新结果的状态。
+     *
+     * @return 更新结果状态枚举
      */
 
     public UpdateResultStatus getResultStatus() {

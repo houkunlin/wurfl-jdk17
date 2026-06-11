@@ -5,7 +5,9 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for Serial Number.
+ * User-Agent 序列号掩码规范化器。
+ * <p>将 UA 中可能包含的设备序列号（SN、ST、TF、NT 等格式）替换为固定长度的掩码字符串，
+ * 避免因序列号不同导致的同一型号设备匹配失败，同时也保护设备隐私。</p>
  */
 
 public class SerialNumberNormalizer implements UserAgentNormalizer {

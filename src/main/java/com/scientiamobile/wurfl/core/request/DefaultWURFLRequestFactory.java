@@ -11,7 +11,10 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
 
 /**
- * Factory for creating Default WURFL Request instances.
+ * 创建 {@link DefaultWURFLRequest} 实例的工厂类。
+ * <p>封装了 User-Agent 解析器、规范化器和优先级策略的配置，
+ * 提供多种重载的创建方法以适应不同的调用场景。
+ * 默认使用 {@link HttpServletRequestUserAgentResolver} 解析器和内置的规范化器链。</p>
  */
 
 public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriority {
@@ -108,7 +111,12 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
     }
 
     /**
-     * Creat eequest.
+     * 从 User-Agent 字符串创建 WURFL 请求对象。
+     * <p>适用于纯 UA 字符串分析的场景，不依赖 Servlet 容器。</p>
+     *
+     * @param userAgent    User-Agent 字符串
+     * @param engineTarget 引擎匹配目标
+     * @return WURFL 请求对象
      */
     @Override
     public WURFLRequest createRequest(String userAgent, EngineTarget engineTarget) {

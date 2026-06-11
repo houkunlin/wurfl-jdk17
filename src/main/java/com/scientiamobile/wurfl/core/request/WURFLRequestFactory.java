@@ -4,7 +4,9 @@ import com.scientiamobile.wurfl.core.EngineTarget;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Factory for creating WURFL Request instances.
+ * WURFL 请求工厂接口，定义了创建 WURFL 请求对象的标准方法。
+ * <p>提供三种创建方式，分别支持从 Servlet 请求、User-Agent 字符串和自定义请求头提供者创建，
+ * 以适应不同的运行环境和调用场景。</p>
  */
 
 public interface WURFLRequestFactory {

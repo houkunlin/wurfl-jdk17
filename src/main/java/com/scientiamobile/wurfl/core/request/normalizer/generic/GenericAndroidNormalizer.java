@@ -5,7 +5,9 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for Generic Android.
+ * Android 通用 User-Agent 规范化器。
+ * <p>将 Android 版本号精简为统一的 "主版本.次版本" 格式，
+ * 消除同一 Android 版本因不同子版本号（如 4.4.2 vs 4.4）导致的匹配差异。</p>
  */
 
 public class GenericAndroidNormalizer implements UserAgentNormalizer {

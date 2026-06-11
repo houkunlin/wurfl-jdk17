@@ -6,7 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for Opera.
+ * Opera 浏览器的 User-Agent 特定规范化器。
+ * <p>支持两种 Opera 内核的规范化：</p>
+ * <ul>
+ *   <li>古典 Opera（Presto 内核）：将 "Opera/9.80 ... Version/N.M" 替换为 "Opera/N.M ..."</li>
+ *   <li>Chromium Opera（Blink 内核）：提取 "OPR/N.M" 并格式化为 "Opera/N.M" 前置</li>
+ * </ul>
  */
 
 public class OperaNormalizer implements UserAgentNormalizer {

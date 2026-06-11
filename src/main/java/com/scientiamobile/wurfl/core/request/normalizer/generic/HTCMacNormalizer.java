@@ -22,10 +22,10 @@ public class HTCMacNormalizer implements UserAgentNormalizer {
     private static final Pattern HTC_MODEL_PATTERN = Pattern.compile("(HTC[^;\\)]+)");
 
     /**
-     * Normalizes the given User-Agent string.
+     * 规范化给定的 User-Agent 字符串。
      *
-     * @param userAgent the raw User-Agent string
-     * @return the normalized User-Agent string
+     * @param userAgent 原始 User-Agent 字符串
+     * @return 规范化后的 User-Agent 字符串
      */
     @Override
     public String normalize(String userAgent) {

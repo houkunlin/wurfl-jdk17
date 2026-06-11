@@ -37,6 +37,10 @@ abstract class AbstractMatcher implements Matcher {
      * 回退到对应的通用设备。</p>
      */
     private static final List<UserAgentFallbackRule> CATCH_ALL_FALLBACKS;
+    /**
+     * 断言校验状态标记，指示 JVM 是否禁用了断言功能。
+     * <p>用于在开发/测试环境下触发断言检查，生产环境通常禁用断言。</p>
+     */
     private static boolean ASSERTIONS_DISABLED = !AbstractMatcher.class.desiredAssertionStatus();
 
     // 初始化 Catch-All 回退规则，按关键字匹配 User-Agent 并映射到通用设备 ID

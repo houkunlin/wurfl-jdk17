@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-/*/**
+/**
  * 过滤后的设备索引，维护匹配器能处理的 User-Agent 与设备 ID 的映射。
  * <p>使用 TreeMap 确保有序性，同时维护独立的 List 支持高效遍历和排序。</p>
  */
@@ -32,6 +32,10 @@ final class FilteredDeviceIndex {
         return this.userAgents;
     }
 
+    /**
+     * 对所有 User-Agent 列表按字典序排序。
+     * <p>排序后的列表可用于高效的二分查找和 RIS（最长公共前缀）匹配算法。</p>
+     */
     public final void sortUserAgents() {
         Collections.sort(this.userAgents);
     }
@@ -61,7 +65,9 @@ final class FilteredDeviceIndex {
     }
 
     /**
-     * Returns a string representation of this object.
+     * 返回该对象的字符串表示，包含所属过滤器的匹配器名称和所有设备 ID。
+     *
+     * @return 匹配器名称和设备 ID 集合的字符串表示
      */
     @Override
     public String toString() {

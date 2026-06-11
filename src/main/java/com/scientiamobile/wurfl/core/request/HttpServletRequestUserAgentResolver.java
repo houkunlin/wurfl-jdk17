@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.Validate;
 
 /**
- * Implementation of HTTP Servlet Request User Agent Resolver.
+ * 基于 Servlet HTTP 请求的 User-Agent 解析器实现。
+ * <p>使用 {@link UserAgentUtils#getUserAgent(HttpServletRequest)} 方法，
+ * 该方法会依次检查多个候选请求头并处理编码问题，比简单的直接读取请求头更全面。</p>
  */
 
 final class HttpServletRequestUserAgentResolver implements UserAgentResolver {

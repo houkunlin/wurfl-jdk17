@@ -11,7 +11,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Handler for Wurfl Xml operations.
+ * WURFL XML 数据的 SAX 解析处理器。
+ * <p>使用 SAX 事件驱动模型解析 WURFL XML 格式的设备数据，
+ * 通过状态机跟踪解析进度，逐步构建设备对象及其功能点。
+ * 支持主 WURFL 文件和补丁文件的解析，并在解析过程中进行
+ * 基本的合法性校验（如设备 ID 和 User-Agent 的唯一性）。</p>
  */
 
 final class WurflXmlHandler extends DefaultHandler {
@@ -43,7 +47,8 @@ final class WurflXmlHandler extends DefaultHandler {
     }
 
     /**
-     * Star tocument.
+     * 文档解析开始时的回调。
+     * <p>初始化去重集合和设备容器，准备开始解析设备数据。</p>
      */
 
     public final void startDocument() {
@@ -53,7 +58,8 @@ final class WurflXmlHandler extends DefaultHandler {
     }
 
     /**
-     * En document.
+     * 文档解析结束时的回调。
+     * <p>当前为无操作实现，所有数据处理逻辑已在元素结束事件中完成。</p>
      */
 
     public final void endDocument() {
@@ -174,7 +180,13 @@ final class WurflXmlHandler extends DefaultHandler {
     }
 
     /**
-     * En dlement.
+     * XML 元素结束事件处理。
+     * <p>根据当前解析状态处理元素关闭逻辑，包括设备对象的构建、
+     * 状态回退等。每当遇到关闭标签时会根据状态机切换到相应的上一级状态。</p>
+     *
+     * @param uri       命名空间 URI
+     * @param localName 本地名称
+     * @param qName     限定名
      */
 
     public final void endElement(String uri, String localName, String qName) {

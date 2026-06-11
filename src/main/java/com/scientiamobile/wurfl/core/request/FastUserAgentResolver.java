@@ -3,7 +3,8 @@ package com.scientiamobile.wurfl.core.request;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Implementation of Fast User Agent Resolver.
+ * User-Agent 解析器的快速实现，直接从请求头中读取 "User-Agent" 值。
+ * <p>不做任何额外处理或编码转换，适用于对性能要求较高且不需要复杂解析逻辑的场景。</p>
  */
 
 public final class FastUserAgentResolver implements UserAgentResolver {

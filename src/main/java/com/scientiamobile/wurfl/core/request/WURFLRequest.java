@@ -6,7 +6,9 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import java.util.Map;
 
 /**
- * Implementation of WURFL Request.
+ * WURFL 请求接口，定义了获取设备识别所需数据的方法。
+ * <p>封装了 HTTP 请求中的 User-Agent、UAProfile、请求头等信息，
+ * 并提供一系列内部方法用于判断设备类型（移动端、桌面端、爬虫、智能电视、邮件客户端等）。</p>
  */
 
 public interface WURFLRequest {

@@ -3,7 +3,9 @@ package com.scientiamobile.wurfl.core.request.normalizer.generic;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 /**
- * Normalizes User-Agent strings for Encription Level.
+ * User-Agent 加密级别标记规范化器。
+ * <p>移除 UA 字符串中的加密级别标记 "{@code  U;}"，该标记对设备识别无意义，
+ * 且不同运营商或代理服务器可能附加不同的值，移除后可以提高匹配一致性。</p>
  */
 
 public class EncriptionLevelNormalizer implements UserAgentNormalizer {

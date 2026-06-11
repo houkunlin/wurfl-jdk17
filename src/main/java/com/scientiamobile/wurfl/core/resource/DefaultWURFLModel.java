@@ -84,7 +84,11 @@ public class DefaultWURFLModel implements WURFLModel {
     }
 
     /**
-     * Sets the ancestors.
+     * 为设备集合中的每个设备设置祖先设备。
+     * <p>遍历设备集合，如果设备的 fall_back 存在于同一集合中，
+     * 则将其祖先设置为 fall_back 对应的设备对象。</p>
+     *
+     * @param devices 设备集合
      */
 
     private static void setAncestors(ModelDevices devices) {

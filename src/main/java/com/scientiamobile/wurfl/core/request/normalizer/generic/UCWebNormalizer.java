@@ -6,7 +6,9 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for UC Web.
+ * UC 浏览器 User-Agent 格式规范化器。
+ * <p>UC 浏览器的 UA 格式有时不符合标准规范（如关键字间缺少空格），
+ * 该规范化器修正这些格式问题，包括在 Android 版本号前补充标识和插入缺失的空格。</p>
  */
 
 public class UCWebNormalizer implements UserAgentNormalizer {

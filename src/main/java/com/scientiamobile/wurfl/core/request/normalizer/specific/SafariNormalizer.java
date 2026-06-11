@@ -3,7 +3,9 @@ package com.scientiamobile.wurfl.core.request.normalizer.specific;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 
 /**
- * Normalizes User-Agent strings for Safari.
+ * Safari 浏览器的 User-Agent 特定规范化器。
+ * <p>提取 Safari 浏览器的主版本号，构建 "Safari {主版本号}---{原始UA}" 格式的前缀，
+ * 使同一主版本的 Safari UA 在不同构建版本间保持一致，提高匹配准确性。</p>
  */
 
 public class SafariNormalizer implements UserAgentNormalizer {

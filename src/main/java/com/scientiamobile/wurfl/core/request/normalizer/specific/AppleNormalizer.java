@@ -6,7 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for Apple.
+ * Apple iOS 设备的 User-Agent 特定规范化器。
+ * <p>识别多种 iOS 原生应用的 UA 格式（如 iOS 应用 UA、server-bag、iOS 客户端 SDK 等），
+ * 将其转换为标准 Mobile Safari UA 格式，并修正 "CPU iOS" 为 "CPU iPhone OS" 或 "CPU OS"，
+ * 使 iOS 设备的 UA 在系统版本和设备信息部分保持一致。</p>
  */
 
 public class AppleNormalizer implements UserAgentNormalizer {
@@ -26,7 +29,11 @@ public class AppleNormalizer implements UserAgentNormalizer {
     };
 
     /**
-     * Fin datcher.
+     * 在 User-Agent 中查找匹配指定正则模式的第一个结果。
+     *
+     * @param userAgent User-Agent 字符串
+     * @param pattern   正则表达式模式
+     * @return 匹配的 Matcher 对象，如果未匹配则返回 null
      */
 
     private static Matcher findMatcher(String userAgent, Pattern pattern) {
@@ -57,7 +64,12 @@ public class AppleNormalizer implements UserAgentNormalizer {
     }
 
     /**
-     * Buil dosua.
+     * 根据 iOS 版本号和设备类型构建标准 Mobile Safari UA 字符串。
+     * <p>根据 UA 中包含的设备标识（iPad、iPod touch、iPod、iPhone）选择对应的模板。</p>
+     *
+     * @param userAgent  User-Agent 字符串
+     * @param iosVersion iOS 版本号（使用下划线分隔）
+     * @return 标准化的 Mobile Safari UA 字符串
      */
 
     private static String buildIOSUA(String userAgent, String iosVersion) {

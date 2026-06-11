@@ -49,7 +49,11 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
     }
 
     /**
-     * Plu s opac en dar kncoded.
+     * 将加号替换为空格并标记为 URL 编码状态。
+     *
+     * @param userAgent 原始 User-Agent 字符串
+     * @param request   WURFL 请求对象，用于标记编码状态，可为 null
+     * @return 替换后的 User-Agent 字符串
      */
 
     private static String plusToSpaceAndMarkEncoded(String userAgent, WURFLRequest request) {
@@ -61,7 +65,10 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
     }
 
     /**
-     * Add.
+     * 向链中添加一个规范化器，返回新的链实例（不可变模式）。
+     *
+     * @param normalizer 要添加的规范化器
+     * @return 包含新规范化器的新链实例
      */
 
     public UserAgentNormalizerChain add(UserAgentNormalizer normalizer) {
@@ -95,7 +102,10 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
     }
 
     /**
-     * Appl yhain.
+     * 依次应用链中所有规范化器对 User-Agent 进行处理。
+     *
+     * @param userAgent 要处理的 User-Agent 字符串
+     * @return 经过所有规范化器处理后的 User-Agent 字符串
      */
 
     private String applyChain(String userAgent) {
@@ -128,7 +138,9 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
     }
 
     /**
-     * Returns the al lormalizers.
+     * 获取链中所有规范化器的只读列表。
+     *
+     * @return 规范化器的不可修改列表
      */
 
     public List<UserAgentNormalizer> getAllNormalizers() {

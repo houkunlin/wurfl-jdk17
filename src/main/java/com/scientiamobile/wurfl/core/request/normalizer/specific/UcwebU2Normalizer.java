@@ -7,7 +7,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Normalizes User-Agent strings for Ucweb U2.
+ * UC 浏览器 U2 内核的 User-Agent 特定规范化器。
+ * <p>UC 浏览器 U2 内核在不同平台（Android、iOS、Windows Phone、Symbian、Java）
+ * 上的 UA 结构各不相同。该规范化器识别各平台的 UA 格式，提取版本号和设备信息，
+ * 构建统一格式的前缀，提高 UC U2 设备的匹配准确性。</p>
  */
 
 public class UcwebU2Normalizer implements UserAgentNormalizer {

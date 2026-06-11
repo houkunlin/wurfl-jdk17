@@ -75,6 +75,20 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
      */
     private static final List<String> BOT_EXCLUSION_KEYWORDS;
 
+    /**
+     * 初始化所有虚拟能力评估所需的静态常量和模式。
+     * <p>初始化内容包括：
+     * <ul>
+     *   <li>Android 旧版 Safari 浏览器 User-Agent 匹配模式</li>
+     *   <li>Chrome 主版本号和 Android 旧版本号提取模式</li>
+     *   <li>系统内置浏览器包名集合</li>
+     *   <li>已知 App 的 X-Requested-With 包名集合</li>
+     *   <li>非 App 浏览器关键词排除集合</li>
+     *   <li>App 特征指示符关键词列表</li>
+     *   <li>机器人检测排除关键词列表</li>
+     *   <li>主次版本号提取模式</li>
+     * </ul></p>
+     */
     static {
         Pattern.compile("^Mozilla/5.0 \\(Linux; Android [45]\\.[\\d\\.]+; .+ Build/.+\\) AppleWebKit/[\\d\\.+]+ \\(KHTML, like Gecko\\) Version/[\\d\\.]+ Chrome/([\\d]+)\\.[\\d\\.]+? (?:Mobile )?Safari/[\\d\\.+]+$");
         ANDROID_LEGACY_SAFARI_UA_PATTERN = Pattern.compile("^Mozilla/5.0 \\(Linux;( U;)? Android [1234]\\.[\\d\\.]+(-update1)?; [a-zA-Z]+-[a-zA-Z]+; .+ Build/.+\\) AppleWebKit/[\\d\\.+]+ \\(KHTML, like Gecko\\) Version/[\\d\\.]+ (Mobile )?Safari/[\\d\\.+]+$");

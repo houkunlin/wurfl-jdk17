@@ -33,6 +33,11 @@ public final class NameVersionPair implements Serializable {
         return this.name;
     }
 
+    /**
+     * 设置名称。
+     *
+     * @param name 名称字符串
+     */
     public final void setName(String name) {
         this.name = name;
     }
@@ -47,6 +52,11 @@ public final class NameVersionPair implements Serializable {
         return this.version;
     }
 
+    /**
+     * 设置版本。
+     *
+     * @param version 版本字符串
+     */
     public final void setVersion(String version) {
         this.version = version;
     }

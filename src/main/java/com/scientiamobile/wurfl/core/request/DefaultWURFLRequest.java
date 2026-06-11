@@ -219,7 +219,11 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns the firs tvailabl ese rgent.
+     * 从请求头提供者中按优先级查找第一个有效的设备 User-Agent。
+     * <p>依次检查 {@link #USER_AGENT_HEADERS} 中定义的候选请求头，返回第一个非空的值。</p>
+     *
+     * @param headerProvider 请求头提供者
+     * @return 找到的第一个有效 User-Agent，若全部为空则返回 null
      */
 
     private static String getFirstAvailableUserAgent(WURFLHeaderProvider headerProvider) {
@@ -275,7 +279,9 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns the devic ese rgent.
+     * 获取设备 User-Agent 字符串。
+     *
+     * @return 设备 User-Agent 字符串
      */
     @Override
     public String getDeviceUserAgent() {
@@ -283,7 +289,9 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns the cleane devic ese rgent.
+     * 获取经过通用规范化处理后的设备 User-Agent 字符串。
+     *
+     * @return 通用规范化后的设备 User-Agent
      */
     @Override
     public String getCleanedDeviceUserAgent() {
@@ -291,7 +299,9 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns the normalize devic ese rgent.
+     * 获取经过完整规范化处理后的设备 User-Agent 字符串。
+     *
+     * @return 规范化后的设备 User-Agent
      */
     @Override
     public String getNormalizedDeviceUserAgent() {
@@ -299,7 +309,9 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns the browse rse rgent.
+     * 获取浏览器 User-Agent 字符串。
+     *
+     * @return 浏览器 User-Agent 字符串
      */
     @Override
     public String getBrowserUserAgent() {
@@ -307,7 +319,11 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns the origina lse rgent.
+     * 获取原始的 User-Agent 字符串。
+     * <p>返回的值根据 {@link com.scientiamobile.wurfl.core.UserAgentPriority} 策略决定
+     * 是设备 User-Agent 还是浏览器 User-Agent。</p>
+     *
+     * @return 原始 User-Agent 字符串
      */
     @Override
     public String getOriginalUserAgent() {
@@ -335,7 +351,9 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Sets the ur lncoded.
+     * 设置 User-Agent 是否经过 URL 编码。
+     *
+     * @param urlEncoded 是否经过 URL 编码
      */
     @Override
     public void setUrlEncoded(boolean urlEncoded) {
@@ -356,7 +374,9 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns the use rgen trofile.
+     * 获取 User-Agent Profile (UAProf) URL。
+     *
+     * @return UAProfile URL 字符串，可能为 null
      */
     @Override
     public String getUserAgentProfile() {
@@ -381,7 +401,9 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns the engin earget.
+     * 获取 WURFL 引擎的匹配目标。
+     *
+     * @return 引擎匹配目标
      */
     @Override
     public EngineTarget getEngineTarget() {
@@ -415,7 +437,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Mobil eeyword setected.
+     * 检测 User-Agent 中是否包含移动设备关键字。
+     * <p>结果会被缓存以避免重复分析。</p>
+     *
+     * @return true 表示检测到移动关键字
      */
 
     public boolean mobileKeywordsDetected() {
@@ -427,7 +452,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Scree niz eetected.
+     * 检测 User-Agent 中是否包含屏幕尺寸特征。
+     * <p>结果会被缓存以避免重复分析。</p>
+     *
+     * @return true 表示检测到屏幕尺寸特征
      */
 
     public boolean screenSizeDetected() {
@@ -439,7 +467,11 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * _interna l seskto prowser.
+     * 内部方法：判断当前请求是否来自桌面浏览器。
+     * <p>使用 {@link UserAgentUtils#isDesktopBrowser(String)} 进行检测，
+     * 结果会被缓存。</p>
+     *
+     * @return true 表示检测为桌面浏览器
      */
     @Override
     public boolean _internalIsDesktopBrowser() {
@@ -481,7 +513,11 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * _interna l seskto prowse reav yut ynalysis.
+     * 内部方法：通过更深入的分析判断当前请求是否来自桌面浏览器。
+     * <p>相比 {@link #_internalIsDesktopBrowser()}，该方法会综合更多特征进行判断，
+     * 如 User-Agent 中的特定桌面标记组合、是否为智能电视等。结果会被缓存。</p>
+     *
+     * @return true 确定为桌面浏览器
      */
     @Override
     public boolean _internalIsDesktopBrowserHeavyDutyAnalysis() {
@@ -542,7 +578,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns whether this has hode.
+     * 计算当前对象的哈希码。
+     * <p>基于类类型、设备 User-Agent 和 UAProfile 三个字段计算哈希值。</p>
+     *
+     * @return 哈希码
      */
     @Override
     public int hashCode() {

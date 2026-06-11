@@ -56,6 +56,9 @@ public class VirtualCapabilityDevice implements Serializable {
     private final String browserUserAgent;
     private final String cleanedDeviceUserAgent;
 
+    /**
+     * 默认构造函数，根据 WURFL 请求初始化设备 UA、浏览器 UA 和清理后的 UA
+     */
     public VirtualCapabilityDevice(WURFLRequest request) {
         this.cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         if (request.isUrlEncoded()) {
@@ -69,6 +72,13 @@ public class VirtualCapabilityDevice implements Serializable {
         this.osPair = new NameVersionPair();
     }
 
+    /**
+     * 构造函数，使用指定的 UA 字符串创建虚拟能力设备。
+     *
+     * @param deviceUserAgent       设备 User-Agent 字符串
+     * @param browserUserAgent      浏览器 User-Agent 字符串
+     * @param cleanedDeviceUserAgent 清理后的设备 User-Agent 字符串
+     */
     public VirtualCapabilityDevice(String deviceUserAgent, String browserUserAgent, String cleanedDeviceUserAgent) {
         this.deviceUserAgent = deviceUserAgent;
         this.browserUserAgent = browserUserAgent;
@@ -88,6 +98,11 @@ public class VirtualCapabilityDevice implements Serializable {
         return this.deviceUserAgent;
     }
 
+    /**
+     * 获取浏览器 User-Agent 字符串。
+     *
+     * @return 浏览器 UA 字符串
+     */
     public String getBrowserUserAgent() {
         return this.browserUserAgent;
     }
@@ -102,6 +117,11 @@ public class VirtualCapabilityDevice implements Serializable {
         return this.cleanedDeviceUserAgent;
     }
 
+    /**
+     * 获取浏览器名称-版本对。
+     *
+     * @return 浏览器名称-版本对
+     */
     public NameVersionPair getBrowserPair() {
         return this.browserPair;
     }
@@ -116,6 +136,11 @@ public class VirtualCapabilityDevice implements Serializable {
         return this.osPair.getName();
     }
 
+    /**
+     * 获取浏览器名称。
+     *
+     * @return 浏览器名称字符串
+     */
     public String getBrowserPairName() {
         return this.browserPair.getName();
     }
@@ -130,6 +155,11 @@ public class VirtualCapabilityDevice implements Serializable {
         return this.browserPair.getVersion();
     }
 
+    /**
+     * 获取操作系统版本。
+     *
+     * @return 操作系统版本字符串
+     */
     public String getOsPairVersion() {
         return this.osPair.getVersion();
     }

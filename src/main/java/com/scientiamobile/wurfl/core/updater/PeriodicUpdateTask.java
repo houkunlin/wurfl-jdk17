@@ -10,7 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A task that performs Periodic Update.
+ * 定期 WURFL 更新执行任务。
+ * <p>实现 {@link Runnable} 接口，由调度器定期触发执行。
+ * 执行时委托 {@link UpdatePipeline} 完成更新流程，然后根据更新结果
+ * 决定是否重新加载 WURFL 引擎。维护最近 10 次更新的历史记录。</p>
  */
 
 public class PeriodicUpdateTask implements Runnable {

@@ -15,8 +15,14 @@ import java.util.ListIterator;
  * <p>该实现为单例模式，通过 {@link #INSTANCE} 访问。</p>
  */
 public final class RISMatcher {
+    /**
+     * 单例实例
+     */
     public static final RISMatcher INSTANCE = new RISMatcher();
 
+    /**
+     * 私有构造方法，防止外部实例化
+     */
     private RISMatcher() {
         LoggerFactory.getLogger(RISMatcher.class);
     }
