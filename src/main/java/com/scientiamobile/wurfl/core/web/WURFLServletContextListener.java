@@ -60,22 +60,21 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
         }
     }
 
+    /**
+     * Web 应用初始化时调用，负责读取配置并初始化 WURFL 引擎。
+     * <p>具体流程：</p>
+     * <ul>
+     *   <li>解析可选的引擎键名（{@code wurflEngineKey}）</li>
+     *   <li>读取必填的 WURFL 数据文件路径（{@code wurfl}）</li>
+     *   <li>读取可选的补丁文件路径列表（{@code wurflPatch}）</li>
+     *   <li>创建 {@link GeneralWURFLEngine} 实例</li>
+     *   <li>配置能力过滤器、引擎目标模式和 User-Agent 优先级</li>
+     *   <li>将引擎实例存入 ServletContext 属性</li>
+     * </ul>
+     *
+     * @param servletContextEvent Servlet 上下文事件，包含 ServletContext 引用
+     */
     @Override
-/**
- * Web 应用初始化时调用，负责读取配置并初始化 WURFL 引擎。
- * <p>具体流程：</p>
- * <ul>
- *   <li>解析可选的引擎键名（{@code wurflEngineKey}）</li>
- *   <li>读取必填的 WURFL 数据文件路径（{@code wurfl}）</li>
- *   <li>读取可选的补丁文件路径列表（{@code wurflPatch}）</li>
- *   <li>创建 {@link GeneralWURFLEngine} 实例</li>
- *   <li>配置能力过滤器、引擎目标模式和 User-Agent 优先级</li>
- *   <li>将引擎实例存入 ServletContext 属性</li>
- * </ul>
- *
- * @param servletContextEvent Servlet 上下文事件，包含 ServletContext 引用
- */
-
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
         resolveEngineKey(servletContext);

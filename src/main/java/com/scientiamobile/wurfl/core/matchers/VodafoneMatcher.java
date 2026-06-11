@@ -12,33 +12,29 @@ final class VodafoneMatcher extends MatcherBase {
     public VodafoneMatcher(WURFLModel wurflModel) {
         super(wurflModel);
     }
-
-    @Override
     /**
      * 判断 User-Agent 是否以 "Vodafone" 开头且非桌面浏览器。
      *
      * @param request WURFL 请求对象
      * @return 如果是 Vodafone 设备则返回 {@code true}
      */
-
+    @Override
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("Vodafone");
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "VodafoneMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Vodafone";
     }

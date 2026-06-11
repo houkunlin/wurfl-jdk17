@@ -36,11 +36,10 @@ public class PeriodicUpdateTask implements Runnable {
         this.patchPaths = patchPaths;
     }
 
+    /**
+     * Executes this task.
+     */
     @Override
-/**
- * Executes this task.
- */
-
     public void run() {
         log.info("WURFL periodic update started");
 

@@ -31,15 +31,14 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
         this.modelDevice = modelDevice;
     }
 
+    /**
+     * 获取该设备的所有能力映射。
+     * <p>遍历设备的继承层次结构，从最具体的设备开始向上合并每层设备定义的能力，
+     * 最通用的祖先设备的能力会被子设备的能力覆盖。</p>
+     *
+     * @return 能力名称到值的映射
+     */
     @Override
-/**
- * 获取该设备的所有能力映射。
- * <p>遍历设备的继承层次结构，从最具体的设备开始向上合并每层设备定义的能力，
- * 最通用的祖先设备的能力会被子设备的能力覆盖。</p>
- *
- * @return 能力名称到值的映射
- */
-
     public Map<String, String> getAllCapabilities() {
         HashMap<String, String> capabilities = new HashMap<>(this.wurflModel.getAllCapabilities().size());
 
@@ -56,16 +55,15 @@ class DeviceCapabilitiesProvider implements CapabilitiesProvider {
         return capabilities;
     }
 
+    /**
+     * 从缓存或设备继承链中获取指定能力的值。
+     * <p>优先从缓存映射中查找，未命中时沿着设备继承链向上搜索定义该能力的设备节点。</p>
+     *
+     * @param capabilities   能力缓存映射
+     * @param capabilityName 能力名称
+     * @return 能力值，如果未定义则返回 {@code null}
+     */
     @Override
-/**
- * 从缓存或设备继承链中获取指定能力的值。
- * <p>优先从缓存映射中查找，未命中时沿着设备继承链向上搜索定义该能力的设备节点。</p>
- *
- * @param capabilities   能力缓存映射
- * @param capabilityName 能力名称
- * @return 能力值，如果未定义则返回 {@code null}
- */
-
     public String getCapability(Map<String, String> capabilities, String capabilityName) {
         Map<String, String> capabilitiesMap = capabilities;
         String capabilityValue = capabilitiesMap.get(capabilityName);

@@ -21,11 +21,10 @@ final class WebOSMatcher extends AbstractMatcher {
         super(userAgentNormalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add(HP_TABLET_WEBOS_GENERIC);
@@ -33,51 +32,45 @@ final class WebOSMatcher extends AbstractMatcher {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "webOS", "hpwOS");
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String userAgent) {
         int matchLength = StringMatchUtils.indexOfOrLength(userAgent, "---");
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据是否包含 "hpwOS/3"（WebOS 3.x，平板版本）返回对应的通用设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         return request.getNormalizedDeviceUserAgent().contains("hpwOS/3") ? HP_TABLET_WEBOS_GENERIC : HP_WEBOS_GENERIC;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "WebOSMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "WebOS";
     }

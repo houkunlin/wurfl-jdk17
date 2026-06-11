@@ -43,45 +43,40 @@ public class TizenMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICE_IDS);
         requiredDeviceIds.add(GENERIC_TIZEN);
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return cleanedDeviceUserAgent.startsWith("Mozilla") && cleanedDeviceUserAgent.contains("Tizen");
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String userAgent) {
         int appleWebKitIndex = userAgent.indexOf("AppleWebKit/");
         return appleWebKitIndex >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, appleWebKitIndex + 12) : null;
     }
-
-    @Override
     /**
      * 恢复匹配策略：从 User-Agent 中提取 Tizen 版本号，构造对应的通用设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         Matcher versionMatcher = TIZEN_VERSION_PATTERN.matcher(normalizedUserAgent);
@@ -90,20 +85,18 @@ public class TizenMatcher extends MatcherBase {
         return SUPPORTED_DEVICE_IDS.contains(tizenDeviceId) ? tizenDeviceId : GENERIC_TIZEN;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "TizenMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Tizen";
     }

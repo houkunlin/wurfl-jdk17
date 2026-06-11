@@ -9,7 +9,6 @@ import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
  * 组合为规范化的前缀，使同一 Android 设备的 Opera UA 在不同版本下具有一致的可匹配格式。</p>
  */
 public class OperaMobiOrTabletOnAndroidNormalizer implements UserAgentNormalizer {
-    @Override
     /**
      * 构建 Opera Mobile/Tablet 的规范化前缀：
      * <ol>
@@ -21,6 +20,7 @@ public class OperaMobiOrTabletOnAndroidNormalizer implements UserAgentNormalizer
      * @param userAgent 原始 User-Agent 字符串
      * @return 规范化后的 User-Agent 字符串
      */
+    @Override
     public String normalize(String userAgent) {
         StringBuilder normalizedUaBuilder;
         normalizedUaBuilder = new StringBuilder();

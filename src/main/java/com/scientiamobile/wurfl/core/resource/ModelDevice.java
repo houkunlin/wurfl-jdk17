@@ -271,25 +271,25 @@ public class ModelDevice implements Serializable {
         this.ancestor = ancestor;
     }
 
+    /**
+     * 计算哈希码，基于设备的 ID。
+     *
+     * @return 哈希码
+     */
     @Override
-/**
- * 计算哈希码，基于设备的 ID。
- * @return 哈希码
- */
-
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(11, 45);
         hashCodeBuilder.append(this.getClass()).append(this.id);
         return hashCodeBuilder.toHashCode();
     }
 
+    /**
+     * 判断两个设备是否相等，基于设备的 ID 进行比较。
+     *
+     * @param obj 要比较的对象
+     * @return 如果设备 ID 相同则返回 true
+     */
     @Override
-/**
- * 判断两个设备是否相等，基于设备的 ID 进行比较。
- * @param obj 要比较的对象
- * @return 如果设备 ID 相同则返回 true
- */
-
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -301,12 +301,12 @@ public class ModelDevice implements Serializable {
         }
     }
 
+    /**
+     * 返回设备的字符串表示。
+     *
+     * @return 包含设备 ID 的字符串
+     */
     @Override
-/**
- * 返回设备的字符串表示。
- * @return 包含设备 ID 的字符串
- */
-
     public String toString() {
         ToStringBuilder toStringBuilder = new ToStringBuilder(this);
         toStringBuilder.append(this.id);

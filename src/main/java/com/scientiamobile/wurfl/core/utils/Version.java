@@ -140,13 +140,12 @@ public class Version implements Comparable<Version> {
     public int getDigitAtOrThrow(int index) {
         return this.digits[index];
     }
-
-    @Override
     /**
      * 返回版本号的字符串表示形式，各段之间以分隔符连接。
      *
      * @return 版本号字符串，如 "2.3.1"
      */
+    @Override
     public String toString() {
         StringBuilder builder;
         builder = new StringBuilder();
@@ -159,8 +158,6 @@ public class Version implements Comparable<Version> {
 
         return builder.toString();
     }
-
-    @Override
     /**
      * 判断两个版本号是否相等。
      * <p>通过 {@link #compareTo(Version)} 方法判断是否返回 0，
@@ -169,6 +166,7 @@ public class Version implements Comparable<Version> {
      * @param object 要比较的对象
      * @return 如果版本号数值相同则返回 {@code true}
      */
+    @Override
     public boolean equals(Object object) {
         if (object != null && object instanceof Version) {
             return this.compareTo((Version) object) == 0;
@@ -176,13 +174,12 @@ public class Version implements Comparable<Version> {
             return false;
         }
     }
-
-    @Override
     /**
      * 基于版本号各段数值数组计算哈希码。
      *
      * @return 哈希码
      */
+    @Override
     public int hashCode() {
         return Arrays.hashCode(this.digits);
     }

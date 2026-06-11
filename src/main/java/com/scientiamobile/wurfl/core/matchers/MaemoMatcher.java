@@ -22,11 +22,10 @@ final class MaemoMatcher extends MatcherBase {
         super(normalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -36,23 +35,20 @@ final class MaemoMatcher extends MatcherBase {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return request.getCleanedDeviceUserAgent().contains("Maemo");
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据 User-Agent 是否包含 "Opera Mobi" 或 "Firefox" 返回不同的通用设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent;
         normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
@@ -62,15 +58,13 @@ final class MaemoMatcher extends MatcherBase {
             return normalizedDeviceUserAgent.contains("Firefox") ? NOKIA_GENERIC_MAEMO_WITH_FIREFOX : NOKIA_GENERIC_MAEMO;
         }
     }
-
-    @Override
     /**
      * 执行 RIS 匹配：以 "---" 分隔符位置加 3 截断，如果没有则退回到基类的 RIS 方法。
      *
      * @param normalizedUserAgent 要匹配的 User-Agent 字符串
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String normalizedUserAgent) {
         int matchLength;
         matchLength = normalizedUserAgent.indexOf("---");
@@ -79,20 +73,18 @@ final class MaemoMatcher extends MatcherBase {
                 : super.risMatch(normalizedUserAgent);
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "MaemoMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Maemo";
     }

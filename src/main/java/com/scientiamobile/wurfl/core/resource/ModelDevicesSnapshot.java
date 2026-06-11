@@ -91,12 +91,12 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
         return new ModelDevices(this.devices);
     }
 
+    /**
+     * 计算哈希码，基于 info 和 version。
+     *
+     * @return 哈希码
+     */
     @Override
-/**
- * 计算哈希码，基于 info 和 version。
- * @return 哈希码
- */
-
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder;
         hashCodeBuilder = new HashCodeBuilder(33, 55);
@@ -104,13 +104,13 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
         return hashCodeBuilder.toHashCode();
     }
 
+    /**
+     * 判断两个快照是否相等，基于快照键比较。
+     *
+     * @param other 要比较的对象
+     * @return 如果快照键相同则返回 true
+     */
     @Override
-/**
- * 判断两个快照是否相等，基于快照键比较。
- * @param other 要比较的对象
- * @return 如果快照键相同则返回 true
- */
-
     public boolean equals(Object other) {
         if (!this.getClass().isInstance(other)) {
             return false;
@@ -123,12 +123,12 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
         return equalsBuilder.isEquals();
     }
 
+    /**
+     * 返回快照的字符串表示。
+     *
+     * @return 包含 info 和 version 的字符串
+     */
     @Override
-/**
- * 返回快照的字符串表示。
- * @return 包含 info 和 version 的字符串
- */
-
     public String toString() {
         ToStringBuilder toStringBuilder;
         toStringBuilder = new ToStringBuilder(this);

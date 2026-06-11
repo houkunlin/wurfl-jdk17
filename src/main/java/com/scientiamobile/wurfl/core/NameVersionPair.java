@@ -220,13 +220,12 @@ public final class NameVersionPair implements Serializable {
         return this.lastRegexGroups == null ? null : this.lastRegexGroups[groupIndex];
     }
 
-    @Override
     /**
      * 返回名称-版本对的字符串表示，格式为 {@code [name: 名称 - version: 版本]}。
      *
      * @return 字符串表示
      */
-
+    @Override
     public String toString() {
         return "[name: " + this.name + " - version: " + this.version + "]";
     }

@@ -45,16 +45,15 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
         this.capabilitiesCache = new HashMap<>(50);
     }
 
+    /**
+     * 获取指定能力的值。
+     * <p>优先从缓存中查找，如果缓存中不存在则通过 {@link CapabilitiesProvider} 获取。</p>
+     *
+     * @param capabilityName 能力名称
+     * @return 能力值
+     * @throws CapabilityNotDefinedException 如果能力未定义
+     */
     @Override
-/**
- * 获取指定能力的值。
- * <p>优先从缓存中查找，如果缓存中不存在则通过 {@link CapabilitiesProvider} 获取。</p>
- *
- * @param capabilityName 能力名称
- * @return 能力值
- * @throws CapabilityNotDefinedException 如果能力未定义
- */
-
     public String getCapability(String capabilityName) {
         String capabilityValue = this.capabilitiesProvider.getCapability(this.capabilitiesCache, capabilityName);
         if (capabilityValue == null) {
@@ -64,15 +63,14 @@ class CachingCapabilitiesHolder extends CapabilitiesHolder implements Serializab
         }
     }
 
+    /**
+     * 获取所有能力的映射。
+     * <p>当缓存为空或大小不足时，通过 {@link CapabilitiesProvider} 加载全部能力并填充缓存。</p>
+     *
+     * @return 能力名称到值的映射
+     * @throws IllegalStateException 如果设备在序列化前未初始化
+     */
     @Override
-/**
- * 获取所有能力的映射。
- * <p>当缓存为空或大小不足时，通过 {@link CapabilitiesProvider} 加载全部能力并填充缓存。</p>
- *
- * @return 能力名称到值的映射
- * @throws IllegalStateException 如果设备在序列化前未初始化
- */
-
     public Map<String, String> getCapabilities() {
         if (this.capabilitiesCache == null || this.capabilitiesCache.size() < this.minCacheSize) {
             if (this.capabilitiesProvider == null) {

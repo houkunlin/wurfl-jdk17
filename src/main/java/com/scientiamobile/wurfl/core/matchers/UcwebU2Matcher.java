@@ -22,28 +22,24 @@ final class UcwebU2Matcher extends MatcherBase {
         super(userAgentNormalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add("generic_ucweb");
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.startsWith("UCWEB") && cleanedDeviceUserAgent.contains("UCBrowser");
     }
-
-    @Override
     /**
      * 执行 RIS 匹配：通过 "---" 分隔符定位，根据不同平台（Adr/Android、iPh OS/iOS、
      * wds/Windows Phone、Symbian、Java）验证设备信息完整性后进行匹配。
@@ -51,7 +47,7 @@ final class UcwebU2Matcher extends MatcherBase {
      * @param userAgent 要匹配的 User-Agent 字符串
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String userAgent) {
         if (UserAgentUtils.getUcBrowserVersion(userAgent, true) == null) {
             return null;
@@ -87,33 +83,29 @@ final class UcwebU2Matcher extends MatcherBase {
             return null;
         }
     }
-
-    @Override
     /**
      * 恢复匹配策略：统一返回通用 UCWeb 设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 固定返回 {@code "generic_ucweb"}
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         return "generic_ucweb";
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "UcwebU2Matcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "UcwebU2";
     }

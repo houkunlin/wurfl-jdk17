@@ -23,13 +23,13 @@ public class WindowsPhoneNormalizer implements UserAgentNormalizer {
      */
     private static final Pattern WINDOWS_PHONE_APP_UA_PATTERN = Pattern.compile("^[^/]+/[0-9\\.-_]+ Windows Phone/([\\d\\.]+) (.+)$");
 
+    /**
+     * Normalizes the given User-Agent string.
+     *
+     * @param userAgent the raw User-Agent string
+     * @return the normalized User-Agent string
+     */
     @Override
-/**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
- */
-
     public String normalize(String userAgent) {
         String windowsPhoneModel = null;
         String windowsPhoneVersion = null;

@@ -60,11 +60,10 @@ final class FilteredDeviceIndex {
         this.userAgents.add(userAgent);
     }
 
+    /**
+     * Returns a string representation of this object.
+     */
     @Override
-/**
- * Returns a string representation of this object.
- */
-
     public String toString() {
         return this.ownerFilter.getMatcherName() + this.userAgentToDeviceId.values();
     }

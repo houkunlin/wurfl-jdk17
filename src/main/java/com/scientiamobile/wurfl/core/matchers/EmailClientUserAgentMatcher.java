@@ -50,39 +50,35 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
         super(userAgentNormalizer, wurflModel);
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();
         return request._internalIsEmailClient() && !StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office") || deviceUserAgent.contains("Spark/") && deviceUserAgent.contains("CFNetwork/");
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "EmailClientMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "EmailClient";
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String userAgent) {
         if (userAgent.contains("Thunderbird")) {
             userAgent = userAgent.substring(userAgent.indexOf("Thunderbird"));
@@ -100,16 +96,13 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
         return dotIndex != -1 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, dotIndex) : "generic";
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         return new HashSet<>(REQUIRED_DEVICE_IDS);
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据 User-Agent 中包含的邮件客户端标识返回对应的设备 ID。
      * <p>支持 Thunderbird、Outlook（多平台）、Lotus Notes、Eudora、Evolution、PocoMail、
@@ -118,7 +111,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();
         if (deviceUserAgent.contains("Thunderbird")) {

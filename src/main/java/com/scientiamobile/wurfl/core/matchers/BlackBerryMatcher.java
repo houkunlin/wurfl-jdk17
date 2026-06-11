@@ -49,11 +49,10 @@ final class BlackBerryMatcher extends AbstractMatcher {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -63,11 +62,10 @@ final class BlackBerryMatcher extends AbstractMatcher {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         boolean isBlackBerryUserAgent = cleanedDeviceUserAgent != null && (
@@ -77,11 +75,10 @@ final class BlackBerryMatcher extends AbstractMatcher {
         return !request._internalIsDesktopBrowser() && isBlackBerryUserAgent;
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String normalizedUserAgent) {
         int matchLength;
         if (normalizedUserAgent.contains("BB10")) {
@@ -100,8 +97,6 @@ final class BlackBerryMatcher extends AbstractMatcher {
                 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
                 : StringMatchUtils.NULL_STRING;
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据 User-Agent 中的 BlackBerry 版本信息返回对应的通用设备 ID。
      * <p>分别处理 BB10、PlayBook 和传统 BlackBerry OS 三种场景。</p>
@@ -109,7 +104,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         Matcher osVersionMatcher = BLACKBERRY_OS_VERSION.matcher(normalizedDeviceUserAgent);
@@ -131,20 +126,18 @@ final class BlackBerryMatcher extends AbstractMatcher {
         }
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "BlackBerryMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "BlackBerry";
     }

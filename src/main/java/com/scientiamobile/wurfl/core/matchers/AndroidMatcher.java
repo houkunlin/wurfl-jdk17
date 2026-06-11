@@ -87,14 +87,13 @@ final class AndroidMatcher extends AbstractMatcher {
         super(normalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合。
+     * <p>包括所有支持的 Android 手机和平板通用设备 ID。</p>
+     *
+     * @return 必需的设备 ID 集合
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合。
- * <p>包括所有支持的 Android 手机和平板通用设备 ID。</p>
- *
- * @return 必需的设备 ID 集合
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -104,22 +103,20 @@ final class AndroidMatcher extends AbstractMatcher {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "like Android", "Symbian")
                 && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Android", "android");
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String normalizedUserAgent) {
         int matchLength;
         matchLength = normalizedUserAgent.indexOf("---");
@@ -143,8 +140,6 @@ final class AndroidMatcher extends AbstractMatcher {
             }
         }
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据 User-Agent 中的 Android 版本号构造通用设备 ID。
      * <p>如果 User-Agent 包含 "Safari" 但不含 "Mobile" 且不是 Android 3.x，则识别为平板，
@@ -153,7 +148,7 @@ final class AndroidMatcher extends AbstractMatcher {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         String androidVersion = UserAgentUtils.getAndroidVersion(normalizedDeviceUserAgent, true).replaceAll("\\.", "_");
@@ -170,22 +165,19 @@ final class AndroidMatcher extends AbstractMatcher {
         }
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "AndroidMatcher";
     }
-
-    @Override
     /**
      * 获取桶匹配器名称。
      *
      * @return 固定返回 {@code "Android"}
      */
-
+    @Override
     public String getBucketMatcherName() {
         return "Android";
     }

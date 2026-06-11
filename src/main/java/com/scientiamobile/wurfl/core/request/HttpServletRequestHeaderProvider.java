@@ -23,24 +23,22 @@ public class HttpServletRequestHeaderProvider implements WURFLHeaderProvider {
     public HttpServletRequestHeaderProvider(HttpServletRequest request) {
         this.request = request;
     }
-
-    @Override
     /**
      * 从 Servlet 请求中获取指定请求头的值。
      *
      * @param headerName 请求头名称
      * @return 请求头的值，若不存在则返回 null
      */
+    @Override
     public String getHeader(String headerName) {
         return this.request.getHeader(headerName);
     }
-
-    @Override
     /**
      * 获取 Servlet 请求中所有请求头名称的枚举。
      *
      * @return 请求头名称的枚举
      */
+    @Override
     public Enumeration<String> getHeaderNames() {
         return this.request.getHeaderNames();
     }

@@ -41,37 +41,31 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
         this.deviceRootId = deviceRootId;
         this.capabilitiesHolder = capabilitiesHolder;
     }
-
-    @Override
     /**
      * 获取设备 ID。
      *
      * @return 设备 ID
      */
-
+    @Override
     public String getId() {
         return this.id;
     }
-
-    @Override
     /**
      * 获取 WURFL 数据中定义的设备 User-Agent。
      *
      * @return User-Agent 字符串
      */
-
+    @Override
     public String getWURFLUserAgent() {
         return this.wurflUserAgent;
     }
-
-    @Override
     /**
      * 获取指定能力名称的值。
      *
      * @param capabilityName 能力名称
      * @return 能力值
      */
-
+    @Override
     public String getCapability(String capabilityName) {
         return this.capabilitiesHolder.getCapability(capabilityName);
     }
@@ -79,20 +73,16 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     final ModelDevice getAncestorModelDevice() {
         return this.ancestorModelDevice;
     }
-
-    @Override
     /**
      * 获取能力值并转换为整数。
      *
      * @param capabilityName 能力名称
      * @return 整型的能力值
      */
-
+    @Override
     public int getCapabilityAsInt(String capabilityName) {
         return this.capabilitiesHolder.getCapabilityAsInt(capabilityName);
     }
-
-    @Override
     /**
      * 获取能力值并转换为布尔值。
      * <p>值 {@code true}（不区分大小写）对应 {@code true}，其他值抛出异常。</p>
@@ -101,7 +91,7 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
      * @return 布尔型的能力值
      * @throws NumberFormatException 如果能力值不是合法的布尔值
      */
-
+    @Override
     public boolean getCapabilityAsBool(String capabilityName) {
         String originalCapabilityName = capabilityName;
         capabilityName = this.capabilitiesHolder.getCapability(capabilityName);
@@ -113,15 +103,12 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
             throw new NumberFormatException("WURFL invalid capability value: " + originalCapabilityName + " expected \"true\" or \"false\", received: \"" + capabilityName + "\"");
         }
     }
-
-
-    @Override
     /**
      * 获取设备的所有能力映射（排除控制能力）。
      *
      * @return 能力名称到值的映射
      */
-
+    @Override
     public Map<String, String> getCapabilities() {
         Map<String, String> allCapabilities = this.capabilitiesHolder.getCapabilities();
         HashMap<String, String> filteredCapabilities = new HashMap<>(allCapabilities.size());
@@ -136,26 +123,22 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
         return filteredCapabilities;
     }
-
-    @Override
     /**
      * 判断该设备是否是其设备树的实际根节点。
      *
      * @return 如果是实际设备根节点返回 {@code true}
      */
-
+    @Override
     public boolean isActualDeviceRoot() {
         return this.actualDeviceRoot;
     }
-
-    @Override
     /**
      * 获取该设备所属设备树的根节点 ID。
      * <p>如果根节点是 {@code generic}，则返回空字符串。</p>
      *
      * @return 设备树根节点 ID
      */
-
+    @Override
     public String getDeviceRootId() {
         String rootId = this.deviceRootId;
         if (this.deviceRootId.equals("generic")) {
@@ -164,15 +147,13 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
         return rootId;
     }
-
-    @Override
     /**
      * 判断两个设备是否相等（基于设备 ID 比较）。
      *
      * @param other 要比较的对象
      * @return 如果设备 ID 相同返回 {@code true}
      */
-
+    @Override
     public boolean equals(Object other) {
         EqualsBuilder eb;
         eb = new EqualsBuilder();
@@ -183,25 +164,21 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
 
         return eb.isEquals();
     }
-
-    @Override
     /**
      * 计算该设备的哈希码（基于设备 ID 和类）。
      *
      * @return 哈希码
      */
-
+    @Override
     public int hashCode() {
         return (new HashCodeBuilder(63, 89)).append(this.getClass()).append(this.id).toHashCode();
     }
-
-    @Override
     /**
      * 返回设备的字符串表示，格式为 {@code [设备ID, match=, matcher=]}。
      *
      * @return 字符串表示
      */
-
+    @Override
     public String toString() {
         return "[" + this.id + ", match=, matcher=]";
     }

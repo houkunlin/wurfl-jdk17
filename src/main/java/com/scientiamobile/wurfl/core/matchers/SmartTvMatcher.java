@@ -26,46 +26,40 @@ final class SmartTvMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add(GENERIC_SMARTTV_BROWSER);
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return request._internalIsSmartTvBrowser();
     }
-
-    @Override
     /**
      * SmartTV 匹配器不执行确定匹配，直接返回 {@code null}，让流程进入恢复匹配阶段。
      *
      * @param request WURFL 请求对象
      * @return 始终返回 {@code null}
      */
-
+    @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         return null;
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据 User-Agent 中包含的智能电视平台关键字返回对应的通用设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("Tizen 3.0")) {
@@ -89,20 +83,18 @@ final class SmartTvMatcher extends MatcherBase {
         }
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "SmartTvMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "SmartTV";
     }

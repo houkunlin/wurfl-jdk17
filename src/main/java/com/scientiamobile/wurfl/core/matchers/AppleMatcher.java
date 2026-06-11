@@ -533,11 +533,10 @@ final class AppleMatcher extends AbstractMatcher {
         super(userAgentNormalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(SUPPORTED_DEVICE_IDS);
@@ -546,17 +545,14 @@ final class AppleMatcher extends AbstractMatcher {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, APPLE_DEVICE_KEYWORDS) && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Symbian", "Nintendo");
     }
-
-    @Override
     /**
      * 执行确定匹配：先尝试从 User-Agent 中解析硬件标识（如 iPhone7,2），
      * 如果有则映射到具体的子型号 ID（例如 "apple_iphone_ver7_subhw6"）。
@@ -565,7 +561,7 @@ final class AppleMatcher extends AbstractMatcher {
      * @param request WURFL 请求对象
      * @return 匹配到的设备 ID，含可能的子型号信息
      */
-
+    @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         String userAgent = request.getNormalizedDeviceUserAgent();
         String subHw = null;
@@ -610,8 +606,6 @@ final class AppleMatcher extends AbstractMatcher {
             return null;
         }
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据 User-Agent 中的 iOS 主版本号构造对应的通用设备 ID。
      * <p>分别处理 CoreMedia、iPod、iPad 和 iPhone 四种情况，
@@ -620,7 +614,7 @@ final class AppleMatcher extends AbstractMatcher {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String userAgent = request.getNormalizedDeviceUserAgent();
         Matcher versionMatcher = IOS_MAJOR_VERSION_PATTERN.matcher(userAgent);
@@ -649,22 +643,19 @@ final class AppleMatcher extends AbstractMatcher {
         }
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "AppleMatcher";
     }
-
-    @Override
     /**
      * 获取桶匹配器名称。
      *
      * @return 固定返回 {@code "Apple"}
      */
-
+    @Override
     public String getBucketMatcherName() {
         return "Apple";
     }

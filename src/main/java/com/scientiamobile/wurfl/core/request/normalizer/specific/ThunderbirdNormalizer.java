@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
  * 使同一 Thunderbird 版本号的 UA 具有更高的一致性。</p>
  */
 public class ThunderbirdNormalizer implements UserAgentNormalizer {
-    @Override
     /**
      * 截取 User-Agent 中从 "Thunderbird" 关键字开始的部分。
      * <p>如果原始 UA 中不包含 "Thunderbird"，则原样返回。</p>
@@ -18,6 +17,7 @@ public class ThunderbirdNormalizer implements UserAgentNormalizer {
      * @param userAgent 原始 User-Agent 字符串
      * @return 截取后的 User-Agent 字符串
      */
+    @Override
     public String normalize(String userAgent) {
         int thunderbirdIndex = StringMatchUtils.indexOf(userAgent, "Thunderbird");
         return thunderbirdIndex >= 0 ? StringUtils.substring(userAgent, thunderbirdIndex) : userAgent;

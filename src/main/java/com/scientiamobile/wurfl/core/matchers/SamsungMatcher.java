@@ -23,22 +23,20 @@ final class SamsungMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add("generic");
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         if (request.getOriginalUserAgent().contains("SamsungBrowser")) {
             return false;
@@ -49,19 +47,18 @@ final class SamsungMatcher extends MatcherBase {
                 || cleanedDeviceUserAgent.toLowerCase().contains("samsung"));
     }
 
+    /**
+     * 根据 User-Agent 的前缀特征选择不同的截断位置执行 RIS 匹配。
+     * <ul>
+     *   <li>以 "SEC-"、"SAMSUNG-"、"SCH" 开头的 → 取第一个斜杠位置</li>
+     *   <li>以 "Samsung"、"SPH"、"SGH" 开头的 → 取第一个空格位置</li>
+     *   <li>其他情况 → 取第二个斜杠位置</li>
+     * </ul>
+     *
+     * @param userAgent 要匹配的 User-Agent 字符串
+     * @return RIS 匹配结果
+     */
     @Override
-/**
- * 根据 User-Agent 的前缀特征选择不同的截断位置执行 RIS 匹配。
- * <ul>
- *   <li>以 "SEC-"、"SAMSUNG-"、"SCH" 开头的 → 取第一个斜杠位置</li>
- *   <li>以 "Samsung"、"SPH"、"SGH" 开头的 → 取第一个空格位置</li>
- *   <li>其他情况 → 取第二个斜杠位置</li>
- * </ul>
- *
- * @param userAgent 要匹配的 User-Agent 字符串
- * @return RIS 匹配结果
- */
-
     protected String risMatch(String userAgent) {
         int matchLength;
         if (StringMatchUtils.startsWithAnyOf(userAgent, LEADING_SLASH_PREFIXES)) {
@@ -92,22 +89,20 @@ final class SamsungMatcher extends MatcherBase {
         return !StringUtils.isBlank(matchedUserAgent) ? this.getFilter().getIndex().getDeviceIdByUserAgent(matchedUserAgent) : "generic";
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "SamsungMatcher";
     }
 
-    @Override
     /**
      * 获取桶匹配器名称。
      *
      * @return 固定返回 {@code "Samsung"}
      */
-
+    @Override
     public String getBucketMatcherName() {
         return SAMSUNG;
     }

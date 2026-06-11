@@ -42,13 +42,12 @@ public final class MarkUp {
         this.value = value;
     }
 
+    /**
+     * 返回标记语言的名称。
+     *
+     * @return 标记语言名称
+     */
     @Override
-/**
- * 返回标记语言的名称。
- *
- * @return 标记语言名称
- */
-
     public String toString() {
         return this.name;
     }

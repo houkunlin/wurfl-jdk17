@@ -8,7 +8,6 @@ import org.apache.commons.lang3.Validate;
  */
 
 public class UPLinkNormalizer implements UserAgentNormalizer {
-    @Override
     /**
      * 移除 User-Agent 中 "UP.Link" 标记及其之后的所有内容。
      *
@@ -16,6 +15,7 @@ public class UPLinkNormalizer implements UserAgentNormalizer {
      * @return 移除 UP.Link 标记后的 User-Agent 字符串
      * @throws NullPointerException 如果 userAgent 为 null
      */
+    @Override
     public String normalize(String userAgent) {
         Validate.notNull(userAgent, "The userAgent is null");
         int upLinkIndex;

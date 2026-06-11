@@ -21,11 +21,10 @@ final class ChromeMatcher extends MatcherBase {
         super(normalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -33,21 +32,19 @@ final class ChromeMatcher extends MatcherBase {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsMobileBrowser() && cleanedDeviceUserAgent != null && cleanedDeviceUserAgent.contains("Chrome");
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String normalizedUserAgent) {
         return StringMatchUtils.risMatch(
                 this.getFilter().getIndex().getUserAgents(),
@@ -56,29 +53,26 @@ final class ChromeMatcher extends MatcherBase {
         );
     }
 
+    /**
+     * 执行恢复匹配.
+     */
     @Override
-/**
- * 执行恢复匹配.
- */
-
     protected String applyRecoveryMatch(WURFLRequest request) {
         return CHROME_DEVICE_ID;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "ChromeMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Chrome";
     }

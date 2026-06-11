@@ -21,31 +21,28 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add(GENERIC_OPERA_MINI_ANDROID_VERSION5);
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAllOf(request.getCleanedDeviceUserAgent(), "Android", "Opera Mini");
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String userAgent) {
         int matchLength;
         matchLength = userAgent.indexOf(" Build/");
@@ -60,33 +57,29 @@ final class OperaMiniOnAndroidMatcher extends MatcherBase {
 
         return matchLength >= 0 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength) : null;
     }
-
-    @Override
     /**
      * 恢复匹配策略：统一返回 Android Opera Mini v5 通用设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 固定返回 {@code "generic_opera_mini_android_version5"}
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         return GENERIC_OPERA_MINI_ANDROID_VERSION5;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "OperaMiniOnAndroidMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "OperaMiniOnAndroid";
     }

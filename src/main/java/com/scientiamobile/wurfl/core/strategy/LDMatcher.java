@@ -83,7 +83,6 @@ public final class LDMatcher {
         return "LD";
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     /**
      * 在候选列表中查找与目标值编辑距离最小的设备标识（不指定公共前缀长度）。
      * <p>该方法委托给 {@link #match(Collection, String, int, int)}，
@@ -94,17 +93,18 @@ public final class LDMatcher {
      * @param maxDistance 允许的最大编辑距离
      * @return 最匹配的候选字符串，如果无匹配项则返回 {@code null}
      */
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public final String match(Collection candidates, String value, int maxDistance) {
         return this.match(candidates, value, maxDistance, 0);
     }
 
+    /**
+     * Attempts to match the given request to a device.
+     *
+     * @param request the WURFL request
+     * @return device info for the matched device
+     */
     @SuppressWarnings({"rawtypes", "unchecked"})
-/**
- * Attempts to match the given request to a device.
- * @param request the WURFL request
- * @return device info for the matched device
- */
-
     public final String match(Collection candidates, String value, int maxDistance, int commonPrefixLength) {
         String bestMatch = null;
         int bestDistance = maxDistance + 1;
@@ -125,11 +125,10 @@ public final class LDMatcher {
         return bestMatch;
     }
 
+    /**
+     * Returns a string representation of this object.
+     */
     @Override
-/**
- * Returns a string representation of this object.
- */
-
     public String toString() {
         return this.getName();
     }

@@ -7,7 +7,6 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
  */
 
 public class SafariNormalizer implements UserAgentNormalizer {
-    @Override
     /**
      * 提取 Safari 浏览器的主版本号，构建规范化前缀。
      * <p>如果无法找到 "Version/" 标记或无法解析主版本号，则原样返回。</p>
@@ -15,6 +14,7 @@ public class SafariNormalizer implements UserAgentNormalizer {
      * @param userAgent 原始 User-Agent 字符串
      * @return 规范化后的 User-Agent 字符串
      */
+    @Override
     public String normalize(String userAgent) {
         int versionTokenStart;
         versionTokenStart = userAgent.indexOf("Version/");

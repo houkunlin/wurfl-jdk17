@@ -274,56 +274,50 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
     }
 
+    /**
+     * Returns the devic ese rgent.
+     */
     @Override
-/**
- * Returns the devic ese rgent.
- */
-
     public String getDeviceUserAgent() {
         return this.deviceUserAgent;
     }
 
+    /**
+     * Returns the cleane devic ese rgent.
+     */
     @Override
-/**
- * Returns the cleane devic ese rgent.
- */
-
     public String getCleanedDeviceUserAgent() {
         return this.cleanedDeviceUserAgent;
     }
 
+    /**
+     * Returns the normalize devic ese rgent.
+     */
     @Override
-/**
- * Returns the normalize devic ese rgent.
- */
-
     public String getNormalizedDeviceUserAgent() {
         return this.normalizedDeviceUserAgent;
     }
 
+    /**
+     * Returns the browse rse rgent.
+     */
     @Override
-/**
- * Returns the browse rse rgent.
- */
-
     public String getBrowserUserAgent() {
         return this.browserUserAgent;
     }
 
+    /**
+     * Returns the origina lse rgent.
+     */
     @Override
-/**
- * Returns the origina lse rgent.
- */
-
     public String getOriginalUserAgent() {
         return this.userAgentPriority == UserAgentPriority.OverrideSideloadedBrowserUserAgent ? this.getDeviceUserAgent() : this.getBrowserUserAgent();
     }
 
+    /**
+     * Normaliz ese rgent.
+     */
     @Override
-/**
- * Normaliz ese rgent.
- */
-
     public void normalizeUserAgent(UserAgentNormalizer normalizer) {
         if (normalizer == null) {
             this.normalizedDeviceUserAgent = this.cleanedDeviceUserAgent;
@@ -332,31 +326,28 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         }
     }
 
+    /**
+     * Returns whether this i sr lncoded.
+     */
     @Override
-/**
- * Returns whether this i sr lncoded.
- */
-
     public boolean isUrlEncoded() {
         return this.urlEncoded;
     }
 
+    /**
+     * Sets the ur lncoded.
+     */
     @Override
-/**
- * Sets the ur lncoded.
- */
-
     public void setUrlEncoded(boolean urlEncoded) {
         this.urlEncoded = urlEncoded;
     }
-
-    @Override
     /**
      * 执行通用规范化处理。
      * <p>使用构造函数中传入的 genericNormalizer 对原始 User-Agent 进行基础规范化，
      * 结果更新到 cleanedDeviceUserAgent 字段中。
      * 若 genericNormalizer 为 null 则跳过该处理。</p>
      */
+    @Override
     public void performGenericNormalization() {
         if (this.genericNormalizer != null) {
             this.cleanedDeviceUserAgent = this.genericNormalizer.normalize(this.getOriginalUserAgent());
@@ -364,44 +355,38 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
     }
 
+    /**
+     * Returns the use rgen trofile.
+     */
     @Override
-/**
- * Returns the use rgen trofile.
- */
-
     public String getUserAgentProfile() {
         return this.userAgentProfile;
     }
 
+    /**
+     * Returns the header.
+     */
     @Override
-/**
- * Returns the header.
- */
-
     public String getHeader(String headerName) {
         return this.headers.get(headerName);
     }
-
-    @Override
     /**
      * 获取所有请求头的只读视图。
      *
      * @return 不可修改的请求头 Map
      */
+    @Override
     public Map<String, String> getHeaders() {
         return Collections.unmodifiableMap(this.headers);
     }
 
+    /**
+     * Returns the engin earget.
+     */
     @Override
-/**
- * Returns the engin earget.
- */
-
     public EngineTarget getEngineTarget() {
         return this.engineTarget;
     }
-
-    @Override
     /**
      * 内部方法：判断当前请求是否来自移动浏览器。
      * <p>判断逻辑如下：</p>
@@ -414,6 +399,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
      *
      * @return true 表示检测为移动浏览器
      */
+    @Override
     public boolean _internalIsMobileBrowser() {
         if (this.cachedIsMobileBrowser == null) {
             if (this._internalIsDesktopBrowser()) {
@@ -452,11 +438,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         return this.cachedScreenSizeDetected;
     }
 
+    /**
+     * _interna l seskto prowser.
+     */
     @Override
-/**
- * _interna l seskto prowser.
- */
-
     public boolean _internalIsDesktopBrowser() {
         if (this.cachedIsDesktopBrowser == null) {
             this.cachedIsDesktopBrowser = UserAgentUtils.isDesktopBrowser(this.cleanedDeviceUserAgent);
@@ -464,8 +449,6 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
         return this.cachedIsDesktopBrowser;
     }
-
-    @Override
     /**
      * 内部方法：判断当前请求是否来自智能电视浏览器。
      * <p>使用 {@link UserAgentUtils#isSmartTvBrowser(String)} 进行检测，
@@ -473,6 +456,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
      *
      * @return true 表示检测为智能电视浏览器
      */
+    @Override
     public boolean _internalIsSmartTvBrowser() {
         if (this.cachedIsSmartTvBrowser == null) {
             this.cachedIsSmartTvBrowser = UserAgentUtils.isSmartTvBrowser(this.cleanedDeviceUserAgent);
@@ -480,8 +464,6 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
 
         return this.cachedIsSmartTvBrowser;
     }
-
-    @Override
     /**
      * 内部方法：判断当前请求是否来自爬虫/机器人。
      * <p>使用 {@link UserAgentUtils#isBot(String)} 对原始 User-Agent 进行检测，
@@ -489,6 +471,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
      *
      * @return true 表示检测为爬虫或机器人
      */
+    @Override
     public boolean _internalIsBot() {
         if (this.cachedIsBot == null) {
             this.cachedIsBot = UserAgentUtils.isBot(this.getOriginalUserAgent());
@@ -497,11 +480,10 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         return this.cachedIsBot;
     }
 
+    /**
+     * _interna l seskto prowse reav yut ynalysis.
+     */
     @Override
-/**
- * _interna l seskto prowse reav yut ynalysis.
- */
-
     public boolean _internalIsDesktopBrowserHeavyDutyAnalysis() {
         if (this.cachedIsDesktopBrowserHeavyDutyAnalysis != null) {
             return this.cachedIsDesktopBrowserHeavyDutyAnalysis;
@@ -543,8 +525,6 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         this.cachedIsDesktopBrowserHeavyDutyAnalysis = value;
         return value;
     }
-
-    @Override
     /**
      * 内部方法：判断当前请求是否来自邮件客户端。
      * <p>通过检查 User-Agent 中是否包含 {@link EmailClientUserAgentMatcher#EMAIL_CLIENTS}
@@ -552,6 +532,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
      *
      * @return true 表示检测为邮件客户端
      */
+    @Override
     public boolean _internalIsEmailClient() {
         if (this.cachedIsEmailClient == null) {
             this.cachedIsEmailClient = StringMatchUtils.containsAnyOf(this.cleanedDeviceUserAgent, EmailClientUserAgentMatcher.EMAIL_CLIENTS.toArray(new String[0]));
@@ -560,18 +541,15 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
         return this.cachedIsEmailClient;
     }
 
+    /**
+     * Returns whether this has hode.
+     */
     @Override
-/**
- * Returns whether this has hode.
- */
-
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(35, 79);
         hashCodeBuilder.append(this.getClass()).append(this.deviceUserAgent).append(this.userAgentProfile).toHashCode();
         return hashCodeBuilder.toHashCode();
     }
-
-    @Override
     /**
      * 比较当前对象与另一个对象是否相等。
      * <p>基于设备 User-Agent 和 UAProfile 两个字段进行比较，</p>
@@ -579,6 +557,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
      * @param obj 要比较的引用对象
      * @return true 如果两个对象相等
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -588,13 +567,12 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
             return (new EqualsBuilder()).append(this.deviceUserAgent, other.deviceUserAgent).append(this.userAgentProfile, other.userAgentProfile).isEquals();
         }
     }
-
-    @Override
     /**
      * 返回当前对象的字符串表示，包含原始 User-Agent 和 UAProfile。
      *
      * @return 字符串表示
      */
+    @Override
     public String toString() {
         return "[userAgent: " + this.getOriginalUserAgent() + ", userAgentProfile: " + this.userAgentProfile + "]";
     }

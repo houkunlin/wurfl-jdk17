@@ -103,13 +103,12 @@ public class DeviceInfo {
         return this.originalUserAgent;
     }
 
+    /**
+     * 返回设备匹配信息的字符串表示，格式为 {@code {id='设备ID', match=匹配类型, matcher=匹配器名称}}。
+     *
+     * @return 字符串表示
+     */
     @Override
-/**
- * 返回设备匹配信息的字符串表示，格式为 {@code {id='设备ID', match=匹配类型, matcher=匹配器名称}}。
- *
- * @return 字符串表示
- */
-
     public String toString() {
         StringBuilder builder;
         builder = new StringBuilder("{id='");

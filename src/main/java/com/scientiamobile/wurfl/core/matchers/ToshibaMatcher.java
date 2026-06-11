@@ -8,32 +8,29 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
  */
 
 final class ToshibaMatcher extends MatcherBase {
-    @Override
     /**
      * 判断 User-Agent 是否以 "Toshiba" 开头且非桌面浏览器。
      *
      * @param request WURFL 请求对象
      * @return 如果是 Toshiba 设备则返回 {@code true}
      */
-
+    @Override
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("Toshiba");
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "ToshibaMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Toshiba";
     }

@@ -19,11 +19,10 @@ final class LGMatcher extends MatcherBase {
         super(normalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -31,34 +30,30 @@ final class LGMatcher extends MatcherBase {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent != null && cleanedDeviceUserAgent.regionMatches(true, 0, "lg", 0, 2);
     }
-
-    @Override
     /**
      * 执行 RIS 匹配：找到 "LG" 关键字后的斜杠位置作为截断点。
      *
      * @param normalizedUserAgent 要匹配的 User-Agent 字符串
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String normalizedUserAgent) {
         int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "/", normalizedUserAgent.indexOf("LG"));
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
     }
 
+    /**
+     * 执行恢复匹配.
+     */
     @Override
-/**
- * 执行恢复匹配.
- */
-
     protected String applyRecoveryMatch(WURFLRequest request) {
         FilteredDeviceIndex deviceIndex = this.getFilter().getIndex();
         String matchedUserAgent;
@@ -69,20 +64,18 @@ final class LGMatcher extends MatcherBase {
                 : "generic";
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "LGMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "LG";
     }

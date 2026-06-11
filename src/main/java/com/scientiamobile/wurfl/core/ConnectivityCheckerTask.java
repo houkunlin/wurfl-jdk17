@@ -29,12 +29,11 @@ final class ConnectivityCheckerTask implements Runnable {
         this.checkConnection = checkConnection;
     }
 
+    /**
+     * 执行连通性检查任务。
+     * <p>创建 HTTPS 连接，发送 JSON 负载，获取响应码并通知观察者。</p>
+     */
     @Override
-/**
- * 执行连通性检查任务。
- * <p>创建 HTTPS 连接，发送 JSON 负载，获取响应码并通知观察者。</p>
- */
-
     public void run() {
         try {
             HttpsURLConnection connection = createConnection();

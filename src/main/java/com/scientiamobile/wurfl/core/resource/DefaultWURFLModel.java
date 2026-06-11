@@ -67,7 +67,6 @@ public class DefaultWURFLModel implements WURFLModel {
         this(rootResource, new WURFLResources(), includedCapabilities);
     }
 
-    @SuppressWarnings("this-escape")
     /**
      * 使用主资源和补丁资源构造 WURFL 模型。
      * <p>构造函数会立即加载主资源并应用补丁资源，完成后模型即可用于查询。</p>
@@ -76,6 +75,7 @@ public class DefaultWURFLModel implements WURFLModel {
      * @param patchResources       补丁资源集合
      * @param includedCapabilities 可选的功能点过滤列表
      */
+    @SuppressWarnings("this-escape")
     public DefaultWURFLModel(WURFLResource rootResource, WURFLResources patchResources, String... includedCapabilities) {
         this.deviceIdToAncestorIdCache = CollectionFactory.createConcurrentHashMap();
         this.familyDeviceIds = new HashSet<>();
@@ -184,24 +184,24 @@ public class DefaultWURFLModel implements WURFLModel {
 
     }
 
+    /**
+     * 获取模型的版本快照键。
+     *
+     * @return 版本号字符串
+     */
     @Override
-/**
- * 获取模型的版本快照键。
- * @return 版本号字符串
- */
-
     public String getVersion() {
         return this.version;
     }
 
+    /**
+     * 根据设备 ID 获取设备。
+     *
+     * @param deviceId 设备 ID
+     * @return 匹配的设备对象
+     * @throws com.scientiamobile.wurfl.core.exc.DeviceNotDefinedException 如果设备 ID 不存在
+     */
     @Override
-/**
- * 根据设备 ID 获取设备。
- * @param deviceId 设备 ID
- * @return 匹配的设备对象
- * @throws com.scientiamobile.wurfl.core.exc.DeviceNotDefinedException 如果设备 ID 不存在
- */
-
     public ModelDevice getDeviceById(String deviceId) {
         Validate.notEmpty(deviceId, "The id must be not null");
         ModelDevice device = this.devicesById.get(deviceId);
@@ -212,13 +212,13 @@ public class DefaultWURFLModel implements WURFLModel {
         }
     }
 
+    /**
+     * 根据一组设备 ID 批量获取设备。
+     *
+     * @param deviceIds 设备 ID 集合
+     * @return 匹配的设备集合
+     */
     @Override
-/**
- * 根据一组设备 ID 批量获取设备。
- * @param deviceIds 设备 ID 集合
- * @return 匹配的设备集合
- */
-
     public Set<ModelDevice> getDevices(Set<String> deviceIds) {
         Validate.notNull(deviceIds, "The devicesIds must be not null Set");
         Validate.noNullElements(deviceIds, "The devicesIds must not containing null elements");
@@ -230,24 +230,22 @@ public class DefaultWURFLModel implements WURFLModel {
         return devices;
     }
 
+    /**
+     * 获取模型中所有设备的集合，按 User-Agent 排序。
+     * @return 所有设备的集合
+     */
     @Override
-/**
- * 获取模型中所有设备的集合，按 User-Agent 排序。
- * @return 所有设备的集合
- */
-
     public Set<ModelDevice> getAllDevices() {
         TreeSet<ModelDevice> devices = new TreeSet<>(ModelDeviceUserAgentComparator.INSTANCE);
         devices.addAll(this.devicesById.values());
         return devices;
     }
 
+    /**
+     * 获取模型中所有设备的列表，按插入顺序排列。
+     * @return 设备列表
+     */
     @Override
-/**
- * 获取模型中所有设备的列表，按插入顺序排列。
- * @return 设备列表
- */
-
     public List<ModelDevice> getAllDevicesAsList() {
         ArrayList<ModelDevice> devices = new ArrayList<>(this.deviceIdsByInsertionOrder.size());
         for (String id : this.deviceIdsByInsertionOrder) {
@@ -257,25 +255,23 @@ public class DefaultWURFLModel implements WURFLModel {
         return devices;
     }
 
+    /**
+     * 获取模型中所有设备 ID 的集合。
+     * @return 设备 ID 集合
+     */
     @Override
-/**
- * 获取模型中所有设备 ID 的集合。
- * @return 设备 ID 集合
- */
-
     public Set<String> getAllDevicesId() {
         HashSet<String> deviceIds = new HashSet<>();
         deviceIds.addAll(this.devicesById.keySet());
         return deviceIds;
     }
 
+    /**
+     * 获取指定设备的完整继承链（从 generic 到该设备）。
+     * @param device 目标设备
+     * @return 从 generic 到该设备的继承链列表
+     */
     @Override
-/**
- * 获取指定设备的完整继承链（从 generic 到该设备）。
- * @param device 目标设备
- * @return 从 generic 到该设备的继承链列表
- */
-
     public List<ModelDevice> getDeviceHierarchy(ModelDevice device) {
         Validate.notNull(device, "The device must be not null");
         // 从当前设备沿着 fall_back 链向上追溯直至 generic
@@ -288,14 +284,13 @@ public class DefaultWURFLModel implements WURFLModel {
         return hierarchy;
     }
 
+    /**
+     * 获取设备的 fall_back（回退）设备。
+     * @param device 目标设备
+     * @return fall_back 设备
+     * @throws DeviceNotInModelException 如果 fall_back ID 不在模型中
+     */
     @Override
-/**
- * 获取设备的 fall_back（回退）设备。
- * @param device 目标设备
- * @return fall_back 设备
- * @throws DeviceNotInModelException 如果 fall_back ID 不在模型中
- */
-
     public ModelDevice getDeviceFallback(ModelDevice device) {
         Validate.notNull(device, "The device must be not null");
 
@@ -307,15 +302,14 @@ public class DefaultWURFLModel implements WURFLModel {
         }
     }
 
+    /**
+     * 获取设备的最接近的祖先设备。
+     * <p>沿继承链向上查找第一个标记为 actual_device_root 的设备，
+     * 如果都未标记则返回 generic。结果会被缓存。</p>
+     * @param device 目标设备
+     * @return 祖先设备
+     */
     @Override
-/**
- * 获取设备的最接近的祖先设备。
- * <p>沿继承链向上查找第一个标记为 actual_device_root 的设备，
- * 如果都未标记则返回 generic。结果会被缓存。</p>
- * @param device 目标设备
- * @return 祖先设备
- */
-
     public ModelDevice getDeviceAncestor(ModelDevice device) {
         Validate.notNull(device, "The device must be not null");
         String deviceId = device.getID();
@@ -343,58 +337,53 @@ public class DefaultWURFLModel implements WURFLModel {
         }
     }
 
+    /**
+     * 判断指定设备 ID 是否在模型中定义。
+     * @param deviceId 设备 ID
+     * @return 如果设备存在则返回 true
+     */
     @Override
-/**
- * 判断指定设备 ID 是否在模型中定义。
- * @param deviceId 设备 ID
- * @return 如果设备存在则返回 true
- */
-
     public boolean isDeviceDefined(String deviceId) {
         Validate.notEmpty(deviceId, "The deviceId must be not null");
         return this.devicesById.containsKey(deviceId);
     }
 
+    /**
+     * 获取模型中定义的设备总数。
+     * @return 设备数量
+     */
     @Override
-/**
- * 获取模型中定义的设备总数。
- * @return 设备数量
- */
-
     public int size() {
         return this.devicesById.size();
     }
 
+    /**
+     * 获取模型中定义的所有组的名称集合。
+     * @return 所有组名称的集合
+     */
     @Override
-/**
- * 获取模型中定义的所有组的名称集合。
- * @return 所有组名称的集合
- */
-
     public Set<String> getAllGroups() {
         return this.getGenericDevice().getGroups();
     }
 
+    /**
+     * 判断指定组是否在模型中定义。
+     * @param groupId 组名称
+     * @return 如果组存在则返回 true
+     */
     @Override
-/**
- * 判断指定组是否在模型中定义。
- * @param groupId 组名称
- * @return 如果组存在则返回 true
- */
-
     public boolean isGroupDefined(String groupId) {
         Validate.notEmpty(groupId, "The groupId must be not null");
         return this.getGenericDevice().defineGroup(groupId);
     }
 
+    /**
+     * 获取指定功能点所属的组名称。
+     * @param capabilityName 功能点名称
+     * @return 所属的组名称
+     * @throws com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException 如果功能点未定义
+     */
     @Override
-/**
- * 获取指定功能点所属的组名称。
- * @param capabilityName 功能点名称
- * @return 所属的组名称
- * @throws com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException 如果功能点未定义
- */
-
     public String getGroupByCapability(String capabilityName) {
         Validate.notEmpty(capabilityName, "The capabilityName must be not null");
         ModelDevice genericDevice = this.getGenericDevice();
@@ -405,47 +394,43 @@ public class DefaultWURFLModel implements WURFLModel {
         }
     }
 
+    /**
+     * 重新加载 WURFL 模型，替换当前所有数据。
+     * @param rootResource         主 WURFL 资源
+     * @param patchResources       补丁资源集合
+     * @param includedCapabilities 可选的功能点过滤列表
+     */
     @Override
-/**
- * 重新加载 WURFL 模型，替换当前所有数据。
- * @param rootResource         主 WURFL 资源
- * @param patchResources       补丁资源集合
- * @param includedCapabilities 可选的功能点过滤列表
- */
-
     public void reload(WURFLResource rootResource, WURFLResources patchResources, String... includedCapabilities) {
         log.info("about to reload the WURFL Model");
         this.loadFromRootResource(rootResource, patchResources, includedCapabilities);
     }
 
+    /**
+     * 应用补丁资源到当前模型。
+     * @param patchResources       补丁资源集合
+     * @param includedCapabilities 可选的功能点过滤列表
+     */
     @Override
-/**
- * 应用补丁资源到当前模型。
- * @param patchResources       补丁资源集合
- * @param includedCapabilities 可选的功能点过滤列表
- */
-
     public void applyPatches(WURFLResources patchResources, String... includedCapabilities) {
         this.applyPatchesAndRebuild(patchResources, new ModelDevices(this.devicesById), includedCapabilities);
     }
 
+    /**
+     * 获取模型中定义的所有功能点的名称集合。
+     * @return 所有功能点名称的集合
+     */
     @Override
-/**
- * 获取模型中定义的所有功能点的名称集合。
- * @return 所有功能点名称的集合
- */
-
     public Set<String> getAllCapabilities() {
         ModelDevice genericDevice = this.getGenericDevice();
         return new HashSet<>(genericDevice.getCapabilities().keySet());
     }
 
+    /**
+     * 获取模型中定义的功能点总数（惰性计算并缓存）。
+     * @return 功能点数量
+     */
     @Override
-/**
- * 获取模型中定义的功能点总数（惰性计算并缓存）。
- * @return 功能点数量
- */
-
     public Integer getCapabilityCount() {
         if (this.capabilityCount == null || this.capabilityCount == 0) {
             this.capabilityCount = this.getAllCapabilities().size();
@@ -454,26 +439,24 @@ public class DefaultWURFLModel implements WURFLModel {
         return this.capabilityCount;
     }
 
+    /**
+     * 判断指定功能点是否在模型中定义。
+     * @param capabilityName 功能点名称
+     * @return 如果功能点存在则返回 true
+     */
     @Override
-/**
- * 判断指定功能点是否在模型中定义。
- * @param capabilityName 功能点名称
- * @return 如果功能点存在则返回 true
- */
-
     public boolean isCapabilityDefined(String capabilityName) {
         Validate.notEmpty(capabilityName, "The capability must be not null");
         return this.getGenericDevice().defineCapability(capabilityName);
     }
 
+    /**
+     * 获取指定组中的所有功能点名称。
+     * @param groupId 组名称
+     * @return 该组中的功能点名称集合
+     * @throws com.scientiamobile.wurfl.core.exc.GroupNotDefinedException 如果组未定义
+     */
     @Override
-/**
- * 获取指定组中的所有功能点名称。
- * @param groupId 组名称
- * @return 该组中的功能点名称集合
- * @throws com.scientiamobile.wurfl.core.exc.GroupNotDefinedException 如果组未定义
- */
-
     public Set<String> getCapabilitiesForGroup(String groupId) {
         Validate.notEmpty(groupId, "The groupId must be not null");
         ModelDevice genericDevice = this.getGenericDevice();
@@ -484,17 +467,16 @@ public class DefaultWURFLModel implements WURFLModel {
         }
     }
 
+    /**
+     * 在设备的继承链中查找定义了指定功能点的设备。
+     * <p>从继承链顶部（最接近 generic）向当前设备方向搜索，
+     * 找到第一个定义了该功能的设备。</p>
+     * @param rootDevice      起始设备
+     * @param capabilityName  功能点名称
+     * @return 定义了该功能点的设备
+     * @throws com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException 如果功能点未在任何设备中定义
+     */
     @Override
-/**
- * 在设备的继承链中查找定义了指定功能点的设备。
- * <p>从继承链顶部（最接近 generic）向当前设备方向搜索，
- * 找到第一个定义了该功能的设备。</p>
- * @param rootDevice      起始设备
- * @param capabilityName  功能点名称
- * @return 定义了该功能点的设备
- * @throws com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException 如果功能点未在任何设备中定义
- */
-
     public ModelDevice getDeviceWhereCapabilityIsDefined(ModelDevice rootDevice, String capabilityName) {
         Validate.notNull(rootDevice, "The rootDevice must be not null");
         Validate.notEmpty(capabilityName, "The name must be not null");
@@ -515,12 +497,11 @@ public class DefaultWURFLModel implements WURFLModel {
         throw new RuntimeException(new OrphanHierarchyException(deviceHierarchy));
     }
 
+    /**
+     * 获取所有根设备（标记为 actual_device_root 的设备）的 ID 集合。
+     * @return 根设备 ID 集合
+     */
     @Override
-/**
- * 获取所有根设备（标记为 actual_device_root 的设备）的 ID 集合。
- * @return 根设备 ID 集合
- */
-
     public Set<String> getRootDevicesIds() {
         HashSet<String> rootDeviceIds = new HashSet<>();
 
@@ -556,12 +537,11 @@ public class DefaultWURFLModel implements WURFLModel {
         }
     }
 
+    /**
+     * 返回模型的字符串表示。
+     * @return 包含版本号的字符串
+     */
     @Override
-/**
- * 返回模型的字符串表示。
- * @return 包含版本号的字符串
- */
-
     public String toString() {
         ToStringBuilder out;
         out = new ToStringBuilder(this);

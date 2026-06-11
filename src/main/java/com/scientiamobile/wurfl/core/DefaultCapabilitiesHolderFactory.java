@@ -28,27 +28,25 @@ class DefaultCapabilitiesHolderFactory implements CapabilitiesHolderFactory {
         }
     }
 
+    /**
+     * 为指定的设备模型创建带缓存的能力持有器。
+     * <p>使用设备的缓存大小阈值初始化 {@link CachingCapabilitiesHolder}。</p>
+     *
+     * @param modelDevice 设备模型
+     * @return 能力持有器实例
+     */
     @Override
-/**
- * 为指定的设备模型创建带缓存的能力持有器。
- * <p>使用设备的缓存大小阈值初始化 {@link CachingCapabilitiesHolder}。</p>
- *
- * @param modelDevice 设备模型
- * @return 能力持有器实例
- */
-
     public CapabilitiesHolder create(ModelDevice modelDevice) {
         Validate.notNull(modelDevice, "modelDevice is null");
         return new CachingCapabilitiesHolder(new DeviceCapabilitiesProvider(modelDevice, this.wurflModel), this.wurflModel.getCapabilityCount());
     }
 
+    /**
+     * 获取 WURFL 模型中定义的所有能力名称集合。
+     *
+     * @return 能力名称集合
+     */
     @Override
-/**
- * 获取 WURFL 模型中定义的所有能力名称集合。
- *
- * @return 能力名称集合
- */
-
     public Set<String> getModelCapabilities() {
         return this.wurflModel.getAllCapabilities();
     }

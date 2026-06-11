@@ -82,17 +82,16 @@ public class XMLResource implements WURFLResource {
         this.resourceInput = new ResourceInput(inputStream, originalPath);
     }
 
+    /**
+     * 获取 WURFL 数据快照。
+     * <p>打开资源输入流，通过 SAX 解析器解析 XML，返回包含
+     * 设备集合和版本信息的快照对象。支持按功能点名称过滤加载。</p>
+     *
+     * @param includedCapabilities 可选的功能点过滤列表，仅加载指定的功能点
+     * @return WURFL 数据快照
+     * @throws WURFLResourceException 如果解析过程中发生错误
+     */
     @Override
-/**
- * 获取 WURFL 数据快照。
- * <p>打开资源输入流，通过 SAX 解析器解析 XML，返回包含
- * 设备集合和版本信息的快照对象。支持按功能点名称过滤加载。</p>
- *
- * @param includedCapabilities 可选的功能点过滤列表，仅加载指定的功能点
- * @return WURFL 数据快照
- * @throws WURFLResourceException 如果解析过程中发生错误
- */
-
     public ModelDevicesSnapshot getData(String... includedCapabilities) {
         if (includedCapabilities != null) {
             this.includedCapabilities = new HashSet<>(includedCapabilities.length);
@@ -127,12 +126,12 @@ public class XMLResource implements WURFLResource {
         return this.resourceInput.getResourceName();
     }
 
+    /**
+     * 获取 WURFL 数据的版本号。
+     *
+     * @return 版本号字符串
+     */
     @Override
-/**
- * 获取 WURFL 数据的版本号。
- * @return 版本号字符串
- */
-
     public String getVersion() {
         return this.version;
     }

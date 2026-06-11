@@ -31,11 +31,10 @@ final class FennecOnAndroidMatcher extends MatcherBase {
 
     private Set<String> requiredDeviceIds = this.getRequiredDeviceIds();
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         if (this.requiredDeviceIds != null) {
             return this.requiredDeviceIds;
@@ -69,21 +68,19 @@ final class FennecOnAndroidMatcher extends MatcherBase {
         }
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent.contains("Android") && StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Fennec", "Firefox");
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String normalizedUserAgent) {
         Matcher versionPrefixMatcher = VERSION_PREFIX.matcher(normalizedUserAgent);
         int matchLength;
@@ -93,14 +90,13 @@ final class FennecOnAndroidMatcher extends MatcherBase {
                 : null;
     }
 
-    @Override
     /**
      * 恢复匹配策略：根据 Android 版本号和浏览器类型（手机/平板/桌面）构造对应的 Fennec 通用设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceId = null;
         int androidMajorVersion = 0;
@@ -127,20 +123,18 @@ final class FennecOnAndroidMatcher extends MatcherBase {
         return this.requiredDeviceIds.contains(deviceId) ? deviceId : "generic_android_ver4_fennec";
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "FennecOnAndroidMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "FennecOnAndroid";
     }

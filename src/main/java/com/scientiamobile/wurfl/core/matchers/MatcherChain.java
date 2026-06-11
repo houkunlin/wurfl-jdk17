@@ -27,13 +27,13 @@ class MatcherChain implements Matcher, MatcherFilter {
         this.filters.add(matcher.getFilter());
     }
 
+    /**
+     * Attempts to match the given request to a device.
+     *
+     * @param request the WURFL request
+     * @return device info for the matched device
+     */
     @Override
-/**
- * Attempts to match the given request to a device.
- * @param request the WURFL request
- * @return device info for the matched device
- */
-
     public DeviceInfo match(WURFLRequest request) {
 
         for (Matcher value : this.matchers) {
@@ -52,23 +52,21 @@ class MatcherChain implements Matcher, MatcherFilter {
         return new DeviceInfo("generic", MatchType.none, this.getMatcherName(), "MatcherChain", request.getOriginalUserAgent(), "");
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return true;
     }
 
-    @Override
     /**
      * 匹配器链的归一化方法直接返回原始 User-Agent，不做任何处理。
      *
      * @param userAgent 原始 User-Agent 字符串
      * @return 未经修改的 User-Agent 字符串
      */
-
+    @Override
     public String normalize(String userAgent) {
         return userAgent;
     }
@@ -77,11 +75,10 @@ class MatcherChain implements Matcher, MatcherFilter {
         return this;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "MatcherChain";
     }

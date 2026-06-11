@@ -36,11 +36,10 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
         super(userAgentNormalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> ids = new HashSet<>(VERSION_TO_DEVICE_ID.values());
         ids.add(GENERIC_MS_PHONE_OS7_DESKTOPMODE);
@@ -51,17 +50,14 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
         return ids;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && (StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, WP_DESKTOP, "ZuneWP7") || StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/") || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Windows Phone", "WindowsPhone", "NativeHost"));
     }
-
-    @Override
     /**
      * 确定匹配策略：如果 User-Agent 包含 "---" 分隔符或 "NativeHost" 关键字，
      * 则特殊处理（NativeHost 直接返回 Windows Phone 7 通用设备 ID），否则退回到基类方法。
@@ -69,7 +65,7 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
      * @param request WURFL 请求对象
      * @return 匹配到的设备 ID
      */
-
+    @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("---")) {
@@ -81,11 +77,10 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
         return super.applyConclusiveMatch(request);
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String userAgent) {
         int index = userAgent.indexOf("---");
         if (index < 0) {
@@ -94,11 +89,10 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, index + 3);
     }
 
+    /**
+     * 执行恢复匹配.
+     */
     @Override
-/**
- * 执行恢复匹配.
- */
-
     protected String applyRecoveryMatch(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         if (StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Mozilla/5.0 (Windows NT ", " ARM;", " Edge/")) {
@@ -118,20 +112,18 @@ final class WindowsPhoneMatcher extends AbstractMatcher {
         return UserAgentUtils.isWindowsPhoneAdClient(cleanedDeviceUserAgent) ? GENERIC_MS_PHONE_OS7 : "generic";
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "WindowsPhoneMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "WindowsPhone";
     }

@@ -68,45 +68,40 @@ final class OperaMatcher extends MatcherBase {
         super(userAgentNormalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(MAJOR_VERSION_TO_DEVICE_ID.values());
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera", "OPR/");
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String userAgent) {
         int operaIndex = StringMatchUtils.indexOf(userAgent, "Opera");
         int matchLength = StringMatchUtils.indexOfOrLength(userAgent, ".", operaIndex);
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
     }
-
-    @Override
     /**
      * 恢复匹配策略：从 User-Agent 中提取 Opera 版本号，根据主版本号返回对应的设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         Matcher versionMatcher = OPERA_VERSION.matcher(request.getNormalizedDeviceUserAgent());
         if (!versionMatcher.find()) {
@@ -127,20 +122,18 @@ final class OperaMatcher extends MatcherBase {
         }
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "OperaMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Opera";
     }

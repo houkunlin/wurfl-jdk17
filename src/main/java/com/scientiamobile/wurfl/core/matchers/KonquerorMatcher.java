@@ -9,32 +9,29 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
  */
 
 final class KonquerorMatcher extends MatcherBase {
-    @Override
     /**
      * 判断 User-Agent 是否包含 "Konqueror" 且非移动浏览器。
      *
      * @param request WURFL 请求对象
      * @return 如果是 Konqueror 浏览器则返回 {@code true}
      */
-
+    @Override
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsMobileBrowser() && request.getCleanedDeviceUserAgent().contains("Konqueror");
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "KonquerorMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Konqueror";
     }

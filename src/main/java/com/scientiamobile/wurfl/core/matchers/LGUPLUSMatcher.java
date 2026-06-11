@@ -32,11 +32,10 @@ final class LGUPLUSMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -45,25 +44,21 @@ final class LGUPLUSMatcher extends MatcherBase {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "lgtelecom", "LGUPLUS");
     }
 
+    /**
+     * 执行确定匹配.
+     */
     @Override
-/**
- * 执行确定匹配.
- */
-
     protected String applyConclusiveMatch(WURFLRequest request) {
         return null;
     }
-
-    @Override
     /**
      * 恢复匹配策略：遍历预定义的设备规则，根据 User-Agent 中是否包含特定的操作系统和浏览器特征
      * 返回对应的 LG U+ 通用设备 ID。
@@ -71,7 +66,7 @@ final class LGUPLUSMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         for (Map.Entry<String, String[]> entry : DEVICE_BY_TOKENS.entrySet()) {
@@ -83,20 +78,18 @@ final class LGUPLUSMatcher extends MatcherBase {
         return GENERIC_LGUPLUS;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "LGUPLUSMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "LGUPLUS";
     }

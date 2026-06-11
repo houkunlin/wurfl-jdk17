@@ -21,11 +21,10 @@ final class CatchAllRISMatcher extends AbstractMatcher {
         return true;
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String normalizedUserAgent) {
         Collection<String> userAgents = this.getFilter().getIndex().getUserAgents();
         if (normalizedUserAgent != null && normalizedUserAgent.startsWith("CFNetwork")) {
@@ -43,20 +42,18 @@ final class CatchAllRISMatcher extends AbstractMatcher {
         return StringMatchUtils.NULL_STRING;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "CatchAllRISMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "CatchAllRis";
     }

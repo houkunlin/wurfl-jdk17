@@ -48,11 +48,10 @@ final class MSIEMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(DEVICE_BY_MAJOR_VERSION.values());
@@ -62,11 +61,10 @@ final class MSIEMatcher extends MatcherBase {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         if (!request._internalIsMobileBrowser() && cleanedDeviceUserAgent.startsWith("Mozilla") && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Opera", "armv", "MOTO", "BREW")) {
@@ -76,11 +74,10 @@ final class MSIEMatcher extends MatcherBase {
         }
     }
 
+    /**
+     * 执行确定匹配.
+     */
     @Override
-/**
- * 执行确定匹配.
- */
-
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(request.getNormalizedDeviceUserAgent()).replaceFirst("");
         Matcher[] matchers = new Matcher[]{EDGE.matcher(normalizedUserAgent), TRIDENT_RV.matcher(normalizedUserAgent), MSIE.matcher(normalizedUserAgent)};
@@ -119,45 +116,40 @@ final class MSIEMatcher extends MatcherBase {
 
         return super.applyConclusiveMatch(request);
     }
-
-    @Override
     /**
      * 执行 RIS 匹配：先去除不重要的标记，然后以 "Trident" 关键字位置截断。
      *
      * @param userAgent 要匹配的 User-Agent 字符串
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String userAgent) {
         String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(userAgent).replaceFirst("");
         int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "Trident");
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
     }
 
+    /**
+     * 执行恢复匹配.
+     */
     @Override
-/**
- * 执行恢复匹配.
- */
-
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = UNIMPORTANT_TOKENS.matcher(request.getNormalizedDeviceUserAgent()).replaceFirst("");
         return StringMatchUtils.containsAnyOf(normalizedUserAgent, "SLCC1", "Media Center PC", ".NET CLR", "OfficeLiveConnector") ? "generic_web_browser" : "generic";
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "MSIEMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "MSIE";
     }

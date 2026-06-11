@@ -407,14 +407,13 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
         return 0L;
     }
 
+    /**
+     * 根据请求头名称获取对应的值。
+     *
+     * @param name 请求头名称
+     * @return 请求头值，如果不存在则返回 {@code null}
+     */
     @Override
-/**
- * 根据请求头名称获取对应的值。
- *
- * @param name 请求头名称
- * @return 请求头值，如果不存在则返回 {@code null}
- */
-
     public String getHeader(String name) {
         return this.headers.get(name);
     }
@@ -443,24 +442,23 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
 
     }
 
+    /**
+     * 该方法在此实现中不被支持，始终返回 {@code null}。
+     *
+     * @param name 请求头名称
+     * @return 始终返回 {@code null}
+     */
     @Override
-/**
- * 该方法在此实现中不被支持，始终返回 {@code null}。
- *
- * @param name 请求头名称
- * @return 始终返回 {@code null}
- */
     public Enumeration<String> getHeaders(String name) {
         return null;
     }
 
+    /**
+     * 获取所有请求头名称的枚举。
+     *
+     * @return 请求头名称枚举
+     */
     @Override
-/**
- * 获取所有请求头名称的枚举。
- *
- * @return 请求头名称枚举
- */
-
     public Enumeration<String> getHeaderNames() {
         ArrayList<String> headerNames = new ArrayList<>();
 

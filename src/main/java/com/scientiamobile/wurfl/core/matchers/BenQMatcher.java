@@ -8,14 +8,13 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
  */
 
 final class BenQMatcher extends MatcherBase {
-    @Override
     /**
      * 判断 User-Agent 是否以 "benq" 开头且非桌面浏览器。
      *
      * @param request WURFL 请求对象
      * @return 如果是 BenQ 设备则返回 {@code true}
      */
-
+    @Override
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser()
@@ -23,20 +22,18 @@ final class BenQMatcher extends MatcherBase {
                 && cleanedDeviceUserAgent.regionMatches(true, 0, "benq", 0, 4);
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "BenQMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "BenQ";
     }

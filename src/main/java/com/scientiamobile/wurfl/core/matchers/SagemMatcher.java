@@ -8,33 +8,30 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
  */
 
 final class SagemMatcher extends MatcherBase {
-    @Override
     /**
      * 判断 User-Agent 是否以 "sagem" 开头且非桌面浏览器。
      *
      * @param request WURFL 请求对象
      * @return 如果是 Sagem 设备则返回 {@code true}
      */
-
+    @Override
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsDesktopBrowser() && cleanedDeviceUserAgent != null && cleanedDeviceUserAgent.regionMatches(true, 0, "sagem", 0, 5);
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "SagemMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Sagem";
     }

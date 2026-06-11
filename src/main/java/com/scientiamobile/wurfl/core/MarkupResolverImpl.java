@@ -24,15 +24,14 @@ class MarkupResolverImpl implements MarkupResolver, Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(MarkupResolverImpl.class);
 
+    /**
+     * 根据设备的能力信息计算其支持的标记语言类型。
+     *
+     * @param device 内部设备实例
+     * @return 标记语言枚举
+     * @throws RuntimeException 如果无法从设备获取所需能力值
+     */
     @Override
-/**
- * 根据设备的能力信息计算其支持的标记语言类型。
- *
- * @param device 内部设备实例
- * @return 标记语言枚举
- * @throws RuntimeException 如果无法从设备获取所需能力值
- */
-
     public MarkUp getMarkupForDevice(InternalDevice device) {
         String xhtmlSupportLevel;
         String preferredMarkup;

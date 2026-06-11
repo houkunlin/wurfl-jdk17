@@ -18,52 +18,46 @@ final class ReksioMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add(REKSIO_DEVICE_ID);
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && request.getCleanedDeviceUserAgent().startsWith("Reksio");
     }
-
-    @Override
     /**
      * Reksio 匹配器直接返回固定的通用设备 ID，不执行实际的 User-Agent 匹配。
      *
      * @param request WURFL 请求对象
      * @return 固定的 {@code "generic_reksio"}
      */
-
+    @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         return REKSIO_DEVICE_ID;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "ReksioMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Reksio";
     }

@@ -15,23 +15,21 @@ public class MapHeaderProvider implements WURFLHeaderProvider {
     public MapHeaderProvider(Map<String, String> headers) {
         this.headers = headers;
     }
-
-    @Override
     /**
      * 获取指定请求头的值。
      *
      * @param headerName 请求头名称
      * @return 请求头的值，若不存在则返回 null
      */
+    @Override
     public String getHeader(String headerName) {
         return this.headers.get(headerName);
     }
 
+    /**
+     * Returns the heade rames.
+     */
     @Override
-/**
- * Returns the heade rames.
- */
-
     public Enumeration<String> getHeaderNames() {
         return new IteratorEnumeration<>(this.headers.keySet().iterator());
     }

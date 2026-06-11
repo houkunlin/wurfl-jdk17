@@ -20,11 +20,10 @@ final class FirefoxMatcher extends MatcherBase {
         super(normalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -32,26 +31,23 @@ final class FirefoxMatcher extends MatcherBase {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         return !request._internalIsMobileBrowser()
                 && cleanedDeviceUserAgent.contains("Firefox")
                 && !StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "Tablet", "Sony", "Novarra", "Opera");
     }
-
-    @Override
     /**
      * 执行 RIS 匹配：截取从 "Firefox" 关键字开始到第一个点号后一位的子串进行匹配。
      *
      * @param normalizedUserAgent 规范化后的 User-Agent
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String normalizedUserAgent) {
         String firefoxUserAgent = normalizedUserAgent.substring(normalizedUserAgent.indexOf("Firefox"));
         int matchLength = StringMatchUtils.indexOfOrLength(firefoxUserAgent, ".");
@@ -60,29 +56,26 @@ final class FirefoxMatcher extends MatcherBase {
                 : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), firefoxUserAgent, matchLength + 1);
     }
 
+    /**
+     * 执行恢复匹配.
+     */
     @Override
-/**
- * 执行恢复匹配.
- */
-
     protected String applyRecoveryMatch(WURFLRequest request) {
         return FIREFOX_DEVICE_ID;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "FirefoxMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Firefox";
     }

@@ -210,44 +210,41 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
         out.println(message);
     }
 
+    /**
+     * Servlet 初始化方法，记录服务器信息。
+     *
+     * @param config Servlet 配置对象
+     * @throws ServletException 初始化异常
+     */
     @Override
-/**
- * Servlet 初始化方法，记录服务器信息。
- *
- * @param config Servlet 配置对象
- * @throws ServletException 初始化异常
- */
-
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         this.getServletContext().getServerInfo();
     }
 
+    /**
+     * GET 请求委托给 POST 方法处理。
+     */
     @Override
-/**
- * GET 请求委托给 POST 方法处理。
- */
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.doPost(request, response);
     }
 
+    /**
+     * 处理 POST 请求，根据 {@code action} 参数分发到不同的处理逻辑。
+     * <p>支持的 action 值：</p>
+     * <ul>
+     *   <li>{@code Request} - 精度模式下执行设备检测并返回 JSON</li>
+     *   <li>{@code Info} - 返回引擎及服务器版本信息 JSON</li>
+     *   <li>{@code form} - 使用表单参数指定的引擎目标和 UA 优先级执行检测</li>
+     *   <li>{@code Buckets} - 输出桶匹配统计</li>
+     * </ul>
+     *
+     * @param request  HTTP 请求
+     * @param response HTTP 响应
+     * @throws IOException 写入响应时可能发生的异常
+     */
     @Override
-/**
- * 处理 POST 请求，根据 {@code action} 参数分发到不同的处理逻辑。
- * <p>支持的 action 值：</p>
- * <ul>
- *   <li>{@code Request} - 精度模式下执行设备检测并返回 JSON</li>
- *   <li>{@code Info} - 返回引擎及服务器版本信息 JSON</li>
- *   <li>{@code form} - 使用表单参数指定的引擎目标和 UA 优先级执行检测</li>
- *   <li>{@code Buckets} - 输出桶匹配统计</li>
- * </ul>
- *
- * @param request  HTTP 请求
- * @param response HTTP 响应
- * @throws IOException 写入响应时可能发生的异常
- */
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String action = request.getParameter(ACTION);
         response.setContentType("text/plain");

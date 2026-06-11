@@ -73,7 +73,6 @@ public class AppleNormalizer implements UserAgentNormalizer {
         return "Mozilla/5.0 (iPhone; CPU iPhone OS " + iosVersion + " like Mac OS X) AppleWebKit/601.1.10 (KHTML, like Gecko) Version/8.0 Mobile/12E155 Safari/600.1.4 " + userAgent;
     }
 
-    @Override
     /**
      * 规范化 Apple iOS 设备的 User-Agent。
      * <p>处理流程：</p>
@@ -86,6 +85,7 @@ public class AppleNormalizer implements UserAgentNormalizer {
      * @param userAgent 原始 User-Agent 字符串
      * @return 规范化后的 User-Agent 字符串
      */
+    @Override
     public String normalize(String userAgent) {
         String iosVersion = matchIOSVersion(userAgent);
         if (iosVersion != null) {

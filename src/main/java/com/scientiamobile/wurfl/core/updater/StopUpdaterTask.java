@@ -14,12 +14,11 @@ public class StopUpdaterTask extends TimerTask {
     public StopUpdaterTask(WURFLUpdater wurflUpdater) {
         this.wurflUpdater = wurflUpdater;
     }
-
-    @Override
     /**
      * 执行停止更新操作。
      * <p>委托给 {@link WURFLUpdater#stopPeriodicUpdate()} 关闭调度器线程池。</p>
      */
+    @Override
     public void run() {
         this.wurflUpdater.stopPeriodicUpdate();
     }

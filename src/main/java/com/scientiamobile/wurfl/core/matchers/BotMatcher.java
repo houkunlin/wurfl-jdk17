@@ -19,14 +19,13 @@ final class BotMatcher extends AbstractMatcher {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合。
+     * <p>包括 Google 图片代理和通用网络爬虫设备 ID。</p>
+     *
+     * @return 必需的设备 ID 集合
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合。
- * <p>包括 Google 图片代理和通用网络爬虫设备 ID。</p>
- *
- * @return 必需的设备 ID 集合
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -35,16 +34,13 @@ final class BotMatcher extends AbstractMatcher {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return request._internalIsBot();
     }
-
-    @Override
     /**
      * 爬虫匹配器的 RIS 匹配策略取决于 User-Agent 的开头：
      * <ul>
@@ -55,7 +51,7 @@ final class BotMatcher extends AbstractMatcher {
      * @param normalizedUserAgent 规范化后的 User-Agent
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String normalizedUserAgent) {
         int matchLength = normalizedUserAgent.startsWith("Mozilla")
                 ? StringMatchUtils.firstCloseParenthesis(normalizedUserAgent)
@@ -64,49 +60,41 @@ final class BotMatcher extends AbstractMatcher {
                 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
                 : StringMatchUtils.NULL_STRING;
     }
-
-    @Override
     /**
      * 确定匹配策略：如果 User-Agent 包含 "GoogleImageProxy"，则直接返回对应的设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 匹配到的设备 ID
      */
-
+    @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         return request.getCleanedDeviceUserAgent().contains("GoogleImageProxy") ? GOOGLE_IMAGE_PROXY : super.applyConclusiveMatch(request);
     }
-
-    @Override
     /**
      * 恢复匹配策略：统一返回通用网络爬虫设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 固定返回 {@code "generic_web_crawler"}
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         return "generic_web_crawler";
     }
-
-    @Override
     /**
      * 获取匹配器名称。
      *
      * @return 固定返回 {@code "BotMatcher"}
      */
-
+    @Override
     public String getMatcherName() {
         return "BotMatcher";
     }
-
-    @Override
     /**
      * 获取桶匹配器名称。
      *
      * @return 固定返回 {@code "Bot"}
      */
-
+    @Override
     public String getBucketMatcherName() {
         return "Bot";
     }

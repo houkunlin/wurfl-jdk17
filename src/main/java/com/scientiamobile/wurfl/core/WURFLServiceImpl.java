@@ -56,31 +56,25 @@ class WURFLServiceImpl implements WURFLService {
     static void setEngineTarget(WURFLServiceImpl service, EngineTarget engineTarget) {
         service.engineTarget = engineTarget;
     }
-
-    @Override
     /**
      * 获取匹配器管理器实例。
      *
      * @return 匹配器管理器
      */
-
+    @Override
     public MatcherManager getMatcherManager() {
         return this.matcherManager;
     }
-
-    @Override
     /**
      * 设置缓存提供者，用于缓存已检测设备的匹配结果。
      *
      * @param cacheProvider 缓存提供者
      */
-
+    @Override
     public void setCacheProvider(CacheProvider cacheProvider) {
         log.info("feeding {}", cacheProvider);
         this.cacheProvider = cacheProvider;
     }
-
-    @Override
     /**
      * 根据 WURFL 请求进行设备检测。
      * <p>优先从缓存中查找设备，未命中时执行匹配并缓存结果。</p>
@@ -88,7 +82,7 @@ class WURFLServiceImpl implements WURFLService {
      * @param request WURFL 请求
      * @return 设备实例
      */
-
+    @Override
     public Device getDevice(WURFLRequest request) {
         this.modelLock.readLock().lock();
         try {
@@ -147,29 +141,25 @@ class WURFLServiceImpl implements WURFLService {
         return this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(),
                 deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
     }
-
-    @Override
     /**
      * 根据 HTTP Servlet 请求进行设备检测。
      *
      * @param request HTTP Servlet 请求
      * @return 设备实例
      */
-
+    @Override
     public Device getDevice(HttpServletRequest request) {
         Validate.notNull(request, "The request must be not null");
         WURFLRequest wurflRequest = this.requestFactory.createRequest(request, this.engineTarget);
         return this.getDevice(wurflRequest);
     }
-
-    @Override
     /**
      * 根据 User-Agent 字符串进行设备检测。
      *
      * @param userAgent User-Agent 字符串
      * @return 设备实例
      */
-
+    @Override
     public Device getDevice(String userAgent) {
         Validate.notNull(userAgent, "The userAgent must be not null");
         WURFLRequest wurflRequest = this.requestFactory.createRequest(userAgent, this.engineTarget);
@@ -192,19 +182,15 @@ class WURFLServiceImpl implements WURFLService {
             }
         }
     }
-
-    @Override
     /**
      * 获取当前的引擎目标匹配模式。
      *
      * @return 引擎目标模式
      */
-
+    @Override
     public EngineTarget getEngineTarget() {
         return this.engineTarget;
     }
-
-    @Override
     /**
      * 设置引擎目标匹配模式。
      * <p>仅接受 {@link EngineTarget#fastDesktopBrowserMatch} 作为非默认值，
@@ -212,7 +198,7 @@ class WURFLServiceImpl implements WURFLService {
      *
      * @param engineTarget 引擎目标模式
      */
-
+    @Override
     public void setEngineTarget(EngineTarget engineTarget) {
         if (engineTarget != EngineTarget.fastDesktopBrowserMatch) {
             this.engineTarget = EngineTarget.defaultTarget;
@@ -220,37 +206,31 @@ class WURFLServiceImpl implements WURFLService {
             this.engineTarget = engineTarget;
         }
     }
-
-    @Override
     /**
      * 获取当前的 User-Agent 优先级策略。
      *
      * @return User-Agent 优先级策略
      */
-
+    @Override
     public UserAgentPriority getUserAgentPriority() {
         return this.requestFactory.getUserAgentPriority();
     }
-
-    @Override
     /**
      * 设置 User-Agent 优先级策略。
      *
      * @param priority User-Agent 优先级策略
      */
-
+    @Override
     public void setUserAgentPriority(UserAgentPriority priority) {
         this.requestFactory.setUserAgentPriority(priority);
     }
-
-    @Override
     /**
      * 根据设备 ID 获取设备实例（使用默认的 User-Agent）。
      *
      * @param deviceId 设备 ID
      * @return 设备实例
      */
-
+    @Override
     public Device getDeviceById(String deviceId) {
         InternalDevice internalDevice = this.deviceProvider.getInternalDevice(deviceId);
         String userAgent = resolveUserAgent(internalDevice);
@@ -277,8 +257,6 @@ class WURFLServiceImpl implements WURFLService {
         }
         return ancestor != null && ancestor.getUserAgent() != null ? ancestor.getUserAgent() : "";
     }
-
-    @Override
     /**
      * 根据设备 ID 和 HTTP Servlet 请求获取设备实例。
      *
@@ -286,14 +264,12 @@ class WURFLServiceImpl implements WURFLService {
      * @param request  HTTP Servlet 请求
      * @return 设备实例
      */
-
+    @Override
     public Device getDeviceById(String deviceId, HttpServletRequest request) {
         Validate.notNull(request, "The request must be not null");
         WURFLRequest wurflRequest = this.requestFactory.createRequest(request, this.engineTarget);
         return this.getDeviceById(deviceId, wurflRequest);
     }
-
-    @Override
     /**
      * 根据设备 ID 和 WURFL 请求获取设备实例。
      * <p>使用指定的请求上下文（包含归一化 UA 等信息）构建设备实例。</p>
@@ -302,14 +278,12 @@ class WURFLServiceImpl implements WURFLService {
      * @param request  WURFL 请求
      * @return 设备实例
      */
-
+    @Override
     public Device getDeviceById(String deviceId, WURFLRequest request) {
         Validate.notNull(request, "The request must be not null");
         request.performGenericNormalization();
         return this.deviceProvider.buildDevice(this.deviceProvider.getInternalDevice(deviceId), request, MatchType.none, "Utils", "Utils");
     }
-
-    @Override
     /**
      * 重新加载 WURFL 数据模型和相关组件。
      * <p>在写锁保护下执行重载，包括重新加载模型、刷新匹配器和清空缓存。</p>
@@ -318,7 +292,7 @@ class WURFLServiceImpl implements WURFLService {
      * @param wurflResources   补丁资源集合
      * @param patches          能力过滤器
      */
-
+    @Override
     public void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches) {
         this.modelLock.writeLock().lock();
         log.info("reloading service");
@@ -342,8 +316,6 @@ class WURFLServiceImpl implements WURFLService {
         this.ensureCacheProvider();
         this.cacheProvider.clear();
     }
-
-    @Override
     /**
      * 应用补丁资源到 WURFL 数据模型。
      * <p>在写锁保护下执行，包括应用补丁、刷新匹配器和清空缓存。</p>
@@ -351,7 +323,7 @@ class WURFLServiceImpl implements WURFLService {
      * @param wurflResources 补丁资源集合
      * @param patches        能力过滤器
      */
-
+    @Override
     public void applyPatches(WURFLResources wurflResources, String... patches) {
         log.info("before applying patches {}", wurflResources);
         this.modelLock.writeLock().lock();

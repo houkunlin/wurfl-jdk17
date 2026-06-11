@@ -69,14 +69,13 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
         newNormalizers.add(normalizer);
         return new UserAgentNormalizerChain(newNormalizers);
     }
-
-    @Override
     /**
      * 对原始 User-Agent 字符串执行规范化处理（不关联 WURFLRequest 对象）。
      *
      * @param rawUserAgent 原始 User-Agent 字符串
      * @return 规范化后的 User-Agent 字符串
      */
+    @Override
     public String normalize(String rawUserAgent) {
         return normalize(rawUserAgent, null);
     }

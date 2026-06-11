@@ -33,31 +33,28 @@ public final class DesktopApplicationMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>(SUPPORTED_DEVICE_IDS);
         requiredDeviceIds.add(GENERIC_WEB_BROWSER);
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsMobileBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Microsoft Office", "MSOffice", "office", "DesktopApp ");
     }
 
+    /**
+     * 执行 RIS 匹配.
+     */
     @Override
-/**
- * 执行 RIS 匹配.
- */
-
     protected String risMatch(String userAgent) {
         Matcher msOfficeMatcher = MSOFFICE_PATTERN.matcher(userAgent);
         Matcher microsoftOfficeMatcher = MICROSOFT_OFFICE_PATTERN.matcher(userAgent);
@@ -79,8 +76,6 @@ public final class DesktopApplicationMatcher extends MatcherBase {
 
         return "generic";
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据 User-Agent 包含 "Office"/"office" 或 "DesktopApp " 关键字
      * 返回对应的桌面应用程序通用设备 ID。
@@ -88,7 +83,7 @@ public final class DesktopApplicationMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();
         if (StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office")) {
@@ -98,20 +93,18 @@ public final class DesktopApplicationMatcher extends MatcherBase {
         }
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "DesktopApplicationMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "DesktopApplication";
     }

@@ -17,11 +17,10 @@ final class NintendoMatcher extends MatcherBase {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add("nintendo_wii_u_ver1");
@@ -34,11 +33,10 @@ final class NintendoMatcher extends MatcherBase {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         if (request._internalIsDesktopBrowser()) {
@@ -49,8 +47,6 @@ final class NintendoMatcher extends MatcherBase {
             return cleanedDeviceUserAgent.startsWith("Mozilla/") && StringMatchUtils.containsAllOf(cleanedDeviceUserAgent, "Nitro", "Opera");
         }
     }
-
-    @Override
     /**
      * 确定匹配策略：根据 User-Agent 中包含的 Nintendo 设备型号关键字直接返回对应的设备 ID。
      * <p>依次检查 "New Nintendo 3DS"、"Nintendo 3DS"、"Nintendo WiiU"、"Nintendo Wii"、
@@ -59,7 +55,7 @@ final class NintendoMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 匹配到的设备 ID，无法确定时返回 "nintendo_wii_ver1"
      */
-
+    @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("New Nintendo 3DS")) {
@@ -79,20 +75,18 @@ final class NintendoMatcher extends MatcherBase {
         }
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "NintendoMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Nintendo";
     }

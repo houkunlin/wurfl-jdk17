@@ -84,94 +84,86 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         this.virtualCapabilityHandler = virtualCapabilityHandler;
     }
 
+    /**
+     * 获取所有虚拟能力的名称到值映射。
+     *
+     * @return 虚拟能力映射
+     */
     @Override
-/**
- * 获取所有虚拟能力的名称到值映射。
- *
- * @return 虚拟能力映射
- */
-
     public Map<String, String> getVirtualCapabilities() {
         return this.virtualCapabilityHandler.getAllVirtualCapabilities(this);
     }
 
+    /**
+     * 获取指定名称的虚拟能力值。
+     *
+     * @param virtualCapabilityName 虚拟能力名称
+     * @return 虚拟能力值
+     */
     @Override
-/**
- * 获取指定名称的虚拟能力值。
- *
- * @param virtualCapabilityName 虚拟能力名称
- * @return 虚拟能力值
- */
-
     public String getVirtualCapability(String virtualCapabilityName) {
         return this.virtualCapabilityHandler.getVirtualCapability(virtualCapabilityName, this);
     }
 
+    /**
+     * 获取虚拟能力值并转换为整数。
+     *
+     * @param virtualCapabilityName 虚拟能力名称
+     * @return 整型的能力值
+     */
     @Override
-/**
- * 获取虚拟能力值并转换为整数。
- *
- * @param virtualCapabilityName 虚拟能力名称
- * @return 整型的能力值
- */
-
     public int getVirtualCapabilityAsInt(String virtualCapabilityName) {
         return this.virtualCapabilityHandler.getVirtualCapabilityAsInt(virtualCapabilityName, this);
     }
 
+    /**
+     * 获取虚拟能力值并转换为布尔值。
+     *
+     * @param virtualCapabilityName 虚拟能力名称
+     * @return 布尔型的能力值
+     */
     @Override
-/**
- * 获取虚拟能力值并转换为布尔值。
- *
- * @param virtualCapabilityName 虚拟能力名称
- * @return 布尔型的能力值
- */
-
     public boolean getVirtualCapabilityAsBool(String virtualCapabilityName) {
         return this.virtualCapabilityHandler.getVirtualCapabilityAsBool(virtualCapabilityName, this);
     }
 
+    /**
+     * 获取匹配类型。
+     *
+     * @return 匹配类型枚举
+     */
     @Override
-/**
- * 获取匹配类型。
- *
- * @return 匹配类型枚举
- */
-
     public MatchType getMatchType() {
         return this.matchType;
     }
 
+    /**
+     * 获取桶匹配器的名称。
+     *
+     * @return 桶匹配器名称
+     */
     @Override
-/**
- * 获取桶匹配器的名称。
- *
- * @return 桶匹配器名称
- */
-
     public String getBucketMatcherName() {
         return this.bucketMatcherName;
     }
 
+    /**
+     * 获取最终匹配器的名称。
+     *
+     * @return 匹配器名称
+     */
     @Override
-/**
- * 获取最终匹配器的名称。
- *
- * @return 匹配器名称
- */
-
     public String getMatcherName() {
         return this.matcherName;
     }
 
+    /**
+     * 获取设备支持的标记语言类型。
+     * <p>通过 {@link MarkupResolver} 根据设备能力计算，结果会被缓存。</p>
+     *
+     * @return 标记语言枚举
+     */
     @Override
-/**
- * 获取设备支持的标记语言类型。
- * <p>通过 {@link MarkupResolver} 根据设备能力计算，结果会被缓存。</p>
- *
- * @return 标记语言枚举
- */
-
     public MarkUp getMarkUp() {
         if (this.markUp == null) {
             this.markUp = this.markupResolver.getMarkupForDevice(this);
@@ -180,28 +172,26 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         return this.markUp;
     }
 
+    /**
+     * 返回设备的简短字符串表示，格式为 {@code [设备ID, match=匹配类型]}。
+     *
+     * @return 字符串表示
+     */
     @Override
-/**
- * 返回设备的简短字符串表示，格式为 {@code [设备ID, match=匹配类型]}。
- *
- * @return 字符串表示
- */
-
     public String toString() {
         return "[" + this.getId() + ", match=" + this.getMatchType() + ']';
     }
 
+    /**
+     * 获取指定名称的能力值。
+     * <p>先尝试从内部设备获取物理能力，如果未定义（抛出 {@link CapabilityNotDefinedException}），
+     * 则回退到从虚拟能力处理器获取。如果两者都未定义，则抛出原始的能力未定义异常。</p>
+     *
+     * @param capabilityName 能力名称
+     * @return 能力值
+     * @throws CapabilityNotDefinedException 如果物理能力和虚拟能力都未定义
+     */
     @Override
-/**
- * 获取指定名称的能力值。
- * <p>先尝试从内部设备获取物理能力，如果未定义（抛出 {@link CapabilityNotDefinedException}），
- * 则回退到从虚拟能力处理器获取。如果两者都未定义，则抛出原始的能力未定义异常。</p>
- *
- * @param capabilityName 能力名称
- * @return 能力值
- * @throws CapabilityNotDefinedException 如果物理能力和虚拟能力都未定义
- */
-
     public String getCapability(String capabilityName) {
         try {
             return this.internalDevice.getCapability(capabilityName);
@@ -214,37 +204,34 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         }
     }
 
+    /**
+     * 获取设备 ID。
+     *
+     * @return 设备 ID
+     */
     @Override
-/**
- * 获取设备 ID。
- *
- * @return 设备 ID
- */
-
     public String getId() {
         return this.internalDevice.getId();
     }
 
+    /**
+     * 获取 WURFL 数据中定义的设备 User-Agent 字符串。
+     *
+     * @return User-Agent 字符串
+     */
     @Override
-/**
- * 获取 WURFL 数据中定义的设备 User-Agent 字符串。
- *
- * @return User-Agent 字符串
- */
-
     public String getWURFLUserAgent() {
         return this.internalDevice.getWURFLUserAgent();
     }
 
+    /**
+     * 获取指定能力值并将其解析为整数。
+     * <p>先尝试从物理能力获取，如果未定义则回退到虚拟能力，再无法获取则抛出原始异常。</p>
+     *
+     * @param capabilityName 能力名称
+     * @return 整型的能力值
+     */
     @Override
-/**
- * 获取指定能力值并将其解析为整数。
- * <p>先尝试从物理能力获取，如果未定义则回退到虚拟能力，再无法获取则抛出原始异常。</p>
- *
- * @param capabilityName 能力名称
- * @return 整型的能力值
- */
-
     public int getCapabilityAsInt(String capabilityName) {
         try {
             return this.internalDevice.getCapabilityAsInt(capabilityName);
@@ -257,15 +244,14 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         }
     }
 
+    /**
+     * 获取指定能力值并转换为布尔值。
+     * <p>先尝试从物理能力获取，如果未定义则回退到虚拟能力，再无法获取则抛出原始异常。</p>
+     *
+     * @param capabilityName 能力名称
+     * @return 布尔型的能力值
+     */
     @Override
-/**
- * 获取指定能力值并转换为布尔值。
- * <p>先尝试从物理能力获取，如果未定义则回退到虚拟能力，再无法获取则抛出原始异常。</p>
- *
- * @param capabilityName 能力名称
- * @return 布尔型的能力值
- */
-
     public boolean getCapabilityAsBool(String capabilityName) {
         try {
             return this.internalDevice.getCapabilityAsBool(capabilityName);
@@ -278,35 +264,32 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         }
     }
 
+    /**
+     * 获取设备的所有能力映射。
+     *
+     * @return 能力名称到值的映射
+     */
     @Override
-/**
- * 获取设备的所有能力映射。
- *
- * @return 能力名称到值的映射
- */
-
     public Map<String, String> getCapabilities() {
         return this.internalDevice.getCapabilities();
     }
 
+    /**
+     * 判断该设备是否是某个设备树的实际根节点。
+     *
+     * @return 如果是实际设备根节点则返回 {@code true}
+     */
     @Override
-/**
- * 判断该设备是否是某个设备树的实际根节点。
- *
- * @return 如果是实际设备根节点则返回 {@code true}
- */
-
     public boolean isActualDeviceRoot() {
         return this.internalDevice.isActualDeviceRoot();
     }
 
+    /**
+     * 获取该设备所属设备树的根节点 ID。
+     *
+     * @return 设备树根节点 ID
+     */
     @Override
-/**
- * 获取该设备所属设备树的根节点 ID。
- *
- * @return 设备树根节点 ID
- */
-
     public String getDeviceRootId() {
         return this.internalDevice.getDeviceRootId();
     }
@@ -315,13 +298,12 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         return this.internalDevice;
     }
 
+    /**
+     * 获取归一化后的 User-Agent 字符串。
+     *
+     * @return 归一化后的 User-Agent
+     */
     @Override
-/**
- * 获取归一化后的 User-Agent 字符串。
- *
- * @return 归一化后的 User-Agent
- */
-
     public String getNormalizedUserAgent() {
         return this.normalizedUserAgent;
     }

@@ -17,11 +17,10 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
@@ -29,23 +28,20 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return StringMatchUtils.startsWithAnyOf(request.getCleanedDeviceUserAgent(), "Mozilla/3", "Mozilla/4", "Mozilla/5");
     }
-
-    @Override
     /**
      * 确定匹配策略：以第一个右括号位置截断执行 RIS 匹配，如果匹配失败则返回 "generic"。
      *
      * @param request WURFL 请求对象
      * @return 匹配到的设备 ID
      */
-
+    @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         int matchLength = StringMatchUtils.firstCloseParenthesis(normalizedUserAgent);
@@ -64,20 +60,18 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
         return deviceId;
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "CatchAllMozillaMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "CatchAllMozilla";
     }

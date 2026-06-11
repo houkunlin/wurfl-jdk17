@@ -21,13 +21,13 @@ public class HTCMacNormalizer implements UserAgentNormalizer {
      */
     private static final Pattern HTC_MODEL_PATTERN = Pattern.compile("(HTC[^;\\)]+)");
 
+    /**
+     * Normalizes the given User-Agent string.
+     *
+     * @param userAgent the raw User-Agent string
+     * @return the normalized User-Agent string
+     */
     @Override
-/**
- * Normalizes the given User-Agent string.
- * @param userAgent the raw User-Agent string
- * @return the normalized User-Agent string
- */
-
     public String normalize(String userAgent) {
         userAgent = LOCALE_SUBSTITUTION_PATTERN.matcher(userAgent).replaceFirst("; xx-xx");
         Matcher htcModelMatcher;

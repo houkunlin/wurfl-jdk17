@@ -21,11 +21,10 @@ final class DefaultMatcherFilter implements MatcherFilter {
         this.index = new FilteredDeviceIndex(this);
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return this.matcher.canHandle(request);
     }
@@ -42,14 +41,12 @@ final class DefaultMatcherFilter implements MatcherFilter {
     public final FilteredDeviceIndex getIndex() {
         return this.index;
     }
-
-    @Override
     /**
      * 获取关联的匹配器名称。
      *
      * @return 匹配器名称
      */
-
+    @Override
     public String getMatcherName() {
         return this.matcher.getMatcherName();
     }

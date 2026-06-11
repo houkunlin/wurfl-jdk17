@@ -12,14 +12,13 @@ public class TransferEncodingNormalizer implements UserAgentNormalizer {
      * 需要移除的传输编码标记。
      */
     private static final CharSequence TRANSFER_ENCODING_TOKEN = new String(",gzip(gfe)");
-
-    @Override
     /**
      * 移除 User-Agent 末尾的传输编码标记 "{@code ,gzip(gfe)}"。
      *
      * @param userAgent 原始 User-Agent 字符串
      * @return 移除标记后的 User-Agent 字符串
      */
+    @Override
     public String normalize(String userAgent) {
         return userAgent.replace(TRANSFER_ENCODING_TOKEN, "");
     }

@@ -95,11 +95,10 @@ abstract class AbstractMatcher implements Matcher {
         return StringUtils.isBlank(deviceId) || "generic".equals(deviceId);
     }
 
+    /**
+     * Returns a string representation of this object.
+     */
     @Override
-/**
- * Returns a string representation of this object.
- */
-
     public String toString() {
         return this.getClass().getSimpleName();
     }
@@ -148,13 +147,13 @@ abstract class AbstractMatcher implements Matcher {
         this.filter = filter;
     }
 
+    /**
+     * Attempts to match the given request to a device.
+     *
+     * @param request the WURFL request
+     * @return device info for the matched device
+     */
     @Override
-/**
- * Attempts to match the given request to a device.
- * @param request the WURFL request
- * @return device info for the matched device
- */
-
     public DeviceInfo match(WURFLRequest request) {
         request.normalizeUserAgent(this.normalizer);
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
@@ -251,16 +250,15 @@ abstract class AbstractMatcher implements Matcher {
         return "generic";
     }
 
+    /**
+     * 规范化给定的 User-Agent 字符串。
+     * <p>如果当前匹配器配置了 {@link UserAgentNormalizer}，则调用其规范化方法；
+     * 否则直接返回原始值。</p>
+     *
+     * @param value 原始 User-Agent 字符串
+     * @return 规范化后的 User-Agent 字符串
+     */
     @Override
-/**
- * 规范化给定的 User-Agent 字符串。
- * <p>如果当前匹配器配置了 {@link UserAgentNormalizer}，则调用其规范化方法；
- * 否则直接返回原始值。</p>
- *
- * @param value 原始 User-Agent 字符串
- * @return 规范化后的 User-Agent 字符串
- */
-
     public String normalize(String value) {
         return this.normalizer == null ? value : this.normalizer.normalize(value);
     }
@@ -269,11 +267,10 @@ abstract class AbstractMatcher implements Matcher {
         return "Abstract";
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return this.getClass().getSimpleName();
     }

@@ -31,14 +31,13 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
         this.originalUserAgent = originalUserAgent;
     }
 
+    /**
+     * 返回该匹配结果的字符串表示，格式为：{@code 匹配器名\t设备ID\t归一化UA\t原始UA}。
+     * <p>匹配器名称会去除末尾的 "Matcher" 后缀，使输出更简洁。</p>
+     *
+     * @return 制表符分隔的字符串
+     */
     @Override
-/**
- * 返回该匹配结果的字符串表示，格式为：{@code 匹配器名\t设备ID\t归一化UA\t原始UA}。
- * <p>匹配器名称会去除末尾的 "Matcher" 后缀，使输出更简洁。</p>
- *
- * @return 制表符分隔的字符串
- */
-
     public String toString() {
         String matcherNameWithoutSuffix = this.matcherName;
         int matcherSuffixIndex;

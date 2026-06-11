@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
 public class UCWebNormalizer implements UserAgentNormalizer {
     private static final Pattern JUC_ANDROID_VERSION_PATTERN = Pattern.compile("^(JUC \\(Linux; U;)(?= \\d)");
     private static final Pattern MISSING_SPACE_PATTERN = Pattern.compile("(Android|JUC|[;\\)])(?=[\\w|\\(])");
-
-    @Override
     /**
      * 修正 UC 浏览器 UA 的格式问题：
      * <ol>
@@ -25,6 +23,7 @@ public class UCWebNormalizer implements UserAgentNormalizer {
      * @param userAgent 原始 User-Agent 字符串
      * @return 格式修正后的 User-Agent 字符串
      */
+    @Override
     public String normalize(String userAgent) {
         if (StringMatchUtils.startsWithAnyOf(userAgent, "JUC", "Mozilla/5.0(Linux;U;Android")) {
             userAgent = JUC_ANDROID_VERSION_PATTERN.matcher(userAgent).replaceFirst("$1 Android");

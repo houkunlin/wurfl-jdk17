@@ -137,12 +137,12 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         return Collections.unmodifiableMap(this.devicesById);
     }
 
+    /**
+     * 返回遍历所有设备的迭代器。
+     *
+     * @return 设备迭代器
+     */
     @Override
-/**
- * 返回遍历所有设备的迭代器。
- * @return 设备迭代器
- */
-
     public Iterator<ModelDevice> iterator() {
         return this.getDevicesById().values().iterator();
     }
@@ -250,12 +250,12 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         this.devicesById.clear();
     }
 
+    /**
+     * 计算哈希码。
+     *
+     * @return 哈希码
+     */
     @Override
-/**
- * 计算哈希码。
- * @return 哈希码
- */
-
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder;
         hashCodeBuilder = new HashCodeBuilder();
@@ -263,13 +263,13 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
         return hashCodeBuilder.toHashCode();
     }
 
+    /**
+     * 判断两个设备集合是否相等（基于设备映射的比较）。
+     *
+     * @param obj 要比较的对象
+     * @return 如果设备映射相同则返回 true
+     */
     @Override
-/**
- * 判断两个设备集合是否相等（基于设备映射的比较）。
- * @param obj 要比较的对象
- * @return 如果设备映射相同则返回 true
- */
-
     public boolean equals(Object object) {
         if (this == object) {
             return true;

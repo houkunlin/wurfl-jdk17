@@ -22,11 +22,10 @@ final class XBoxMatcher extends AbstractMatcher {
         super(wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.add(MICROSOFT_XBOXONE_VER1);
@@ -35,32 +34,28 @@ final class XBoxMatcher extends AbstractMatcher {
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return request.getCleanedDeviceUserAgent().contains("Xbox");
     }
 
+    /**
+     * 执行确定匹配.
+     */
     @Override
-/**
- * 执行确定匹配.
- */
-
     protected String applyConclusiveMatch(WURFLRequest request) {
         return null;
     }
-
-    @Override
     /**
      * 恢复匹配策略：根据 User-Agent 是否包含 "MSIE 10.0" 和 "Xbox One" 返回对应的通用设备 ID。
      *
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("MSIE 10.0")) {
@@ -70,20 +65,18 @@ final class XBoxMatcher extends AbstractMatcher {
         }
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "XBoxMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "Xbox";
     }

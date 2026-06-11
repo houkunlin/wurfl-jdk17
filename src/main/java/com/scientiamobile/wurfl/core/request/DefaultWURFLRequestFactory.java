@@ -90,8 +90,6 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
     private static UserAgentNormalizerChain createDefaultNormalizerChain() {
         return new UserAgentNormalizerChain(new UserAgentNormalizer[]{new UCWebNormalizer(), new UPLinkNormalizer(), new SerialNumberNormalizer(), new LocaleNormalizer(), new CFNetworkNormalizer(), new BlackBerryNormalizer(), new GenericAndroidNormalizer(), new TransferEncodingNormalizer()});
     }
-
-    @Override
     /**
      * 从 HttpServletRequest 创建 WURFL 请求对象。
      * <p>自动解析请求中的 User-Agent 和 UAProfile，并提取所有请求头。</p>
@@ -101,6 +99,7 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
      * @return WURFL 请求对象
      * @throws NullPointerException 如果 request 为 null
      */
+    @Override
     public WURFLRequest createRequest(HttpServletRequest request, EngineTarget engineTarget) {
         Validate.notNull(request, "The sourceRequest must be not null");
         String userAgent = StringUtils.trimToEmpty(this.userAgentResolver.resolve(request));
@@ -108,11 +107,10 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
         return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, UserAgentUtils.getHeaders(request), this.userAgentPriority, engineTarget);
     }
 
+    /**
+     * Creat eequest.
+     */
     @Override
-/**
- * Creat eequest.
- */
-
     public WURFLRequest createRequest(String userAgent, EngineTarget engineTarget) {
         userAgent = StringUtils.trimToEmpty(userAgent);
         return new DefaultWURFLRequest(userAgent, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
@@ -131,31 +129,28 @@ public class DefaultWURFLRequestFactory implements WURFLRequestFactoryWithPriori
         return new DefaultWURFLRequest(userAgent, uaProfile, this.userAgentNormalizer, this.userAgentPriority, engineTarget);
     }
 
+    /**
+     * Creat eequest.
+     */
     @Override
-/**
- * Creat eequest.
- */
-
     public WURFLRequest createRequest(WURFLHeaderProvider headerProvider, EngineTarget engineTarget) {
         return new DefaultWURFLRequest(this.userAgentNormalizer, headerProvider, this.userAgentPriority, engineTarget);
     }
-
-    @Override
     /**
      * 获取当前的 User-Agent 优先级策略。
      *
      * @return 当前优先级策略
      */
+    @Override
     public UserAgentPriority getUserAgentPriority() {
         return this.userAgentPriority;
     }
-
-    @Override
     /**
      * 设置 User-Agent 优先级策略。
      *
      * @param userAgentPriority 优先级策略
      */
+    @Override
     public void setUserAgentPriority(UserAgentPriority userAgentPriority) {
         this.userAgentPriority = userAgentPriority;
     }

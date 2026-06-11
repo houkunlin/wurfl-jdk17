@@ -33,27 +33,23 @@ final class OperaMiniMatcher extends MatcherBase {
         super(userAgentNormalizer, wurflModel);
     }
 
+    /**
+     * 返回所需验证的设备 ID 集合.
+     */
     @Override
-/**
- * 返回所需验证的设备 ID 集合.
- */
-
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds = new HashSet<>();
         requiredDeviceIds.addAll(OPERA_MINI_VERSION_TO_DEVICE_ID.values());
         return requiredDeviceIds;
     }
 
+    /**
+     * 判断当前匹配器能否处理该请求.
+     */
     @Override
-/**
- * 判断当前匹配器能否处理该请求.
- */
-
     public boolean canHandle(WURFLRequest request) {
         return !request._internalIsDesktopBrowser() && StringMatchUtils.containsAnyOf(request.getCleanedDeviceUserAgent(), "Opera Mini", "OperaMini", "Opera Mobi", "OperaMobi");
     }
-
-    @Override
     /**
      * 执行 RIS 匹配：按优先级尝试以下截断位置：
      * <ul>
@@ -65,7 +61,7 @@ final class OperaMiniMatcher extends MatcherBase {
      * @param userAgent 要匹配的 User-Agent 字符串
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String userAgent) {
         int matchLength;
         matchLength = userAgent.indexOf("---");
@@ -79,11 +75,10 @@ final class OperaMiniMatcher extends MatcherBase {
         }
     }
 
+    /**
+     * 执行恢复匹配.
+     */
     @Override
-/**
- * 执行恢复匹配.
- */
-
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         for (String versionPrefix : OPERA_MINI_VERSION_TO_DEVICE_ID.keySet()) {
@@ -95,20 +90,18 @@ final class OperaMiniMatcher extends MatcherBase {
         return normalizedUserAgent.contains("Opera Mobi") ? "generic_opera_mini_version4" : "generic_opera_mini_version1";
     }
 
+    /**
+     * 获取匹配器名称.
+     */
     @Override
-/**
- * 获取匹配器名称.
- */
-
     public String getMatcherName() {
         return "OperaMiniMatcher";
     }
 
+    /**
+     * 获取桶匹配器名称.
+     */
     @Override
-/**
- * 获取桶匹配器名称.
- */
-
     public String getBucketMatcherName() {
         return "OperaMini";
     }

@@ -124,12 +124,12 @@ public final class WURFLResources {
         return this.resources.iterator();
     }
 
+    /**
+     * 返回集合中所有资源的字符串表示。
+     *
+     * @return 包含每个资源信息及版本的字符串
+     */
     @Override
-/**
- * 返回集合中所有资源的字符串表示。
- * @return 包含每个资源信息及版本的字符串
- */
-
     public String toString() {
         StringBuilder builder = new StringBuilder("[");
 
@@ -145,13 +145,13 @@ public final class WURFLResources {
         return builder.toString();
     }
 
+    /**
+     * 判断两个资源集合是否相等。
+     *
+     * @param obj 要比较的对象
+     * @return 如果内部资源列表相同则返回 true
+     */
     @Override
-/**
- * 判断两个资源集合是否相等。
- * @param obj 要比较的对象
- * @return 如果内部资源列表相同则返回 true
- */
-
     public boolean equals(Object object) {
         if (this == object) {
             return true;
@@ -162,12 +162,12 @@ public final class WURFLResources {
         }
     }
 
+    /**
+     * 计算哈希码。
+     *
+     * @return 哈希码
+     */
     @Override
-/**
- * 计算哈希码。
- * @return 哈希码
- */
-
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder;
         hashCodeBuilder = new HashCodeBuilder(53, 79);
