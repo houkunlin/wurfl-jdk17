@@ -11,10 +11,36 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * WURFL 设备探测引擎的集成测试用例。
+ * <p>
+ * 该测试类用于验证 WURFL 设备数据库能否正确识别不同的 User-Agent 请求头，
+ * 并返回准确的设备型号、操作系统、浏览器类型及各类虚拟能力（Virtual Capability）。
+ * 测试覆盖了桌面端 Chrome 浏览器和 Android 移动端（WebView 及第三方浏览器）的识别场景。
+ * <p>
+ * 测试数据源为 {@code libs/wurfl.zip} 文件，在类加载时初始化为全局引擎实例，
+ * 所有测试方法共享同一个引擎实例以节省资源。
+ *
+ * @author HouKunLin
+ */
 class Wurfl01Test {
+    /**
+     * WURFL 设备数据文件路径，包含压缩后的设备描述 XML。
+     * 文件位于项目 {@code libs/} 目录下，版本为 1.9.1.0 时期的 wurfl.zip 版本。
+     */
     private static final File file = new File("libs/wurfl.zip");
+
+    /**
+     * WURFL 引擎实例，负责所有设备探测操作。
+     * 该实例在静态初始化块中创建并在 setup 方法中加载数据，供全部测试方法复用。
+     */
     private static final GeneralWURFLEngine wurfl;
 
+    /*
+     * 静态初始化块：从 ZIP 文件中读取 WURFL XML 资源，构造引擎实例。
+     * ZIP 文件直接通过流加载，不对文件体系结构做解压缩处理——XMLResource 内部处理了解析逻辑。
+     * 若文件缺失则包装为 RuntimeException 中断测试执行。
+     */
     static {
         try {
             wurfl = new GeneralWURFLEngine(new XMLResource(new FileInputStream(file), file.getName()));
@@ -23,11 +49,27 @@ class Wurfl01Test {
         }
     }
 
+    /**
+     * 在所有测试执行之前加载 WURFL 设备数据库。
+     * <p>
+     * 引擎的 {@code load()} 方法负责将 XML 数据解析到内存中，构建设备树结构。
+     * 此操作较为耗时，因此放在类级别一次性完成，避免每个测试方法重复加载。
+     */
     @BeforeAll
     static void setup() {
         wurfl.load();
     }
 
+    /**
+     * 验证 WURFL 引擎的 API 版本信息。
+     * <p>
+     * 断言检查包括两个方面：
+     * <ul>
+     *   <li>引擎的 API 版本号是否等于期望的 {@code 1.9.1.0}</li>
+     *   <li>底层数据源的版本字符串应以 {@code "Root:Stream resource:data.scientiamobile.com"} 开头</li>
+     * </ul>
+     * 该测试用于确保集成的 SDK 版本与数据源版本均符合预期，可作为依赖升级后的回归校验。
+     */
     @Test
     void testVersion() {
         Assertions.assertEquals("1.9.1.0", wurfl.getAPIVersion());
@@ -35,6 +77,20 @@ class Wurfl01Test {
         Assertions.assertTrue(wurfl.getWURFLUtils().getVersion().startsWith("Root:Stream resource:data.scientiamobile.com"));
     }
 
+    /**
+     * 使用桌面端 Google Chrome 浏览器的 User-Agent 验证设备识别准确性。
+     * <p>
+     * 测试使用的 User-Agent 模拟了 <b>Windows 10 + Chrome 147</b> 环境，
+     * 这是典型的桌面端访问场景。验证点包括：
+     * <ul>
+     *   <li>设备 ID 应为 {@code google_chrome_147}，标识精确匹配到具体浏览器版本</li>
+     *   <li>匹配类型为 {@code conclusive}，表示完全精确匹配而非模糊匹配</li>
+     *   <li>桌面端应具备的特征：{@code is_full_desktop} 为 true、{@code is_largescreen} 为 true、{@code form_factor} 为 Desktop</li>
+     *   <li>非移动端特征：{@code is_mobile}、{@code is_phone}、{@code is_smartphone}、{@code is_touchscreen} 均为 false</li>
+     *   <li>操作系统识别为 Windows、浏览器识别为 Chrome、版本号为 147.0.0.0</li>
+     * </ul>
+     * 该用例覆盖了 WURFL 对桌面端浏览器的探测准确性。
+     */
     @Test
     void testGoogleBrowser() {
         Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36");
@@ -68,6 +124,20 @@ class Wurfl01Test {
         Assertions.assertEquals("10", device.getVirtualCapability("advertised_device_os_version"));
     }
 
+    /**
+     * 使用 OnePlus PLU110（一加 Turbo 6）手机的 WebView User-Agent 验证设备识别准确性。
+     * <p>
+     * 此 User-Agent 特征显著：包含 {@code wv} 标记表明运行在 WebView 环境中，
+     * 且设备型号 PLU110 为已知的一加机型。验证点包括：
+     * <ul>
+     *   <li>WebView 环境标记：{@code is_app} 与 {@code is_app_webview} 均为 true</li>
+     *   <li>移动设备特征：{@code is_mobile}、{@code is_phone}、{@code is_smartphone} 均为 true</li>
+     *   <li>具体设备识别：型号名称为 {@code OnePlus PLU110 (Turbo 6)}，设备名为 {@code OnePlus Turbo 6}</li>
+     *   <li>操作系统识别为 Android 16、触摸屏支持为 true、form_factor 为 Smartphone</li>
+     *   <li>浏览器并非独立浏览器而是 Chromium WebView 内核</li>
+     * </ul>
+     * 该用例覆盖了 WURFL 对 Android 原生应用内 WebView 场景的探测能力。
+     */
     @Test
     void testOnePlusPLU110() {
         Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; Android 16; PLU110 Build/BP2A.250605.015; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/138.0.7204.179 Mobile Safari/537.36");
@@ -100,6 +170,23 @@ class Wurfl01Test {
     }
 
 
+    /**
+     * 使用 OnePlus 12（PJD110）手机的 Quark 浏览器 User-Agent 验证设备识别行为。
+     * <p>
+     * 该 User-Agent 来自 <b>Quark 浏览器</b>（一款国产轻量级浏览器），其特点是
+     * 对自身浏览器信息做了伪装，User-Agent 结构与标准浏览器差异较大。
+     * 验证点包括：
+     * <ul>
+     *   <li>浏览器识别为 Chromium，版本号为 144.0.7559.86</li>
+     *   <li>操作系统识别为 Android 16、触摸屏支持为 true</li>
+     *   <li>由于 Quark 浏览器的 UA 伪装特性，{@code complete_device_name} 和
+     *       {@code device_name} 可能仅识别到 {@code Generic Android 4.0} 这一通用型号，
+     *       而非具体设备名</li>
+     *   <li>{@code is_largescreen} 为 false，这与 Quark 浏览器的视口配置有关</li>
+     *   <li>仍能正确识别出非桌面端、非 iOS、非机器人的移动端基本特征</li>
+     * </ul>
+     * 该用例用于验证 WURFL 对第三方小众浏览器的兼容性及在 UA 伪装场景下的降级识别策略。
+     */
     @Test
     void testOnePlus12Quark() {
         Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; U; Android 16; zh-CN; PJD110 Build/BP2A.250605.015) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/144.0.7559.86 Quark/10.10.0.1075 Mobile Safari/537.36");
