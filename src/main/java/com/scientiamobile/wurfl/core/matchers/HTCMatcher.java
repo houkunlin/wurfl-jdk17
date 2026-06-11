@@ -62,7 +62,7 @@ final class HTCMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         return request.getNormalizedDeviceUserAgent().contains("Windows CE;") ? "generic_ms_mobile" : "generic";
     }

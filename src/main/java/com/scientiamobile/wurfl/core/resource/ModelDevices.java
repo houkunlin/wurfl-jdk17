@@ -266,7 +266,7 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
     /**
      * 判断两个设备集合是否相等（基于设备映射的比较）。
      *
-     * @param obj 要比较的对象
+     * @param object 要比较的对象
      * @return 如果设备映射相同则返回 true
      */
     @Override

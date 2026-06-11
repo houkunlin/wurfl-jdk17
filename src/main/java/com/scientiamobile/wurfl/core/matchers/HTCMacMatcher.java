@@ -46,7 +46,7 @@ final class HTCMacMatcher extends MatcherBase {
      * @param normalizedUserAgent 要匹配的 User-Agent 字符串
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String normalizedUserAgent) {
         int matchLength = StringMatchUtils.indexOfOrLength(normalizedUserAgent, "---");
         return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength);
@@ -58,7 +58,7 @@ final class HTCMacMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         return GENERIC_HTC_ANDROID_DISGUISED_AS_MAC;
     }

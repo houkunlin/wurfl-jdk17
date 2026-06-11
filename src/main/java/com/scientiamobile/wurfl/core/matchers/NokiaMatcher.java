@@ -50,7 +50,7 @@ final class NokiaMatcher extends MatcherBase {
      * @param userAgent 要匹配的 User-Agent 字符串
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String userAgent) {
         int matchLength = StringMatchUtils.indexOfAnyOrLength(userAgent, new String[]{"/", " "}, userAgent.indexOf("Nokia"));
         if (StringMatchUtils.startsWithAnyOf(userAgent, "Nokia/", "Nokia ")) {
@@ -67,7 +67,7 @@ final class NokiaMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         if (normalizedUserAgent.contains("Series60")) {

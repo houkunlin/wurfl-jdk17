@@ -80,7 +80,7 @@ final class SamsungMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID，未匹配则返回 "generic"
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         int samsungIndex = StringMatchUtils.indexOf(normalizedUserAgent, SAMSUNG);

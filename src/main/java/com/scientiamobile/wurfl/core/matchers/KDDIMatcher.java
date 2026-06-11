@@ -45,7 +45,7 @@ final class KDDIMatcher extends MatcherBase {
      * @param normalizedUserAgent 要匹配的 User-Agent 字符串
      * @return RIS 匹配结果
      */
-
+    @Override
     protected String risMatch(String normalizedUserAgent) {
         int matchLength = normalizedUserAgent.startsWith("KDDI/") ? StringMatchUtils.secondSlash(normalizedUserAgent) : StringMatchUtils.firstSlash(normalizedUserAgent);
         return matchLength == -1
@@ -59,7 +59,7 @@ final class KDDIMatcher extends MatcherBase {
      * @param request WURFL 请求对象
      * @return 恢复匹配的设备 ID
      */
-
+    @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         return OPWV_V62_GENERIC;
     }
