@@ -27,7 +27,7 @@ public class UserAgentNotUniqueException extends UserAgentConsistencyException {
      * @param definingDevice 已定义该 User-Agent 的设备
      */
     public UserAgentNotUniqueException(ModelDevice device, String userAgent, ModelDevice definingDevice) {
-        super(device, userAgent, (new StringBuilder("Device: ")).append(device).append(" define duplicate user-agent: ").append(userAgent).append(" defined by device: ").append(definingDevice).toString());
+        super(device, userAgent, "Device: " + device + " define duplicate user-agent: " + userAgent + " defined by device: " + definingDevice);
         this.definingDevice = definingDevice;
     }
 

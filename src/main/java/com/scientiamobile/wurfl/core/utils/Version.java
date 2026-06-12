@@ -56,7 +56,7 @@ public class Version implements Comparable<Version> {
      */
     public static Version valueOf(String version, char separator) {
         if (version != null && !version.isEmpty()) {
-            String separatorValue = new String(new char[]{separator});
+            String separatorValue = String.valueOf(separator);
             StringTokenizer tokenizer;
             tokenizer = new StringTokenizer(version, separatorValue);
             int[] digits = new int[tokenizer.countTokens()];

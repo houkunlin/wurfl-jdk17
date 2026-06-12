@@ -525,7 +525,7 @@ public final class UserAgentUtils {
      * @return UA Profile URL 字符串，可能为 null
      */
     public static String getUaProfile(HttpServletRequest request) {
-        return getUaProfile((WURFLHeaderProvider) (new HttpServletRequestHeaderProvider(request)));
+        return getUaProfile(new HttpServletRequestHeaderProvider(request));
     }
 
     /**
@@ -543,11 +543,11 @@ public final class UserAgentUtils {
             headerName = "Profile";
         }
 
-        if (headerName != null && headerName.trim().length() > 0) {
+        if (headerName != null && !headerName.trim().isEmpty()) {
             uaProfile = headerProvider.getHeader(headerName);
         }
 
-        if (uaProfile != null && uaProfile.trim().length() > 0) {
+        if (uaProfile != null && !uaProfile.trim().isEmpty()) {
             uaProfile = STRIP_QUOTE_PATTERN.matcher(uaProfile).replaceAll("");
         }
 
@@ -747,7 +747,7 @@ public final class UserAgentUtils {
             }
 
             userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, SAMSUNG_MODEL_PATTERN, "$1"), ORANGE_SUFFIX_PATTERN, "ORANGE"), LG_MODEL_OPTIONAL_HYPHEN_PATTERN, "$1"), TIMESTAMP_IN_BRACKETS_PATTERN, "").trim(), BRAND_PREFIX_PATTERN, "");
-            if (userAgent.length() == 0) {
+            if (userAgent.isEmpty()) {
                 userAgent = null;
             }
 
@@ -1083,7 +1083,7 @@ public final class UserAgentUtils {
         boolean hasSpaceChars = false;
         char[] needles = new char[]{'+', '%'};
         int[] needleCounts = new int[2];
-        if (userAgentBuilder != null && userAgentBuilder.length() != 0) {
+        if (userAgentBuilder != null && !userAgentBuilder.isEmpty()) {
             for (int i = userAgentBuilder.length() - 1; i >= 0; --i) {
                 char ch = userAgentBuilder.charAt(i);
                 hasSpaceChars = hasSpaceChars || ch == ' ';

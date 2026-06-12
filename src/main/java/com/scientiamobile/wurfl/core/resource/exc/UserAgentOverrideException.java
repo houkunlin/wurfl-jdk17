@@ -27,7 +27,7 @@ public class UserAgentOverrideException extends UserAgentConsistencyException {
      * @param existingUserAgent   基础设备中原有的 User-Agent
      */
     public UserAgentOverrideException(ModelDevice device, String overridingUserAgent, String existingUserAgent) {
-        super(device, overridingUserAgent, (new StringBuilder("Device: ")).append(device).append(" override defined user-agent: ").append(existingUserAgent).append(" with overriding user-agent:").append(overridingUserAgent).toString());
+        super(device, overridingUserAgent, "Device: " + device + " override defined user-agent: " + existingUserAgent + " with overriding user-agent:" + overridingUserAgent);
         this.existingUserAgent = existingUserAgent;
     }
 
