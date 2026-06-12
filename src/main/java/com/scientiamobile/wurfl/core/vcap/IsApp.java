@@ -4,8 +4,7 @@ import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
 import java.io.Serial;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,10 +51,48 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
      */
     private static final Pattern DOT_NET_PACKAGE_SIGNATURE_PATTERN = Pattern.compile("net(?:\\.[a-z]+){2,}");
 
+    /**
+     * 预编译的哈希模式匹配器列表
+     */
+    private static final List<Pattern> HASH_MATCHERS;
+    /**
+     * 预剥离 "^" 前缀的前缀匹配字符串列表
+     */
+    private static final List<String> PREFIX_MATCHERS;
+    /**
+     * 普通包含匹配字符串列表
+     */
+    private static final List<String> CONTAINS_MATCHERS;
+
     static {
         HASH_APP_INDICATOR_PATTERNS.put("#iP(hone|od|ad)[\\d],[\\d]", IOS_DEVICE_SIGNATURE_PATTERN);
         HASH_APP_INDICATOR_PATTERNS.put("#com(?:\\.[a-z]+){2,}", JAVA_PACKAGE_SIGNATURE_PATTERN);
         HASH_APP_INDICATOR_PATTERNS.put("#net(?:\\.[a-z]+){2,}", DOT_NET_PACKAGE_SIGNATURE_PATTERN);
+
+        // Pre-process APP_INDICATOR_PATTERNS into typed matchers
+        List<Pattern> hashMatchers = new ArrayList<>(3);
+        List<String> prefixMatchers = new ArrayList<>();
+        List<String> containsMatchers = new ArrayList<>();
+
+        for (String indicator : APP_INDICATOR_PATTERNS) {
+            char firstChar = indicator.charAt(0);
+            if (firstChar == '#') {
+                Pattern pattern = HASH_APP_INDICATOR_PATTERNS.get(indicator);
+                if (pattern != null) {
+                    hashMatchers.add(pattern);
+                }
+            } else if (firstChar == '^') {
+                prefixMatchers.add(indicator.substring(1));
+            } else if (indicator.charAt(indicator.length() - 1) == '$') {
+                containsMatchers.add(indicator.substring(0, indicator.length() - 1));
+            } else {
+                containsMatchers.add(indicator);
+            }
+        }
+
+        HASH_MATCHERS = Collections.unmodifiableList(hashMatchers);
+        PREFIX_MATCHERS = Collections.unmodifiableList(prefixMatchers);
+        CONTAINS_MATCHERS = Collections.unmodifiableList(containsMatchers);
     }
 
     /**
@@ -124,25 +161,21 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
 
     /**
      * 在预定义的 App 特征关键词列表中查找匹配项。
-     * <p>支持前缀（^）、后缀（$）、哈希模式（#）和包含匹配四种格式。</p>
+     * <p>先尝试正则哈希模式匹配，再尝试前缀匹配，最后尝试包含匹配。</p>
      */
     private static boolean matchesAppIndicator(String userAgent) {
-        for (String indicator : APP_INDICATOR_PATTERNS) {
-            if (indicator.startsWith("#")) {
-                Pattern pattern = HASH_APP_INDICATOR_PATTERNS.get(indicator);
-                if (pattern != null && pattern.matcher(userAgent).find()) {
-                    return true;
-                }
-            } else if (indicator.startsWith("^")) {
-                if (userAgent.startsWith(indicator.substring(1))) {
-                    return true;
-                }
-            } else if (indicator.endsWith("$")) {
-                String prefix = indicator.substring(0, indicator.length() - 1);
-                if (userAgent.endsWith(prefix)) {
-                    return true;
-                }
-            } else if (userAgent.contains(indicator)) {
+        for (Pattern pattern : HASH_MATCHERS) {
+            if (pattern.matcher(userAgent).find()) {
+                return true;
+            }
+        }
+        for (String prefix : PREFIX_MATCHERS) {
+            if (userAgent.startsWith(prefix)) {
+                return true;
+            }
+        }
+        for (String keyword : CONTAINS_MATCHERS) {
+            if (userAgent.contains(keyword)) {
                 return true;
             }
         }
