@@ -8,7 +8,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -123,9 +122,9 @@ class InternalDeviceImpl implements InternalDevice, Serializable {
     public boolean getCapabilityAsBool(String capabilityName) {
         String originalCapabilityName = capabilityName;
         capabilityName = this.capabilitiesHolder.getCapability(capabilityName);
-        if (capabilityName != null && capabilityName.toLowerCase(Locale.ENGLISH).equals("true")) {
+        if (capabilityName != null && "true".equalsIgnoreCase(capabilityName)) {
             return true;
-        } else if (capabilityName != null && capabilityName.toLowerCase(Locale.ENGLISH).equals("false")) {
+        } else if (capabilityName != null && "false".equalsIgnoreCase(capabilityName)) {
             return false;
         } else {
             throw new NumberFormatException("WURFL invalid capability value: " + originalCapabilityName + " expected \"true\" or \"false\", received: \"" + capabilityName + "\"");
