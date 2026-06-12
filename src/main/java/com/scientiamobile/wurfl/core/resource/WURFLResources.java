@@ -148,7 +148,7 @@ public final class WURFLResources {
     /**
      * 判断两个资源集合是否相等。
      *
-     * @param obj 要比较的对象
+     * @param object 要比较的对象
      * @return 如果内部资源列表相同则返回 true
      */
     @Override
@@ -169,9 +169,9 @@ public final class WURFLResources {
      */
     @Override
     public int hashCode() {
-        HashCodeBuilder hashCodeBuilder;
-        hashCodeBuilder = new HashCodeBuilder(53, 79);
-        hashCodeBuilder.append(this.getClass()).append(this.resources);
-        return hashCodeBuilder.toHashCode();
+        return new HashCodeBuilder(53, 79)
+                .append(this.getClass())
+                .append(this.resources)
+                .toHashCode();
     }
 }
