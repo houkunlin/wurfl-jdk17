@@ -179,7 +179,7 @@ public class ModelDevices implements Serializable, Iterable<ModelDevice> {
      */
 
     public List<String> getDeviceIdsByInsertionOrder() {
-        return this.deviceIdsByInsertionOrder;
+        return Collections.unmodifiableList(this.deviceIdsByInsertionOrder);
     }
 
     /**
