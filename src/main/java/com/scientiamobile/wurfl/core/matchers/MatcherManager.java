@@ -114,6 +114,7 @@ public final class MatcherManager {
         chain.addMatcher(new FennecOnAndroidMatcher(model));
         chain.addMatcher(new UCWEB7OnAndroidMatcher(model));
         chain.addMatcher(new NetFrontOnAndroidMatcher(model));
+        chain.addMatcher(new HarmonyOSMatcher(model));
         chain.addMatcher(new AndroidMatcher(androidNormalizer, model));
         chain.addMatcher(new UbuntuTouchOSMatcher(model));
         chain.addMatcher(new TizenMatcher(model));

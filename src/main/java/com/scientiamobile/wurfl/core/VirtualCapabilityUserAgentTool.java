@@ -195,7 +195,7 @@ public final class VirtualCapabilityUserAgentTool {
         }
 
         // --- Android ---
-        if (StringMatchUtils.containsAnyOf(deviceUA, "Android", "android", " Adr ")) {
+        if (StringMatchUtils.containsAnyOf(deviceUA, "Android", "android", " Adr ", "HarmonyOS")) {
             handleAndroidDevice(vcd, device);
             return;
         }
