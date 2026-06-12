@@ -242,29 +242,48 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
         if (userAgent.contains("WebViewApp")) {
             Matcher webViewAppMatcher = WEBVIEW_APP_PATTERN.matcher(userAgent);
             return webViewAppMatcher.find() ? webViewAppMatcher.group(1) : "WebView";
-        } else {
-            // 依次尝试 Android Dalvik、iOS CFNetwork、Windows Phone 三种主流 App 格式
-            Matcher appNameMatcher;
-            appNameMatcher = ANDROID_DALVIK_APP_PATTERN.matcher(userAgent);
-            if (appNameMatcher.find()) {
-                return appNameMatcher.group(1);
-            } else appNameMatcher = IOS_CFNETWORK_APP_PATTERN.matcher(userAgent);
-            if (appNameMatcher.find()) {
-                return appNameMatcher.group(1);
-            } else appNameMatcher = WINDOWS_PHONE_APP_PATTERN.matcher(userAgent);
-            if (appNameMatcher.find()) {
-                return appNameMatcher.group(1);
-            } else {
-                // 在预定义的关键词列表中查找匹配项，返回对应的 App 名称
-                for (int i = 0; i < APP_INDICATOR_KEYWORDS.size(); ++i) {
-                    if (userAgent.contains(APP_INDICATOR_KEYWORDS.get(i))) {
-                        return APP_NAMES.get(i);
-                    }
-                }
+        }
 
-                return "Stock Browser";
+        // 依次尝试 Android Dalvik、iOS CFNetwork、Windows Phone 三种主流 App 格式
+        String appName = extractByPattern(userAgent, ANDROID_DALVIK_APP_PATTERN);
+        if (appName != null) {
+            return appName;
+        }
+        appName = extractByPattern(userAgent, IOS_CFNETWORK_APP_PATTERN);
+        if (appName != null) {
+            return appName;
+        }
+        appName = extractByPattern(userAgent, WINDOWS_PHONE_APP_PATTERN);
+        if (appName != null) {
+            return appName;
+        }
+
+        // 在预定义的关键词列表中查找匹配项，返回对应的 App 名称
+        return lookupAppName(userAgent);
+    }
+
+    /**
+     * 使用指定正则模式从 User-Agent 中提取 App 名称（group(1)）。
+     *
+     * @return 匹配到的 App 名称，无匹配返回 {@code null}
+     */
+    private static String extractByPattern(String userAgent, Pattern pattern) {
+        Matcher matcher = pattern.matcher(userAgent);
+        return matcher.find() ? matcher.group(1) : null;
+    }
+
+    /**
+     * 在预定义的关键词列表中查找匹配的 App 名称。
+     *
+     * @return 匹配的 App 名称，无匹配返回 "Stock Browser"
+     */
+    private static String lookupAppName(String userAgent) {
+        for (int i = 0; i < APP_INDICATOR_KEYWORDS.size(); i++) {
+            if (userAgent.contains(APP_INDICATOR_KEYWORDS.get(i))) {
+                return APP_NAMES.get(i);
             }
         }
+        return "Stock Browser";
     }
 
     @Override
