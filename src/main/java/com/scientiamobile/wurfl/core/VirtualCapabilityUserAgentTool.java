@@ -81,7 +81,7 @@ public final class VirtualCapabilityUserAgentTool {
     private static final Pattern YANDEX_BROWSER_VERSION_PATTERN = Pattern.compile("^Mozilla\\/[45]\\.[0-9] \\((?:Macintosh; )?([a-zA-Z0-9\\._ ]+).+\\) AppleWebKit.+YaBrowser\\/([\\d\\.]+)");
     private static final Pattern CHROME_MAC_VERSION_PATTERN = Pattern.compile("^Mozilla\\/[0-9]\\.0 \\(Macintosh;(?: U;)?([a-zA-Z_ \\.0-9]+)(?:;)?.+? Chrome\\/([\\d\\.]+)\\.?");
     private static final Pattern CHROME_WINDOWS_VERSION_PATTERN = Pattern.compile("^Mozilla\\/[0-9]\\.0 \\((?:Windows;|X11;)?(?: U; )?([a-zA-Z_ \\.0-9]+)(?:;)?.+? Chrome\\/([\\d\\.]+)\\.?");
-    private static final Pattern SAFARI_DESKTOP_VERSION_PATTERN = Pattern.compile("Mozilla\\/[0-9]\\.0 \\((?:(?:Windows|Macintosh); (?:U; |WOW64; )?)?([a-zA-Z_ \\.0-9]+)(?:;)?.+? Version\\/([\\d\\.]+)\\.?");
+    private static final Pattern SAFARI_DESKTOP_VERSION_PATTERN = Pattern.compile("Mozilla\\/[0-9]\\.0 \\((?:Windows|Macintosh); (?:U; |WOW64; )?([a-zA-Z_ \\.0-9]+)(?:;)?[^)]+ Version\\/([\\d\\.]+)\\.?");
     private static final Pattern FIREFOX_WINDOWS_VERSION_PATTERN = Pattern.compile("^Mozilla\\/[0-9]\\.0 .+(Windows [0-9A-Za-z \\.]+;).+?rv:.+?Firefox\\/([\\d\\.]+)");
     private static final Pattern FIREFOX_LINUX_MAC_VERSION_PATTERN = Pattern.compile("^Mozilla\\/[0-9]\\.0 \\((?:X11|Macintosh); (?:U; |Ubuntu; |)((?:Intel|PPC|Linux) [a-zA-Z0-9\\- \\._\\(\\)]+);.+?rv:.+?Firefox\\/([\\d\\.]+)");
     private static final Pattern OPERA_OPR_DESKTOP_VERSION_PATTERN = Pattern.compile("^Mozilla\\/[0-9]\\.0 .+?((?:Windows|Linux|PPC|Intel) [a-zA-Z0-9 _\\.\\-]+).+Chrome\\/.+OPR\\/([\\d\\.]+)");
