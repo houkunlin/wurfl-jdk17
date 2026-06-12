@@ -3,6 +3,7 @@ package com.scientiamobile.wurfl.core.resource;
 import com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException;
 import com.scientiamobile.wurfl.core.exc.DeviceNotDefinedException;
 import com.scientiamobile.wurfl.core.exc.GroupNotDefinedException;
+import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.resource.exc.DeviceNotInModelException;
 import com.scientiamobile.wurfl.core.resource.exc.GenericNotDefinedException;
 import com.scientiamobile.wurfl.core.resource.exc.OrphanHierarchyException;
@@ -338,7 +339,7 @@ public class DefaultWURFLModel implements WURFLModel {
             }
 
             if (!deviceOrAncestor.isActualDeviceRoot() && !modelDevice.equals(deviceOrAncestor)) {
-                throw new RuntimeException("Hierarchy is invalid");
+                throw new WURFLRuntimeException("Hierarchy is invalid");
             } else {
                 String computedAncestorId = deviceOrAncestor.getID();
                 // 缓存计算结果
@@ -517,7 +518,7 @@ public class DefaultWURFLModel implements WURFLModel {
             }
         }
 
-        throw new RuntimeException(new OrphanHierarchyException(deviceHierarchy));
+        throw new OrphanHierarchyException(deviceHierarchy);
     }
 
     /**
@@ -552,9 +553,9 @@ public class DefaultWURFLModel implements WURFLModel {
         } else {
             ModelDevice modelDevice = this.devicesById.get("generic");
             if (modelDevice == null && !this.devicesById.isEmpty()) {
-                throw new RuntimeException(new GenericNotDefinedException());
+                throw new GenericNotDefinedException();
             } else if (modelDevice == null) {
-                throw new RuntimeException(new GenericNotDefinedException());
+                throw new GenericNotDefinedException();
             } else {
                 this.genericDevice = modelDevice;
                 return modelDevice;
