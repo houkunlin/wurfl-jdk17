@@ -128,7 +128,7 @@ public class ModelDevice implements Serializable {
      */
 
     public Map<String, String> getCapabilities() {
-        return this.capabilities;
+        return Collections.unmodifiableMap(this.capabilities);
     }
 
     final void setCapabilities(Map<String, String> capabilities) {
@@ -142,7 +142,7 @@ public class ModelDevice implements Serializable {
      */
 
     public Map<String, String> getGroupsByCapability() {
-        return this.groupsByCapability;
+        return Collections.unmodifiableMap(this.groupsByCapability);
     }
 
     final void setGroupsByCapability(Map<String, String> groupsByCapability) {
