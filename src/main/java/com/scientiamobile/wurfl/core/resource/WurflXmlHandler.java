@@ -26,8 +26,6 @@ final class WurflXmlHandler extends DefaultHandler {
     private String currentFallback;
     private boolean currentActualDeviceRoot;
     private String currentGroupId;
-    private String currentCapabilityName;
-    private String currentCapabilityValue;
     private Set<String> seenUserAgents;
     private Set<String> seenDeviceIds;
     private Map<String, String> currentCapabilities;
@@ -37,7 +35,7 @@ final class WurflXmlHandler extends DefaultHandler {
     private String wurflLastUpdated;
     private String wurflSmid;
     private boolean patch;
-    private Set<String> includedCapabilities;
+    private final Set<String> includedCapabilities;
 
     WurflXmlHandler(Set<String> includedCapabilities) {
         this.actualDeviceRootsById = new HashMap<>();
@@ -69,113 +67,50 @@ final class WurflXmlHandler extends DefaultHandler {
         if (qName.equals("capability") && this.parseState != WurflXmlParseState.GROUP) {
             String capabilityName = attributes.getValue("name");
             throw new WURFLParsingException("Capability '" + capabilityName + "'  does not belong to any group");
-        } else {
-            switch (this.parseState) {
-                case WurflXmlParseState.START_DOCUMENT:
-                    this.patch = "wurfl_patch".equals(qName);
-                    if ("wurfl".equals(qName) || this.patch) {
-                        this.parseState = WurflXmlParseState.WURFL;
-                        return;
-                    }
-                    break;
-                case WurflXmlParseState.WURFL:
-                    if ("version".equals(qName)) {
-                        this.parseState = WurflXmlParseState.VERSION;
-                        return;
-                    }
+        }
 
-                    if ("devices".equals(qName)) {
-                        this.parseState = WurflXmlParseState.DEVICES;
-                        return;
-                    }
-                    break;
-                case WurflXmlParseState.VERSION:
-                    if ("ver".equals(qName)) {
-                        this.parseState = WurflXmlParseState.VERSION_VER;
-                        return;
-                    }
-
-                    if ("last_updated".equals(qName)) {
-                        this.parseState = WurflXmlParseState.VERSION_LAST_UPDATED;
-                        return;
-                    }
-
-                    if ("smid".equals(qName)) {
-                        this.parseState = WurflXmlParseState.VERSION_SMID;
-                        return;
-                    }
-                    break;
-                case WurflXmlParseState.DEVICES:
-                    if ("device".equals(qName)) {
-                        this.parseState = WurflXmlParseState.DEVICE;
-                        this.currentUserAgent = attributes.getValue("user_agent");
-                        this.currentDeviceId = attributes.getValue("id");
-                        this.currentFallback = attributes.getValue("fall_back");
-                        this.currentActualDeviceRoot = Boolean.valueOf(attributes.getValue("actual_device_root"));
-                        if (StringUtils.isEmpty(this.currentDeviceId)) {
-                            throw new WURFLParsingException("device id is not a valid");
-                        }
-
-                        if (!"generic".equals(this.currentDeviceId) && StringUtils.isEmpty(this.currentUserAgent)) {
-                            throw new WURFLParsingException("Device with id " + this.currentDeviceId + " has an invalid user agent");
-                        }
-
-                        if (this.seenDeviceIds.contains(this.currentDeviceId)) {
-                            throw new WURFLParsingException("device id " + this.currentDeviceId + " already defined!!!");
-                        }
-
-                        if (this.seenUserAgents.contains(this.currentUserAgent)) {
-                            throw new WURFLParsingException("user agent [" + this.currentUserAgent + "] already defined");
-                        }
-
-                        this.seenUserAgents.add(this.currentUserAgent);
-                        this.seenDeviceIds.add(this.currentDeviceId);
-                        this.currentCapabilities = new HashMap<>();
-                        this.currentCapabilitiesByGroup = new HashMap<>();
-                        return;
-                    }
-                    break;
-                case WurflXmlParseState.DEVICE:
-                    if ("group".equals(qName)) {
-                        this.parseState = WurflXmlParseState.GROUP;
-                        this.currentGroupId = attributes.getValue("id").intern();
-                        return;
-                    }
-                    break;
-                case WurflXmlParseState.GROUP:
-                    if ("capability".equals(qName)) {
-                        this.parseState = WurflXmlParseState.CAPABILITY;
-                        if (!"virtual_capabilities".equals(this.currentGroupId)) {
-                            this.currentCapabilityName = attributes.getValue("name");
-                            if (this.includedCapabilities.isEmpty() || this.includedCapabilities.contains(this.currentCapabilityName) || this.currentCapabilityName.startsWith("controlcap_")) {
-                                this.currentCapabilityValue = attributes.getValue("value");
-                                if (StringUtils.isEmpty(this.currentCapabilityName) || this.currentCapabilityValue == null) {
-                                    throw new WURFLParsingException("device with id " + this.currentDeviceId + " has capability with name or value not valid");
-                                }
-
-                                if (this.currentCapabilities.containsKey(this.currentCapabilityName)) {
-                                    throw new WURFLParsingException("The device with id " + this.currentDeviceId + " defines capability " + this.currentCapabilityName + "more than once");
-                                }
-
-                                String internedCapabilityName = this.currentCapabilityName.intern();
-                                if (!"experimental".equals(this.currentGroupId)) {
-                                    String capabilityValue = this.currentCapabilityValue;
-                                    if (StringUtils.isNotEmpty(capabilityValue) && capabilityValue.length() > 255) {
-                                        capabilityValue = capabilityValue.substring(0, 255);
-                                    }
-
-                                    this.currentCapabilityValue = capabilityValue;
-                                }
-
-                                this.currentCapabilities.put(internedCapabilityName, this.currentCapabilityValue);
-                                this.currentCapabilitiesByGroup.put(internedCapabilityName, this.currentGroupId);
-                            }
-                        }
-                    }
-                    break;
-                default:
-            }
-
+        switch (this.parseState) {
+            case WurflXmlParseState.START_DOCUMENT:
+                this.patch = "wurfl_patch".equals(qName);
+                if ("wurfl".equals(qName) || this.patch) {
+                    this.parseState = WurflXmlParseState.WURFL;
+                }
+                break;
+            case WurflXmlParseState.WURFL:
+                if ("version".equals(qName)) {
+                    this.parseState = WurflXmlParseState.VERSION;
+                } else if ("devices".equals(qName)) {
+                    this.parseState = WurflXmlParseState.DEVICES;
+                }
+                break;
+            case WurflXmlParseState.VERSION:
+                if ("ver".equals(qName)) {
+                    this.parseState = WurflXmlParseState.VERSION_VER;
+                } else if ("last_updated".equals(qName)) {
+                    this.parseState = WurflXmlParseState.VERSION_LAST_UPDATED;
+                } else if ("smid".equals(qName)) {
+                    this.parseState = WurflXmlParseState.VERSION_SMID;
+                }
+                break;
+            case WurflXmlParseState.DEVICES:
+                if ("device".equals(qName)) {
+                    this.parseState = WurflXmlParseState.DEVICE;
+                    initDevice(attributes);
+                }
+                break;
+            case WurflXmlParseState.DEVICE:
+                if ("group".equals(qName)) {
+                    this.parseState = WurflXmlParseState.GROUP;
+                    this.currentGroupId = attributes.getValue("id").intern();
+                }
+                break;
+            case WurflXmlParseState.GROUP:
+                if ("capability".equals(qName)) {
+                    this.parseState = WurflXmlParseState.CAPABILITY;
+                    addCapability(attributes);
+                }
+                break;
+            default:
         }
     }
 
@@ -257,6 +192,74 @@ final class WurflXmlHandler extends DefaultHandler {
             this.actualDeviceRootsById.put(this.currentDeviceId, modelDevice);
         }
         this.parseState = WurflXmlParseState.DEVICES;
+    }
+
+    /**
+     * 初始化新设备的解析上下文。
+     * 从属性中提取设备 ID、User-Agent、fallback 和 actual_device_root，
+     * 校验合法性/唯一性，并初始化 capabilities 容器。
+     */
+    private void initDevice(Attributes attributes) {
+        this.currentUserAgent = attributes.getValue("user_agent");
+        this.currentDeviceId = attributes.getValue("id");
+        this.currentFallback = attributes.getValue("fall_back");
+        this.currentActualDeviceRoot = Boolean.valueOf(attributes.getValue("actual_device_root"));
+
+        if (StringUtils.isEmpty(this.currentDeviceId)) {
+            throw new WURFLParsingException("device id is not a valid");
+        }
+        if (!"generic".equals(this.currentDeviceId) && StringUtils.isEmpty(this.currentUserAgent)) {
+            throw new WURFLParsingException("Device with id " + this.currentDeviceId + " has an invalid user agent");
+        }
+        if (this.seenDeviceIds.contains(this.currentDeviceId)) {
+            throw new WURFLParsingException("device id " + this.currentDeviceId + " already defined!!!");
+        }
+        if (this.seenUserAgents.contains(this.currentUserAgent)) {
+            throw new WURFLParsingException("user agent [" + this.currentUserAgent + "] already defined");
+        }
+
+        this.seenUserAgents.add(this.currentUserAgent);
+        this.seenDeviceIds.add(this.currentDeviceId);
+        this.currentCapabilities = new HashMap<>();
+        this.currentCapabilitiesByGroup = new HashMap<>();
+    }
+
+    /**
+     * 处理当前 capability 并加入设备的能力集合。
+     * 跳过 virtual_capabilities 分组，根据 includedCapabilities 过滤条件判断是否需要采集，
+     * 校验名称/值合法性，对非 experimental 分组的值截断至 255 字符。
+     */
+    private void addCapability(Attributes attributes) {
+        if ("virtual_capabilities".equals(this.currentGroupId)) {
+            return;
+        }
+
+        String currentCapabilityName = attributes.getValue("name");
+        if (!this.includedCapabilities.isEmpty()
+                && !this.includedCapabilities.contains(currentCapabilityName)
+                && !currentCapabilityName.startsWith("controlcap_")) {
+            return;
+        }
+
+        String currentCapabilityValue = attributes.getValue("value");
+        if (StringUtils.isEmpty(currentCapabilityName) || currentCapabilityValue == null) {
+            throw new WURFLParsingException("device with id " + this.currentDeviceId + " has capability with name or value not valid");
+        }
+        if (this.currentCapabilities.containsKey(currentCapabilityName)) {
+            throw new WURFLParsingException("The device with id " + this.currentDeviceId + " defines capability " + currentCapabilityName + "more than once");
+        }
+
+        String internedCapabilityName = currentCapabilityName.intern();
+        if (!"experimental".equals(this.currentGroupId)) {
+            String capabilityValue = currentCapabilityValue;
+            if (StringUtils.isNotEmpty(capabilityValue) && capabilityValue.length() > 255) {
+                capabilityValue = capabilityValue.substring(0, 255);
+            }
+            currentCapabilityValue = capabilityValue;
+        }
+
+        this.currentCapabilities.put(internedCapabilityName, currentCapabilityValue);
+        this.currentCapabilitiesByGroup.put(internedCapabilityName, this.currentGroupId);
     }
 
     /**
