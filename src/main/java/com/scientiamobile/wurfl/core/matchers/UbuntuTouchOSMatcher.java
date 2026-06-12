@@ -48,7 +48,6 @@ public class UbuntuTouchOSMatcher extends MatcherBase {
     protected String risMatch(String userAgent) {
         int matchLength = userAgent.indexOf("like Android");
         if (matchLength >= 0) {
-            matchLength += 12;
             matchLength = userAgent.indexOf("WebKit/");
         }
 

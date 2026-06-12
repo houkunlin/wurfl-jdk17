@@ -40,15 +40,14 @@ class MatcherChain implements Matcher, MatcherFilter {
     @Override
     public DeviceInfo match(WURFLRequest request) {
 
-        for (Matcher value : this.matchers) {
-            Matcher matcher = value;
+        for (Matcher matcher : this.matchers) {
             if (matcher.canHandle(request)) {
                 return matcher.match(request);
             }
         }
 
         if (logger.isWarnEnabled()) {
-            logger.warn("No any matcher can handle the request: " + request + ", returning generic device.");
+            logger.warn("No any matcher can handle the request: {}, returning generic device.", request.getClass().getName());
         }
 
         return new DeviceInfo("generic", MatchType.none, this.getMatcherName(), "MatcherChain", request.getOriginalUserAgent(), "");
