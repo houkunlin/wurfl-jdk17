@@ -69,6 +69,7 @@ final class HarmonyOSMatcher extends MatcherBase {
         addSupportedDevice("huawei_wlz_an00_ver1");     // Mate X2
         addSupportedDevice("huawei_wlz_al10_ver1");     // Mate X2
         addSupportedDevice("huawei_mrx_w09_ver1");      // MatePad Pro
+        addSupportedDevice("huawei_tet_an00_ver1");     // Mate X2
 
         // 机型前缀 → 设备 ID 映射
         MODEL_PREFIX_MAP.put("LIO", "huawei_lio_n29_ver1");
@@ -77,6 +78,7 @@ final class HarmonyOSMatcher extends MatcherBase {
         MODEL_PREFIX_MAP.put("WGR", "huawei_wgr_w19_ver1");
         MODEL_PREFIX_MAP.put("BTK", "huawei_btk_w09_ver1");
         MODEL_PREFIX_MAP.put("MRX", "huawei_mrx_w09_ver1");
+        MODEL_PREFIX_MAP.put("TET", "huawei_tet_an00_ver1");
         MODEL_PREFIX_MAP.put("ABR", "huawei_abr_al00_ver1");
         MODEL_PREFIX_MAP.put("ANA", "huawei_ana_nx9_ver1");
         MODEL_PREFIX_MAP.put("ELS", "huawei_els_nx9_ver1");
