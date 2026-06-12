@@ -71,6 +71,11 @@ public final class UserAgentUtils {
     private static final Pattern AMAZON_ANDROID_VERSION_PATTERN;
 
     /**
+     * 匹配 Android 两位及以上整数版本号（如 "Android 14"、"Android 10"）
+     */
+    private static final Pattern ANDROID_VERSION_MAJOR_PATTERN;
+
+    /**
      * 匹配 Opera on Android 的主版本号
      */
     private static final Pattern OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN;
@@ -332,11 +337,20 @@ public final class UserAgentUtils {
         SUPPORTED_ANDROID_VERSIONS.add("8.0");
         SUPPORTED_ANDROID_VERSIONS.add("8.1");
         SUPPORTED_ANDROID_VERSIONS.add("9.0");
+        SUPPORTED_ANDROID_VERSIONS.add("10");
+        SUPPORTED_ANDROID_VERSIONS.add("11");
+        SUPPORTED_ANDROID_VERSIONS.add("12");
+        SUPPORTED_ANDROID_VERSIONS.add("13");
+        SUPPORTED_ANDROID_VERSIONS.add("14");
+        SUPPORTED_ANDROID_VERSIONS.add("15");
+        SUPPORTED_ANDROID_VERSIONS.add("16");
+        SUPPORTED_ANDROID_VERSIONS.add("17");
         STRIP_QUOTE_PATTERN = Pattern.compile("\"");
         NAMESPACE_NUMBER_PATTERN = Pattern.compile("ns=(\\d*)");
         ANDROID_VERSION_SLASH_PATTERN = Pattern.compile("Android/(\\d\\.\\d)");
         ANDROID_VERSION_SPACE_PATTERN = Pattern.compile("Android (\\d\\.\\d)");
         AMAZON_ANDROID_VERSION_PATTERN = Pattern.compile(":::Android_(\\d\\.\\d)");
+        ANDROID_VERSION_MAJOR_PATTERN = Pattern.compile("Android (\\d{2,})");
         OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN = Pattern.compile("Version/(\\d+)\\.\\d+");
         ANDROID_MODEL_LINUX_ANDROID_RELEASE_PATTERN = Pattern.compile("(^[A-Za-z0-9_\\-\\+ ]+)[/ ]?(?:[A-Za-z0-9_\\-\\+\\.]+)? +Linux/[0-9\\.\\+]+ +Android[ /][0-9\\.]+ +Release/[0-9\\.]+");
         ANDROID_MODEL_ANDROID_LINUX_PATTERN = Pattern.compile("(^[A-Za-z0-9_\\-\\+ ]+)[/ ]?(?:[A-Za-z0-9_\\-\\+\\.]+)? Android/[0-9\\.]+ \\(Linux;");
@@ -655,6 +669,11 @@ public final class UserAgentUtils {
 
         if (!found) {
             matcher = AMAZON_ANDROID_VERSION_PATTERN.matcher(userAgent);
+            found = matcher.find();
+        }
+
+        if (!found) {
+            matcher = ANDROID_VERSION_MAJOR_PATTERN.matcher(userAgent);
             found = matcher.find();
         }
 

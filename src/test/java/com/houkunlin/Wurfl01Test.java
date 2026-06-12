@@ -183,10 +183,8 @@ class Wurfl01Test {
      * <ul>
      *   <li>浏览器识别为 Chromium，版本号为 144.0.7559.86</li>
      *   <li>操作系统识别为 Android 16、触摸屏支持为 true</li>
-     *   <li>由于 Quark 浏览器的 UA 伪装特性，{@code complete_device_name} 和
-     *       {@code device_name} 可能仅识别到 {@code Generic Android 4.0} 这一通用型号，
-     *       而非具体设备名</li>
-     *   <li>{@code is_largescreen} 为 false，这与 Quark 浏览器的视口配置有关</li>
+     *   <li>WURFL 已能正确识别此 UA 为 OnePlus PJD110 (12) 设备</li>
+     *   <li>{@code is_largescreen} 为 true，符合 OnePlus 12 的 1440×3168 高分辨率屏幕</li>
      *   <li>仍能正确识别出非桌面端、非 iOS、非机器人的移动端基本特征</li>
      * </ul>
      * 该用例用于验证 WURFL 对第三方小众浏览器的兼容性及在 UA 伪装场景下的降级识别策略。
@@ -207,12 +205,12 @@ class Wurfl01Test {
         Assertions.assertEquals("Chromium", device.getVirtualCapability("advertised_browser"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
-        Assertions.assertEquals("Generic Android 4.0", device.getVirtualCapability("complete_device_name"));
-        Assertions.assertEquals("false", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("OnePlus PJD110 (12)", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
         Assertions.assertEquals("Android", device.getVirtualCapability("advertised_device_os"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
-        Assertions.assertEquals("Generic Android 4.0", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("OnePlus 12", device.getVirtualCapability("device_name"));
         Assertions.assertEquals("144.0.7559.86", device.getVirtualCapability("advertised_browser_version"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
