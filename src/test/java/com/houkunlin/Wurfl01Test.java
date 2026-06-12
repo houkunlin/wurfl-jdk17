@@ -73,7 +73,6 @@ class Wurfl01Test {
     @Test
     void testVersion() {
         Assertions.assertEquals("1.9.1.0", wurfl.getAPIVersion());
-        Assertions.assertEquals("1.9.1.0", wurfl.getApiVersion());
         Assertions.assertTrue(wurfl.getWURFLUtils().getVersion().startsWith("Root:Stream resource:data.scientiamobile.com"));
     }
 

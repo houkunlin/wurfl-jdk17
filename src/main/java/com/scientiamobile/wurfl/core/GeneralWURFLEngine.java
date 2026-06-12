@@ -802,16 +802,6 @@ public class GeneralWURFLEngine implements WURFLEngine {
     }
 
     /**
-     * 获取 WURFL API 版本号（与 {@link #getAPIVersion()} 相同）。
-     *
-     * @return API 版本号
-     */
-
-    public String getApiVersion() {
-        return "1.9.1.0";
-    }
-
-    /**
      * 获取 WURFL 数据模型实例。
      *
      * @return WURFL 数据模型

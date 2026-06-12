@@ -128,7 +128,7 @@ final class AndroidMatcher extends AbstractMatcher {
         } else {
             String androidModel;
             androidModel = UserAgentUtils.getAndroidModel(normalizedUserAgent);
-            if (androidModel != null && androidModel.length() != 0) {
+            if (androidModel != null && !androidModel.isEmpty()) {
                 matchLength = Math.min(
                         StringMatchUtils.indexOfOrLength(normalizedUserAgent, " Build/"),
                         StringMatchUtils.indexOfOrLength(normalizedUserAgent, " AppleWebKit")

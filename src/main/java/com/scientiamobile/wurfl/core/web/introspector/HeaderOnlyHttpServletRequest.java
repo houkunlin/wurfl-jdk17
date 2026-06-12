@@ -683,15 +683,6 @@ final class HeaderOnlyHttpServletRequest implements HttpServletRequest {
     }
 
     /**
-     * 该方法在此实现中不被支持，始终返回 {@code false}。
-     *
-     * @return 始终返回 {@code false}
-     */
-    public final boolean isRequestedSessionIdFromUrl() {
-        return false;
-    }
-
-    /**
      * 该方法在此实现中不被支持，始终返回 {@code null}。
      *
      * @param handlerClass HTTP 升级处理器类型
