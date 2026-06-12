@@ -62,6 +62,15 @@ public final class ModelDevicesSnapshot implements Serializable, Comparable<Mode
     }
 
     /**
+     * 反序列化时恢复 transient 字段 cachedKey。
+     */
+    @Serial
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.cachedKey = null;
+    }
+
+    /**
      * 获取快照的唯一标识键。
      * <p>由资源类型（Root/Patch）、资源信息和版本号拼接而成，用于区分不同的快照。</p>
      *
