@@ -696,63 +696,74 @@ public final class UserAgentUtils {
      * @return 清洗后的设备型号，如果无法提取则返回 null
      */
     public static String getAndroidModel(String userAgent) {
-        userAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
-        Matcher primaryMatcher;
-        primaryMatcher = GIONEE_MODEL_PATTERN.matcher(userAgent);
-        if (primaryMatcher.find()) {
-            userAgent = primaryMatcher.group(1);
-        } else {
-            primaryMatcher = ANDROID_MODEL_LINUX_ANDROID_RELEASE_PATTERN.matcher(userAgent);
-            Matcher secondaryMatcher = ANDROID_MODEL_ANDROID_LINUX_PATTERN.matcher(userAgent);
-            if (primaryMatcher.find()) {
-                userAgent = StringMatchUtils.rtrim(primaryMatcher.group(1), ';', ' ');
-            } else if (secondaryMatcher.find()) {
-                userAgent = StringMatchUtils.rtrim(secondaryMatcher.group(1), ' ', ';');
-            } else {
-                primaryMatcher = ANDROID_MODEL_BUILD_PATTERN.matcher(userAgent);
-                secondaryMatcher = ANDROID_MODEL_AMAZON_APP_PATTERN.matcher(userAgent);
-                Matcher amazonShoppingMatcher = AMAZON_SHOPPING_MODEL_PATTERN.matcher(userAgent);
-                if (primaryMatcher.find()) {
-                    userAgent = StringMatchUtils.rtrim(primaryMatcher.group(1), ';', ' ');
-                } else if (secondaryMatcher.find()) {
-                    userAgent = secondaryMatcher.group(1);
-                } else {
-                    if (!amazonShoppingMatcher.find()) {
-                        return null;
-                    }
-
-                    userAgent = amazonShoppingMatcher.group(1);
-                }
-            }
-        }
-
-        if (userAgent != null && userAgent.startsWith("Build/")) {
+        String ua = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
+        String model = extractAndroidModelRaw(ua);
+        if (model == null || model.startsWith("Build/")) {
             return null;
-        } else {
-            int slashIndex;
-            userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, XX_XX_LOCALE_PATTERN, ""), CMCC_SUFFIX_PATTERN, "");
-            if (userAgent.contains("*") && (slashIndex = StringMatchUtils.indexOf(userAgent, "/")) >= 0) {
-                userAgent = userAgent.substring(0, slashIndex);
-            }
-
-            userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, HUAWEI_PREFIX_PATTERN, "HUAWEI "), COOLPAD_PREFIX_PATTERN, "Coolpad ");
-            if (userAgent.contains("HTC")) {
-                userAgent = StringMatchUtils.replaceAll(userAgent, HTC_PREFIX_PATTERN, "HTC~");
-                slashIndex = userAgent.indexOf("/");
-                if (slashIndex >= 0) {
-                    userAgent = userAgent.substring(0, slashIndex);
-                }
-
-                userAgent = StringMatchUtils.replaceAll(userAgent, VERSION_SUFFIX_PATTERN, "");
-            }
-
-            userAgent = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(userAgent, SAMSUNG_MODEL_PATTERN, "$1"), ORANGE_SUFFIX_PATTERN, "ORANGE"), LG_MODEL_OPTIONAL_HYPHEN_PATTERN, "$1"), TIMESTAMP_IN_BRACKETS_PATTERN, "").trim(), BRAND_PREFIX_PATTERN, "");
-            if (userAgent.isEmpty()) {
-                userAgent = null;
-            }
-
-            return userAgent;
         }
+
+        model = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(model, XX_XX_LOCALE_PATTERN, ""), CMCC_SUFFIX_PATTERN, "");
+        if (model.contains("*")) {
+            int slashIndex = StringMatchUtils.indexOf(model, "/");
+            if (slashIndex >= 0) {
+                model = model.substring(0, slashIndex);
+            }
+        }
+
+        model = StringMatchUtils.replaceAll(StringMatchUtils.replaceAll(model, HUAWEI_PREFIX_PATTERN, "HUAWEI "), COOLPAD_PREFIX_PATTERN, "Coolpad ");
+        if (model.contains("HTC")) {
+            model = StringMatchUtils.replaceAll(model, HTC_PREFIX_PATTERN, "HTC~");
+            int slashIndex = model.indexOf("/");
+            if (slashIndex >= 0) {
+                model = model.substring(0, slashIndex);
+            }
+            model = StringMatchUtils.replaceAll(model, VERSION_SUFFIX_PATTERN, "");
+        }
+
+        model = StringMatchUtils.replaceAll(
+                StringMatchUtils.replaceAll(
+                        StringMatchUtils.replaceAll(
+                                StringMatchUtils.replaceAll(
+                                        StringMatchUtils.replaceAll(model, SAMSUNG_MODEL_PATTERN, "$1"),
+                                        ORANGE_SUFFIX_PATTERN, "ORANGE"),
+                                LG_MODEL_OPTIONAL_HYPHEN_PATTERN, "$1"),
+                        TIMESTAMP_IN_BRACKETS_PATTERN, "").trim(),
+                BRAND_PREFIX_PATTERN, "");
+
+        return model.isEmpty() ? null : model;
+    }
+
+    /**
+     * 使用多个正则模式依次尝试从 UA 中提取原始设备型号。
+     */
+    private static String extractAndroidModelRaw(String userAgent) {
+        Matcher matcher = GIONEE_MODEL_PATTERN.matcher(userAgent);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        matcher = ANDROID_MODEL_LINUX_ANDROID_RELEASE_PATTERN.matcher(userAgent);
+        if (matcher.find()) {
+            return StringMatchUtils.rtrim(matcher.group(1), ';', ' ');
+        }
+
+        matcher = ANDROID_MODEL_ANDROID_LINUX_PATTERN.matcher(userAgent);
+        if (matcher.find()) {
+            return StringMatchUtils.rtrim(matcher.group(1), ' ', ';');
+        }
+
+        matcher = ANDROID_MODEL_BUILD_PATTERN.matcher(userAgent);
+        if (matcher.find()) {
+            return StringMatchUtils.rtrim(matcher.group(1), ';', ' ');
+        }
+
+        matcher = ANDROID_MODEL_AMAZON_APP_PATTERN.matcher(userAgent);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        matcher = AMAZON_SHOPPING_MODEL_PATTERN.matcher(userAgent);
+        return matcher.find() ? matcher.group(1) : null;
     }
 
     /**
@@ -826,29 +837,19 @@ public final class UserAgentUtils {
      * @return 标准化的 Windows Phone 版本号，如 "8.1"；如果无法匹配则返回 null
      */
     public static final String getWindowsPhoneVersion(String userAgent) {
-        Matcher matcher;
-        matcher = WINDOWS_PHONE_VERSION_PATTERN.matcher(userAgent);
-        if (matcher.find()) {
-            String windowsPhoneVersion;
-            windowsPhoneVersion = matcher.group(1);
-            if (windowsPhoneVersion.startsWith("10.0")) {
-                return "10.0";
-            } else if (!windowsPhoneVersion.startsWith("6.3") && !windowsPhoneVersion.startsWith("8.1")) {
-                if (windowsPhoneVersion.startsWith("8.")) {
-                    return "8.0";
-                } else if (windowsPhoneVersion.startsWith("7.8")) {
-                    return "7.8";
-                } else if (!windowsPhoneVersion.startsWith("7.10") && !windowsPhoneVersion.startsWith("7.5")) {
-                    return windowsPhoneVersion.startsWith("6.5") ? "6.5" : "7.0";
-                } else {
-                    return "7.5";
-                }
-            } else {
-                return "8.1";
-            }
-        } else {
+        Matcher matcher = WINDOWS_PHONE_VERSION_PATTERN.matcher(userAgent);
+        if (!matcher.find()) {
             return null;
         }
+
+        String version = matcher.group(1);
+        if (version.startsWith("10.0")) return "10.0";
+        if (version.startsWith("6.3") || version.startsWith("8.1")) return "8.1";
+        if (version.startsWith("8.")) return "8.0";
+        if (version.startsWith("7.8")) return "7.8";
+        if (version.startsWith("7.10") || version.startsWith("7.5")) return "7.5";
+        if (version.startsWith("6.5")) return "6.5";
+        return "7.0";
     }
 
     /**
@@ -1080,28 +1081,24 @@ public final class UserAgentUtils {
      * @return 包含清洗后字符串和统计信息的对象
      */
     public static UserAgentWithNeedleCount getAsciiPrintableStringWithNeedleCount(StringBuilder userAgentBuilder) {
-        boolean hasSpaceChars = false;
-        char[] needles = new char[]{'+', '%'};
-        int[] needleCounts = new int[2];
-        if (userAgentBuilder != null && !userAgentBuilder.isEmpty()) {
-            for (int i = userAgentBuilder.length() - 1; i >= 0; --i) {
-                char ch = userAgentBuilder.charAt(i);
-                hasSpaceChars = hasSpaceChars || ch == ' ';
-                if (!CharUtils.isAsciiPrintable(ch)) {
-                    userAgentBuilder.deleteCharAt(i);
-                } else {
-                    for (int needleIndex = 0; needleIndex < 2; ++needleIndex) {
-                        if (ch == needles[needleIndex]) {
-                            needleCounts[needleIndex]++;
-                        }
-                    }
-                }
-            }
-
-            return new UserAgentWithNeedleCount(userAgentBuilder.toString(), needleCounts[0], needleCounts[1], hasSpaceChars);
-        } else {
+        if (userAgentBuilder == null || userAgentBuilder.isEmpty()) {
             return new UserAgentWithNeedleCount("", 0, 0, false);
         }
+
+        boolean hasSpaceChars = false;
+        int[] needleCounts = new int[2];
+        for (int i = userAgentBuilder.length() - 1; i >= 0; i--) {
+            char ch = userAgentBuilder.charAt(i);
+            hasSpaceChars = hasSpaceChars || ch == ' ';
+            if (!CharUtils.isAsciiPrintable(ch)) {
+                userAgentBuilder.deleteCharAt(i);
+            } else {
+                if (ch == '+') needleCounts[0]++;
+                if (ch == '%') needleCounts[1]++;
+            }
+        }
+
+        return new UserAgentWithNeedleCount(userAgentBuilder.toString(), needleCounts[0], needleCounts[1], hasSpaceChars);
     }
 
     /**
