@@ -37,45 +37,68 @@ public class UcwebU3Normalizer implements UserAgentNormalizer {
      */
     @Override
     public String normalize(String userAgent) {
-        String ucBrowserVersion;
-        ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, false);
+        String ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, false);
         if (ucBrowserVersion == null) {
             return userAgent;
-        } else {
-            String normalizedPrefix = null;
-            if (userAgent.contains("Windows Phone")) {
-                String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(userAgent);
-                String windowsPhoneModel;
-                windowsPhoneModel = UserAgentUtils.getWindowsPhoneModel(userAgent);
-                if (windowsPhoneModel != null && windowsPhoneVersion != null) {
-                    normalizedPrefix = windowsPhoneVersion + " U3WP " + ucBrowserVersion + " " + windowsPhoneModel + "---";
-                }
-            } else if (userAgent.contains("Android")) {
-                String androidModel = UserAgentUtils.getAndroidModel(userAgent);
-                String androidVersion = UserAgentUtils.getAndroidVersion(userAgent, false);
-                if (androidModel != null && androidVersion != null) {
-                    normalizedPrefix = androidVersion + " U3Android " + ucBrowserVersion + " " + androidModel + "---";
-                }
-            } else if (userAgent.contains("iPhone;")) {
-                Matcher matcher;
-                matcher = IPHONE.matcher(userAgent);
-                if (matcher.find()) {
-                    String iosVersion = matcher.group(1) + "." + (matcher.group(2) == null ? "" : matcher.group(2));
-                    normalizedPrefix = iosVersion + " U3iPhone " + ucBrowserVersion + "---";
-                }
-            } else {
-                Matcher matcher;
-                matcher = IPAD.matcher(userAgent);
-                if (userAgent.contains("iPad") && matcher.find()) {
-                    String iosMajorVersion = matcher.group(1);
-                    String iosMinorVersion = matcher.group(2);
-                    String iosVersion = iosMajorVersion + "." + (iosMinorVersion == null ? "" : iosMinorVersion);
-                    String ipadModel = matcher.group(3);
-                    normalizedPrefix = iosVersion + " U3iPad " + ucBrowserVersion + " " + ipadModel + "---";
-                }
-            }
-
-            return normalizedPrefix == null ? userAgent : normalizedPrefix + userAgent;
         }
+
+        String normalizedPrefix = buildUcwebPrefix(userAgent, ucBrowserVersion);
+        return normalizedPrefix == null ? userAgent : normalizedPrefix + userAgent;
+    }
+
+    /**
+     * 根据 UA 中的平台标识构建 UC U3 规范化前缀。
+     */
+    private static String buildUcwebPrefix(String userAgent, String ucBrowserVersion) {
+        if (userAgent.contains("Windows Phone")) {
+            return buildWindowsPhonePrefix(userAgent, ucBrowserVersion);
+        }
+        if (userAgent.contains("Android")) {
+            return buildAndroidPrefix(userAgent, ucBrowserVersion);
+        }
+        if (userAgent.contains("iPhone;")) {
+            return buildIphonePrefix(userAgent, ucBrowserVersion);
+        }
+        if (userAgent.contains("iPad")) {
+            return buildIpadPrefix(userAgent, ucBrowserVersion);
+        }
+        return null;
+    }
+
+    private static String buildWindowsPhonePrefix(String userAgent, String ucBrowserVersion) {
+        String version = UserAgentUtils.getWindowsPhoneVersion(userAgent);
+        String model = UserAgentUtils.getWindowsPhoneModel(userAgent);
+        if (version == null || model == null) {
+            return null;
+        }
+        return version + " U3WP " + ucBrowserVersion + " " + model + "---";
+    }
+
+    private static String buildAndroidPrefix(String userAgent, String ucBrowserVersion) {
+        String model = UserAgentUtils.getAndroidModel(userAgent);
+        String version = UserAgentUtils.getAndroidVersion(userAgent, false);
+        if (model == null || version == null) {
+            return null;
+        }
+        return version + " U3Android " + ucBrowserVersion + " " + model + "---";
+    }
+
+    private static String buildIphonePrefix(String userAgent, String ucBrowserVersion) {
+        Matcher matcher = IPHONE.matcher(userAgent);
+        if (!matcher.find()) {
+            return null;
+        }
+        String iosVersion = matcher.group(1) + "." + (matcher.group(2) == null ? "" : matcher.group(2));
+        return iosVersion + " U3iPhone " + ucBrowserVersion + "---";
+    }
+
+    private static String buildIpadPrefix(String userAgent, String ucBrowserVersion) {
+        Matcher matcher = IPAD.matcher(userAgent);
+        if (!matcher.find()) {
+            return null;
+        }
+        String iosVersion = matcher.group(1) + "." + (matcher.group(2) == null ? "" : matcher.group(2));
+        String ipadModel = matcher.group(3);
+        return iosVersion + " U3iPad " + ucBrowserVersion + " " + ipadModel + "---";
     }
 }
