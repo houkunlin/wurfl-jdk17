@@ -1,5 +1,6 @@
 package com.scientiamobile.wurfl.core.resource;
 
+import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.Validate;
@@ -84,7 +85,7 @@ final class ResourceInput {
                     this.stream = stream;
                 }
             } catch (IOException e) {
-                LOG.error(e.toString());
+                LOG.error("failure to read data files", e);
             }
         } else {
             this.stream = stream;
@@ -199,8 +200,8 @@ final class ResourceInput {
 
             return inputStream;
         } catch (IOException e) {
-            LOG.error("Error opening stream URI: {}", uri.toString());
-            throw new RuntimeException(e);
+            LOG.error("Error opening stream URI: {}", uri);
+            throw new WURFLRuntimeException("Error opening stream URI: " + uri, e);
         }
     }
 
