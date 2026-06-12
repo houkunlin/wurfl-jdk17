@@ -433,7 +433,10 @@ public final class VirtualCapabilityUserAgentTool {
             }
         } else if (deviceWithPairs.getBrowserPair().matchAndSetNameAndGroup(MOBILE_APP_NAME_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), 2)) {
             deviceWithPairs.getBrowserPair().setName(deviceWithPairs.getBrowserPair().getName() + " Mobile Application");
-        } else if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(UC_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Browser", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IE_MOBILE_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "IE Mobile", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(EDGE_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Edge Mobile", 1)) {
+        } else {
+            deviceWithPairs.getBrowserPair().matchAndSetGroup(UC_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Browser", 1);
+            deviceWithPairs.getBrowserPair().matchAndSetGroup(IE_MOBILE_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "IE Mobile", 1);
+            deviceWithPairs.getBrowserPair().matchAndSetGroup(EDGE_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Edge Mobile", 1);
         }
 
         virtualCapabilityDevice.normalizeOS();
