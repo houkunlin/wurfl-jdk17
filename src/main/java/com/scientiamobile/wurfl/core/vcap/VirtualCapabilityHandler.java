@@ -57,8 +57,7 @@ public class VirtualCapabilityHandler {
                     EVALUATORS_BY_NAME.put("os_manufacturer", (VirtualCapabilityEvaluator) evaluatorInstance);
                 }
             }
-        } catch (RuntimeException ignore) {
-        } catch (ReflectiveOperationException ignore) {
+        } catch (RuntimeException | ReflectiveOperationException ignore) {
         }
     }
 

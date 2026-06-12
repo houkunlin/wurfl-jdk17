@@ -198,11 +198,11 @@ public final class VirtualCapabilityUserAgentTool {
                 } else if (StringMatchUtils.containsAnyOf(deviceWithPairs.getDeviceUserAgent(), "iPhone", "iPad", "iPod", "iPod touch", "(iOS;")) {
                     deviceWithPairs.getOsPair().setName("iOS");
                     if (deviceWithPairs.getOsPair().matchAndSetGroup(IOS_CPU_OS_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 2) || deviceWithPairs.getOsPair().matchAndSetGroup(IOS_SCALE_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1) || deviceWithPairs.getOsPair().matchAndSetGroup(IOS_SERVER_BAG_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1) || deviceWithPairs.getOsPair().matchAndSetGroup(IOS_DEVICE_PREFIX_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1) || deviceWithPairs.getOsPair().matchAndSetGroup(IOS_DEVICE_IOS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1)) {
-                        deviceWithPairs.getOsPair().setVersion(deviceWithPairs.getOsPair().getVersion().replaceAll("_", "."));
+                        deviceWithPairs.getOsPair().setVersion(deviceWithPairs.getOsPair().getVersion().replace("_", "."));
                     }
 
                     if (deviceWithPairs.getOsPair().matchAndSetGroup(IOS_UCWEB_OS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1)) {
-                        deviceWithPairs.getOsPair().setVersion(deviceWithPairs.getOsPair().getVersion().replaceAll("_", "."));
+                        deviceWithPairs.getOsPair().setVersion(deviceWithPairs.getOsPair().getVersion().replace("_", "."));
                     }
 
                     if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_CHROME_CRIOS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Chrome Mobile on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_FIREFOX_FOCUS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Firefox Focus", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_FIREFOX_FXIOS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Firefox on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_OPERA_OPIOS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Opera Mini on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_UC_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Web Browser on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_UCWEB_UCBROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Web Browser on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSet(IOS_FACEBOOK_FBAN_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Facebook on iOS", deviceWithPairs.getOsPair().getVersion())) {

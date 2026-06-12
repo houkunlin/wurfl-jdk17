@@ -50,8 +50,7 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
             if (resourceUrl == null) {
                 return null;
             } else {
-                URI resourceUri = resourceUrl.toURI();
-                return resourceUri;
+                return resourceUrl.toURI();
             }
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
@@ -214,7 +213,7 @@ public class WURFLServletContextListener implements WurflWebConstants, ServletCo
      *
      * @param servletContextEvent Servlet 上下文事件
      */
-
+    @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         servletContextEvent.getServletContext().removeAttribute(this.engineKeyAttributeName);
     }

@@ -48,7 +48,7 @@ final class WurflXmlHandler extends DefaultHandler {
      * 文档解析开始时的回调。
      * <p>初始化去重集合和设备容器，准备开始解析设备数据。</p>
      */
-
+    @Override
     public final void startDocument() {
         this.seenUserAgents = new HashSet<>();
         this.seenDeviceIds = new HashSet<>();
@@ -59,10 +59,11 @@ final class WurflXmlHandler extends DefaultHandler {
      * 文档解析结束时的回调。
      * <p>当前为无操作实现，所有数据处理逻辑已在元素结束事件中完成。</p>
      */
-
+    @Override
     public final void endDocument() {
     }
 
+    @Override
     public final void startElement(String uri, String localName, String qName, Attributes attributes) {
         if (qName.equals("capability") && this.parseState != WurflXmlParseState.GROUP) {
             String capabilityName = attributes.getValue("name");
@@ -270,7 +271,7 @@ final class WurflXmlHandler extends DefaultHandler {
      * @param start  起始偏移
      * @param length 字符长度
      */
-
+    @Override
     public final void characters(char[] ch, int start, int length) {
         switch (this.parseState) {
             case WurflXmlParseState.VERSION_VER:

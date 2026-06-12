@@ -55,7 +55,7 @@ public class Version implements Comparable<Version> {
      * @throws IllegalArgumentException 如果输入为 null 或空字符串
      */
     public static Version valueOf(String version, char separator) {
-        if (version != null && version.length() != 0) {
+        if (version != null && !version.isEmpty()) {
             String separatorValue = new String(new char[]{separator});
             StringTokenizer tokenizer;
             tokenizer = new StringTokenizer(version, separatorValue);
@@ -170,8 +170,8 @@ public class Version implements Comparable<Version> {
      */
     @Override
     public boolean equals(Object object) {
-        if (object != null && object instanceof Version) {
-            return this.compareTo((Version) object) == 0;
+        if (object instanceof Version version) {
+            return this.compareTo(version) == 0;
         } else {
             return false;
         }
