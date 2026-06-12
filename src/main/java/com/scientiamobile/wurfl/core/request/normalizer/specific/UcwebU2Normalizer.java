@@ -37,54 +37,86 @@ public class UcwebU2Normalizer implements UserAgentNormalizer {
      */
     @Override
     public String normalize(String userAgent) {
-        String ucBrowserVersion;
-        ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, true);
+        String ucBrowserVersion = UserAgentUtils.getUcBrowserVersion(userAgent, true);
         if (ucBrowserVersion == null) {
             return userAgent;
-        } else {
-            String normalizedPrefix = null;
-            if (userAgent.contains("Adr")) {
-                String model = UserAgentUtils.getUcAndroidModel(userAgent, false);
-                String androidVersion = UserAgentUtils.getUcAndroidVersion(userAgent, false);
-                if (model != null && androidVersion != null) {
-                    normalizedPrefix = androidVersion + " U2Android " + ucBrowserVersion + " " + model + "---";
-                }
-            } else if (userAgent.contains("iPh OS")) {
-                Matcher matcher;
-                matcher = IPHONE.matcher(userAgent);
-                if (matcher.find()) {
-                    String iosVersion = matcher.group(1) + "." + matcher.group(2);
-                    String iphoneDeviceVersion = matcher.group(3) + "." + matcher.group(4);
-                    normalizedPrefix = iosVersion + " U2iPhone " + ucBrowserVersion + " " + iphoneDeviceVersion + "---";
-                }
-            } else if (userAgent.contains("wds")) {
-                String fixedUserAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
-                Matcher matcher;
-                matcher = WINDOWS_PHONE.matcher(fixedUserAgent);
-                if (matcher.find()) {
-                    String windowsPhoneVersion = matcher.group(1) + "." + matcher.group(2);
-                    String modelName = (matcher.group(3) + "." + matcher.group(4)).replace("_blocked", "");
-                    modelName = NOKIA_RM_MODEL_PATTERN.matcher(modelName).replaceFirst("$1");
-                    normalizedPrefix = windowsPhoneVersion + " U2WindowsPhone " + ucBrowserVersion + " " + modelName + "---";
-                }
-            } else if (userAgent.contains("Symbian")) {
-                Matcher matcher;
-                matcher = SYMBIAN.matcher(userAgent);
-                if (matcher.find()) {
-                    String symbianVersion = "S60 V" + matcher.group(1);
-                    String modelName = matcher.group(2);
-                    normalizedPrefix = symbianVersion + " U2Symbian " + ucBrowserVersion + " " + modelName + "---";
-                }
-            } else {
-                Matcher matcher;
-                matcher = JAVA.matcher(userAgent);
-                if (userAgent.contains("Java") && matcher.find()) {
-                    String modelName = matcher.group(1);
-                    normalizedPrefix = "Java U2JavaApp " + ucBrowserVersion + " " + modelName + "---";
-                }
-            }
-
-            return normalizedPrefix == null ? userAgent : normalizedPrefix + userAgent;
         }
+
+        String normalizedPrefix = buildUcwebPrefix(userAgent, ucBrowserVersion);
+        return normalizedPrefix == null ? userAgent : normalizedPrefix + userAgent;
+    }
+
+    /**
+     * 根据 UA 中的平台标识构建 UC U2 规范化前缀。
+     *
+     * @return 规范化前缀，无法识别平台时返回 {@code null}
+     */
+    private static String buildUcwebPrefix(String userAgent, String ucBrowserVersion) {
+        if (userAgent.contains("Adr")) {
+            return buildAndroidPrefix(userAgent, ucBrowserVersion);
+        }
+        if (userAgent.contains("iPh OS")) {
+            return buildIosPrefix(userAgent, ucBrowserVersion);
+        }
+        if (userAgent.contains("wds")) {
+            return buildWindowsPhonePrefix(userAgent, ucBrowserVersion);
+        }
+        if (userAgent.contains("Symbian")) {
+            return buildSymbianPrefix(userAgent, ucBrowserVersion);
+        }
+        if (userAgent.contains("Java")) {
+            return buildJavaPrefix(userAgent, ucBrowserVersion);
+        }
+        return null;
+    }
+
+    private static String buildAndroidPrefix(String userAgent, String ucBrowserVersion) {
+        String model = UserAgentUtils.getUcAndroidModel(userAgent, false);
+        String androidVersion = UserAgentUtils.getUcAndroidVersion(userAgent, false);
+        if (model == null || androidVersion == null) {
+            return null;
+        }
+        return androidVersion + " U2Android " + ucBrowserVersion + " " + model + "---";
+    }
+
+    private static String buildIosPrefix(String userAgent, String ucBrowserVersion) {
+        Matcher matcher = IPHONE.matcher(userAgent);
+        if (!matcher.find()) {
+            return null;
+        }
+        String iosVersion = matcher.group(1) + "." + matcher.group(2);
+        String iphoneDeviceVersion = matcher.group(3) + "." + matcher.group(4);
+        return iosVersion + " U2iPhone " + ucBrowserVersion + " " + iphoneDeviceVersion + "---";
+    }
+
+    private static String buildWindowsPhonePrefix(String userAgent, String ucBrowserVersion) {
+        String fixedUserAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
+        Matcher matcher = WINDOWS_PHONE.matcher(fixedUserAgent);
+        if (!matcher.find()) {
+            return null;
+        }
+        String windowsPhoneVersion = matcher.group(1) + "." + matcher.group(2);
+        String modelName = (matcher.group(3) + "." + matcher.group(4)).replace("_blocked", "");
+        modelName = NOKIA_RM_MODEL_PATTERN.matcher(modelName).replaceFirst("$1");
+        return windowsPhoneVersion + " U2WindowsPhone " + ucBrowserVersion + " " + modelName + "---";
+    }
+
+    private static String buildSymbianPrefix(String userAgent, String ucBrowserVersion) {
+        Matcher matcher = SYMBIAN.matcher(userAgent);
+        if (!matcher.find()) {
+            return null;
+        }
+        String symbianVersion = "S60 V" + matcher.group(1);
+        String modelName = matcher.group(2);
+        return symbianVersion + " U2Symbian " + ucBrowserVersion + " " + modelName + "---";
+    }
+
+    private static String buildJavaPrefix(String userAgent, String ucBrowserVersion) {
+        Matcher matcher = JAVA.matcher(userAgent);
+        if (!matcher.find()) {
+            return null;
+        }
+        String modelName = matcher.group(1);
+        return "Java U2JavaApp " + ucBrowserVersion + " " + modelName + "---";
     }
 }
