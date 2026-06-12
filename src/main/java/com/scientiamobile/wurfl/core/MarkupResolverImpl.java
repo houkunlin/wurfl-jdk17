@@ -1,6 +1,7 @@
 package com.scientiamobile.wurfl.core;
 
 import com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException;
+import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +30,7 @@ class MarkupResolverImpl implements MarkupResolver, Serializable {
      *
      * @param device 内部设备实例
      * @return 标记语言枚举
-     * @throws RuntimeException 如果无法从设备获取所需能力值
+     * @throws WURFLRuntimeException 如果无法从设备获取所需能力值
      */
     @Override
     public MarkUp getMarkupForDevice(InternalDevice device) {
@@ -41,7 +42,7 @@ class MarkupResolverImpl implements MarkupResolver, Serializable {
             preferredMarkup = device.getCapability("preferred_markup");
         } catch (CapabilityNotDefinedException e) {
             log.error("It is not possible getting markUp from capabilities: {}", e.getLocalizedMessage());
-            throw new RuntimeException(e.getLocalizedMessage(), e);
+            throw new WURFLRuntimeException("It is not possible getting markUp", e);
         }
 
         MarkUp markup;
