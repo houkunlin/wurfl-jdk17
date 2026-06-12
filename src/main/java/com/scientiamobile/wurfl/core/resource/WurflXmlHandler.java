@@ -188,61 +188,47 @@ final class WurflXmlHandler extends DefaultHandler {
      * @param localName 本地名称
      * @param qName     限定名
      */
-
+    @Override
     public final void endElement(String uri, String localName, String qName) {
         switch (this.parseState) {
             case WurflXmlParseState.WURFL:
                 if ("wurfl".equals(qName) || "wurfl_patch".equals(qName)) {
                     this.parseState = WurflXmlParseState.END;
-                    return;
                 }
                 break;
             case WurflXmlParseState.VERSION:
                 if ("version".equals(qName)) {
                     this.parseState = WurflXmlParseState.WURFL;
-                    return;
                 }
                 break;
             case WurflXmlParseState.DEVICES:
                 if ("devices".equals(qName)) {
                     this.parseState = WurflXmlParseState.WURFL;
-                    return;
                 }
                 break;
             case WurflXmlParseState.DEVICE:
                 if ("device".equals(qName)) {
-                    ModelDevice modelDevice = (new ModelDeviceBuilder(this.currentDeviceId, this.currentUserAgent, this.currentFallback)).setActualDeviceRoot(this.currentActualDeviceRoot).setCapabilities(this.currentCapabilities).setCapabilitiesByGroup(this.currentCapabilitiesByGroup).build();
-                    this.devices.add(modelDevice);
-                    if (modelDevice.isActualDeviceRoot()) {
-                        this.actualDeviceRootsById.put(this.currentDeviceId, modelDevice);
-                    }
-
-                    this.parseState = WurflXmlParseState.DEVICES;
-                    return;
+                    buildDevice();
                 }
                 break;
             case WurflXmlParseState.GROUP:
                 if ("group".equals(qName)) {
                     this.parseState = WurflXmlParseState.DEVICE;
-                    return;
                 }
                 break;
             case WurflXmlParseState.VERSION_VER:
                 if ("ver".equals(qName)) {
                     this.parseState = WurflXmlParseState.VERSION;
-                    return;
                 }
                 break;
             case WurflXmlParseState.VERSION_LAST_UPDATED:
                 if ("last_updated".equals(qName)) {
                     this.parseState = WurflXmlParseState.VERSION;
-                    return;
                 }
                 break;
             case WurflXmlParseState.VERSION_SMID:
                 if ("smid".equals(qName)) {
                     this.parseState = WurflXmlParseState.VERSION;
-                    return;
                 }
                 break;
             case WurflXmlParseState.CAPABILITY:
@@ -252,7 +238,25 @@ final class WurflXmlHandler extends DefaultHandler {
                 break;
             default:
         }
+    }
 
+    /**
+     * 构建设备对象并加入设备集合。
+     * 从当前解析上下文中收集设备 ID、User-Agent、fallback、capabilities 等信息，
+     * 通过 {@link ModelDeviceBuilder} 构建 ModelDevice，
+     * 并将其添加到当前解析结果的设备集中。
+     */
+    private void buildDevice() {
+        ModelDevice modelDevice = new ModelDeviceBuilder(this.currentDeviceId, this.currentUserAgent, this.currentFallback)
+                .setActualDeviceRoot(this.currentActualDeviceRoot)
+                .setCapabilities(this.currentCapabilities)
+                .setCapabilitiesByGroup(this.currentCapabilitiesByGroup)
+                .build();
+        this.devices.add(modelDevice);
+        if (modelDevice.isActualDeviceRoot()) {
+            this.actualDeviceRootsById.put(this.currentDeviceId, modelDevice);
+        }
+        this.parseState = WurflXmlParseState.DEVICES;
     }
 
     /**

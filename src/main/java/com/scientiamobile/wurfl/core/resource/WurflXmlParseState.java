@@ -8,6 +8,10 @@ package com.scientiamobile.wurfl.core.resource;
  */
 
 final class WurflXmlParseState {
+    private WurflXmlParseState() {
+        /* This utility class should not be instantiated */
+    }
+
     /**
      * 文档开始状态
      */
