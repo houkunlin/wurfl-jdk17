@@ -26,6 +26,11 @@ final class AppleMatcher extends AbstractMatcher {
     private static final String[] APPLE_DEVICE_KEYWORDS = new String[]{"iPhone", "iPod", "iPad"};
     private static final Pattern IOS_MAJOR_VERSION_PATTERN = Pattern.compile(" (\\d+)_\\d+[ _]");
     private static final Pattern APPLE_HARDWARE_ID_PATTERN = Pattern.compile("(?:iPhone|iPad|iPod) ?(\\d+,\\d+)");
+    private static final String IPOD_PREFIX = "apple_ipod_touch_ver";
+    private static final String IPAD_PREFIX = "apple_ipad_ver1";
+    private static final String IPHONE_PREFIX = "apple_iphone_ver";
+    private static final String IPAD_SUB_PREFIX = IPAD_PREFIX + "_sub";
+    private static final String UNKNOWN_MAJOR_VERSION = "-1";
     private static final List<String> SUPPORTED_DEVICE_IDS = new ArrayList<>();
     private static final Map<String, String> IPHONE_HW_TO_SUBHW = new HashMap<>();
     private static final Map<String, String> IPAD_HW_TO_SUBHW = new HashMap<>();
@@ -619,30 +624,44 @@ final class AppleMatcher extends AbstractMatcher {
     @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String userAgent = request.getNormalizedDeviceUserAgent();
-        Matcher versionMatcher = IOS_MAJOR_VERSION_PATTERN.matcher(userAgent);
-        String majorVersion = "-1";
-        if (versionMatcher.find()) {
-            majorVersion = versionMatcher.group(1);
-        }
+        String majorVersion = extractMajorIosVersion(userAgent);
 
         if (userAgent.contains("CoreMedia")) {
             return COREMEDIA_DEVICE_ID;
-        } else if (userAgent.contains("iPod")) {
-            userAgent = "apple_ipod_touch_ver".concat(majorVersion);
-            return SUPPORTED_DEVICE_IDS.contains(userAgent) ? userAgent : "apple_ipod_touch_ver".concat("1");
-        } else if (userAgent.contains("iPad")) {
-            if ("3".equals(majorVersion)) {
-                return "apple_ipad_ver1".concat("_subua32");
-            } else if ("4".equals(majorVersion)) {
-                return "apple_ipad_ver1".concat("_sub42");
-            } else {
-                userAgent = "apple_ipad_ver1".concat("_sub").concat(majorVersion);
-                return SUPPORTED_DEVICE_IDS.contains(userAgent) ? userAgent : "apple_ipad_ver1";
-            }
-        } else {
-            userAgent = "apple_iphone_ver".concat(majorVersion);
-            return SUPPORTED_DEVICE_IDS.contains(userAgent) ? userAgent : DEFAULT_IPHONE_DEVICE_ID;
         }
+        if (userAgent.contains("iPod")) {
+            String deviceId = IPOD_PREFIX + majorVersion;
+            return SUPPORTED_DEVICE_IDS.contains(deviceId) ? deviceId : IPOD_PREFIX + "1";
+        }
+        if (userAgent.contains("iPad")) {
+            return resolveIpadDeviceId(majorVersion);
+        }
+        // iPhone (default)
+        String deviceId = IPHONE_PREFIX + majorVersion;
+        return SUPPORTED_DEVICE_IDS.contains(deviceId) ? deviceId : DEFAULT_IPHONE_DEVICE_ID;
+    }
+
+    /**
+     * 从 User-Agent 中提取 iOS 主版本号。
+     */
+    private static String extractMajorIosVersion(String userAgent) {
+        Matcher matcher = IOS_MAJOR_VERSION_PATTERN.matcher(userAgent);
+        return matcher.find() ? matcher.group(1) : UNKNOWN_MAJOR_VERSION;
+    }
+
+    /**
+     * 根据 iOS 主版本号解析 iPad 设备 ID。
+     * <p>iOS 3.x 和 4.x 有特殊映射，其余版本使用通用格式。</p>
+     */
+    private static String resolveIpadDeviceId(String majorVersion) {
+        if ("3".equals(majorVersion)) {
+            return IPAD_PREFIX + "_subua32";
+        }
+        if ("4".equals(majorVersion)) {
+            return IPAD_PREFIX + "_sub42";
+        }
+        String deviceId = IPAD_SUB_PREFIX + majorVersion;
+        return SUPPORTED_DEVICE_IDS.contains(deviceId) ? deviceId : IPAD_PREFIX;
     }
 
     /**
