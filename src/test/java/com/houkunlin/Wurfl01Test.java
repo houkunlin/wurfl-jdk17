@@ -429,12 +429,12 @@ class Wurfl01Test {
         Assertions.assertEquals("Chrome Mobile", device.getVirtualCapability("advertised_browser"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
-        Assertions.assertEquals("Huawei BMH-AN20 (Honor 30 5G)", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("Huawei LIO-N29 (Mate 30 Pro 5G)", device.getVirtualCapability("complete_device_name"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
         Assertions.assertEquals("Android", device.getVirtualCapability("advertised_device_os"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
-        Assertions.assertEquals("Huawei Honor 30 5G", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("Huawei Mate 30 Pro 5G", device.getVirtualCapability("device_name"));
         Assertions.assertEquals("120.0.0.0", device.getVirtualCapability("advertised_browser_version"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
@@ -475,5 +475,37 @@ class Wurfl01Test {
         Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
         Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
         Assertions.assertEquals("14", device.getVirtualCapability("advertised_device_os_version"));
+    }
+
+    @DisplayName("鸿蒙 HarmonyOS 平板")
+    @Test
+    void test_10010() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (HarmonyOS; Tablet; HUAWEI MRX-W09) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/120.0.0.0 Safari/537.36");
+        System.out.println(device);
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getVirtualCapabilities()));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getCapabilities()));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app_webview"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_mobile"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_phone"));
+        Assertions.assertEquals("Chrome browser", device.getVirtualCapability("advertised_app_name"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
+        Assertions.assertEquals("Chromium", device.getVirtualCapability("advertised_browser"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_smartphone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
+        Assertions.assertEquals("Huawei MRX-W09 (MatePad Pro)", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("Android", device.getVirtualCapability("advertised_device_os"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
+        Assertions.assertEquals("Huawei MatePad Pro", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("120.0.0.0", device.getVirtualCapability("advertised_browser_version"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_ios"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
+        Assertions.assertEquals("Tablet", device.getVirtualCapability("form_factor"));
+        Assertions.assertEquals("", device.getVirtualCapability("advertised_device_os_version"));
     }
 }

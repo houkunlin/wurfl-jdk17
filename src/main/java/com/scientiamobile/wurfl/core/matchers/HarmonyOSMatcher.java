@@ -68,6 +68,7 @@ final class HarmonyOSMatcher extends MatcherBase {
         addSupportedDevice("huawei_cdy_an00_ver1");     // Mate 40E
         addSupportedDevice("huawei_wlz_an00_ver1");     // Mate X2
         addSupportedDevice("huawei_wlz_al10_ver1");     // Mate X2
+        addSupportedDevice("huawei_mrx_w09_ver1");      // MatePad Pro
 
         // 机型前缀 → 设备 ID 映射
         MODEL_PREFIX_MAP.put("LIO", "huawei_lio_n29_ver1");
@@ -75,6 +76,7 @@ final class HarmonyOSMatcher extends MatcherBase {
         MODEL_PREFIX_MAP.put("NAM", "huawei_nam_al00_ver1");
         MODEL_PREFIX_MAP.put("WGR", "huawei_wgr_w19_ver1");
         MODEL_PREFIX_MAP.put("BTK", "huawei_btk_w09_ver1");
+        MODEL_PREFIX_MAP.put("MRX", "huawei_mrx_w09_ver1");
         MODEL_PREFIX_MAP.put("ABR", "huawei_abr_al00_ver1");
         MODEL_PREFIX_MAP.put("ANA", "huawei_ana_nx9_ver1");
         MODEL_PREFIX_MAP.put("ELS", "huawei_els_nx9_ver1");
@@ -106,10 +108,10 @@ final class HarmonyOSMatcher extends MatcherBase {
 
     @Override
     protected String risMatch(String userAgent) {
-        int firstSlashIndex = StringMatchUtils.firstSlash(userAgent);
-        return firstSlashIndex == -1
-                ? StringMatchUtils.NULL_STRING
-                : StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, firstSlashIndex);
+        int closeParenIndex = StringMatchUtils.firstCloseParenthesis(userAgent);
+        return closeParenIndex != -1
+                ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, closeParenIndex)
+                : StringMatchUtils.NULL_STRING;
     }
 
     @Override
