@@ -2,7 +2,6 @@ package com.scientiamobile.wurfl.core.vcap;
 
 import com.scientiamobile.wurfl.core.Device;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
-import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 import java.io.Serial;
 import java.util.HashMap;
@@ -76,54 +75,78 @@ public class IsApp extends AbstractVirtualCapabilityEvaluator {
     @Override
     public String eval(Device device, WURFLRequest request) {
         String userAgent = request.isUrlEncoded() ? request.getCleanedDeviceUserAgent() : request.getOriginalUserAgent();
-        if (StringMatchUtils.containsAnyOf(userAgent, NON_APP_BROWSER_KEYWORDS.toArray(new String[0]))) {
-            return "false";
-        } else {
-            String deviceOs = device.getCapability("device_os");
-            if ("Android".equals(deviceOs) && userAgent.contains("; wv) ")) {
-                return "true";
-            } else if (!isIosNonSafari(deviceOs, userAgent) && !isMacOsNonSafari(device, userAgent, request)) {
-                if (isRequestedWithAppPackage("Android", deviceOs, request)) {
-                    return "true";
-                } else {
-                    if (ANDROID_WEBKIT_KHTML_PATTERN.matcher(userAgent).find()) {
-                        Matcher androidUaPrefixMatcher = ANDROID_UA_PREFIX_PATTERN.matcher(userAgent);
-                        Matcher androidSafariSuffixMatcher = ANDROID_SAFARI_SUFFIX_PATTERN.matcher(userAgent);
-                        if (androidUaPrefixMatcher.find() || androidSafariSuffixMatcher.find()) {
-                            Matcher chromeVersionMatcher;
-                            chromeVersionMatcher = CHROME_MAJOR_VERSION_PATTERN.matcher(userAgent);
-                            return chromeVersionMatcher.find() && parseIntOrMinusOne(chromeVersionMatcher.group(1)) < 30 ? "false" : "true";
-                        }
-                    }
 
-                    for (String indicator : APP_INDICATOR_PATTERNS) {
-                        if (indicator.startsWith("#")) {
-                            if (HASH_APP_INDICATOR_PATTERNS.get(indicator).matcher(userAgent).find()) {
-                                return "true";
-                            }
-                        } else {
-                            int indicatorLength = indicator.length();
-                            if (indicator.startsWith("^")) {
-                                if (userAgent.startsWith(indicator.substring(1))) {
-                                    return "true";
-                                }
-                            } else if (indicator.charAt(indicatorLength - 1) == '$') {
-                                --indicatorLength;
-                                if (userAgent.indexOf(indicator.substring(0, indicatorLength)) == userAgent.length() - indicatorLength) {
-                                    return "true";
-                                }
-                            } else if (userAgent.contains(indicator)) {
-                                return "true";
-                            }
-                        }
-                    }
-
-                    return "false";
-                }
-            } else {
-                return "true";
+        // Fast path: exclude known non-app browsers
+        for (String keyword : NON_APP_BROWSER_KEYWORDS) {
+            if (userAgent.contains(keyword)) {
+                return "false";
             }
         }
+
+        String deviceOs = device.getCapability("device_os");
+
+        // Android WebView signature
+        if ("Android".equals(deviceOs) && userAgent.contains("; wv) ")) {
+            return "true";
+        }
+
+        // iOS / macOS non-Safari → likely app
+        if (isIosNonSafari(deviceOs, userAgent) || isMacOsNonSafari(device, userAgent, request)) {
+            return "true";
+        }
+
+        // Check X-Requested-With for known app package
+        if (isRequestedWithAppPackage("Android", deviceOs, request)) {
+            return "true";
+        }
+
+        // Analyze Android WebKit User-Agent patterns
+        if (ANDROID_WEBKIT_KHTML_PATTERN.matcher(userAgent).find()) {
+            Matcher androidUaPrefixMatcher = ANDROID_UA_PREFIX_PATTERN.matcher(userAgent);
+            Matcher androidSafariSuffixMatcher = ANDROID_SAFARI_SUFFIX_PATTERN.matcher(userAgent);
+            if (androidUaPrefixMatcher.find() || androidSafariSuffixMatcher.find()) {
+                // Chrome >= 30 → likely app; Chrome < 30 → not an app
+                return Boolean.toString(!isChromeVersionBelow30(userAgent));
+            }
+        }
+
+        // Check known app indicator patterns
+        return Boolean.toString(matchesAppIndicator(userAgent));
+    }
+
+    /**
+     * 判断 Chrome 主版本号是否低于 30。
+     */
+    private static boolean isChromeVersionBelow30(String userAgent) {
+        Matcher chromeVersionMatcher = CHROME_MAJOR_VERSION_PATTERN.matcher(userAgent);
+        return chromeVersionMatcher.find() && parseIntOrMinusOne(chromeVersionMatcher.group(1)) < 30;
+    }
+
+    /**
+     * 在预定义的 App 特征关键词列表中查找匹配项。
+     * <p>支持前缀（^）、后缀（$）、哈希模式（#）和包含匹配四种格式。</p>
+     */
+    private static boolean matchesAppIndicator(String userAgent) {
+        for (String indicator : APP_INDICATOR_PATTERNS) {
+            if (indicator.startsWith("#")) {
+                Pattern pattern = HASH_APP_INDICATOR_PATTERNS.get(indicator);
+                if (pattern != null && pattern.matcher(userAgent).find()) {
+                    return true;
+                }
+            } else if (indicator.startsWith("^")) {
+                if (userAgent.startsWith(indicator.substring(1))) {
+                    return true;
+                }
+            } else if (indicator.endsWith("$")) {
+                String prefix = indicator.substring(0, indicator.length() - 1);
+                if (userAgent.endsWith(prefix)) {
+                    return true;
+                }
+            } else if (userAgent.contains(indicator)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
