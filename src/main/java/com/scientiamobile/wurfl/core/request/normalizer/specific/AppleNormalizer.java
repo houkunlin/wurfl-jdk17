@@ -108,12 +108,12 @@ public class AppleNormalizer implements UserAgentNormalizer {
             if (iosClientSdkMatcher.matches()) {
                 return iosClientSdkMatcher.group(1);
             }
-            if (findMatcher(userAgent, CPU_IOS_PATTERN) != null) {
+            if (CPU_IOS_PATTERN.matcher(userAgent).find()) {
                 String rewrittenUserAgent = userAgent.contains("iPad")
                         ? userAgent.replace("CPU iOS", "CPU OS")
                         : userAgent.replace("CPU iOS", "CPU iPhone OS");
-                Matcher versionMatcher = findMatcher(rewrittenUserAgent, CPU_OS_LIKE_PATTERN);
-                if (versionMatcher != null) {
+                Matcher versionMatcher = CPU_OS_LIKE_PATTERN.matcher(rewrittenUserAgent);
+                if (versionMatcher.find()) {
                     String cpuOsLike = versionMatcher.group(1).replace(".", "_");
                     return rewrittenUserAgent.replace(" U;", "").replaceAll("CPU(?: iPhone)? OS ([\\d\\.]+) like", cpuOsLike);
                 }

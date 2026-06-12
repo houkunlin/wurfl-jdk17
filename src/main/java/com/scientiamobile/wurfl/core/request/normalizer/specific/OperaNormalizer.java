@@ -28,13 +28,13 @@ public class OperaNormalizer implements UserAgentNormalizer {
      */
     @Override
     public String normalize(String userAgent) {
-        Matcher versionMatcher;
-        versionMatcher = OPERA_VERSION_PATTERN.matcher(userAgent);
-        if (userAgent.startsWith("Opera/9.80") && versionMatcher.find()) {
-            return userAgent.replace("Opera/9.80", "Opera/" + versionMatcher.group(1));
-        } else {
-            versionMatcher = OPERA_CHROMIUM_VERSION_PATTERN.matcher(userAgent);
-            return versionMatcher.find() ? "Opera/" + versionMatcher.group(1) + " " + userAgent : userAgent;
+        if (userAgent.startsWith("Opera/9.80")) {
+            Matcher versionMatcher = OPERA_VERSION_PATTERN.matcher(userAgent);
+            if (versionMatcher.find()) {
+                return userAgent.replace("Opera/9.80", "Opera/" + versionMatcher.group(1));
+            }
         }
+        Matcher versionMatcher = OPERA_CHROMIUM_VERSION_PATTERN.matcher(userAgent);
+        return versionMatcher.find() ? "Opera/" + versionMatcher.group(1) + " " + userAgent : userAgent;
     }
 }
