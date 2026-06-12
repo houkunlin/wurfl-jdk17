@@ -22,6 +22,8 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
     private static final Pattern MAC_OUTLOOK_PATTERN = Pattern.compile("^MacOutlook ([0-9]+).");
     private static final String[] MOBILE_KEYWORDS;
     private static final List<String> REQUIRED_DEVICE_IDS;
+    private static final String CFNETWORK = "CFNetwork";
+    private static final String AIRMAIL = "Airmail";
 
     static {
         List<String> mobileKeywords = UserAgentUtils.getMobileKeywords();
@@ -56,7 +58,7 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
     @Override
     public boolean canHandle(WURFLRequest request) {
         String deviceUserAgent = request.getDeviceUserAgent();
-        return request._internalIsEmailClient() && !StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office") || deviceUserAgent.contains("Spark/") && deviceUserAgent.contains("CFNetwork/");
+        return request._internalIsEmailClient() && !StringMatchUtils.containsAnyOf(deviceUserAgent, "Office", "office") || deviceUserAgent.contains("Spark/") && deviceUserAgent.contains(CFNETWORK);
     }
 
     /**
@@ -114,37 +116,53 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
      */
     @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
-        String deviceUserAgent = request.getDeviceUserAgent();
-        if (deviceUserAgent.contains("Thunderbird")) {
-            return MOZILLA_THUNDERBIRD;
-        } else if (deviceUserAgent.contains("Outlook-Express")) {
-            return "outlook_express";
-        } else if (deviceUserAgent.contains("MacOutlook")) {
-            return "mac_outlook";
-        } else if (deviceUserAgent.contains("Outlook") && deviceUserAgent.contains("CFNetwork")) {
-            return "ms_outlook_ios_ver1";
-        } else if (deviceUserAgent.contains("Outlook")) {
-            return MS_OUTLOOK;
-        } else if (deviceUserAgent.contains("Lotus-Notes")) {
-            return "lotus_notes_ver1";
-        } else if (deviceUserAgent.contains("Eudora/")) {
-            return "eudora_ver1";
-        } else if (deviceUserAgent.contains("Evolution/")) {
-            return "evolution_ver1";
-        } else if (deviceUserAgent.contains("PocoMail/")) {
-            return "pocomail_ver1";
-        } else if (deviceUserAgent.contains("The Bat!")) {
-            return "thebat_ver1";
-        } else if (deviceUserAgent.contains("Postbox/")) {
-            return "postbox_ver1";
-        } else if (deviceUserAgent.contains("Airmail") && deviceUserAgent.contains("CFNetwork") && !deviceUserAgent.contains("x86_64")) {
-            return "airmail_ios_ver1";
-        } else if (deviceUserAgent.contains("Airmail")) {
-            return "airmail_ver1";
-        } else if (deviceUserAgent.contains("Spark/") && deviceUserAgent.contains("CFNetwork")) {
-            return "spark_ios_ver1";
-        } else {
-            return StringMatchUtils.containsAnyOf(deviceUserAgent, MOBILE_KEYWORDS) ? "generic_mobile_email_client" : "generic_email_client";
+        String ua = request.getDeviceUserAgent();
+        if (ua == null) {
+            return "generic_email_client";
         }
+        if (ua.contains("Thunderbird")) {
+            return MOZILLA_THUNDERBIRD;
+        }
+        if (ua.contains("Outlook-Express")) {
+            return "outlook_express";
+        }
+        if (ua.contains("MacOutlook")) {
+            return "mac_outlook";
+        }
+        if (ua.contains("Outlook") && ua.contains(CFNETWORK)) {
+            return "ms_outlook_ios_ver1";
+        }
+        if (ua.contains("Outlook")) {
+            return MS_OUTLOOK;
+        }
+        if (ua.contains("Lotus-Notes")) {
+            return "lotus_notes_ver1";
+        }
+        if (ua.contains("Eudora/")) {
+            return "eudora_ver1";
+        }
+        if (ua.contains("Evolution/")) {
+            return "evolution_ver1";
+        }
+        if (ua.contains("PocoMail/")) {
+            return "pocomail_ver1";
+        }
+        if (ua.contains("The Bat!")) {
+            return "thebat_ver1";
+        }
+        if (ua.contains("Postbox/")) {
+            return "postbox_ver1";
+        }
+        // Airmail iOS: must be on Apple networking, not macOS (x86_64)
+        if (!ua.contains("x86_64") && ua.contains(CFNETWORK) && ua.contains(AIRMAIL)) {
+            return "airmail_ios_ver1";
+        }
+        if (ua.contains(AIRMAIL)) {
+            return "airmail_ver1";
+        }
+        if (ua.contains("Spark/") && ua.contains(CFNETWORK)) {
+            return "spark_ios_ver1";
+        }
+        return StringMatchUtils.containsAnyOf(ua, MOBILE_KEYWORDS) ? "generic_mobile_email_client" : "generic_email_client";
     }
 }
