@@ -135,312 +135,569 @@ public final class VirtualCapabilityUserAgentTool {
      * @return 包含识别结果的虚拟能力设备
      */
 
-    public final VirtualCapabilityDevice assignProperties(WURFLRequest request, InternalDevice internalDevice) {
-        VirtualCapabilityDevice virtualCapabilityDevice = new VirtualCapabilityDevice(request);
-        InternalDevice device = internalDevice;
-        VirtualCapabilityDevice deviceWithPairs = virtualCapabilityDevice;
-        if (deviceWithPairs.getOsPair().containsAndSetName(deviceWithPairs.getDeviceUserAgent(), "Windows CE", "Windows Mobile")) {
-            deviceWithPairs.getBrowserPair().setName("IE Mobile");
-        } else if (!StringMatchUtils.containsAnyOf(deviceWithPairs.getDeviceUserAgent(), "Windows Phone", "; wds") || !deviceWithPairs.getOsPair().matchAndSetGroup(WINDOWS_PHONE_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Windows Phone", 1) && !deviceWithPairs.getOsPair().matchAndSetGroup(WINDOWS_UCWEB_WDS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Windows Phone", 1) && !deviceWithPairs.getOsPair().matchAndSetGroup(WINDOWS_PHONE_VERSION_SLASH_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Windows Phone", 1)) {
-            label422:
-            {
-                if (deviceWithPairs.getDeviceUserAgent().contains("Nintendo")) {
-                    deviceWithPairs.getOsPair().setName("Nintendo");
-                    if (deviceWithPairs.getBrowserPair().matchAndSetGroup(NINTENDO_NETFRONT_NX_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Netfront NX", 1) || deviceWithPairs.getBrowserPair().matchAndSetGroup(NINTENDO_NETFRONT_NX_VERSION_PATTERN_2, deviceWithPairs.getBrowserUserAgent(), "Netfront NX", 1) || deviceWithPairs.getBrowserPair().matchAndSetGroup(NINTENDO_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Nintendo Browser", 1)) {
-                        break label422;
-                    }
+    public VirtualCapabilityDevice assignProperties(WURFLRequest request, InternalDevice internalDevice) {
+        VirtualCapabilityDevice vcd = new VirtualCapabilityDevice(request);
+        NameVersionPair osPair = vcd.getOsPair();
+        NameVersionPair browserPair = vcd.getBrowserPair();
+        String deviceUA = vcd.getDeviceUserAgent();
+        String browserUA = vcd.getBrowserUserAgent();
 
-                    deviceWithPairs.getBrowserPair().setName("Nintendo Browser");
-                }
-
-                if (StringMatchUtils.containsAnyOf(deviceWithPairs.getDeviceUserAgent(), "Android", "android", " Adr ")) {
-                    label403:
-                    {
-                        deviceWithPairs.getOsPair().setName("Android");
-                        deviceWithPairs.getOsPair().matchAndSetGroup(ANDROID_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Android", 1);
-                        deviceWithPairs.getOsPair().matchAndSetGroup(AMAZON_ANDROID_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Android", 1);
-                        deviceWithPairs.getOsPair().matchAndSetGroup(ADR_ANDROID_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Android", 1);
-                        String deviceOs;
-                        deviceOs = device.getCapability("device_os");
-                        if (deviceOs.equals("Fire OS")) {
-                            String deviceOsVersion = device.getCapability("device_os_version");
-                            deviceWithPairs.getOsPair().setName(deviceOs);
-                            deviceWithPairs.getOsPair().setVersion(deviceOsVersion);
-                        }
-
-                        if (StringMatchUtils.indexOf(deviceWithPairs.getBrowserUserAgent(), "Dalvik") >= 0) {
-                            deviceWithPairs.getBrowserPair().setName("Android App");
-                            if (deviceWithPairs.getBrowserPair().matchAndSetGroup(ANDROID_APP_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), (String) null, 1)) {
-                                break label403;
-                            }
-                        }
-
-                        if (!deviceWithPairs.getBrowserPair().matchAndSet(FACEBOOK_ANDROID_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Facebook on Android", deviceWithPairs.getOsPair().getVersion()) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(AMAZON_SHOPPING_ANDROID_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Amazon Shopping App", 1)) {
-                            if (deviceWithPairs.getBrowserPair().matchAndSetNameAndGroup(ANDROID_MOBILE_APP_NAME_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), 2)) {
-                                deviceWithPairs.getBrowserPair().setName(deviceWithPairs.getBrowserPair().getName() + " Mobile Application");
-                            } else if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_OPR_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Opera", 1)) {
-                                if (StringMatchUtils.containsAnyOf(deviceWithPairs.getBrowserUserAgent(), "Aphone Browser", "360browser")) {
-                                    deviceWithPairs.getBrowserPair().setName("360 Browser");
-                                } else if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(FIREFOX_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Firefox Mobile", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(FIREFOX_FOCUS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Firefox Focus", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_MOBILE_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Opera Mobile", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_MINI_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Opera Mini", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_TABLET_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Opera Tablet", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(UC_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Browser", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(UC_BROWSER_JUC_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Browser", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(AMAZON_SILK_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Amazon Silk Browser", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(BAIDU_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Baidu Browser", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(SAMSUNG_BROWSER_CHROME_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Samsung Browser", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(EDGE_ANDROID_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Edge", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(CHROMIUM_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Chromium", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(CHROME_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Chrome Mobile", 1) && !deviceWithPairs.getBrowserPair().matchAndSet(ANDROID_WEBKIT_VERSION_MARKER_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Android Webkit", deviceWithPairs.getOsPair().getVersion())) {
-                                    deviceWithPairs.getBrowserPair().setName("Android");
-                                    deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getVersion());
-                                }
-                            }
-                        }
-                    }
-                } else if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Silk") >= 0 && deviceWithPairs.getBrowserPair().matchAndSetGroup(AMAZON_SILK_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Amazon Silk Browser", 1)) {
-                    deviceWithPairs.getOsPair().setName("Android");
-                    deviceWithPairs.getOsPair().setVersion("");
-                } else if (StringMatchUtils.containsAnyOf(deviceWithPairs.getDeviceUserAgent(), "iPhone", "iPad", "iPod", "iPod touch", "(iOS;")) {
-                    deviceWithPairs.getOsPair().setName("iOS");
-                    if (deviceWithPairs.getOsPair().matchAndSetGroup(IOS_CPU_OS_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 2) || deviceWithPairs.getOsPair().matchAndSetGroup(IOS_SCALE_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1) || deviceWithPairs.getOsPair().matchAndSetGroup(IOS_SERVER_BAG_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1) || deviceWithPairs.getOsPair().matchAndSetGroup(IOS_DEVICE_PREFIX_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1) || deviceWithPairs.getOsPair().matchAndSetGroup(IOS_DEVICE_IOS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1)) {
-                        deviceWithPairs.getOsPair().setVersion(deviceWithPairs.getOsPair().getVersion().replace("_", "."));
-                    }
-
-                    if (deviceWithPairs.getOsPair().matchAndSetGroup(IOS_UCWEB_OS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "iOS", 1)) {
-                        deviceWithPairs.getOsPair().setVersion(deviceWithPairs.getOsPair().getVersion().replace("_", "."));
-                    }
-
-                    if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_CHROME_CRIOS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Chrome Mobile on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_FIREFOX_FOCUS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Firefox Focus", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_FIREFOX_FXIOS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Firefox on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_OPERA_OPIOS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Opera Mini on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_UC_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Web Browser on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_UCWEB_UCBROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Web Browser on iOS", 1) && !deviceWithPairs.getBrowserPair().matchAndSet(IOS_FACEBOOK_FBAN_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Facebook on iOS", deviceWithPairs.getOsPair().getVersion())) {
-                        if (deviceWithPairs.getBrowserPair().matchAndSetNameAndGroup(IOS_MOBILE_APP_NAME_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), 2)) {
-                            deviceWithPairs.getBrowserPair().setName(deviceWithPairs.getBrowserPair().getName() + " Mobile Application");
-                        } else if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_GOOGLE_SEARCH_APP_GSA_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Google Search Application", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(EDGE_IOS_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Edge", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(IOS_SAFARI_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Mobile Safari", 1)) {
-                            deviceWithPairs.getBrowserPair().setName("Mobile Safari");
-                            deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getVersion());
-                        }
-                    }
-                } else if (deviceWithPairs.getDeviceUserAgent().contains("Tizen")) {
-                    deviceWithPairs.getOsPair().matchAndSetGroup(TIZEN_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Tizen", 1);
-                    if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(SAMSUNG_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Samsung Browser", 1)) {
-                        deviceWithPairs.getBrowserPair().setName("Tizen Browser");
-                        deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getVersion());
-                    }
-                } else if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "OviBrowser") >= 0 && deviceWithPairs.getBrowserPair().matchAndSetGroup(NOKIA_S40_OVI_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "S40 Ovi Browser", 1)) {
-                    deviceWithPairs.getOsPair().setName("Nokia Series 40");
-                } else if (!deviceWithPairs.getOsPair().matchAndSetGroup(SYMBIAN_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Symbian S60", 1) && !deviceWithPairs.getOsPair().matchAndSetGroup(SYMBIAN_UCWEB_S60_MAJOR_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Symbian S60", 1)) {
-                    if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "BlackBerry") < 0 && StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "(BB10; ") < 0) {
-                        if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "RIM Tablet OS") >= 0 && deviceWithPairs.getOsPair().matchAndSetGroup(RIM_TABLET_OS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "RIM Tablet OS", 1)) {
-                            deviceWithPairs.getBrowserPair().setName("RIM OS Browser");
-                            deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                        } else if ((StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "NetFront") < 0 || !deviceWithPairs.getBrowserPair().matchAndSetGroup(NETFRONT_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "NetFront", 1)) && (!deviceWithPairs.getBrowserPair().containsAndSetName(deviceWithPairs.getDeviceUserAgent(), "Obigo", "Teleca Obigo") || !deviceWithPairs.getBrowserPair().matchAndSetGroup(OBIGO_Q_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), (String) null, 1))) {
-                            if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Dolfin") >= 0 && deviceWithPairs.getOsPair().matchAndSetGroup(BADA_DOLFIN_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Bada", 1)) {
-                                deviceWithPairs.getBrowserPair().setName("Dolfin Browser");
-                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                            } else if (!deviceWithPairs.getBrowserPair().containsAndSetName(deviceWithPairs.getDeviceUserAgent(), "MAUI", "MAUI Browser") && (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Dolfin") < 0 || !deviceWithPairs.getBrowserPair().matchAndSetGroup(OPENWAVE_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Openwave Browser", 1))) {
-                                if (deviceWithPairs.getOsPair().matchAndSetGroup(WEBOS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "webOS", 1)) {
-                                    deviceWithPairs.getBrowserPair().setName("webOS Browser");
-                                    deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getVersion());
-                                } else {
-                                    label407:
-                                    {
-                                        if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Opera") >= 0) {
-                                            if (deviceWithPairs.getBrowserPair().containsAndSetName(deviceWithPairs.getDeviceUserAgent(), "Opera Mobi", "Opera Mobile")) {
-                                                deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_MOBI_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), (String) null, 1);
-                                                break label407;
-                                            }
-
-                                            if (deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_MINI_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Opera Mini", 1) || deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_LINK_SYNC_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Opera Link Sync", 1)) {
-                                                break label407;
-                                            }
-                                        }
-
-                                        if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Maemo") >= 0) {
-                                            deviceWithPairs.getOsPair().setName("Maemo");
-                                            if (deviceWithPairs.getBrowserPair().matchAndSetGroup(MAEMO_FIREFOX_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Firefox", 1)) {
-                                                break label407;
-                                            }
-                                        }
-
-                                        if ((!StringMatchUtils.containsAnyOf(deviceWithPairs.getDeviceUserAgent(), "Java", "UCBrowser/") || !deviceWithPairs.getBrowserPair().matchAndSetGroup(UCWEB_JAVA_UCBROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UCBrowser Java Applet", 1)) && !deviceWithPairs.getBrowserPair().matchAndSet(JAVA_APPLET_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Java Applet", (String) null)) {
-                                            label315:
-                                            {
-                                                if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "DesktopApp") != -1) {
-                                                    if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(DESKTOP_APP_MAC_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                        deviceWithPairs.getBrowserPair().setName(deviceWithPairs.getOsPair().getGroup(2) + " Desktop Application");
-                                                        deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(3));
-                                                        break label315;
-                                                    }
-
-                                                    if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(DESKTOP_APP_WINDOWS_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                        deviceWithPairs.getBrowserPair().setName(deviceWithPairs.getOsPair().getGroup(2) + " Desktop Application");
-                                                        deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(3));
-                                                        break label315;
-                                                    }
-                                                }
-
-                                                if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(BAIDU_BROWSER_OS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                    deviceWithPairs.getBrowserPair().setName("Baidu Browser");
-                                                    deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                } else if (StringMatchUtils.containsAnyOf(deviceWithPairs.getDeviceUserAgent(), "360Browser", "360SE") && deviceWithPairs.getOsPair().matchAndSetNameFromGroup(BROWSER_360_OS_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                    deviceWithPairs.getBrowserPair().setName("360 Browser");
-                                                } else if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "MSIE") >= 0 && deviceWithPairs.getOsPair().matchAndSetNameFromGroup(MSIE_WINDOWS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 2)) {
-                                                    deviceWithPairs.getBrowserPair().setName("IE");
-                                                    deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(1));
-                                                } else {
-                                                    label416:
-                                                    {
-                                                        if (StringMatchUtils.containsAnyOf(deviceWithPairs.getDeviceUserAgent(), "Trident", " Edge/")) {
-                                                            if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(TRIDENT_WINDOWS_RV_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                                deviceWithPairs.getBrowserPair().setName("IE");
-                                                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                break label416;
-                                                            }
-
-                                                            if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(EDGE_WINDOWS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                                deviceWithPairs.getBrowserPair().setName("Edge");
-                                                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                break label416;
-                                                            }
-                                                        }
-
-                                                        if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "YaBrowser") >= 0 && deviceWithPairs.getOsPair().matchAndSetNameFromGroup(YANDEX_BROWSER_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                            deviceWithPairs.getBrowserPair().setName("Yandex browser");
-                                                            deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                        } else if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "OPR") >= 0 && deviceWithPairs.getOsPair().matchAndSetNameFromGroup(OPERA_OPR_DESKTOP_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                            deviceWithPairs.getBrowserPair().setName("Opera");
-                                                            deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                        } else if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Opera") >= 0 && deviceWithPairs.getOsPair().matchAndSetNameFromGroup(OPERA_CLASSIC_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 2)) {
-                                                            deviceWithPairs.getBrowserPair().setName("Opera");
-                                                            deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(1));
-                                                            deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), (String) null, 1);
-                                                        } else {
-                                                            label419:
-                                                            {
-                                                                if (deviceWithPairs.getDeviceUserAgent().contains("Linux x86_64") && deviceWithPairs.getDeviceUserAgent().contains("SamsungBrowser/")) {
-                                                                    deviceWithPairs.getOsPair().setName("Linux");
-                                                                    if (deviceWithPairs.getBrowserPair().matchAndSetGroup(SAMSUNG_BROWSER_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "DeX Samsung Browser", 1)) {
-                                                                        break label419;
-                                                                    }
-                                                                }
-
-                                                                if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Chrome") >= 0) {
-                                                                    if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(CHROME_MAC_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                                        deviceWithPairs.getBrowserPair().setName("Chrome");
-                                                                        deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                        break label419;
-                                                                    }
-
-                                                                    if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(CHROME_WINDOWS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                                        deviceWithPairs.getBrowserPair().setName("Chrome");
-                                                                        deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                        break label419;
-                                                                    }
-                                                                }
-
-                                                                if (deviceWithPairs.getDeviceUserAgent().contains("Epiphany/")) {
-                                                                    deviceWithPairs.getOsPair().setName("Linux");
-                                                                    if (deviceWithPairs.getBrowserPair().matchAndSetGroup(EPIPHANY_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Epiphany", 1)) {
-                                                                        break label419;
-                                                                    }
-                                                                }
-
-                                                                if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Safari") >= 0 && deviceWithPairs.getOsPair().matchAndSetNameFromGroup(SAFARI_DESKTOP_VERSION_PATTERN, deviceWithPairs.getCleanedDeviceUserAgent(), 1)) {
-                                                                    if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "CFNetwork") >= 0) {
-                                                                        deviceWithPairs.getBrowserPair().setName("OSX App");
-                                                                        deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                    } else {
-                                                                        deviceWithPairs.getBrowserPair().setName("Safari");
-                                                                        deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                    }
-                                                                } else {
-                                                                    label420:
-                                                                    {
-                                                                        if (deviceWithPairs.getDeviceUserAgent().contains("PaleMoon")) {
-                                                                            if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(PALEMOON_WINDOWS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                                                deviceWithPairs.getBrowserPair().setName("PaleMoon");
-                                                                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                                break label420;
-                                                                            }
-
-                                                                            if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(PALEMOON_LINUX_MAC_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                                                deviceWithPairs.getBrowserPair().setName("PaleMoon");
-                                                                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                                break label420;
-                                                                            }
-                                                                        }
-
-                                                                        if (StringMatchUtils.indexOf(deviceWithPairs.getDeviceUserAgent(), "Firefox") >= 0) {
-                                                                            if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(FIREFOX_WINDOWS_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                                                deviceWithPairs.getBrowserPair().setName("Firefox");
-                                                                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                                break label420;
-                                                                            }
-
-                                                                            if (deviceWithPairs.getOsPair().matchAndSetNameFromGroup(FIREFOX_LINUX_MAC_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1)) {
-                                                                                deviceWithPairs.getBrowserPair().setName("Firefox");
-                                                                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                                                                                break label420;
-                                                                            }
-
-                                                                            if (deviceWithPairs.getBrowserUserAgent().contains("(X11; ")) {
-                                                                                deviceWithPairs.getOsPair().setName("Linux");
-                                                                                deviceWithPairs.getBrowserPair().matchAndSetGroup(FIREFOX_SIMPLE_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Firefox", 1);
-                                                                                break label420;
-                                                                            }
-                                                                        }
-
-                                                                        if (StringMatchUtils.indexOf(deviceWithPairs.getBrowserUserAgent(), "CFNetwork") >= 0) {
-                                                                            deviceWithPairs.getOsPair().setName(device.getCapability("device_os"));
-                                                                            deviceWithPairs.getOsPair().setVersion(device.getCapability("device_os_version"));
-                                                                            deviceWithPairs.getBrowserPair().setName("CFNetwork App");
-                                                                            deviceWithPairs.getBrowserPair().setVersion(device.getCapability("mobile_browser_version"));
-                                                                        } else {
-                                                                            String browserUserAgent;
-                                                                            if (!deviceWithPairs.getOsPair().matchAndSetNameFromGroup(WINDOWS_OS_NAME_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1) && !deviceWithPairs.getOsPair().matchAndSetNameFromGroup(MAC_OS_NAME_PATTERN, deviceWithPairs.getDeviceUserAgent(), 1) && (browserUserAgent = deviceWithPairs.getBrowserUserAgent()) != null && (browserUserAgent.contains("(X11; ") || browserUserAgent.contains("Linux x86_64"))) {
-                                                                                deviceWithPairs.getOsPair().setName("Linux");
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        deviceWithPairs.getOsPair().matchAndSet(BLACKBERRY_PATTERN, deviceWithPairs.getDeviceUserAgent(), "BlackBerry", (String) null);
-                        deviceWithPairs.getOsPair().matchAndSetGroup(BLACKBERRY_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), (String) null, 1);
-                        if (deviceWithPairs.getOsPair().matchAndSetGroup(BLACKBERRY_UC_BROWSER_PATTERN, deviceWithPairs.getDeviceUserAgent(), (String) null, 1)) {
-                            deviceWithPairs.getBrowserPair().setName("UC Web");
-                            deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                        } else if (deviceWithPairs.getOsPair().matchAndSetGroup(UCWEB_UCBROWSER_COMBINED_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), (String) null, 1)) {
-                            deviceWithPairs.getBrowserPair().setName("UC Web");
-                            deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getGroup(2));
-                        } else if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_MINI_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Opera Mini", 1)) {
-                            if (deviceWithPairs.getOsPair().matchAndSetGroup(BLACKBERRY_BROWSER_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), (String) null, 1)) {
-                                deviceWithPairs.getBrowserPair().setName("BlackBerry Browser");
-                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getVersion());
-                            } else if (deviceWithPairs.getOsPair().matchAndSetGroup(BB10_BROWSER_VERSION_PATTERN, deviceWithPairs.getDeviceUserAgent(), (String) null, 1)) {
-                                deviceWithPairs.getBrowserPair().setName("BlackBerry Webkit Browser");
-                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getVersion());
-                            } else {
-                                deviceWithPairs.getBrowserPair().setName("BlackBerry Browser");
-                                deviceWithPairs.getBrowserPair().setVersion(deviceWithPairs.getOsPair().getVersion());
-                            }
-                        }
-                    }
-                } else {
-                    deviceWithPairs.getOsPair().matchAndSet(SYMBIAN3_PATTERN, deviceWithPairs.getDeviceUserAgent(), "Symbian", "^3");
-                    if (!deviceWithPairs.getBrowserPair().matchAndSetGroup(NOKIA_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Symbian S60 Browser", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(OPERA_MOBI_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Opera Mobi", 1) && !deviceWithPairs.getBrowserPair().matchAndSetGroup(SYMBIAN_UCWEB_UCBROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Web Browser on Symbian", 1)) {
-                        deviceWithPairs.getBrowserPair().setName("Symbian S60 Browser");
-                    }
-                }
-            }
-        } else if (deviceWithPairs.getBrowserPair().matchAndSetNameAndGroup(MOBILE_APP_NAME_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), 2)) {
-            deviceWithPairs.getBrowserPair().setName(deviceWithPairs.getBrowserPair().getName() + " Mobile Application");
+        // Windows CE / Windows Mobile → IE Mobile
+        if (osPair.containsAndSetName(deviceUA, "Windows CE", "Windows Mobile")) {
+            browserPair.setName("IE Mobile");
+        }
+        // 非 Windows Phone，或 Windows Phone 版本未匹配 → 进入平台识别分支
+        else if (!StringMatchUtils.containsAnyOf(deviceUA, "Windows Phone", "; wds")
+                || (!osPair.matchAndSetGroup(WINDOWS_PHONE_VERSION_PATTERN, deviceUA, "Windows Phone", 1)
+                && !osPair.matchAndSetGroup(WINDOWS_UCWEB_WDS_VERSION_PATTERN, deviceUA, "Windows Phone", 1)
+                && !osPair.matchAndSetGroup(WINDOWS_PHONE_VERSION_SLASH_PATTERN, deviceUA, "Windows Phone", 1))) {
+            detectOsAndBrowser(vcd, internalDevice);
+        }
+        // Windows Phone 版本已匹配 → 尝试 Mobile App / 兜底浏览器
+        else if (browserPair.matchAndSetNameAndGroup(MOBILE_APP_NAME_VERSION_PATTERN, browserUA, 2)) {
+            browserPair.setName(browserPair.getName() + " Mobile Application");
         } else {
-            deviceWithPairs.getBrowserPair().matchAndSetGroup(UC_BROWSER_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "UC Browser", 1);
-            deviceWithPairs.getBrowserPair().matchAndSetGroup(IE_MOBILE_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "IE Mobile", 1);
-            deviceWithPairs.getBrowserPair().matchAndSetGroup(EDGE_VERSION_PATTERN, deviceWithPairs.getBrowserUserAgent(), "Edge Mobile", 1);
+            browserPair.matchAndSetGroup(UC_BROWSER_VERSION_PATTERN, browserUA, "UC Browser", 1);
+            browserPair.matchAndSetGroup(IE_MOBILE_VERSION_PATTERN, browserUA, "IE Mobile", 1);
+            browserPair.matchAndSetGroup(EDGE_VERSION_PATTERN, browserUA, "Edge Mobile", 1);
         }
 
-        virtualCapabilityDevice.normalizeOS();
-        virtualCapabilityDevice.normalizeBrowser();
-        return virtualCapabilityDevice;
+        vcd.normalizeOS();
+        vcd.normalizeBrowser();
+        return vcd;
+    }
+
+    // ========================================================================
+    // 平台识别分发 (原 label422 块)
+    // ========================================================================
+
+    /**
+     * 检测非 Windows Phone 设备的操作系统和浏览器。
+     * <p>按优先级依次匹配 Nintendo / Android / iOS / Tizen / Symbian / BlackBerry 等平台，
+     * 通过 {@code return} 退出（替代原 label break）。</p>
+     */
+    private void detectOsAndBrowser(VirtualCapabilityDevice vcd, InternalDevice device) {
+        NameVersionPair osPair = vcd.getOsPair();
+        NameVersionPair browserPair = vcd.getBrowserPair();
+        String deviceUA = vcd.getDeviceUserAgent();
+        String browserUA = vcd.getBrowserUserAgent();
+
+        // --- Nintendo ---
+        if (deviceUA.contains("Nintendo")) {
+            osPair.setName("Nintendo");
+            if (browserPair.matchAndSetGroup(NINTENDO_NETFRONT_NX_VERSION_PATTERN, browserUA, "Netfront NX", 1)
+                    || browserPair.matchAndSetGroup(NINTENDO_NETFRONT_NX_VERSION_PATTERN_2, browserUA, "Netfront NX", 1)
+                    || browserPair.matchAndSetGroup(NINTENDO_BROWSER_VERSION_PATTERN, browserUA, "Nintendo Browser", 1)) {
+                return;
+            }
+            browserPair.setName("Nintendo Browser");
+            // 浏览器未匹配时继续向下尝试其他平台
+        }
+
+        // --- Android ---
+        if (StringMatchUtils.containsAnyOf(deviceUA, "Android", "android", " Adr ")) {
+            handleAndroidDevice(vcd, device);
+            return;
+        }
+
+        // --- Silk → Android (无版本号) ---
+        if (StringMatchUtils.indexOf(deviceUA, "Silk") >= 0
+                && browserPair.matchAndSetGroup(AMAZON_SILK_VERSION_PATTERN, browserUA, "Amazon Silk Browser", 1)) {
+            osPair.setName("Android");
+            osPair.setVersion("");
+            return;
+        }
+
+        // --- iOS ---
+        if (StringMatchUtils.containsAnyOf(deviceUA, "iPhone", "iPad", "iPod", "iPod touch", "(iOS;")) {
+            handleIOSDevice(vcd);
+            return;
+        }
+
+        // --- Tizen ---
+        if (deviceUA.contains("Tizen")) {
+            osPair.matchAndSetGroup(TIZEN_VERSION_PATTERN, deviceUA, "Tizen", 1);
+            if (!browserPair.matchAndSetGroup(SAMSUNG_BROWSER_VERSION_PATTERN, browserUA, "Samsung Browser", 1)) {
+                browserPair.setName("Tizen Browser");
+                browserPair.setVersion(osPair.getVersion());
+            }
+            return;
+        }
+
+        // --- OviBrowser → Nokia Series 40 ---
+        if (StringMatchUtils.indexOf(deviceUA, "OviBrowser") >= 0
+                && browserPair.matchAndSetGroup(NOKIA_S40_OVI_BROWSER_VERSION_PATTERN, browserUA, "S40 Ovi Browser", 1)) {
+            osPair.setName("Nokia Series 40");
+            return;
+        }
+
+        // --- Symbian S60 ---
+        if (osPair.matchAndSetGroup(SYMBIAN_VERSION_PATTERN, deviceUA, "Symbian S60", 1)
+                || osPair.matchAndSetGroup(SYMBIAN_UCWEB_S60_MAJOR_VERSION_PATTERN, deviceUA, "Symbian S60", 1)) {
+            handleSymbianDevice(vcd);
+            return;
+        }
+
+        // --- BlackBerry ---
+        if (StringMatchUtils.indexOf(deviceUA, "BlackBerry") >= 0
+                || StringMatchUtils.indexOf(deviceUA, "(BB10; ") >= 0) {
+            handleBlackBerryDevice(vcd);
+            return;
+        }
+
+        // --- 其他设备 / 桌面浏览器检测 ---
+        handleDesktopOrOtherDevice(vcd, device);
+    }
+
+    // ========================================================================
+    // Android (原 label403 块)
+    // ========================================================================
+
+    /**
+     * 处理 Android 设备的浏览器匹配。
+     */
+    private void handleAndroidDevice(VirtualCapabilityDevice vcd, InternalDevice device) {
+        NameVersionPair osPair = vcd.getOsPair();
+        NameVersionPair browserPair = vcd.getBrowserPair();
+        String deviceUA = vcd.getDeviceUserAgent();
+        String browserUA = vcd.getBrowserUserAgent();
+
+        osPair.setName("Android");
+        osPair.matchAndSetGroup(ANDROID_VERSION_PATTERN, deviceUA, "Android", 1);
+        osPair.matchAndSetGroup(AMAZON_ANDROID_VERSION_PATTERN, deviceUA, "Android", 1);
+        osPair.matchAndSetGroup(ADR_ANDROID_VERSION_PATTERN, deviceUA, "Android", 1);
+
+        // Fire OS 覆盖
+        String deviceOs = device.getCapability("device_os");
+        if ("Fire OS".equals(deviceOs)) {
+            osPair.setName(deviceOs);
+            osPair.setVersion(device.getCapability("device_os_version"));
+        }
+
+        // Dalvik → Android App
+        if (StringMatchUtils.indexOf(browserUA, "Dalvik") >= 0) {
+            browserPair.setName("Android App");
+            browserPair.matchAndSetGroup(ANDROID_APP_VERSION_PATTERN, browserUA, null, 1);
+            return;
+        }
+
+        // Facebook / Amazon Shopping
+        if (browserPair.matchAndSet(FACEBOOK_ANDROID_PATTERN, browserUA, "Facebook on Android", osPair.getVersion())
+                || browserPair.matchAndSetGroup(AMAZON_SHOPPING_ANDROID_VERSION_PATTERN, browserUA, "Amazon Shopping App", 1)) {
+            return;
+        }
+
+        // Mobile App (Android)
+        if (browserPair.matchAndSetNameAndGroup(ANDROID_MOBILE_APP_NAME_VERSION_PATTERN, browserUA, 2)) {
+            browserPair.setName(browserPair.getName() + " Mobile Application");
+            return;
+        }
+
+        // Opera (OPR/)
+        if (browserPair.matchAndSetGroup(OPERA_OPR_VERSION_PATTERN, browserUA, "Opera", 1)) {
+            return;
+        }
+
+        // 360 Browser
+        if (StringMatchUtils.containsAnyOf(browserUA, "Aphone Browser", "360browser")) {
+            browserPair.setName("360 Browser");
+            return;
+        }
+
+        // 各种桌面/移动浏览器
+        if (browserPair.matchAndSetGroup(FIREFOX_VERSION_PATTERN, browserUA, "Firefox Mobile", 1)) return;
+        if (browserPair.matchAndSetGroup(FIREFOX_FOCUS_VERSION_PATTERN, browserUA, "Firefox Focus", 1)) return;
+        if (browserPair.matchAndSetGroup(OPERA_MOBILE_VERSION_PATTERN, browserUA, "Opera Mobile", 1)) return;
+        if (browserPair.matchAndSetGroup(OPERA_MINI_VERSION_PATTERN, browserUA, "Opera Mini", 1)) return;
+        if (browserPair.matchAndSetGroup(OPERA_TABLET_VERSION_PATTERN, browserUA, "Opera Tablet", 1)) return;
+        if (browserPair.matchAndSetGroup(UC_BROWSER_VERSION_PATTERN, browserUA, "UC Browser", 1)) return;
+        if (browserPair.matchAndSetGroup(UC_BROWSER_JUC_VERSION_PATTERN, browserUA, "UC Browser", 1)) return;
+        if (browserPair.matchAndSetGroup(AMAZON_SILK_VERSION_PATTERN, browserUA, "Amazon Silk Browser", 1)) return;
+        if (browserPair.matchAndSetGroup(BAIDU_BROWSER_VERSION_PATTERN, browserUA, "Baidu Browser", 1)) return;
+        if (browserPair.matchAndSetGroup(SAMSUNG_BROWSER_CHROME_VERSION_PATTERN, browserUA, "Samsung Browser", 1))
+            return;
+        if (browserPair.matchAndSetGroup(EDGE_ANDROID_VERSION_PATTERN, browserUA, "Edge", 1)) return;
+        if (browserPair.matchAndSetGroup(CHROMIUM_VERSION_PATTERN, browserUA, "Chromium", 1)) return;
+        if (browserPair.matchAndSetGroup(CHROME_VERSION_PATTERN, browserUA, "Chrome Mobile", 1)) return;
+        if (browserPair.matchAndSet(ANDROID_WEBKIT_VERSION_MARKER_PATTERN, browserUA, "Android Webkit", osPair.getVersion()))
+            return;
+
+        // 兜底
+        browserPair.setName("Android");
+        browserPair.setVersion(osPair.getVersion());
+    }
+
+    // ========================================================================
+    // iOS
+    // ========================================================================
+
+    /**
+     * 处理 iOS 设备的浏览器匹配。
+     */
+    private void handleIOSDevice(VirtualCapabilityDevice vcd) {
+        NameVersionPair osPair = vcd.getOsPair();
+        NameVersionPair browserPair = vcd.getBrowserPair();
+        String deviceUA = vcd.getDeviceUserAgent();
+        String browserUA = vcd.getBrowserUserAgent();
+
+        osPair.setName("iOS");
+        if (osPair.matchAndSetGroup(IOS_CPU_OS_PATTERN, deviceUA, "iOS", 2)
+                || osPair.matchAndSetGroup(IOS_SCALE_PATTERN, deviceUA, "iOS", 1)
+                || osPair.matchAndSetGroup(IOS_SERVER_BAG_PATTERN, deviceUA, "iOS", 1)
+                || osPair.matchAndSetGroup(IOS_DEVICE_PREFIX_VERSION_PATTERN, deviceUA, "iOS", 1)
+                || osPair.matchAndSetGroup(IOS_DEVICE_IOS_VERSION_PATTERN, deviceUA, "iOS", 1)) {
+            osPair.setVersion(osPair.getVersion().replace("_", "."));
+        }
+        if (osPair.matchAndSetGroup(IOS_UCWEB_OS_VERSION_PATTERN, deviceUA, "iOS", 1)) {
+            osPair.setVersion(osPair.getVersion().replace("_", "."));
+        }
+
+        // 知名浏览器
+        if (browserPair.matchAndSetGroup(IOS_CHROME_CRIOS_VERSION_PATTERN, browserUA, "Chrome Mobile on iOS", 1))
+            return;
+        if (browserPair.matchAndSetGroup(IOS_FIREFOX_FOCUS_VERSION_PATTERN, browserUA, "Firefox Focus", 1)) return;
+        if (browserPair.matchAndSetGroup(IOS_FIREFOX_FXIOS_VERSION_PATTERN, browserUA, "Firefox on iOS", 1)) return;
+        if (browserPair.matchAndSetGroup(IOS_OPERA_OPIOS_VERSION_PATTERN, browserUA, "Opera Mini on iOS", 1)) return;
+        if (browserPair.matchAndSetGroup(IOS_UC_BROWSER_VERSION_PATTERN, browserUA, "UC Web Browser on iOS", 1)) return;
+        if (browserPair.matchAndSetGroup(IOS_UCWEB_UCBROWSER_VERSION_PATTERN, browserUA, "UC Web Browser on iOS", 1))
+            return;
+        if (browserPair.matchAndSet(IOS_FACEBOOK_FBAN_PATTERN, browserUA, "Facebook on iOS", osPair.getVersion()))
+            return;
+
+        // Mobile App (iOS)
+        if (browserPair.matchAndSetNameAndGroup(IOS_MOBILE_APP_NAME_VERSION_PATTERN, browserUA, 2)) {
+            browserPair.setName(browserPair.getName() + " Mobile Application");
+            return;
+        }
+
+        // Google Search / Edge / Mobile Safari
+        if (browserPair.matchAndSetGroup(IOS_GOOGLE_SEARCH_APP_GSA_VERSION_PATTERN, browserUA, "Google Search Application", 1))
+            return;
+        if (browserPair.matchAndSetGroup(EDGE_IOS_VERSION_PATTERN, browserUA, "Edge", 1)) return;
+        if (browserPair.matchAndSetGroup(IOS_SAFARI_VERSION_PATTERN, browserUA, "Mobile Safari", 1)) return;
+
+        // 兜底
+        browserPair.setName("Mobile Safari");
+        browserPair.setVersion(osPair.getVersion());
+    }
+
+    // ========================================================================
+    // Symbian (原 Symbian3 分支)
+    // ========================================================================
+
+    /**
+     * 处理 Symbian S60 设备的浏览器匹配。
+     */
+    private void handleSymbianDevice(VirtualCapabilityDevice vcd) {
+        NameVersionPair osPair = vcd.getOsPair();
+        NameVersionPair browserPair = vcd.getBrowserPair();
+        String deviceUA = vcd.getDeviceUserAgent();
+        String browserUA = vcd.getBrowserUserAgent();
+
+        osPair.matchAndSet(SYMBIAN3_PATTERN, deviceUA, "Symbian", "^3");
+        if (!browserPair.matchAndSetGroup(NOKIA_BROWSER_VERSION_PATTERN, browserUA, "Symbian S60 Browser", 1)
+                && !browserPair.matchAndSetGroup(OPERA_MOBI_VERSION_PATTERN, browserUA, "Opera Mobi", 1)
+                && !browserPair.matchAndSetGroup(SYMBIAN_UCWEB_UCBROWSER_VERSION_PATTERN, browserUA, "UC Web Browser on Symbian", 1)) {
+            browserPair.setName("Symbian S60 Browser");
+        }
+    }
+
+    // ========================================================================
+    // BlackBerry
+    // ========================================================================
+
+    /**
+     * 处理 BlackBerry 设备的浏览器匹配。
+     */
+    private void handleBlackBerryDevice(VirtualCapabilityDevice vcd) {
+        NameVersionPair osPair = vcd.getOsPair();
+        NameVersionPair browserPair = vcd.getBrowserPair();
+        String deviceUA = vcd.getDeviceUserAgent();
+        String browserUA = vcd.getBrowserUserAgent();
+
+        osPair.matchAndSet(BLACKBERRY_PATTERN, deviceUA, "BlackBerry", null);
+        osPair.matchAndSetGroup(BLACKBERRY_VERSION_PATTERN, deviceUA, null, 1);
+
+        if (osPair.matchAndSetGroup(BLACKBERRY_UC_BROWSER_PATTERN, deviceUA, null, 1)) {
+            browserPair.setName("UC Web");
+            browserPair.setVersion(osPair.getGroup(2));
+        } else if (osPair.matchAndSetGroup(UCWEB_UCBROWSER_COMBINED_VERSION_PATTERN, deviceUA, null, 1)) {
+            browserPair.setName("UC Web");
+            browserPair.setVersion(osPair.getGroup(2));
+        } else if (!browserPair.matchAndSetGroup(OPERA_MINI_PATTERN, browserUA, "Opera Mini", 1)) {
+            if (osPair.matchAndSetGroup(BLACKBERRY_BROWSER_VERSION_PATTERN, deviceUA, null, 1)) {
+                browserPair.setName("BlackBerry Browser");
+                browserPair.setVersion(osPair.getVersion());
+            } else if (osPair.matchAndSetGroup(BB10_BROWSER_VERSION_PATTERN, deviceUA, null, 1)) {
+                browserPair.setName("BlackBerry Webkit Browser");
+                browserPair.setVersion(osPair.getVersion());
+            } else {
+                browserPair.setName("BlackBerry Browser");
+                browserPair.setVersion(osPair.getVersion());
+            }
+        }
+    }
+
+    // ========================================================================
+    // 其他设备 / 桌面浏览器检测
+    // ========================================================================
+
+    /**
+     * 处理非主流平台及桌面浏览器的操作系统和浏览器匹配。
+     * 包含 RIM Tablet OS、NetFront、Obigo、Bada、webOS、Opera、Maemo、Java 以及
+     * 各种桌面浏览器（Chrome、Firefox、Safari、IE、Edge、PaleMoon 等）。
+     */
+    private void handleDesktopOrOtherDevice(VirtualCapabilityDevice vcd, InternalDevice device) {
+        NameVersionPair osPair = vcd.getOsPair();
+        NameVersionPair browserPair = vcd.getBrowserPair();
+        String deviceUA = vcd.getDeviceUserAgent();
+        String browserUA = vcd.getBrowserUserAgent();
+        String cleanedDeviceUA = vcd.getCleanedDeviceUserAgent();
+
+        // --- RIM Tablet OS ---
+        if (StringMatchUtils.indexOf(deviceUA, "RIM Tablet OS") >= 0
+                && osPair.matchAndSetGroup(RIM_TABLET_OS_VERSION_PATTERN, deviceUA, "RIM Tablet OS", 1)) {
+            browserPair.setName("RIM OS Browser");
+            browserPair.setVersion(osPair.getGroup(2));
+            return;
+        }
+
+        // --- NetFront ---
+        if (StringMatchUtils.indexOf(deviceUA, "NetFront") >= 0
+                && browserPair.matchAndSetGroup(NETFRONT_VERSION_PATTERN, browserUA, "NetFront", 1)) {
+            return;
+        }
+
+        // --- Obigo (Teleca Obigo) ---
+        if (browserPair.containsAndSetName(deviceUA, "Obigo", "Teleca Obigo")
+                && browserPair.matchAndSetGroup(OBIGO_Q_VERSION_PATTERN, browserUA, null, 1)) {
+            return;
+        }
+
+        // --- Bada + Dolfin ---
+        if (StringMatchUtils.indexOf(deviceUA, "Dolfin") >= 0
+                && osPair.matchAndSetGroup(BADA_DOLFIN_PATTERN, deviceUA, "Bada", 1)) {
+            browserPair.setName("Dolfin Browser");
+            browserPair.setVersion(osPair.getGroup(2));
+            return;
+        }
+
+        // --- MAUI Browser ---
+        if (browserPair.containsAndSetName(deviceUA, "MAUI", "MAUI Browser")) {
+            return;
+        }
+
+        // --- Openwave Browser (via Dolfin) ---
+        if (StringMatchUtils.indexOf(deviceUA, "Dolfin") >= 0
+                && browserPair.matchAndSetGroup(OPENWAVE_BROWSER_VERSION_PATTERN, browserUA, "Openwave Browser", 1)) {
+            return;
+        }
+
+        // --- webOS ---
+        if (osPair.matchAndSetGroup(WEBOS_VERSION_PATTERN, deviceUA, "webOS", 1)) {
+            browserPair.setName("webOS Browser");
+            browserPair.setVersion(osPair.getVersion());
+            return;
+        }
+
+        // --- Opera (mobile variants) ---
+        if (StringMatchUtils.indexOf(deviceUA, "Opera") >= 0) {
+            if (browserPair.containsAndSetName(deviceUA, "Opera Mobi", "Opera Mobile")) {
+                browserPair.matchAndSetGroup(OPERA_MOBI_VERSION_PATTERN, deviceUA, null, 1);
+                return;
+            }
+            if (browserPair.matchAndSetGroup(OPERA_MINI_PATTERN, deviceUA, "Opera Mini", 1)
+                    || browserPair.matchAndSetGroup(OPERA_LINK_SYNC_VERSION_PATTERN, deviceUA, "Opera Link Sync", 1)) {
+                return;
+            }
+        }
+
+        // --- Maemo ---
+        if (StringMatchUtils.indexOf(deviceUA, "Maemo") >= 0) {
+            osPair.setName("Maemo");
+            if (browserPair.matchAndSetGroup(MAEMO_FIREFOX_VERSION_PATTERN, browserUA, "Firefox", 1)) {
+                return;
+            }
+        }
+
+        // ============================================================
+        // Java / UCWeb Java Applet / 桌面浏览器
+        // ============================================================
+
+        // 原始条件: (!containsAnyOf("Java", "UCBrowser/") || !ucwebJavaMatch) && !javaAppletMatched
+        // 即: 不是 Java/UCBrowser Java Applet 且不是 Java Applet 时进入桌面浏览器分支
+        boolean isJavaOrUcwebJava = StringMatchUtils.containsAnyOf(deviceUA, "Java", "UCBrowser/")
+                && browserPair.matchAndSetGroup(UCWEB_JAVA_UCBROWSER_VERSION_PATTERN, browserUA, "UCBrowser Java Applet", 1);
+        boolean isJavaApplet = !isJavaOrUcwebJava
+                && browserPair.matchAndSet(JAVA_APPLET_PATTERN, browserUA, "Java Applet", null);
+
+        if (!isJavaOrUcwebJava && !isJavaApplet) {
+            // --- DesktopApp (Mac / Windows) ---
+            if (StringMatchUtils.indexOf(deviceUA, "DesktopApp") != -1) {
+                if (osPair.matchAndSetNameFromGroup(DESKTOP_APP_MAC_PATTERN, deviceUA, 1)) {
+                    browserPair.setName(osPair.getGroup(2) + " Desktop Application");
+                    browserPair.setVersion(osPair.getGroup(3));
+                    return;
+                }
+                if (osPair.matchAndSetNameFromGroup(DESKTOP_APP_WINDOWS_PATTERN, deviceUA, 1)) {
+                    browserPair.setName(osPair.getGroup(2) + " Desktop Application");
+                    browserPair.setVersion(osPair.getGroup(3));
+                    return;
+                }
+            }
+
+            // --- Baidu Browser (with OS) ---
+            if (osPair.matchAndSetNameFromGroup(BAIDU_BROWSER_OS_VERSION_PATTERN, deviceUA, 1)) {
+                browserPair.setName("Baidu Browser");
+                browserPair.setVersion(osPair.getGroup(2));
+                return;
+            }
+
+            // --- 360 Browser ---
+            if (StringMatchUtils.containsAnyOf(deviceUA, "360Browser", "360SE")
+                    && osPair.matchAndSetNameFromGroup(BROWSER_360_OS_PATTERN, deviceUA, 1)) {
+                browserPair.setName("360 Browser");
+                return;
+            }
+
+            // --- MSIE (Windows/Mac) ---
+            if (StringMatchUtils.indexOf(deviceUA, "MSIE") >= 0
+                    && osPair.matchAndSetNameFromGroup(MSIE_WINDOWS_VERSION_PATTERN, deviceUA, 2)) {
+                browserPair.setName("IE");
+                browserPair.setVersion(osPair.getGroup(1));
+                return;
+            }
+
+            // --- Trident / Edge ---
+            if (StringMatchUtils.containsAnyOf(deviceUA, "Trident", " Edge/")) {
+                if (osPair.matchAndSetNameFromGroup(TRIDENT_WINDOWS_RV_VERSION_PATTERN, deviceUA, 1)) {
+                    browserPair.setName("IE");
+                    browserPair.setVersion(osPair.getGroup(2));
+                    return;
+                }
+                if (osPair.matchAndSetNameFromGroup(EDGE_WINDOWS_VERSION_PATTERN, deviceUA, 1)) {
+                    browserPair.setName("Edge");
+                    browserPair.setVersion(osPair.getGroup(2));
+                    return;
+                }
+            }
+
+            // --- Yandex Browser ---
+            if (StringMatchUtils.indexOf(deviceUA, "YaBrowser") >= 0
+                    && osPair.matchAndSetNameFromGroup(YANDEX_BROWSER_VERSION_PATTERN, deviceUA, 1)) {
+                browserPair.setName("Yandex browser");
+                browserPair.setVersion(osPair.getGroup(2));
+                return;
+            }
+
+            // --- Opera (OPR desktop) ---
+            if (StringMatchUtils.indexOf(deviceUA, "OPR") >= 0
+                    && osPair.matchAndSetNameFromGroup(OPERA_OPR_DESKTOP_VERSION_PATTERN, deviceUA, 1)) {
+                browserPair.setName("Opera");
+                browserPair.setVersion(osPair.getGroup(2));
+                return;
+            }
+
+            // --- Opera Classic ---
+            if (StringMatchUtils.indexOf(deviceUA, "Opera") >= 0
+                    && osPair.matchAndSetNameFromGroup(OPERA_CLASSIC_VERSION_PATTERN, deviceUA, 2)) {
+                browserPair.setName("Opera");
+                browserPair.setVersion(osPair.getGroup(1));
+                browserPair.matchAndSetGroup(OPERA_VERSION_PATTERN, browserUA, null, 1);
+                return;
+            }
+
+            // --- Linux x86_64 + SamsungBrowser → DeX Samsung Browser ---
+            if (deviceUA.contains("Linux x86_64") && deviceUA.contains("SamsungBrowser/")) {
+                osPair.setName("Linux");
+                if (browserPair.matchAndSetGroup(SAMSUNG_BROWSER_VERSION_PATTERN, deviceUA, "DeX Samsung Browser", 1)) {
+                    return;
+                }
+            }
+
+            // --- Chrome (Mac / Windows) ---
+            if (StringMatchUtils.indexOf(deviceUA, "Chrome") >= 0) {
+                if (osPair.matchAndSetNameFromGroup(CHROME_MAC_VERSION_PATTERN, deviceUA, 1)) {
+                    browserPair.setName("Chrome");
+                    browserPair.setVersion(osPair.getGroup(2));
+                    return;
+                }
+                if (osPair.matchAndSetNameFromGroup(CHROME_WINDOWS_VERSION_PATTERN, deviceUA, 1)) {
+                    browserPair.setName("Chrome");
+                    browserPair.setVersion(osPair.getGroup(2));
+                    return;
+                }
+            }
+
+            // --- Epiphany ---
+            if (deviceUA.contains("Epiphany/")) {
+                osPair.setName("Linux");
+                if (browserPair.matchAndSetGroup(EPIPHANY_VERSION_PATTERN, deviceUA, "Epiphany", 1)) {
+                    return;
+                }
+            }
+
+            // --- Safari (Desktop) ---
+            if (StringMatchUtils.indexOf(deviceUA, "Safari") >= 0
+                    && osPair.matchAndSetNameFromGroup(SAFARI_DESKTOP_VERSION_PATTERN, cleanedDeviceUA, 1)) {
+                if (StringMatchUtils.indexOf(deviceUA, "CFNetwork") >= 0) {
+                    browserPair.setName("OSX App");
+                } else {
+                    browserPair.setName("Safari");
+                }
+                browserPair.setVersion(osPair.getGroup(2));
+                return;
+            }
+
+            // --- PaleMoon ---
+            if (deviceUA.contains("PaleMoon")) {
+                if (osPair.matchAndSetNameFromGroup(PALEMOON_WINDOWS_VERSION_PATTERN, deviceUA, 1)) {
+                    browserPair.setName("PaleMoon");
+                    browserPair.setVersion(osPair.getGroup(2));
+                    return;
+                }
+                if (osPair.matchAndSetNameFromGroup(PALEMOON_LINUX_MAC_VERSION_PATTERN, deviceUA, 1)) {
+                    browserPair.setName("PaleMoon");
+                    browserPair.setVersion(osPair.getGroup(2));
+                    return;
+                }
+            }
+
+            // --- Firefox ---
+            if (StringMatchUtils.indexOf(deviceUA, "Firefox") >= 0) {
+                if (osPair.matchAndSetNameFromGroup(FIREFOX_WINDOWS_VERSION_PATTERN, deviceUA, 1)) {
+                    browserPair.setName("Firefox");
+                    browserPair.setVersion(osPair.getGroup(2));
+                    return;
+                }
+                if (osPair.matchAndSetNameFromGroup(FIREFOX_LINUX_MAC_VERSION_PATTERN, deviceUA, 1)) {
+                    browserPair.setName("Firefox");
+                    browserPair.setVersion(osPair.getGroup(2));
+                    return;
+                }
+                if (browserUA.contains("(X11; ")) {
+                    osPair.setName("Linux");
+                    browserPair.matchAndSetGroup(FIREFOX_SIMPLE_VERSION_PATTERN, deviceUA, "Firefox", 1);
+                    return;
+                }
+            }
+
+            // --- CFNetwork App (兜底使用设备能力值) ---
+            if (StringMatchUtils.indexOf(browserUA, "CFNetwork") >= 0) {
+                osPair.setName(device.getCapability("device_os"));
+                osPair.setVersion(device.getCapability("device_os_version"));
+                browserPair.setName("CFNetwork App");
+                browserPair.setVersion(device.getCapability("mobile_browser_version"));
+                return;
+            }
+
+            // --- 最终兜底：尝试 Windows / Mac OS 名称，或 Linux ---
+            if (!osPair.matchAndSetNameFromGroup(WINDOWS_OS_NAME_PATTERN, deviceUA, 1)
+                    && !osPair.matchAndSetNameFromGroup(MAC_OS_NAME_PATTERN, deviceUA, 1)
+                    && browserUA != null
+                    && (browserUA.contains("(X11; ") || browserUA.contains("Linux x86_64"))) {
+                osPair.setName("Linux");
+            }
+        }
     }
 }
