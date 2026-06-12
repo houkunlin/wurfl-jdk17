@@ -1,5 +1,6 @@
 package com.scientiamobile.wurfl.core.matchers;
 
+import com.scientiamobile.wurfl.core.Constants;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
@@ -24,7 +25,7 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
     protected Set<String> getRequiredDeviceIds() {
         HashSet<String> requiredDeviceIds;
         requiredDeviceIds = new HashSet<>();
-        requiredDeviceIds.add("generic");
+        requiredDeviceIds.add(Constants.GENERIC);
         return requiredDeviceIds;
     }
 
@@ -49,13 +50,13 @@ final class CatchAllMozillaMatcher extends AbstractMatcher {
         String matchedUserAgent = matchLength != -1
                 ? StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), normalizedUserAgent, matchLength)
                 : StringMatchUtils.NULL_STRING;
-        String deviceId = "generic";
+        String deviceId = Constants.GENERIC;
         if (matchedUserAgent != null) {
             deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(matchedUserAgent);
         }
 
         if (deviceId == null) {
-            deviceId = "generic";
+            deviceId = Constants.GENERIC;
         }
 
         return deviceId;

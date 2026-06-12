@@ -53,8 +53,7 @@ final class MSIEMatcher extends MatcherBase {
      */
     @Override
     protected Set<String> getRequiredDeviceIds() {
-        HashSet<String> requiredDeviceIds = new HashSet<>();
-        requiredDeviceIds.addAll(DEVICE_BY_MAJOR_VERSION.values());
+        HashSet<String> requiredDeviceIds = new HashSet<>(DEVICE_BY_MAJOR_VERSION.values());
         requiredDeviceIds.add("generic");
         requiredDeviceIds.add("generic_web_browser");
         requiredDeviceIds.add("msie_5_5");

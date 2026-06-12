@@ -1,5 +1,6 @@
 package com.scientiamobile.wurfl.core.matchers;
 
+import com.scientiamobile.wurfl.core.Constants;
 import com.scientiamobile.wurfl.core.DeviceInfo;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
@@ -134,7 +135,7 @@ abstract class AbstractMatcher implements Matcher {
      * @return 如果设备 ID 为 blank 或 "generic" 则返回 {@code true}
      */
     private static boolean isBlankOrGeneric(String deviceId) {
-        return StringUtils.isBlank(deviceId) || "generic".equals(deviceId);
+        return StringUtils.isBlank(deviceId) || Constants.GENERIC.equals(deviceId);
     }
 
     /**
@@ -226,7 +227,7 @@ abstract class AbstractMatcher implements Matcher {
         String bucketMatcherName = this.getBucketMatcherName();
         // 如果规范化为空，直接返回 generic
         if (StringUtils.isBlank(normalizedUserAgent)) {
-            return new DeviceInfo("generic", MatchType.none, matcherName, bucketMatcherName,
+            return new DeviceInfo(Constants.GENERIC, MatchType.none, matcherName, bucketMatcherName,
                     request.getOriginalUserAgent(), normalizedUserAgent);
         }
 
@@ -286,7 +287,7 @@ abstract class AbstractMatcher implements Matcher {
         if (cleanedUa.indexOf("Mozilla/") <= 0 && !StringMatchUtils.containsAnyOf(cleanedUa, "Obigo", "AU-MIC/2", "AU-MIC-", "AU-OBIGO/", "Teleca Q03B1")) {
             return StringMatchUtils.startsWithAnyOf(cleanedUa, "DoCoMo", "KDDI")
                     ? "docomo_generic_jap_ver1"
-                    : (request._internalIsMobileBrowser() ? "generic_mobile" : "generic");
+                    : (request._internalIsMobileBrowser() ? "generic_mobile" : Constants.GENERIC);
         }
         return "generic_xhtml";
     }
@@ -302,13 +303,13 @@ abstract class AbstractMatcher implements Matcher {
     protected String applyConclusiveMatch(WURFLRequest request) {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         normalizedDeviceUserAgent = this.risMatch(normalizedDeviceUserAgent);
-        String deviceId = "generic";
+        String deviceId = Constants.GENERIC;
         if (normalizedDeviceUserAgent != null) {
             deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(normalizedDeviceUserAgent);
         }
 
         if (deviceId == null) {
-            deviceId = "generic";
+            deviceId = Constants.GENERIC;
         }
 
         return deviceId;
@@ -337,7 +338,7 @@ abstract class AbstractMatcher implements Matcher {
      */
 
     protected String applyRecoveryMatch(WURFLRequest request) {
-        return "generic";
+        return Constants.GENERIC;
     }
 
     /**

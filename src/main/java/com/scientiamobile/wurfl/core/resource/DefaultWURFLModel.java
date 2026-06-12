@@ -1,5 +1,6 @@
 package com.scientiamobile.wurfl.core.resource;
 
+import com.scientiamobile.wurfl.core.Constants;
 import com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException;
 import com.scientiamobile.wurfl.core.exc.DeviceNotDefinedException;
 import com.scientiamobile.wurfl.core.exc.GroupNotDefinedException;
@@ -172,18 +173,18 @@ public class DefaultWURFLModel implements WURFLModel {
                 String fallbackId;
                 fallbackId = device.getFallBack();
                 // 将直接回退到 generic 或 generic_mobile 的设备归类为家族设备
-                if (fallbackId.equals("generic") || fallbackId.equals("generic_mobile")) {
+                if (fallbackId.equals(Constants.GENERIC) || fallbackId.equals("generic_mobile")) {
                     this.familyDeviceIds.add(device.getID());
                 }
             }
 
             // 统计继承链根节点为 generic 的设备数
-            if (this.getDeviceAncestor(device).getID().equals("generic")) {
+            if (this.getDeviceAncestor(device).getID().equals(Constants.GENERIC)) {
                 ++genericDevicesCount;
             }
         }
 
-        this.genericDevice = this.devicesById.get("generic");
+        this.genericDevice = this.devicesById.get(Constants.GENERIC);
         if (log.isInfoEnabled()) {
             log.info("WURFLModel version: {}; devices: {} root devices: {}; families: {}; generic devices: {}", this.version, this.devicesById.size(), rootDevicesCount, this.familyDeviceIds.size(), genericDevicesCount);
         }
@@ -286,7 +287,7 @@ public class DefaultWURFLModel implements WURFLModel {
         Validate.notNull(device, "The device must be not null");
         // 从当前设备沿着 fall_back 链向上追溯直至 generic
         LinkedList<ModelDevice> hierarchy = new LinkedList<>();
-        for (; !"generic".equals(device.getID()); device = this.getDeviceFallback(device)) {
+        for (; !Constants.GENERIC.equals(device.getID()); device = this.getDeviceFallback(device)) {
             hierarchy.addFirst(device);
         }
 
@@ -551,7 +552,7 @@ public class DefaultWURFLModel implements WURFLModel {
         if (this.genericDevice != null) {
             return this.genericDevice;
         } else {
-            ModelDevice modelDevice = this.devicesById.get("generic");
+            ModelDevice modelDevice = this.devicesById.get(Constants.GENERIC);
             if (modelDevice == null && !this.devicesById.isEmpty()) {
                 throw new GenericNotDefinedException();
             } else if (modelDevice == null) {
