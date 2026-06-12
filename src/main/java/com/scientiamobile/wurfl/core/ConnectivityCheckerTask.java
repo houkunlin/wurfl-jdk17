@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 连通性检查的后台任务，向 ScientiaMobile 服务端发送使用统计信息。
@@ -23,7 +24,7 @@ final class ConnectivityCheckerTask implements Runnable {
     /**
      * 关联的连通性检查器实例
      */
-    private CheckConnection checkConnection;
+    private final CheckConnection checkConnection;
 
     ConnectivityCheckerTask(CheckConnection checkConnection) {
         this.checkConnection = checkConnection;
@@ -37,7 +38,7 @@ final class ConnectivityCheckerTask implements Runnable {
     public void run() {
         try {
             HttpsURLConnection connection = createConnection();
-            byte[] payloadBytes = this.checkConnection.getPayloadJson().getBytes("UTF-8");
+            byte[] payloadBytes = this.checkConnection.getPayloadJson().getBytes(StandardCharsets.UTF_8);
             try {
                 sendPayload(connection, payloadBytes);
                 Integer responseCode = connection.getResponseCode();
@@ -47,7 +48,7 @@ final class ConnectivityCheckerTask implements Runnable {
             } finally {
                 connection.disconnect();
             }
-        } catch (Exception e) {
+        } catch (IOException | RuntimeException e) {
             log.error("Connectivity check failed", e);
         }
     }
