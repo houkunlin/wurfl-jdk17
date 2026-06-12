@@ -10,6 +10,7 @@ import com.scientiamobile.wurfl.core.utils.CollectionFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -329,14 +330,14 @@ public class DefaultWURFLModel implements WURFLModel {
             return this.getDeviceById(ancestorId);
         } else {
             ModelDevice deviceOrAncestor = device;
-            ModelDevice genericDevice = this.getGenericDevice();
+            ModelDevice modelDevice = this.getGenericDevice();
             List<ModelDevice> deviceHierarchy = this.getDeviceHierarchy(device);
             // 从继承链顶部向下查找第一个 actual_device_root 或 generic
-            for (int i = deviceHierarchy.size() - 1; i >= 0 && !deviceOrAncestor.isActualDeviceRoot() && !genericDevice.equals(deviceOrAncestor); --i) {
+            for (int i = deviceHierarchy.size() - 1; i >= 0 && !deviceOrAncestor.isActualDeviceRoot() && !modelDevice.equals(deviceOrAncestor); --i) {
                 deviceOrAncestor = deviceHierarchy.get(i);
             }
 
-            if (!deviceOrAncestor.isActualDeviceRoot() && !genericDevice.equals(deviceOrAncestor)) {
+            if (!deviceOrAncestor.isActualDeviceRoot() && !modelDevice.equals(deviceOrAncestor)) {
                 throw new RuntimeException("Hierarchy is invalid");
             } else {
                 String computedAncestorId = deviceOrAncestor.getID();
@@ -401,11 +402,11 @@ public class DefaultWURFLModel implements WURFLModel {
     @Override
     public String getGroupByCapability(String capabilityName) {
         Validate.notEmpty(capabilityName, "The capabilityName must be not null");
-        ModelDevice genericDevice = this.getGenericDevice();
-        if (!genericDevice.defineCapability(capabilityName)) {
+        ModelDevice modelDevice = this.getGenericDevice();
+        if (!modelDevice.defineCapability(capabilityName)) {
             throw new CapabilityNotDefinedException(capabilityName);
         } else {
-            return genericDevice.getGroupForCapability(capabilityName);
+            return modelDevice.getGroupForCapability(capabilityName);
         }
     }
 
@@ -440,8 +441,8 @@ public class DefaultWURFLModel implements WURFLModel {
      */
     @Override
     public Set<String> getAllCapabilities() {
-        ModelDevice genericDevice = this.getGenericDevice();
-        return new HashSet<>(genericDevice.getCapabilities().keySet());
+        ModelDevice modelDevice = this.getGenericDevice();
+        return new HashSet<>(modelDevice.getCapabilities().keySet());
     }
 
     /**
@@ -480,11 +481,11 @@ public class DefaultWURFLModel implements WURFLModel {
     @Override
     public Set<String> getCapabilitiesForGroup(String groupId) {
         Validate.notEmpty(groupId, "The groupId must be not null");
-        ModelDevice genericDevice = this.getGenericDevice();
-        if (!genericDevice.defineGroup(groupId)) {
+        ModelDevice modelDevice = this.getGenericDevice();
+        if (!modelDevice.defineGroup(groupId)) {
             throw new GroupNotDefinedException(groupId);
         } else {
-            return genericDevice.getCapabilitiesNamesForGroup(groupId);
+            return modelDevice.getCapabilitiesNamesForGroup(groupId);
         }
     }
 
@@ -545,17 +546,18 @@ public class DefaultWURFLModel implements WURFLModel {
      * @return generic 设备
      */
 
-    private ModelDevice getGenericDevice() {
+    private @NonNull ModelDevice getGenericDevice() {
         if (this.genericDevice != null) {
             return this.genericDevice;
         } else {
-            ModelDevice genericDevice;
-            genericDevice = this.devicesById.get("generic");
-            if (genericDevice == null && this.devicesById.size() > 0) {
+            ModelDevice modelDevice = this.devicesById.get("generic");
+            if (modelDevice == null && !this.devicesById.isEmpty()) {
+                throw new RuntimeException(new GenericNotDefinedException());
+            } else if (modelDevice == null) {
                 throw new RuntimeException(new GenericNotDefinedException());
             } else {
-                this.genericDevice = genericDevice;
-                return genericDevice;
+                this.genericDevice = modelDevice;
+                return modelDevice;
             }
         }
     }
