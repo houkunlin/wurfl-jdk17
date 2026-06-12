@@ -136,56 +136,61 @@ final class UcwebU3Matcher extends MatcherBase {
      */
     @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
-        String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
-        if (normalizedUserAgent.contains("Windows Phone")) {
-            String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(normalizedUserAgent);
-            String windowsPhoneDeviceId = null;
-            if (StringUtils.isNotEmpty(windowsPhoneVersion)) {
-                String[] versionParts = windowsPhoneVersion.split("\\.");
-                if (versionParts.length >= 2) {
-                    String major = versionParts[0];
-                    String minor = versionParts[1];
-                    if (StringUtils.isEmpty(minor)) {
-                        windowsPhoneDeviceId = "generic_ms_phone_os" + major + "_subuaucweb";
-                    } else {
-                        windowsPhoneDeviceId = "generic_ms_phone_os" + major + "_" + minor + "_subuaucweb";
-                    }
-                }
-            } else {
-                LOG.debug("user agent \"{}\" has no version information", normalizedUserAgent.replaceAll("[\\r\\n]", "_"));
-            }
+        String ua = request.getNormalizedDeviceUserAgent();
 
-            return SUPPORTED_DEVICE_IDS.contains(windowsPhoneDeviceId) ? windowsPhoneDeviceId : GENERIC_MS_PHONE_OS8_SUBUAWCWEB;
-        } else if (normalizedUserAgent.contains("Android")) {
-            String androidVersion = UserAgentUtils.getAndroidVersion(normalizedUserAgent, false);
-            String androidDeviceId = null;
-            if (StringUtils.isNotEmpty(androidVersion)) {
-                String[] versionParts = androidVersion.split("\\.");
-                if (versionParts.length > 0) {
-                    androidDeviceId = "generic_ucweb_android_ver" + versionParts[0];
-                }
-            }
-
-            return SUPPORTED_DEVICE_IDS.contains(androidDeviceId) ? androidDeviceId : GENERIC_UCWEB_ANDROID_VER1;
-        } else if (normalizedUserAgent.contains("iPhone")) {
-            Matcher iphoneVersionMatcher = IPHONE_IOS_VERSION.matcher(normalizedUserAgent);
-            String iphoneDeviceId = null;
-            if (iphoneVersionMatcher.find() && iphoneVersionMatcher.groupCount() > 0) {
-                iphoneDeviceId = "apple_iphone_ver" + iphoneVersionMatcher.group(1) + "_subuaucweb";
-            }
-
-            return SUPPORTED_DEVICE_IDS.contains(iphoneDeviceId) ? iphoneDeviceId : APPLE_IPHONE_VER1_SUBUAWCWEB;
-        } else if (normalizedUserAgent.contains("iPad")) {
-            Matcher ipadVersionMatcher = IPAD_IOS_VERSION.matcher(normalizedUserAgent);
-            String ipadDeviceId = null;
-            if (ipadVersionMatcher.find() && ipadVersionMatcher.groupCount() > 0) {
-                ipadDeviceId = "apple_ipad_ver1_sub" + ipadVersionMatcher.group(1) + "_subuaucweb";
-            }
-
-            return SUPPORTED_DEVICE_IDS.contains(ipadDeviceId) ? ipadDeviceId : APPLE_IPAD_VER1_SUBUAWCWEB;
-        } else {
-            return "generic_ucweb";
+        if (ua.contains("Windows Phone")) {
+            return resolveDeviceId(buildWindowsPhoneDeviceId(ua), GENERIC_MS_PHONE_OS8_SUBUAWCWEB);
         }
+        if (ua.contains("Android")) {
+            return resolveDeviceId(buildAndroidDeviceId(ua), GENERIC_UCWEB_ANDROID_VER1);
+        }
+        if (ua.contains("iPhone")) {
+            return resolveDeviceId(buildIphoneDeviceId(ua), APPLE_IPHONE_VER1_SUBUAWCWEB);
+        }
+        if (ua.contains("iPad")) {
+            return resolveDeviceId(buildIpadDeviceId(ua), APPLE_IPAD_VER1_SUBUAWCWEB);
+        }
+        return "generic_ucweb";
+    }
+
+    private static String buildWindowsPhoneDeviceId(String ua) {
+        String version = UserAgentUtils.getWindowsPhoneVersion(ua);
+        if (StringUtils.isEmpty(version)) {
+            LOG.debug("user agent \"{}\" has no version information", ua.replaceAll("[\\r\\n]", "_"));
+            return null;
+        }
+        String[] parts = version.split("\\.");
+        if (parts.length < 2) {
+            return null;
+        }
+        String major = parts[0];
+        String minor = parts[1];
+        return StringUtils.isEmpty(minor)
+                ? "generic_ms_phone_os" + major + "_subuaucweb"
+                : "generic_ms_phone_os" + major + "_" + minor + "_subuaucweb";
+    }
+
+    private static String buildAndroidDeviceId(String ua) {
+        String version = UserAgentUtils.getAndroidVersion(ua, false);
+        if (StringUtils.isEmpty(version)) {
+            return null;
+        }
+        String[] parts = version.split("\\.");
+        return parts.length > 0 ? "generic_ucweb_android_ver" + parts[0] : null;
+    }
+
+    private static String buildIphoneDeviceId(String ua) {
+        Matcher matcher = IPHONE_IOS_VERSION.matcher(ua);
+        return matcher.find() ? "apple_iphone_ver" + matcher.group(1) + "_subuaucweb" : null;
+    }
+
+    private static String buildIpadDeviceId(String ua) {
+        Matcher matcher = IPAD_IOS_VERSION.matcher(ua);
+        return matcher.find() ? "apple_ipad_ver1_sub" + matcher.group(1) + "_subuaucweb" : null;
+    }
+
+    private static String resolveDeviceId(String deviceId, String fallback) {
+        return SUPPORTED_DEVICE_IDS.contains(deviceId) ? deviceId : fallback;
     }
 
     /**
