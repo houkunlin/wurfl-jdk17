@@ -102,37 +102,30 @@ final class ResourceInput {
      */
 
     private static URI parseUri(String path) {
-        if (!ASSERTIONS_DISABLED && !StringUtils.isNotBlank(path)) {
+        if (!ASSERTIONS_DISABLED && StringUtils.isBlank(path)) {
             throw new AssertionError("The path must be not blank");
-        } else {
-            File file;
-            URI uri;
-            try {
-                file = new File(path).getCanonicalFile();
-            } catch (IOException e) {
-                file = new File(path);
-            }
-            if (file.exists() && file.isFile() && file.canRead()) {
-                uri = file.toURI();
-            } else {
-                String uriString = path.replace(" ", "%20");
-                if (SystemUtils.IS_OS_WINDOWS && path.contains("\\")) {
-                    uriString = uriString.replace("\\", "/");
-                }
-
-                if (!uriString.contains(":")) {
-                    while (uriString.startsWith("/")) {
-                        uriString = uriString.substring(1);
-                    }
-
-                    uriString = "file:///" + uriString;
-                }
-
-                uri = URI.create(uriString);
-            }
-
-            return uri;
         }
+
+        File file;
+        try {
+            file = new File(path).getCanonicalFile();
+        } catch (IOException e) {
+            file = new File(path);
+        }
+        if (file.exists() && file.isFile() && file.canRead()) {
+            return file.toURI();
+        }
+
+        String uriString = path.replace(" ", "%20");
+        if (SystemUtils.IS_OS_WINDOWS && path.contains("\\")) {
+            uriString = uriString.replace("\\", "/");
+        }
+
+        if (!uriString.contains(":")) {
+            uriString = "file:///" + StringUtils.stripStart(uriString, "/");
+        }
+
+        return URI.create(uriString);
     }
 
     /**
