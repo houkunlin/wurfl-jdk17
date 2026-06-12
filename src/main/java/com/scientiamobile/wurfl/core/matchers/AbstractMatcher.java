@@ -87,8 +87,6 @@ abstract class AbstractMatcher implements Matcher {
      * <p>初始化两个日志记录器（已检测/未检测设备日志）。</p>
      */
     protected AbstractMatcher() {
-        LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
-        LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
         this.normalizer = null;
     }
 
@@ -98,8 +96,6 @@ abstract class AbstractMatcher implements Matcher {
      * @param model WURFL 设备模型，用于校验必需的设备 ID
      */
     protected AbstractMatcher(WURFLModel model) {
-        LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
-        LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
         this.normalizer = null;
         this.validateRequiredDeviceIds(model);
     }
@@ -110,8 +106,6 @@ abstract class AbstractMatcher implements Matcher {
      * @param normalizer User-Agent 规范化器，用于匹配前预处理
      */
     protected AbstractMatcher(UserAgentNormalizer normalizer) {
-        LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
-        LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
         this.normalizer = normalizer;
     }
 
@@ -122,8 +116,6 @@ abstract class AbstractMatcher implements Matcher {
      * @param model      WURFL 设备模型，用于校验必需的设备 ID
      */
     protected AbstractMatcher(UserAgentNormalizer normalizer, WURFLModel model) {
-        LoggerFactory.getLogger("com.scientiamobile.wurfl.core.UNDETECTED_WURFL_DEVICES");
-        LoggerFactory.getLogger("com.scientiamobile.wurfl.core.DETECTED_WURFL_DEVICES");
         this.normalizer = normalizer;
         this.validateRequiredDeviceIds(model);
     }
