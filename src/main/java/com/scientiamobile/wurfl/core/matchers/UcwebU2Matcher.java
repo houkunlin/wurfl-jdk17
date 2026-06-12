@@ -52,37 +52,45 @@ final class UcwebU2Matcher extends MatcherBase {
     protected String risMatch(String userAgent) {
         if (UserAgentUtils.getUcBrowserVersion(userAgent, true) == null) {
             return null;
-        } else {
-            int matchLength;
-            matchLength = userAgent.indexOf("---");
-            if (matchLength > 0) {
-                matchLength += 3;
-                String subUserAgent = userAgent.substring(matchLength);
-                if (userAgent.contains("Adr")) {
-                    String androidModel = UserAgentUtils.getUcAndroidModel(userAgent, false);
-                    String androidVersion = UserAgentUtils.getUcAndroidVersion(userAgent, false);
-                    if (androidModel != null && androidVersion != null) {
-                        return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-                    }
-                } else if (userAgent.contains("iPh OS")) {
-                    if (UcwebU2Normalizer.IPHONE.matcher(subUserAgent).find()) {
-                        return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-                    }
-                } else if (userAgent.contains("wds")) {
-                    if (UcwebU2Normalizer.WINDOWS_PHONE.matcher(subUserAgent).find()) {
-                        return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-                    }
-                } else if (userAgent.contains("Symbian")) {
-                    if (UcwebU2Normalizer.SYMBIAN.matcher(subUserAgent).find()) {
-                        return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-                    }
-                } else if (userAgent.contains("Java") && UcwebU2Normalizer.JAVA.matcher(subUserAgent).find()) {
-                    return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-                }
-            }
+        }
 
+        int matchLength = userAgent.indexOf("---");
+        if (matchLength <= 0) {
             return null;
         }
+        matchLength += 3;
+        String subUserAgent = userAgent.substring(matchLength);
+
+        if (!isValidUcwebPlatform(userAgent, subUserAgent)) {
+            return null;
+        }
+
+        return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
+    }
+
+    /**
+     * 验证 UCWeb 请求是否来自已知平台，且设备信息完整。
+     *
+     * @return 平台信息有效返回 {@code true}
+     */
+    private static boolean isValidUcwebPlatform(String userAgent, String subUserAgent) {
+        if (userAgent.contains("Adr")) {
+            return UserAgentUtils.getUcAndroidModel(userAgent, false) != null
+                    && UserAgentUtils.getUcAndroidVersion(userAgent, false) != null;
+        }
+        if (userAgent.contains("iPh OS")) {
+            return UcwebU2Normalizer.IPHONE.matcher(subUserAgent).find();
+        }
+        if (userAgent.contains("wds")) {
+            return UcwebU2Normalizer.WINDOWS_PHONE.matcher(subUserAgent).find();
+        }
+        if (userAgent.contains("Symbian")) {
+            return UcwebU2Normalizer.SYMBIAN.matcher(subUserAgent).find();
+        }
+        if (userAgent.contains("Java")) {
+            return UcwebU2Normalizer.JAVA.matcher(subUserAgent).find();
+        }
+        return false;
     }
 
     /**
