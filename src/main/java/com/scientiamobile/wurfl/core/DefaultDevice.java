@@ -46,11 +46,11 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     /**
      * 标记语言解析器（暂态，不参与序列化）
      */
-    private final transient MarkupResolver markupResolver;
+    private transient MarkupResolver markupResolver;
     /**
      * 内部设备实例，提供物理能力数据
      */
-    private final transient InternalDevice internalDevice;
+    private transient InternalDevice internalDevice;
     /**
      * 计算出的标记语言类型
      */
@@ -58,7 +58,7 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     /**
      * 虚拟能力处理器（暂态，不参与序列化）
      */
-    private final transient VirtualCapabilityHandler virtualCapabilityHandler;
+    private transient VirtualCapabilityHandler virtualCapabilityHandler;
 
     /**
      * 构造函数，创建默认设备实例。
@@ -104,6 +104,18 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         this.bucketMatcherName = bucketMatcherName;
         this.normalizedUserAgent = normalizedUserAgent;
         this.virtualCapabilityHandler = virtualCapabilityHandler;
+    }
+
+    /**
+     * 反序列化后恢复对象，将 transient 字段置为 null。
+     * 这些字段包含运行时状态，无法也不应通过序列化恢复。
+     */
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.internalDevice = null;
+        this.markupResolver = null;
+        this.markUp = null;
+        this.virtualCapabilityHandler = null;
     }
 
     /**
