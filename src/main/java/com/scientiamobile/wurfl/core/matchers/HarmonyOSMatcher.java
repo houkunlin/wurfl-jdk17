@@ -42,51 +42,69 @@ final class HarmonyOSMatcher extends MatcherBase {
         // 基础兜底
         SUPPORTED_DEVICE_IDS.add(GENERIC_ANDROID);
 
-        // 注册已知华为 HarmonyOS 设备
-        addSupportedDevice("huawei_nam_al00_ver1");    // nova 9 4G
-        addSupportedDevice("huawei_nam_al00_ver1_suban120"); // nova 9 4G A12
-        addSupportedDevice("huawei_lio_n29_ver1");      // Mate 30 Pro 5G
-        addSupportedDevice("huawei_lio_an00p_ver1");    // Mate 30 Pro (LIO-AN00P)
-        addSupportedDevice("huawei_lio_an00m_ver1");    // Mate 30 Pro (LIO-AN00m)
-        addSupportedDevice("huawei_lio_al00_ver1");     // Mate 30 Pro (LIO-AL00)
-        addSupportedDevice("huawei_tas_al00_ver1");     // Mate 30 Pro 4G (TAS-AL00)
-        addSupportedDevice("huawei_tas_an00_ver1");     // Mate 30 Pro (TAS-AN00)
-        addSupportedDevice("huawei_wgr_w19_ver1");      // MatePad Pro 10.8
-        addSupportedDevice("huawei_btk_w09_ver1");      // MatePad 11
-        addSupportedDevice("huawei_abr_al00_ver1");     // P40 Pro
-        addSupportedDevice("huawei_abr_al60_ver1");     // P40 Pro+
-        addSupportedDevice("huawei_abr_lx9_ver1");      // P40 Pro
-        addSupportedDevice("huawei_ana_nx9_ver1");      // P40
-        addSupportedDevice("huawei_els_nx9_ver1");      // P40 Lite
-        addSupportedDevice("huawei_jef_an00_ver1");     // Mate 40 Pro
-        addSupportedDevice("huawei_jef_nx9_ver1");      // Mate 40 Pro
-        addSupportedDevice("huawei_noh_an50_ver1");     // Mate 40 Pro+
-        addSupportedDevice("huawei_noh_nx9_ver1");      // Mate 40 Pro+
-        addSupportedDevice("huawei_oce_an10_ver1");     // P50 Pro
-        addSupportedDevice("huawei_oce_an50_ver1");     // P50 Pro
-        addSupportedDevice("huawei_brq_an00_ver1");     // P50
-        addSupportedDevice("huawei_cdy_an00_ver1");     // Mate 40E
-        addSupportedDevice("huawei_wlz_an00_ver1");     // Mate X2
-        addSupportedDevice("huawei_wlz_al10_ver1");     // Mate X2
-        addSupportedDevice("huawei_mrx_w09_ver1");      // MatePad Pro
-        addSupportedDevice("huawei_tet_an00_ver1");     // Mate X2
+        // Mate 系列
+        addSupportedDevice("huawei_lio_an00p_ver1");            // Mate 30 RS Porsche
+        addSupportedDevice("huawei_lio_an00m_ver1");            // Mate 30E Pro 5G
+        addSupportedDevice("huawei_lio_al00_ver1");             // Mate 30 Pro
+        addSupportedDevice("huawei_tas_al00_ver1");             // Mate 30
+        addSupportedDevice("huawei_tas_an00_ver1");             // Mate 30 5G
+        addSupportedDevice("huawei_noh_an50_ver1");             // Mate 40 E Pro 5G
+        addSupportedDevice("huawei_noh_nx9_ver1");              // Mate 40 Pro
+        addSupportedDevice("huawei_oce_an10_ver1");             // Mate 40
+        addSupportedDevice("huawei_oce_an50_ver1");             // Mate 40E
+        addSupportedDevice("huawei_tet_an00_ver1");             // Mate X2
+        addSupportedDevice("huawei_brq_an00_ver1");             // Mate 40E Pro
 
-        // 机型前缀 → 设备 ID 映射
-        MODEL_PREFIX_MAP.put("LIO", "huawei_lio_n29_ver1");
-        MODEL_PREFIX_MAP.put("TAS", "huawei_tas_al00_ver1");
-        MODEL_PREFIX_MAP.put("NAM", "huawei_nam_al00_ver1");
-        MODEL_PREFIX_MAP.put("WGR", "huawei_wgr_w19_ver1");
-        MODEL_PREFIX_MAP.put("BTK", "huawei_btk_w09_ver1");
-        MODEL_PREFIX_MAP.put("MRX", "huawei_mrx_w09_ver1");
-        MODEL_PREFIX_MAP.put("TET", "huawei_tet_an00_ver1");
+        // P 系列
+        addSupportedDevice("huawei_ana_nx9_ver1");              // P40
+        addSupportedDevice("huawei_els_nx9_ver1");              // P40 Pro
+        addSupportedDevice("huawei_abr_al00_ver1");             // P50
+        addSupportedDevice("huawei_abr_al60_ver1");             // P50 Pro
+        addSupportedDevice("huawei_abr_lx9_ver1");              // P50 Pro
+        addSupportedDevice("huawei_jad_lx9_ver1");              // P50 Pro
+
+        // nova 系列
+        addSupportedDevice("huawei_cdy_an00_ver1");             // nova 7 SE
+        addSupportedDevice("huawei_jef_an00_ver1");             // nova 7 5G
+        addSupportedDevice("huawei_jef_nx9_ver1");              // nova 7
+        addSupportedDevice("huawei_jer_an10_ver1");             // Nova 7 Pro
+        addSupportedDevice("huawei_wlz_an00_ver1");             // Nova 6 5G
+        addSupportedDevice("huawei_wlz_al10_ver1");             // Nova 6
+        addSupportedDevice("huawei_nam_al00_ver1");             // nova 9 4G
+        addSupportedDevice("huawei_nam_al00_ver1_suban120");    // nova 9 4G A12
+        addSupportedDevice("huawei_gla_lx1_ver1");              // nova 10 Pro
+        addSupportedDevice("huawei_jln_lx1_ver1");              // nova 9 SE
+
+        // Honor 系列
+        addSupportedDevice("huawei_honor_bmh_an10_ver1");       // Honor 30 5G
+
+        // 平板
+        addSupportedDevice("huawei_mrx_w09_ver1");              // MatePad Pro
+        addSupportedDevice("huawei_btk_w09_ver1");              // MatePad 11.5
+        addSupportedDevice("huawei_wgr_w19_ver1");              // MatePad Pro 12.6 (2021)
+        addSupportedDevice("huawei_scmr_w09_ver1");             // MatePad
+
+        // 机型前缀 → 设备 ID 映射（基于 HarmonyOS 子条目中出现的型号）
         MODEL_PREFIX_MAP.put("ABR", "huawei_abr_al00_ver1");
         MODEL_PREFIX_MAP.put("ANA", "huawei_ana_nx9_ver1");
+        MODEL_PREFIX_MAP.put("BMH", "huawei_honor_bmh_an10_ver1");
+        MODEL_PREFIX_MAP.put("BRQ", "huawei_brq_an00_ver1");
+        MODEL_PREFIX_MAP.put("BTK", "huawei_btk_w09_ver1");
+        MODEL_PREFIX_MAP.put("CDY", "huawei_cdy_an00_ver1");
         MODEL_PREFIX_MAP.put("ELS", "huawei_els_nx9_ver1");
+        MODEL_PREFIX_MAP.put("GLA", "huawei_gla_lx1_ver1");
+        MODEL_PREFIX_MAP.put("JAD", "huawei_jad_lx9_ver1");
         MODEL_PREFIX_MAP.put("JEF", "huawei_jef_an00_ver1");
+        MODEL_PREFIX_MAP.put("JER", "huawei_jer_an10_ver1");
+        MODEL_PREFIX_MAP.put("JLN", "huawei_jln_lx1_ver1");
+        MODEL_PREFIX_MAP.put("LIO", "huawei_lio_n29_ver1");
+        MODEL_PREFIX_MAP.put("MRX", "huawei_mrx_w09_ver1");
+        MODEL_PREFIX_MAP.put("NAM", "huawei_nam_al00_ver1");
         MODEL_PREFIX_MAP.put("NOH", "huawei_noh_an50_ver1");
         MODEL_PREFIX_MAP.put("OCE", "huawei_oce_an10_ver1");
-        MODEL_PREFIX_MAP.put("BRQ", "huawei_brq_an00_ver1");
-        MODEL_PREFIX_MAP.put("CDY", "huawei_cdy_an00_ver1");
+        MODEL_PREFIX_MAP.put("TAS", "huawei_tas_al00_ver1");
+        MODEL_PREFIX_MAP.put("TET", "huawei_tet_an00_ver1");
+        MODEL_PREFIX_MAP.put("WGR", "huawei_wgr_w19_ver1");
         MODEL_PREFIX_MAP.put("WLZ", "huawei_wlz_an00_ver1");
     }
 
