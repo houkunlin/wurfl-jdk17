@@ -6,7 +6,9 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +19,9 @@ import java.util.regex.Pattern;
  *   <li>混合格式：{@code Android 10; HarmonyOS; ...} （WURFL 数据库已有条目）</li>
  *   <li>纯格式：{@code HarmonyOS; ...} （不含 Android，本匹配器处理）</li>
  * </ul>
- * 通过提取 UA 中的华为设备型号，映射到 WURFL 中已有的对应设备条目。</p>
+ * recovery match 采用动态查找策略：从 UA 中提取华为设备型号（如 "MRX-W09"），
+ * 按优先级生成候选 device ID 并在 WURFL 模型全量设备集合中验证存在性。
+ * 新设备随 WURFL 数据更新自动适配，无需修改 Java 代码。</p>
  */
 final class HarmonyOSMatcher extends MatcherBase {
 
@@ -29,95 +33,18 @@ final class HarmonyOSMatcher extends MatcherBase {
     private static final Pattern HUAWEI_MODEL_PATTERN = Pattern.compile("HUAWEI[- ]([A-Za-z0-9-]+)");
 
     /**
-     * 支持的设备 ID 集合
+     * WURFL 模型全量设备 ID 集合，用于运行时动态查找
      */
-    private static final Set<String> SUPPORTED_DEVICE_IDS = new HashSet<>();
-
-    /**
-     * 华为机型前缀到设备 ID 的映射
-     */
-    private static final Map<String, String> MODEL_PREFIX_MAP = new HashMap<>();
-
-    static {
-        // 基础兜底
-        SUPPORTED_DEVICE_IDS.add(GENERIC_ANDROID);
-
-        // Mate 系列
-        addSupportedDevice("huawei_lio_an00p_ver1");            // Mate 30 RS Porsche
-        addSupportedDevice("huawei_lio_an00m_ver1");            // Mate 30E Pro 5G
-        addSupportedDevice("huawei_lio_al00_ver1");             // Mate 30 Pro
-        addSupportedDevice("huawei_tas_al00_ver1");             // Mate 30
-        addSupportedDevice("huawei_tas_an00_ver1");             // Mate 30 5G
-        addSupportedDevice("huawei_noh_an50_ver1");             // Mate 40 E Pro 5G
-        addSupportedDevice("huawei_noh_nx9_ver1");              // Mate 40 Pro
-        addSupportedDevice("huawei_oce_an10_ver1");             // Mate 40
-        addSupportedDevice("huawei_oce_an50_ver1");             // Mate 40E
-        addSupportedDevice("huawei_tet_an00_ver1");             // Mate X2
-        addSupportedDevice("huawei_brq_an00_ver1");             // Mate 40E Pro
-
-        // P 系列
-        addSupportedDevice("huawei_ana_nx9_ver1");              // P40
-        addSupportedDevice("huawei_els_nx9_ver1");              // P40 Pro
-        addSupportedDevice("huawei_abr_al00_ver1");             // P50
-        addSupportedDevice("huawei_abr_al60_ver1");             // P50 Pro
-        addSupportedDevice("huawei_abr_lx9_ver1");              // P50 Pro
-        addSupportedDevice("huawei_jad_lx9_ver1");              // P50 Pro
-
-        // nova 系列
-        addSupportedDevice("huawei_cdy_an00_ver1");             // nova 7 SE
-        addSupportedDevice("huawei_jef_an00_ver1");             // nova 7 5G
-        addSupportedDevice("huawei_jef_nx9_ver1");              // nova 7
-        addSupportedDevice("huawei_jer_an10_ver1");             // Nova 7 Pro
-        addSupportedDevice("huawei_wlz_an00_ver1");             // Nova 6 5G
-        addSupportedDevice("huawei_wlz_al10_ver1");             // Nova 6
-        addSupportedDevice("huawei_nam_al00_ver1");             // nova 9 4G
-        addSupportedDevice("huawei_nam_al00_ver1_suban120");    // nova 9 4G A12
-        addSupportedDevice("huawei_gla_lx1_ver1");              // nova 10 Pro
-        addSupportedDevice("huawei_jln_lx1_ver1");              // nova 9 SE
-
-        // Honor 系列
-        addSupportedDevice("huawei_honor_bmh_an10_ver1");       // Honor 30 5G
-
-        // 平板
-        addSupportedDevice("huawei_mrx_w09_ver1");              // MatePad Pro
-        addSupportedDevice("huawei_btk_w09_ver1");              // MatePad 11.5
-        addSupportedDevice("huawei_wgr_w19_ver1");              // MatePad Pro 12.6 (2021)
-        addSupportedDevice("huawei_scmr_w09_ver1");             // MatePad
-
-        // 机型前缀 → 设备 ID 映射（基于 HarmonyOS 子条目中出现的型号）
-        MODEL_PREFIX_MAP.put("ABR", "huawei_abr_al00_ver1");
-        MODEL_PREFIX_MAP.put("ANA", "huawei_ana_nx9_ver1");
-        MODEL_PREFIX_MAP.put("BMH", "huawei_honor_bmh_an10_ver1");
-        MODEL_PREFIX_MAP.put("BRQ", "huawei_brq_an00_ver1");
-        MODEL_PREFIX_MAP.put("BTK", "huawei_btk_w09_ver1");
-        MODEL_PREFIX_MAP.put("CDY", "huawei_cdy_an00_ver1");
-        MODEL_PREFIX_MAP.put("ELS", "huawei_els_nx9_ver1");
-        MODEL_PREFIX_MAP.put("GLA", "huawei_gla_lx1_ver1");
-        MODEL_PREFIX_MAP.put("JAD", "huawei_jad_lx9_ver1");
-        MODEL_PREFIX_MAP.put("JEF", "huawei_jef_an00_ver1");
-        MODEL_PREFIX_MAP.put("JER", "huawei_jer_an10_ver1");
-        MODEL_PREFIX_MAP.put("JLN", "huawei_jln_lx1_ver1");
-        MODEL_PREFIX_MAP.put("LIO", "huawei_lio_n29_ver1");
-        MODEL_PREFIX_MAP.put("MRX", "huawei_mrx_w09_ver1");
-        MODEL_PREFIX_MAP.put("NAM", "huawei_nam_al00_ver1");
-        MODEL_PREFIX_MAP.put("NOH", "huawei_noh_an50_ver1");
-        MODEL_PREFIX_MAP.put("OCE", "huawei_oce_an10_ver1");
-        MODEL_PREFIX_MAP.put("TAS", "huawei_tas_al00_ver1");
-        MODEL_PREFIX_MAP.put("TET", "huawei_tet_an00_ver1");
-        MODEL_PREFIX_MAP.put("WGR", "huawei_wgr_w19_ver1");
-        MODEL_PREFIX_MAP.put("WLZ", "huawei_wlz_an00_ver1");
-    }
-
-    private static void addSupportedDevice(String deviceId) {
-        SUPPORTED_DEVICE_IDS.add(deviceId);
-    }
+    private final Set<String> allDeviceIds;
 
     public HarmonyOSMatcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
         super(userAgentNormalizer, wurflModel);
+        this.allDeviceIds = wurflModel != null ? wurflModel.getAllDevicesId() : Collections.emptySet();
     }
 
     public HarmonyOSMatcher(WURFLModel wurflModel) {
         super(wurflModel);
+        this.allDeviceIds = wurflModel != null ? wurflModel.getAllDevicesId() : Collections.emptySet();
     }
 
     @Override
@@ -141,51 +68,82 @@ final class HarmonyOSMatcher extends MatcherBase {
             return GENERIC_ANDROID;
         }
 
-        // 尝试通过型号匹配已知华为设备
-        String deviceId = resolveByModel(ua);
-        if (deviceId != null) {
-            return deviceId;
-        }
-
-        return GENERIC_ANDROID;
-    }
-
-    /**
-     * 从 UA 中提取华为设备型号，尝试匹配已知设备。
-     */
-    private static String resolveByModel(String ua) {
+        // 提取 UA 中的华为设备型号（如 "MRX-W09" 从 "HUAWEI MRX-W09"）
         Matcher matcher = HUAWEI_MODEL_PATTERN.matcher(ua);
         if (!matcher.find()) {
-            return null;
+            return GENERIC_ANDROID;
         }
         String rawModel = matcher.group(1);
         if (StringUtils.isEmpty(rawModel)) {
-            return null;
+            return GENERIC_ANDROID;
         }
 
-        // 提取前缀（横线之前的部分，如 "LIO" 从 "LIO-AN00"）
-        String prefix = rawModel.split("-")[0].trim();
-        if (StringUtils.isEmpty(prefix)) {
-            return null;
+        // 动态查找匹配设备
+        String deviceId = findDeviceByModel(rawModel);
+        return deviceId != null ? deviceId : GENERIC_ANDROID;
+    }
+
+    /**
+     * 从型号字符串动态查找 WURFL 中匹配的设备 ID。
+     * <p>通过提取型号前缀 + 后缀，按优先级生成多种候选 device ID 模式，
+     * 在 WURFL 模型全量设备集合中验证存在性。</p>
+     *
+     * @param rawModel 原始型号字符串，如 "MRX-W09"、"LIO-AN00"
+     * @return 匹配的设备 ID，未找到返回 null
+     */
+    private String findDeviceByModel(String rawModel) {
+        String[] parts = rawModel.split("-", 2);
+        String prefix = parts[0].toLowerCase(Locale.ENGLISH);
+        String suffix = parts.length > 1 ? parts[1].toLowerCase(Locale.ENGLISH) : "";
+
+        // 1. 精确型号匹配：huawei_<前缀>_<后缀>_ver1（如 huawei_mrx_w09_ver1）
+        if (!suffix.isEmpty()) {
+            String candidate = "huawei_" + prefix + "_" + suffix + "_ver1";
+            if (allDeviceIds.contains(candidate)) {
+                return candidate;
+            }
         }
 
-        // 1. 优先通过前缀查找
-        String mapped = MODEL_PREFIX_MAP.get(prefix.toUpperCase(Locale.ENGLISH));
-        if (mapped != null) {
-            return mapped;
+        // 2. 纯前缀匹配：huawei_<前缀>_ver1（如 huawei_mrx_ver1）
+        String prefixOnly = "huawei_" + prefix + "_ver1";
+        if (allDeviceIds.contains(prefixOnly)) {
+            return prefixOnly;
         }
 
-        // 2. 尝试直接构造 device ID: lower_case_model_ver1
-        String normalizedModel = rawModel.replaceAll("[^A-Za-z0-9]", "_").toLowerCase(Locale.ENGLISH);
-        String candidate = "huawei_" + normalizedModel + "_ver1";
-        if (SUPPORTED_DEVICE_IDS.contains(candidate)) {
-            return candidate;
+        // 3. 国内常见后缀截断保留前4字符（如 an00、al00、tl00、w09、nx9）
+        if (suffix.length() >= 4) {
+            String suffixBase = suffix.substring(0, 4);
+            String candidate = "huawei_" + prefix + "_" + suffixBase + "_ver1";
+            if (allDeviceIds.contains(candidate)) {
+                return candidate;
+            }
         }
 
-        // 3. 尝试去掉末尾字母和数字
-        String baseCandidate = "huawei_" + normalizedModel.replaceAll("_[a-z0-9]+$", "") + "_ver1";
-        if (SUPPORTED_DEVICE_IDS.contains(baseCandidate)) {
-            return baseCandidate;
+        // 4. 前2字符 + "00"（如 an00、al00、tl00、nx9 → nx00）
+        if (suffix.length() >= 2) {
+            String suffixShort = suffix.substring(0, 2) + "00";
+            String candidate = "huawei_" + prefix + "_" + suffixShort + "_ver1";
+            if (allDeviceIds.contains(candidate)) {
+                return candidate;
+            }
+        }
+
+        // 5. 逐字符缩短后缀尝试（处理 UA 型号与 WURFL 设备 ID 后缀不完全一致的情况，
+        //    如 LIO-AN00 → WURFL 中只有 lio_an00p、lio_n29）
+        for (int end = suffix.length() - 1; end >= 1; end--) {
+            String shortened = suffix.substring(0, end);
+            String candidate = "huawei_" + prefix + "_" + shortened + "_ver1";
+            if (allDeviceIds.contains(candidate)) {
+                return candidate;
+            }
+        }
+
+        // 6. 扫描所有设备 ID 查找前缀匹配（兜底，仅对 huawei_<前缀>_ 前缀查找）
+        //    适用于前述模式均不匹配但 WURFL 中存在相近设备的情况
+        for (String deviceId : allDeviceIds) {
+            if (deviceId.startsWith("huawei_" + prefix + "_")) {
+                return deviceId;
+            }
         }
 
         return null;
@@ -193,7 +151,7 @@ final class HarmonyOSMatcher extends MatcherBase {
 
     @Override
     protected Set<String> getRequiredDeviceIds() {
-        return new HashSet<>(SUPPORTED_DEVICE_IDS);
+        return Set.of(GENERIC_ANDROID);
     }
 
     @Override

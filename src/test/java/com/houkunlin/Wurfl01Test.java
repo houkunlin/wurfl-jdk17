@@ -429,12 +429,12 @@ class Wurfl01Test {
         Assertions.assertEquals("Chrome Mobile", device.getVirtualCapability("advertised_browser"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
-        Assertions.assertEquals("Huawei LIO-N29 (Mate 30 Pro 5G)", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("Huawei LIO-AL00 (Mate 30 Pro)", device.getVirtualCapability("complete_device_name"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
         Assertions.assertEquals("Android", device.getVirtualCapability("advertised_device_os"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
-        Assertions.assertEquals("Huawei Mate 30 Pro 5G", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("Huawei Mate 30 Pro", device.getVirtualCapability("device_name"));
         Assertions.assertEquals("120.0.0.0", device.getVirtualCapability("advertised_browser_version"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
