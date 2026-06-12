@@ -27,6 +27,7 @@ final class UcwebU3Matcher extends MatcherBase {
     private static final String APPLE_IPAD_VER1_SUBUAWCWEB = "apple_ipad_ver1_subuaucweb";
     private static final Pattern IPHONE_IOS_VERSION = Pattern.compile("iPhone OS (\\d+)(?:_\\d+)?.+ like");
     private static final Pattern IPAD_IOS_VERSION = Pattern.compile("CPU OS (\\d+)(?:_\\d+)?.+like Mac");
+    private static final Pattern ANDROID_VERSION_U3_PATTERN = Pattern.compile("Android (\\d+)(?:\\.\\d+)?");
     private static final List<String> SUPPORTED_DEVICE_IDS;
 
     static {
@@ -41,6 +42,14 @@ final class UcwebU3Matcher extends MatcherBase {
         SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver7");
         SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver8");
         SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver9");
+        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver10");
+        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver11");
+        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver12");
+        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver13");
+        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver14");
+        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver15");
+        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver16");
+        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver17");
         SUPPORTED_DEVICE_IDS.add(APPLE_IPHONE_VER1_SUBUAWCWEB);
         SUPPORTED_DEVICE_IDS.add("apple_iphone_ver2_subuaucweb");
         SUPPORTED_DEVICE_IDS.add("apple_iphone_ver3_subuaucweb");
@@ -116,7 +125,7 @@ final class UcwebU3Matcher extends MatcherBase {
         }
         if (userAgent.contains("Android")) {
             return UserAgentUtils.getAndroidModel(userAgent) != null
-                    && UserAgentUtils.getAndroidVersion(userAgent, false) != null;
+                    && getAndroidMajorVersion(userAgent) != null;
         }
         if (userAgent.contains("iPhone;")) {
             return UcwebU3Normalizer.IPHONE.matcher(userAgent).find();
@@ -171,12 +180,16 @@ final class UcwebU3Matcher extends MatcherBase {
     }
 
     private static String buildAndroidDeviceId(String ua) {
-        String version = UserAgentUtils.getAndroidVersion(ua, false);
-        if (StringUtils.isEmpty(version)) {
-            return null;
-        }
-        String[] parts = version.split("\\.");
-        return parts.length > 0 ? "generic_ucweb_android_ver" + parts[0] : null;
+        String majorVersion = getAndroidMajorVersion(ua);
+        return majorVersion != null ? "generic_ucweb_android_ver" + majorVersion : null;
+    }
+
+    /**
+     * 从 User-Agent 中提取 Android 主版本号，支持整数版本（如 "Android 14"）和点分版本（如 "Android 4.4"）。
+     */
+    private static String getAndroidMajorVersion(String ua) {
+        Matcher matcher = ANDROID_VERSION_U3_PATTERN.matcher(ua);
+        return matcher.find() ? matcher.group(1) : null;
     }
 
     private static String buildIphoneDeviceId(String ua) {

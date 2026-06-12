@@ -365,21 +365,21 @@ class Wurfl01Test {
         Assertions.assertEquals("UCBrowser", device.getVirtualCapability("advertised_app_name"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
         Assertions.assertEquals("UC Browser", device.getVirtualCapability("advertised_browser"));
-        Assertions.assertEquals("false", device.getVirtualCapability("is_smartphone"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
-        Assertions.assertEquals("Generic Android 1.5", device.getVirtualCapability("complete_device_name"));
-        Assertions.assertEquals("false", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("Xiaomi 23116PN5BC (14 Pro)", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
         Assertions.assertEquals("Android", device.getVirtualCapability("advertised_device_os"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
-        Assertions.assertEquals("Generic Android 1.5", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("Xiaomi 14 Pro", device.getVirtualCapability("device_name"));
         Assertions.assertEquals("13.6.0.1306", device.getVirtualCapability("advertised_browser_version"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_ios"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
-        Assertions.assertEquals("Feature Phone", device.getVirtualCapability("form_factor"));
+        Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
         Assertions.assertEquals("14", device.getVirtualCapability("advertised_device_os_version"));
     }
 }
