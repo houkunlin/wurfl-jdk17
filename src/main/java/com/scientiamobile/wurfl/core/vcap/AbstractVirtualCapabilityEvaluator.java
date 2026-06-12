@@ -264,55 +264,78 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
      * @return 如果是智能手机则返回 {@code true}
      */
     protected static boolean isSmartphone(Device device) {
-        int resolutionWidth;
+        int resolutionWidth = parseResolutionWidth(device);
+        if (resolutionWidth < 0) {
+            return false;
+        }
+
+        if ("false".equals(device.getCapability("is_wireless_device"))
+                || "true".equals(device.getCapability("is_tablet"))
+                || "false".equals(device.getCapability("can_assign_phone_number"))
+                || !"touchscreen".equals(device.getCapability("pointing_method"))
+                || resolutionWidth < 320) {
+            return false;
+        }
+
+        String deviceOs = device.getCapability("device_os");
+        String deviceOsVersion = device.getCapability("device_os_version");
+        float version = parseMajorMinorVersion(deviceOsVersion);
+
+        return isSmartphoneOs(deviceOs, version);
+    }
+
+    /**
+     * 从设备中解析分辨率宽度。
+     *
+     * @return 分辨率宽度，解析失败返回 -1
+     */
+    private static int parseResolutionWidth(Device device) {
         try {
-            resolutionWidth = Integer.parseInt(device.getCapability("resolution_width"));
+            return Integer.parseInt(device.getCapability("resolution_width"));
         } catch (NumberFormatException e) {
-            return false;
+            return -1;
         }
+    }
 
-        if ("false".equals(device.getCapability("is_wireless_device"))) {
-            return false;
-        } else if ("true".equals(device.getCapability("is_tablet"))) {
-            return false;
-        } else if ("false".equals(device.getCapability("can_assign_phone_number"))) {
-            return false;
-        } else if (!"touchscreen".equals(device.getCapability("pointing_method"))) {
-            return false;
-        } else if (resolutionWidth < 320) {
-            return false;
-        } else {
-            String deviceOsVersion = device.getCapability("device_os_version");
-            Matcher versionMatcher = MAJOR_MINOR_VERSION_PATTERN.matcher(deviceOsVersion);
-            float version = 0.0F;
-            boolean versionParsed;
-            versionParsed = versionMatcher.matches();
-            if (versionParsed) {
-                try {
-                    version = Float.parseFloat(versionMatcher.group(1));
-                } catch (NumberFormatException e) {
-                    versionParsed = false;
-                }
-            }
-
-            String deviceOs = device.getCapability("device_os");
-            if ("iOS".equals(deviceOs)) {
-                return versionParsed && version >= 3.0F;
-            } else if ("Android".equals(deviceOs)) {
-                return versionParsed && version >= 2.2F;
-            } else if ("Windows Phone OS".equals(deviceOs)) {
-                return true;
-            } else if ("RIM OS".equals(deviceOs)) {
-                return versionParsed && (double) version >= (double) 7.0F;
-            } else if ("webOS".equals(deviceOs)) {
-                return true;
-            } else if ("MeeGo".equals(deviceOs)) {
-                return true;
-            } else if ("Bada OS".equals(deviceOs)) {
-                return versionParsed && (double) version >= (double) 2.0F;
-            } else {
-                return false;
-            }
+    /**
+     * 从版本字符串中解析主次版本号（如 "4.3" → 4.3f, "10" → 10.0f）。
+     *
+     * @return 解析后的浮点版本号，解析失败返回 -1
+     */
+    private static float parseMajorMinorVersion(String versionStr) {
+        Matcher matcher = MAJOR_MINOR_VERSION_PATTERN.matcher(versionStr);
+        if (!matcher.matches()) {
+            return -1f;
         }
+        try {
+            return Float.parseFloat(matcher.group(1));
+        } catch (NumberFormatException e) {
+            return -1f;
+        }
+    }
+
+    /**
+     * 根据操作系统名称和版本号判断是否为智能手机。
+     */
+    private static boolean isSmartphoneOs(String deviceOs, float version) {
+        if ("iOS".equals(deviceOs)) {
+            return version >= 3.0f;
+        }
+        if ("Android".equals(deviceOs)) {
+            return version >= 2.2f;
+        }
+        if ("Windows Phone OS".equals(deviceOs)) {
+            return true;
+        }
+        if ("RIM OS".equals(deviceOs)) {
+            return version >= 7.0f;
+        }
+        if ("webOS".equals(deviceOs) || "MeeGo".equals(deviceOs)) {
+            return true;
+        }
+        if ("Bada OS".equals(deviceOs)) {
+            return version >= 2.0f;
+        }
+        return false;
     }
 }
