@@ -132,12 +132,21 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
      * 通用规范化器，用于执行基础的 UA 清理操作（如 URL 解码、字符集清理等）。
      * <p>标记为 transient，不参与序列化。</p>
      */
-    private final transient UserAgentNormalizer genericNormalizer;
+    private transient UserAgentNormalizer genericNormalizer;
 
     /**
      * 标记原始 User-Agent 是否经过 URL 编码。
      */
     private boolean urlEncoded;
+
+    /**
+     * 反序列化时恢复 transient 字段 genericNormalizer。
+     */
+    @Serial
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.genericNormalizer = null;
+    }
 
     public DefaultWURFLRequest(String userAgent, UserAgentNormalizer genericNormalizer, UserAgentPriority userAgentPriority, EngineTarget engineTarget) {
         this(userAgent, (String) null, genericNormalizer, userAgentPriority, engineTarget);
