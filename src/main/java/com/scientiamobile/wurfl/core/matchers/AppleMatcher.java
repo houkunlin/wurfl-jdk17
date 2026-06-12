@@ -570,47 +570,63 @@ final class AppleMatcher extends AbstractMatcher {
     @Override
     protected String applyConclusiveMatch(WURFLRequest request) {
         String userAgent = request.getNormalizedDeviceUserAgent();
-        String subHw = null;
-        Matcher hwMatcher;
-        hwMatcher = APPLE_HARDWARE_ID_PATTERN.matcher(userAgent);
-        if (hwMatcher.find()) {
-            String hwId = hwMatcher.group(1);
-            if (userAgent.contains("iPod")) {
-                subHw = IPOD_HW_TO_SUBHW.get(hwId);
-            } else if (userAgent.contains("iPad")) {
-                subHw = IPAD_HW_TO_SUBHW.get(hwId);
-            } else if (userAgent.contains("iPhone")) {
-                subHw = IPHONE_HW_TO_SUBHW.get(hwId);
-            }
-        }
+        String subHw = resolveSubHardware(userAgent);
+        int matchLength = computeMatchLength(userAgent);
 
-        int matchLength;
-        matchLength = StringMatchUtils.firstChar(userAgent, '_');
-        if (matchLength < 0) {
-            matchLength = userAgent.indexOf("like Mac OS X;");
-            if (matchLength >= 0) {
-                matchLength += 14;
-            } else {
-                matchLength = userAgent.length();
-            }
-        } else {
-            ++matchLength;
-        }
-
-        String matchedUserAgent = StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-        if (matchedUserAgent != null) {
-            String matchedDeviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(matchedUserAgent);
-            if (subHw != null && matchedDeviceId != null) {
-                String subHwDeviceId = matchedDeviceId + "_subhw" + subHw;
-                if (SUPPORTED_SUBHW_DEVICE_IDS.contains(subHwDeviceId)) {
-                    return subHwDeviceId;
-                }
-            }
-
-            return matchedDeviceId;
-        } else {
+        FilteredDeviceIndex index = this.getFilter().getIndex();
+        String matchedUserAgent = StringMatchUtils.risMatch(index.getUserAgents(), userAgent, matchLength);
+        if (matchedUserAgent == null) {
             return null;
         }
+
+        String matchedDeviceId = index.getDeviceIdByUserAgent(matchedUserAgent);
+        if (subHw != null && matchedDeviceId != null) {
+            String subHwDeviceId = matchedDeviceId + "_subhw" + subHw;
+            if (SUPPORTED_SUBHW_DEVICE_IDS.contains(subHwDeviceId)) {
+                return subHwDeviceId;
+            }
+        }
+
+        return matchedDeviceId;
+    }
+
+    /**
+     * 从 User-Agent 中解析硬件标识（如 iPhone7,2 → "6"），映射为子型号名称。
+     *
+     * @return 子型号名称，未匹配返回 {@code null}
+     */
+    private static String resolveSubHardware(String userAgent) {
+        Matcher hwMatcher = APPLE_HARDWARE_ID_PATTERN.matcher(userAgent);
+        if (!hwMatcher.find()) {
+            return null;
+        }
+        String hwId = hwMatcher.group(1);
+        if (userAgent.contains("iPod")) {
+            return IPOD_HW_TO_SUBHW.get(hwId);
+        }
+        if (userAgent.contains("iPad")) {
+            return IPAD_HW_TO_SUBHW.get(hwId);
+        }
+        if (userAgent.contains("iPhone")) {
+            return IPHONE_HW_TO_SUBHW.get(hwId);
+        }
+        return null;
+    }
+
+    /**
+     * 计算 User-Agent 的 RIS 匹配截断位置。
+     * <p>优先使用 '_' 字符位置；不存在则查找 "like Mac OS X;"；都找不到则使用完整长度。</p>
+     */
+    private static int computeMatchLength(String userAgent) {
+        int pos = StringMatchUtils.firstChar(userAgent, '_');
+        if (pos >= 0) {
+            return pos + 1;
+        }
+        pos = userAgent.indexOf("like Mac OS X;");
+        if (pos >= 0) {
+            return pos + 14;
+        }
+        return userAgent.length();
     }
 
     /**
