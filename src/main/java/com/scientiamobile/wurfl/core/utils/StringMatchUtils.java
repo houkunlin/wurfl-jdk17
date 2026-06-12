@@ -412,58 +412,32 @@ public final class StringMatchUtils {
     public static String rawdecode(String value, String encoding) {
         if (StringUtils.isEmpty(value)) {
             return value;
-        } else {
-            int length = value.length();
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream(length);
+        }
 
-            try {
-                for (int i = 0; i < length; ++i) {
-                    if (value.charAt(i) == '%' && i + 2 < length) {
-                        int highNibble = value.charAt(i + 1);
-                        int lowNibble = value.charAt(i + 2);
-                        highNibble = Character.digit((char) highNibble, 16);
-                        lowNibble = Character.digit((char) lowNibble, 16);
-                        if (highNibble != -1 && lowNibble != -1) {
-                            int decoded = (char) ((highNibble << 4) + lowNibble);
-                            buffer.write(decoded);
-                            i += 2;
-                        } else {
-                            writeChar(buffer, value, i, encoding);
-                        }
-                    } else {
-                        writeChar(buffer, value, i, encoding);
-                    }
-                }
-            } finally {
-                try {
-                    buffer.close();
-                } catch (IOException ignore) {
-                }
+        int length = value.length();
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream(length);
+        Charset charset = Charset.forName(encoding);
 
+        for (int i = 0; i < length; i++) {
+            char c = value.charAt(i);
+            if (c == '%' && i + 2 < length) {
+                int highNibble = Character.digit(value.charAt(i + 1), 16);
+                int lowNibble = Character.digit(value.charAt(i + 2), 16);
+                if (highNibble != -1 && lowNibble != -1) {
+                    buffer.write((highNibble << 4) + lowNibble);
+                    i += 2;
+                    continue;
+                }
             }
-
-            return new String(buffer.toByteArray(), Charset.forName(encoding));
+            // Write character in the specified encoding
+            try {
+                buffer.write(String.valueOf(c).getBytes(charset));
+            } catch (IOException e) {
+                buffer.write(c);
+            }
         }
-    }
 
-    /**
-     * 将字符串中的单个字符按指定编码写入字节输出流。
-     * <p>用于 {@link #rawdecode(String, String)} 的辅助方法。</p>
-     *
-     * @param buffer   字节输出流
-     * @param value    源字符串
-     * @param index    当前字符索引
-     * @param encoding 字符编码名称
-     */
-    private static void writeChar(ByteArrayOutputStream buffer, String value, int index, String encoding) {
-        char ch = value.charAt(index);
-        String stringValue = new String(new char[]{ch});
-
-        try {
-            buffer.write(stringValue.getBytes(encoding));
-        } catch (IOException ignore) {
-            buffer.write(ch);
-        }
+        return buffer.toString(charset);
     }
 
     /**
