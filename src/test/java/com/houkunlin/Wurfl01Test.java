@@ -5,7 +5,9 @@ import com.scientiamobile.wurfl.core.GeneralWURFLEngine;
 import com.scientiamobile.wurfl.core.resource.XMLResource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +26,7 @@ import java.io.FileNotFoundException;
  * @author HouKunLin
  */
 class Wurfl01Test {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     /**
      * WURFL 设备数据文件路径，包含压缩后的设备描述 XML。
      * 文件位于项目 {@code libs/} 目录下，版本为 1.9.1.0 时期的 wurfl.zip 版本。
@@ -90,6 +93,7 @@ class Wurfl01Test {
      * </ul>
      * 该用例覆盖了 WURFL 对桌面端浏览器的探测准确性。
      */
+    @DisplayName("电脑谷歌浏览器")
     @Test
     void testGoogleBrowser() {
         Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36");
@@ -137,6 +141,7 @@ class Wurfl01Test {
      * </ul>
      * 该用例覆盖了 WURFL 对 Android 原生应用内 WebView 场景的探测能力。
      */
+    @DisplayName("一加")
     @Test
     void testOnePlusPLU110() {
         Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; Android 16; PLU110 Build/BP2A.250605.015; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/138.0.7204.179 Mobile Safari/537.36");
@@ -186,6 +191,7 @@ class Wurfl01Test {
      * </ul>
      * 该用例用于验证 WURFL 对第三方小众浏览器的兼容性及在 UA 伪装场景下的降级识别策略。
      */
+    @DisplayName("夸克浏览器：一加12")
     @Test
     void testOnePlus12Quark() {
         Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; U; Android 16; zh-CN; PJD110 Build/BP2A.250605.015) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/144.0.7559.86 Quark/10.10.0.1075 Mobile Safari/537.36");
@@ -215,5 +221,133 @@ class Wurfl01Test {
         Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
         Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
         Assertions.assertEquals("16", device.getVirtualCapability("advertised_device_os_version"));
+    }
+
+    @DisplayName("iPhone3")
+    @Test
+    void test_iPhone3() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/420.1 (KHTML, like Gecko) Version/3.0 Mobile/1A542a Safari/419.3");
+        System.out.println(device);
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getVirtualCapabilities()));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getCapabilities()));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app_webview"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_mobile"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_phone"));
+        Assertions.assertEquals("Stock Browser", device.getVirtualCapability("advertised_app_name"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
+        Assertions.assertEquals("Mobile Safari", device.getVirtualCapability("advertised_browser"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
+        Assertions.assertEquals("Apple iPhone", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("iOS", device.getVirtualCapability("advertised_device_os"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_android"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
+        Assertions.assertEquals("Apple iPhone", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("3.0", device.getVirtualCapability("advertised_browser_version"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_ios"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
+        Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
+        Assertions.assertEquals("3.0", device.getVirtualCapability("advertised_device_os_version"));
+    }
+
+    @DisplayName("QQ 内置浏览器 UA: Android")
+    @Test
+    void test_10003() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; Android 11; M2102J2SC Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/89.0.4389.72 MQQBrowser/6.2 TBS/045908 Mobile Safari/537.36 V1_AND_SQ_8.8.28_2092_YYB_D A_8082800 QQ/8.8.28.6155 NetType/WIFI WebP/0.3.0 Pixel/1080 StatusBarHeight/91 SimpleUISwitch/1 QQTheme/2921 InMagicWin/0 StudyMode/0 CurrentMode/1 CurrentFontScale/0.9375");
+        System.out.println(device);
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getVirtualCapabilities()));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getCapabilities()));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app_webview"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_mobile"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_phone"));
+        Assertions.assertEquals("Chrome browser", device.getVirtualCapability("advertised_app_name"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
+        Assertions.assertEquals("Chromium", device.getVirtualCapability("advertised_browser"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
+        Assertions.assertEquals("Xiaomi M2102J2SC (Redmi K40 5G Premium Edition)", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("Android", device.getVirtualCapability("advertised_device_os"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
+        Assertions.assertEquals("Xiaomi Redmi K40 5G Premium Edition", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("89.0.4389.72", device.getVirtualCapability("advertised_browser_version"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_ios"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
+        Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
+        Assertions.assertEquals("11", device.getVirtualCapability("advertised_device_os_version"));
+    }
+
+    @DisplayName("QQ 内置浏览器 UA: iPhone")
+    @Test
+    void test_10004() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (iPhone; CPU iPhone OS 15_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 QQ/8.8.38.705 V1_IPH_SQ_8.8.38_1_APP_A Pixel/1170 MiniAppEnable SimpleUISwitch/1 StudyMode/0 CurrentMode/1 CurrentFontScale/0.941000 QQTheme/2921 Core/WKWebView Device/Apple(iPhone 12 Pro) NetType/WIFI QBWebViewType/1 WKType/1");
+        System.out.println(device);
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getVirtualCapabilities()));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getCapabilities()));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_app_webview"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_app"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_mobile"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_phone"));
+        Assertions.assertEquals("Stock Browser", device.getVirtualCapability("advertised_app_name"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
+        Assertions.assertEquals("Mobile Safari", device.getVirtualCapability("advertised_browser"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
+        Assertions.assertEquals("Apple iPhone", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("iOS", device.getVirtualCapability("advertised_device_os"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_android"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
+        Assertions.assertEquals("Apple iPhone", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("15.1.1", device.getVirtualCapability("advertised_browser_version"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_ios"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
+        Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
+        Assertions.assertEquals("15.1.1", device.getVirtualCapability("advertised_device_os_version"));
+    }
+
+    @DisplayName("QQ 内置浏览器 UA: iPad")
+    @Test
+    void test_10005() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (iPad; U; CPU OS 5_0 like Mac OS X; en-us) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3");
+        System.out.println(device);
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getVirtualCapabilities()));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getCapabilities()));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app_webview"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_mobile"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_phone"));
+        Assertions.assertEquals("Stock Browser", device.getVirtualCapability("advertised_app_name"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
+        Assertions.assertEquals("Mobile Safari", device.getVirtualCapability("advertised_browser"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_smartphone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
+        Assertions.assertEquals("Apple iPad", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("iOS", device.getVirtualCapability("advertised_device_os"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_android"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
+        Assertions.assertEquals("Apple iPad", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("5.1", device.getVirtualCapability("advertised_browser_version"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_ios"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
+        Assertions.assertEquals("Tablet", device.getVirtualCapability("form_factor"));
+        Assertions.assertEquals("5.0", device.getVirtualCapability("advertised_device_os_version"));
     }
 }
