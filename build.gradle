@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.spotbugs' version '6.5.6'
 }
 
 group = 'com.houkunlin'
@@ -28,8 +29,36 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.14.0'
+}
+
+spotbugs {
+    ignoreFailures = true
+    showProgress = true
+    effort = 'max'
+    reportLevel = 'low'
+}
+
+spotbugsMain {
+    reports {
+        xml {
+            required = true
+            outputLocation = file("${buildDir}/reports/spotbugs/main.xml")
+        }
+        html {
+            required = true
+            outputLocation = file("${buildDir}/reports/spotbugs/main.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.addAll(['-Xlint:all', '-Xmaxwarns', '200', '-Xmaxerrs', '50'])
+    options.encoding = 'UTF-8'
 }
