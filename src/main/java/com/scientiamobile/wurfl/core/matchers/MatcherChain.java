@@ -41,9 +41,7 @@ class MatcherChain implements Matcher, MatcherFilter {
     public DeviceInfo match(WURFLRequest request) {
 
         for (Matcher value : this.matchers) {
-            Matcher matcher;
-            matcher = value;
-            matcher.getMatcherName();
+            Matcher matcher = value;
             if (matcher.canHandle(request)) {
                 return matcher.match(request);
             }

@@ -176,7 +176,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     /**
      * Jackson JSON 对象映射器，用于序列化响应体
      */
-    private final transient ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 设置 WURFL 引擎静态实例，供诊断 Servlet 使用。
@@ -248,6 +248,7 @@ public class IntrospectorServlet extends HttpServlet implements WurflWebConstant
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String action = request.getParameter(ACTION);
         response.setContentType("text/plain");
+        response.setHeader("X-Content-Type-Options", "nosniff");
         PrintWriter out = response.getWriter();
         if (REQUEST.equalsIgnoreCase(action)) {
             wurflEngine.setEngineTarget(EngineTarget.accuracy);
