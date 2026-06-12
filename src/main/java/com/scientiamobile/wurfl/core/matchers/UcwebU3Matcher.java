@@ -94,29 +94,37 @@ final class UcwebU3Matcher extends MatcherBase {
     protected String risMatch(String userAgent) {
         if (UserAgentUtils.getUcBrowserVersion(userAgent, false) == null) {
             return null;
-        } else {
-            int matchLength = userAgent.indexOf("---") + 3;
-            if (userAgent.contains("Windows Phone")) {
-                String windowsPhoneVersion = UserAgentUtils.getWindowsPhoneVersion(userAgent);
-                if (UserAgentUtils.getWindowsPhoneModel(userAgent) != null && windowsPhoneVersion != null) {
-                    return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-                }
-            } else if (userAgent.contains("Android")) {
-                String androidModel = UserAgentUtils.getAndroidModel(userAgent);
-                String androidVersion = UserAgentUtils.getAndroidVersion(userAgent, false);
-                if (androidModel != null && androidVersion != null) {
-                    return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-                }
-            } else if (userAgent.contains("iPhone;")) {
-                if (UcwebU3Normalizer.IPHONE.matcher(userAgent).find()) {
-                    return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-                }
-            } else if (userAgent.contains("iPad") && UcwebU3Normalizer.IPAD.matcher(userAgent).find()) {
-                return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
-            }
+        }
 
+        if (!isValidUcwebPlatform(userAgent)) {
             return null;
         }
+
+        int matchLength = userAgent.indexOf("---") + 3;
+        return StringMatchUtils.risMatch(this.getFilter().getIndex().getUserAgents(), userAgent, matchLength);
+    }
+
+    /**
+     * 验证 UCWeb U3 请求是否来自已知平台且设备信息完整。
+     *
+     * @return 平台信息有效返回 {@code true}
+     */
+    private static boolean isValidUcwebPlatform(String userAgent) {
+        if (userAgent.contains("Windows Phone")) {
+            return UserAgentUtils.getWindowsPhoneModel(userAgent) != null
+                    && UserAgentUtils.getWindowsPhoneVersion(userAgent) != null;
+        }
+        if (userAgent.contains("Android")) {
+            return UserAgentUtils.getAndroidModel(userAgent) != null
+                    && UserAgentUtils.getAndroidVersion(userAgent, false) != null;
+        }
+        if (userAgent.contains("iPhone;")) {
+            return UcwebU3Normalizer.IPHONE.matcher(userAgent).find();
+        }
+        if (userAgent.contains("iPad")) {
+            return UcwebU3Normalizer.IPAD.matcher(userAgent).find();
+        }
+        return false;
     }
 
     /**
