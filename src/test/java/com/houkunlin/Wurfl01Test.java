@@ -444,4 +444,36 @@ class Wurfl01Test {
         Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
         Assertions.assertEquals("", device.getVirtualCapability("advertised_device_os_version"));
     }
+
+    @DisplayName("vivo X100 (Funtouch OS 14)")
+    @Test
+    void test_10009() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; Android 14; V2309) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
+        System.out.println(device);
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getVirtualCapabilities()));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getCapabilities()));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app_webview"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_app"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_mobile"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_phone"));
+        Assertions.assertEquals("Chrome browser", device.getVirtualCapability("advertised_app_name"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
+        Assertions.assertEquals("Chrome Mobile", device.getVirtualCapability("advertised_browser"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
+        Assertions.assertEquals("Vivo V2309 (X100 Pro)", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("Android", device.getVirtualCapability("advertised_device_os"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
+        Assertions.assertEquals("Vivo X100 Pro", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("120.0.0.0", device.getVirtualCapability("advertised_browser_version"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_ios"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
+        Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
+        Assertions.assertEquals("14", device.getVirtualCapability("advertised_device_os_version"));
+    }
 }
