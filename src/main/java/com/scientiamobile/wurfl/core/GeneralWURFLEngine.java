@@ -392,9 +392,11 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public WURFLUtils getWURFLUtils() {
         this.ensureInitialized();
         this.lock.readLock().lock();
-        WURFLUtils out = this.wurflUtils;
-        this.lock.readLock().unlock();
-        return out;
+        try {
+            return this.wurflUtils;
+        } finally {
+            this.lock.readLock().unlock();
+        }
     }
 
     /**
