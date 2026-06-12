@@ -271,9 +271,7 @@ public class DefaultWURFLModel implements WURFLModel {
      */
     @Override
     public Set<String> getAllDevicesId() {
-        HashSet<String> deviceIds = new HashSet<>();
-        deviceIds.addAll(this.devicesById.keySet());
-        return deviceIds;
+        return new HashSet<>(this.devicesById.keySet());
     }
 
     /**
@@ -307,8 +305,7 @@ public class DefaultWURFLModel implements WURFLModel {
         Validate.notNull(device, "The device must be not null");
 
         try {
-            ModelDevice fallbackDevice = this.getDeviceById(device.getFallBack());
-            return fallbackDevice;
+            return this.getDeviceById(device.getFallBack());
         } catch (DeviceNotDefinedException e) {
             throw new DeviceNotInModelException(device, e);
         }
