@@ -1,12 +1,14 @@
 package com.scientiamobile.wurfl.core.resource;
 
 import com.scientiamobile.wurfl.core.resource.exc.WURFLResourceException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -93,14 +95,9 @@ public class XMLResource implements WURFLResource {
      */
     @Override
     public ModelDevicesSnapshot getData(String... includedCapabilities) {
-        if (includedCapabilities != null) {
-            this.includedCapabilities = new HashSet<>(includedCapabilities.length);
-            for (String capabilityName : includedCapabilities) {
-                this.includedCapabilities.add(capabilityName);
-            }
-        } else {
-            this.includedCapabilities = new HashSet<>(0);
-        }
+        this.includedCapabilities = includedCapabilities != null
+                ? new HashSet<>(Arrays.asList(includedCapabilities))
+                : new HashSet<>(0);
 
         ModelDevicesSnapshot snapshot = this.parseSnapshot(this.resourceInput.openInputStream());
         this.resourceInput.reset();
@@ -157,8 +154,6 @@ public class XMLResource implements WURFLResource {
 
         try {
             SAX_PARSER_FACTORY.newSAXParser().parse(inputStream, handler);
-        } catch (RuntimeException e) {
-            throw e;
         } catch (Exception e) {
             throw new WURFLResourceException(this, e);
         }
@@ -168,7 +163,7 @@ public class XMLResource implements WURFLResource {
         String wurflLastUpdated = handler.getWurflLastUpdated();
         String wurflSmid = handler.getWurflSmid();
         // 版本号优先取 ver 元素，其次取 last_updated，最后取默认值
-        this.version = wurflVersion != null && wurflVersion.length() != 0 ? wurflVersion : (wurflLastUpdated != null && wurflLastUpdated.length() != 0 ? wurflLastUpdated : "(no version info)");
+        this.version = StringUtils.defaultIfBlank(wurflVersion, StringUtils.defaultIfBlank(wurflLastUpdated, "(no version info)"));
         boolean patch = handler.isPatch();
         ModelDevices devices = handler.getDevices();
         return new ModelDevicesSnapshot(info, this.version, patch, devices, wurflSmid);
