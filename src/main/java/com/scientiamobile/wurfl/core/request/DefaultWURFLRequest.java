@@ -591,9 +591,11 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
      */
     @Override
     public int hashCode() {
-        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(35, 79);
-        hashCodeBuilder.append(this.getClass()).append(this.deviceUserAgent).append(this.userAgentProfile).toHashCode();
-        return hashCodeBuilder.toHashCode();
+        return new HashCodeBuilder(35, 79)
+                .append(this.getClass())
+                .append(this.deviceUserAgent)
+                .append(this.userAgentProfile)
+                .toHashCode();
     }
 
     /**

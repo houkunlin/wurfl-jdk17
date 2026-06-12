@@ -768,7 +768,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     @Override
     public Set<String> getAllMandatoryCapabilities() {
         this.ensureInitialized();
-        return new HashSet<>(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
+        return new HashSet<>(VirtualCapabilityEvaluator.getMandatoryCapabilities());
     }
 
     /**

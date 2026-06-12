@@ -56,7 +56,7 @@ public class PeriodicUpdateTask implements Runnable {
             if (!updateResult.isUpdateProcessSuccessful()) {
                 log.error("Update process failed. Reason: {}", updateResult.getMessage());
                 if (this.lastSuccessfulUpdate != null) {
-                    log.warn("Last successful updated was completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
+                    log.warn("Last successful updated was completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.get().format(this.lastSuccessfulUpdate.getTime()));
                 }
             } else if (updateResult.isUpdated()) {
                 log.info("Free memory before reload process {}", Runtime.getRuntime().freeMemory());
@@ -70,7 +70,7 @@ public class PeriodicUpdateTask implements Runnable {
             }
 
             if (this.lastSuccessfulUpdate != null) {
-                log.info("WURFL file update completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.format(this.lastSuccessfulUpdate.getTime()));
+                log.info("WURFL file update completed on {}", CheckForNewWurflFileTask.LAST_MODIFIED_FORMAT.get().format(this.lastSuccessfulUpdate.getTime()));
             }
 
         } catch (RuntimeException e) {

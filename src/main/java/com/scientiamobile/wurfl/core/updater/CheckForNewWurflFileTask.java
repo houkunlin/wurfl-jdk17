@@ -27,13 +27,12 @@ import java.util.TimeZone;
  */
 
 public class CheckForNewWurflFileTask implements UpdatePipelineTask {
-    static final SimpleDateFormat LAST_MODIFIED_FORMAT;
+    static final ThreadLocal<SimpleDateFormat> LAST_MODIFIED_FORMAT = ThreadLocal.withInitial(() -> {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return sdf;
+    });
     private static final Logger log = LoggerFactory.getLogger(CheckForNewWurflFileTask.class);
-
-    static {
-        LAST_MODIFIED_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        LAST_MODIFIED_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
 
     private ProxySettings proxySettings;
 
@@ -56,7 +55,7 @@ public class CheckForNewWurflFileTask implements UpdatePipelineTask {
 
         try {
             File originalWurflFile = new File(originalWurflPath).getCanonicalFile();
-            String ifModifiedSince = originalWurflFile.exists() ? LAST_MODIFIED_FORMAT.format(new Date(originalWurflFile.lastModified())) : "";
+            String ifModifiedSince = originalWurflFile.exists() ? LAST_MODIFIED_FORMAT.get().format(new Date(originalWurflFile.lastModified())) : "";
             URL newWurflUrl = URI.create((String) context.get("new_wurfl_url")).toURL();
             Validate.isTrue(newWurflUrl.getHost() != null && (newWurflUrl.getHost().endsWith(".scientiamobile.com") || newWurflUrl.getHost().equals("localhost") || newWurflUrl.getHost().equals("127.0.0.1")), "Invalid URL host: " + newWurflUrl.getHost());
             Integer connectionTimeoutMs = UpdatePipeline.getConnectionTimeoutMsOrDefault(context);

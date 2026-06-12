@@ -47,7 +47,15 @@ public class XmlFileLoader {
         InputStream inputStream = this.resourceInput.openInputStream();
 
         try {
-            SAXParserFactory.newInstance().newSAXParser().parse(inputStream, this.handler);
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            try {
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            } catch (Exception ignored) {
+                // 部分 SAX 实现不支持这些特性，忽略
+            }
+            factory.newSAXParser().parse(inputStream, this.handler);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {

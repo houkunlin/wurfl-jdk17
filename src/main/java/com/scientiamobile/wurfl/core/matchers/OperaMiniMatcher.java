@@ -5,10 +5,7 @@ import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Opera Mini 移动浏览器匹配器。
@@ -82,9 +79,9 @@ final class OperaMiniMatcher extends MatcherBase {
     @Override
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
-        for (String versionPrefix : OPERA_MINI_VERSION_TO_DEVICE_ID.keySet()) {
-            if (normalizedUserAgent.toLowerCase().contains(versionPrefix.toLowerCase())) {
-                return OPERA_MINI_VERSION_TO_DEVICE_ID.get(versionPrefix);
+        for (Map.Entry<String, String> entry : OPERA_MINI_VERSION_TO_DEVICE_ID.entrySet()) {
+            if (normalizedUserAgent.toLowerCase().contains(entry.getKey().toLowerCase())) {
+                return entry.getValue();
             }
         }
 

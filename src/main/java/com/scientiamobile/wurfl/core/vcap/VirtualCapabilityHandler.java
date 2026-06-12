@@ -6,7 +6,10 @@ import com.scientiamobile.wurfl.core.exc.CapabilityNotDefinedException;
 import com.scientiamobile.wurfl.core.exc.VirtualCapabilityNotDefinedException;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -131,7 +134,7 @@ public class VirtualCapabilityHandler {
      * @return 必要基础能力名称集合
      */
     public static Set<String> getMandatoryCapabilities() {
-        return new HashSet<>(Arrays.asList(VirtualCapabilityEvaluator.MANDATORY_CAPABILITIES));
+        return new HashSet<>(VirtualCapabilityEvaluator.getMandatoryCapabilities());
     }
 
     /**

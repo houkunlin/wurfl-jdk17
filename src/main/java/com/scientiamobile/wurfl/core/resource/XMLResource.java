@@ -4,6 +4,7 @@ import com.scientiamobile.wurfl.core.resource.exc.WURFLResourceException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.InputStream;
@@ -25,7 +26,15 @@ public class XMLResource implements WURFLResource {
 
     static {
         LoggerFactory.getLogger(XMLResource.class);
-        SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        try {
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        } catch (Exception ignored) {
+            // 部分 SAX 实现不支持这些特性，忽略
+        }
+        SAX_PARSER_FACTORY = factory;
     }
 
     /**
@@ -153,7 +162,11 @@ public class XMLResource implements WURFLResource {
         WurflXmlHandler handler = new WurflXmlHandler(this.includedCapabilities);
 
         try {
-            SAX_PARSER_FACTORY.newSAXParser().parse(inputStream, handler);
+            SAXParser parser = SAX_PARSER_FACTORY.newSAXParser();
+            parser.getXMLReader().setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            parser.getXMLReader().setFeature("http://xml.org/sax/features/external-general-entities", false);
+            parser.getXMLReader().setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            parser.parse(inputStream, handler);
         } catch (Exception e) {
             throw new WURFLResourceException(this, e);
         }

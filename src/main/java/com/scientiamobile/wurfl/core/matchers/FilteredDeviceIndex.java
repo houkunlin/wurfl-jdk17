@@ -28,7 +28,7 @@ final class FilteredDeviceIndex {
      * @return User-Agent 列表集合
      */
 
-    public final Collection<String> getUserAgents() {
+    public final List<String> getUserAgents() {
         return this.userAgents;
     }
 

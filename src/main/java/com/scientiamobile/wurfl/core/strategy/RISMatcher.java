@@ -2,8 +2,7 @@ package com.scientiamobile.wurfl.core.strategy;
 
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.ListIterator;
 
 /**
@@ -70,10 +69,9 @@ public final class RISMatcher {
      * @param threshold  最小匹配长度阈值，低于此长度的匹配将被拒绝
      * @return 最匹配的候选字符串，如果无匹配项则返回 {@code null}
      */
-    @SuppressWarnings({"unchecked"})
-    public String match(Collection<?> candidates, String value, int threshold) {
+    public String match(List<String> candidates, String value, int threshold) {
         int valueLength = value.length();
-        ArrayList<String> candidatesList = (ArrayList<String>) candidates;
+        List<String> candidatesList = candidates;
         int bestIndex = -1;
         int bestMatchLength = -1;
         int low = 0;

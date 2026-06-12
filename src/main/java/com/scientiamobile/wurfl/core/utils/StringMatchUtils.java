@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -187,7 +186,7 @@ public final class StringMatchUtils {
      * @param userAgentLength 目标 User-Agent 的长度
      * @return 最匹配的 User-Agent 字符串
      */
-    public static String risMatch(Collection<String> userAgents, String userAgent, int userAgentLength) {
+    public static String risMatch(List<String> userAgents, String userAgent, int userAgentLength) {
         return RISMatcher.INSTANCE.match(userAgents, userAgent, userAgentLength);
     }
 

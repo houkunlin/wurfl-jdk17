@@ -109,6 +109,16 @@ public interface VirtualCapabilityEvaluator {
     String[] MANDATORY_CAPABILITIES = new String[]{"device_os", "ux_full_desktop", "xhtml_support_level", "preferred_markup", "is_smarttv", "is_wireless_device", "is_tablet", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "resolution_width", "resolution_height", "pointing_method", "device_os_version", "mobile_browser_version"};
 
     /**
+     * 返回必需能力名称的不可变列表。
+     *
+     * @return 不可变的能力名称列表
+     */
+    static java.util.List<String> getMandatoryCapabilities() {
+        return java.util.Collections.unmodifiableList(
+                java.util.Arrays.asList(MANDATORY_CAPABILITIES));
+    }
+
+    /**
      * 根据设备和请求信息评估虚拟能力的值。
      *
      * @param device  经过 WURFL 匹配的设备对象

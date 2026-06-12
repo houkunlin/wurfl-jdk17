@@ -3,7 +3,7 @@ package com.scientiamobile.wurfl.core.matchers;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Catch-All RIS 匹配器，作为所有非 Mozilla 系 User-Agent 的最终兜底。
@@ -26,7 +26,7 @@ final class CatchAllRISMatcher extends AbstractMatcher {
      */
     @Override
     protected String risMatch(String normalizedUserAgent) {
-        Collection<String> userAgents = this.getFilter().getIndex().getUserAgents();
+        List<String> userAgents = this.getFilter().getIndex().getUserAgents();
         if (normalizedUserAgent != null && normalizedUserAgent.startsWith("CFNetwork")) {
             int matchLength = StringMatchUtils.firstSpace(normalizedUserAgent);
             if (matchLength != -1) {

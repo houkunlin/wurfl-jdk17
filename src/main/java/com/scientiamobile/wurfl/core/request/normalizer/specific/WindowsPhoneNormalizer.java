@@ -17,7 +17,7 @@ public class WindowsPhoneNormalizer implements UserAgentNormalizer {
     /**
      * 匹配 Windows Phone 广告客户端的 UA 格式，提取设备型号。
      */
-    private static final Pattern WINDOWS_PHONE_AD_CLIENT_MODEL_PATTERN = Pattern.compile("Windows ?Phone ?Ad ?Client/[0-9\\.]+ ?\\(.+; ?Windows ?Phone(?: ?OS)? ?[0-9\\.]+; ?([^;\\)]+(; ?[^;\\)]+)?)");
+    private static final Pattern WINDOWS_PHONE_AD_CLIENT_MODEL_PATTERN = Pattern.compile("Windows ?Phone ?Ad ?Client/[0-9\\.]+? ?\\([^;]+; ?Windows ?Phone(?: ?OS)? ?[0-9\\.]+; ?([^;\\)]+(?:; ?[^;\\)]+)?)");
     /**
      * 匹配 Windows Phone 原生应用 UA 格式，提取系统版本和设备型号。
      */
