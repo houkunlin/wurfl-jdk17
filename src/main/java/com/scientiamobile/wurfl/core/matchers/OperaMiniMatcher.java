@@ -80,7 +80,7 @@ final class OperaMiniMatcher extends MatcherBase {
     protected String applyRecoveryMatch(WURFLRequest request) {
         String normalizedUserAgent = request.getNormalizedDeviceUserAgent();
         for (Map.Entry<String, String> entry : OPERA_MINI_VERSION_TO_DEVICE_ID.entrySet()) {
-            if (normalizedUserAgent.toLowerCase().contains(entry.getKey().toLowerCase())) {
+            if (normalizedUserAgent.toLowerCase(Locale.ROOT).contains(entry.getKey().toLowerCase(Locale.ROOT))) {
                 return entry.getValue();
             }
         }

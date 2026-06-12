@@ -114,8 +114,7 @@ public interface VirtualCapabilityEvaluator {
      * @return 不可变的能力名称列表
      */
     static java.util.List<String> getMandatoryCapabilities() {
-        return java.util.Collections.unmodifiableList(
-                java.util.Arrays.asList(MANDATORY_CAPABILITIES));
+        return java.util.Collections.unmodifiableList(java.util.Arrays.asList(MANDATORY_CAPABILITIES));
     }
 
     /**

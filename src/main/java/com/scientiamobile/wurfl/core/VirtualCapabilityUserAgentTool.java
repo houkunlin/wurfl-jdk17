@@ -110,7 +110,7 @@ public final class VirtualCapabilityUserAgentTool {
     private static final Pattern IOS_FIREFOX_FOCUS_VERSION_PATTERN = Pattern.compile("^Mozilla/[45]\\.0.+?like Mac OS X.+?Focus/([\\d\\.]+) Mobile\\/[0-9A-Za-z]+");
     private static final Pattern WINDOWS_OS_NAME_PATTERN = Pattern.compile("(Windows [0-9A-Za-z \\.]+)");
     private static final Pattern MAC_OS_NAME_PATTERN = Pattern.compile("Macintosh;(?: U;)?([a-zA-Z_ \\.0-9]+)(?:;)?");
-    private static VirtualCapabilityUserAgentTool instance = null;
+    private static final VirtualCapabilityUserAgentTool INSTANCE = new VirtualCapabilityUserAgentTool();
 
     private VirtualCapabilityUserAgentTool() {
     }
@@ -122,11 +122,7 @@ public final class VirtualCapabilityUserAgentTool {
      */
 
     public static VirtualCapabilityUserAgentTool getInstance() {
-        if (instance == null) {
-            instance = new VirtualCapabilityUserAgentTool();
-        }
-
-        return instance;
+        return INSTANCE;
     }
 
     /**

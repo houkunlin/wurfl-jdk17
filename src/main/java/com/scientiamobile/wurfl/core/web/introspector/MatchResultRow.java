@@ -74,4 +74,17 @@ final class MatchResultRow implements Comparable<MatchResultRow> {
 
         return this.originalUserAgent.compareTo(other.originalUserAgent);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof MatchResultRow other)) return false;
+        return compareTo(other) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(matcherName, deviceId, normalizedUserAgent, originalUserAgent);
+    }
+
 }

@@ -4,10 +4,7 @@ import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,7 +66,7 @@ final class BlackBerryMatcher extends AbstractMatcher {
     public boolean canHandle(WURFLRequest request) {
         String cleanedDeviceUserAgent = request.getCleanedDeviceUserAgent();
         boolean isBlackBerryUserAgent = cleanedDeviceUserAgent != null && (
-                cleanedDeviceUserAgent.toLowerCase().contains("blackberry")
+                cleanedDeviceUserAgent.toLowerCase(Locale.ROOT).contains("blackberry")
                         || StringMatchUtils.containsAnyOf(cleanedDeviceUserAgent, "(BB10;", "(PlayBook")
         );
         return !request._internalIsDesktopBrowser() && isBlackBerryUserAgent;

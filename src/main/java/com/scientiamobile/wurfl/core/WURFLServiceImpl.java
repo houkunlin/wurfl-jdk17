@@ -329,9 +329,8 @@ class WURFLServiceImpl implements WURFLService {
     @Override
     public void reload(WURFLResource wurflResource, WURFLResources wurflResources, String... patches) {
         this.modelLock.writeLock().lock();
-        log.info("reloading service");
-
         try {
+            log.info("reloading service");
             this.wurflModel.reload(wurflResource, wurflResources, patches);
             this.matcherManager.reloadModel(this.wurflModel);
             this.clearCacheProvider();

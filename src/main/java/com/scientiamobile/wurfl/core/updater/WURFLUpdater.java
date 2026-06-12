@@ -38,22 +38,20 @@ public class WURFLUpdater {
 
     public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl) {
         this.frequency = Frequency.DAILY;
-        log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
         this.wurflEngine = wurflEngine;
         this.resolvedWurflPath = UpdatePipeline.resolvePath(wurflEngine.getRootPath());
-        log.info("WURFL path passed to Updater constructor after resolve: {}", this.resolvedWurflPath);
         this.updateUrl = updateUrl;
+        log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
         this.validateSetup();
     }
 
     public WURFLUpdater(WURFLEngine wurflEngine, String updateUrl, ProxySettings proxySettings) {
         this.frequency = Frequency.DAILY;
-        log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
         this.wurflEngine = wurflEngine;
         this.resolvedWurflPath = UpdatePipeline.resolvePath(wurflEngine.getRootPath());
-        log.info("WURFL path passed to Updater constructor after resolve: {}", this.resolvedWurflPath);
         this.updateUrl = updateUrl;
         this.proxySettings = proxySettings;
+        log.info("WURFL path passed to Updater constructor: {}", this.resolvedWurflPath);
         this.validateSetup();
     }
 
