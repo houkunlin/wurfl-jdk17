@@ -1063,6 +1063,41 @@ class Wurfl01Test {
         Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
+    @DisplayName("Microsoft Edge macOS")
+    @Test
+    void test_10026() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertFalse(info.isApp());
+        Assertions.assertFalse(info.isMobile());
+        Assertions.assertFalse(info.isPhone());
+        Assertions.assertTrue(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("Chrome", info.getAdvertisedBrowser());
+        Assertions.assertFalse(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("Google Chrome", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("macOS", info.getAdvertisedDeviceOs());
+        Assertions.assertFalse(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("Google Chrome", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertFalse(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Desktop", info.getFormFactor());
+        Assertions.assertEquals("10.15.7", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
+    }
+
     String buildAssertions(VirtualCapabilityInfo info) {
         StringBuilder stringBuilder = new StringBuilder();
         append(stringBuilder, info.isAppWebview(), "info.isAppWebview()");
