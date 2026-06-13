@@ -509,6 +509,38 @@ class Wurfl01Test {
         Assertions.assertEquals("", device.getVirtualCapability("advertised_device_os_version"));
     }
 
+    @DisplayName("HeyTapBrowser: OnePlus 8T (Android 14)")
+    @Test
+    void test_10012() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; U; Android 14; zh-cn; KB2000 Build/UKQ1.230924.001) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/115.0.5790.168 Mobile Safari/537.36 HeyTapBrowser/40.10.17.1");
+        System.out.println(device);
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getVirtualCapabilities()));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(device.getCapabilities()));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_app_webview"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_app"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_mobile"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_phone"));
+        Assertions.assertEquals("Chrome browser", device.getVirtualCapability("advertised_app_name"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
+        Assertions.assertEquals("Chromium", device.getVirtualCapability("advertised_browser"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
+        Assertions.assertEquals("OnePlus KB2000 (8T)", device.getVirtualCapability("complete_device_name"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_largescreen"));
+        Assertions.assertEquals("Android", device.getVirtualCapability("advertised_device_os"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
+        Assertions.assertEquals("OnePlus 8T", device.getVirtualCapability("device_name"));
+        Assertions.assertEquals("115.0.5790.168", device.getVirtualCapability("advertised_browser_version"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_ios"));
+        Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
+        Assertions.assertEquals("false", device.getVirtualCapability("is_wml_preferred"));
+        Assertions.assertEquals("Smartphone", device.getVirtualCapability("form_factor"));
+        Assertions.assertEquals("14", device.getVirtualCapability("advertised_device_os_version"));
+    }
+
     @DisplayName("华为 Mate X5 (HarmonyOS)")
     @Test
     void test_10011() {
