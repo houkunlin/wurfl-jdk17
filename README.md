@@ -1,3 +1,6 @@
+[![Maven Central](https://img.shields.io/maven-central/v/com.houkunlin/wurfl-jdk17.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.houkunlin%22%20AND%20a:%22wurfl-jdk17%22)
+[![Java CI with Gradle](https://github.com/houkunlin/wurfl-jdk17/actions/workflows/gradle.yml/badge.svg)](https://github.com/houkunlin/wurfl-jdk17/actions/workflows/gradle.yml)
+
 # wurfl-jdk17
 
 基于 [ScientiaMobile WURFL](https://www.scientiamobile.com/) 官方 1.9.1.0 版本改造的 Java 17 设备检测引擎。
@@ -75,63 +78,44 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.houkunlin:wurfl-jdk17:1.0-SNAPSHOT'
+    implementation 'com.houkunlin:wurfl-jdk17:1.0.0'
 }
 ```
 
 ### 基本用法
 
 ```java
-import com.scientiamobile.wurfl.core.GeneralWURFLEngine;
 import com.scientiamobile.wurfl.core.Device;
+import com.scientiamobile.wurfl.core.GeneralWURFLEngine;
 import com.scientiamobile.wurfl.core.resource.XMLResource;
 
-// 1. 加载 WURFL 设备数据文件（从官方渠道获取 wurfl.zip）
-FileInputStream fis = new FileInputStream("libs/wurfl.zip");
-        GeneralWURFLEngine engine = new GeneralWURFLEngine(new XMLResource(fis, "wurfl.zip"));
-engine.
+import java.io.FileInputStream;
 
-        load();
+public class BaseTest {
+    public static void main(String[] args) {
+        // 1. 加载 WURFL 设备数据文件（从官方渠道获取 wurfl.zip）
+        FileInputStream fis = new FileInputStream("libs/wurfl.zip");
+        GeneralWURFLEngine engine = new GeneralWURFLEngine(new XMLResource(fis, "wurfl.zip"));
+        engine.load();
 
         // 2. 根据 User-Agent 查询设备
-        Device device = engine.getDeviceForRequest(
-                "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 " +
-                        "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
-        );
+        Device device = engine.getDeviceForRequest("Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
 
-// 3. 获取设备能力
-System.out.
+        // 3. 获取设备能力
+        System.out.println(device.getCapability("brand_name"));       // Google
+        System.out.println(device.getCapability("model_name"));       // Pixel 7
+        System.out.println(device.getCapability("device_os"));        // Android
+        System.out.println(device.getCapability("device_os_version")); // 14
 
-        println(device.getCapability("brand_name"));       // Google
-        System.out.
-
-        println(device.getCapability("model_name"));       // Pixel 7
-        System.out.
-
-        println(device.getCapability("device_os"));        // Android
-        System.out.
-
-        println(device.getCapability("device_os_version")); // 14
-
-// 4. 获取虚拟能力
-        System.out.
-
-        println(device.getVirtualCapability("is_mobile"));          // true
-        System.out.
-
-        println(device.getVirtualCapability("is_smartphone"));      // true
-        System.out.
-
-        println(device.getVirtualCapability("form_factor"));        // Smartphone
-        System.out.
-
-        println(device.getVirtualCapability("complete_device_name"));// Google Pixel 7
-        System.out.
-
-        println(device.getVirtualCapability("advertised_device_os"));// Android
-        System.out.
-
-        println(device.getVirtualCapability("advertised_browser"));  // Chrome Mobile
+        // 4. 获取虚拟能力
+        System.out.println(device.getVirtualCapability("is_mobile"));          // true
+        System.out.println(device.getVirtualCapability("is_smartphone"));      // true
+        System.out.println(device.getVirtualCapability("form_factor"));        // Smartphone
+        System.out.println(device.getVirtualCapability("complete_device_name"));// Google Pixel 7
+        System.out.println(device.getVirtualCapability("advertised_device_os"));// Android
+        System.out.println(device.getVirtualCapability("advertised_browser"));  // Chrome Mobile
+    }
+}
 ```
 
 ### WURFL 数据文件
@@ -139,14 +123,12 @@ System.out.
 本引擎需要 WURFL 设备数据文件才能工作，文件需从 [ScientiaMobile](https://www.scientiamobile.com/) 官方获取。
 支持 `.zip` / `.xml` / `.gz` 格式，通过 `XMLResource` 加载：
 
-```java
+```text
 // 从 ZIP 文件加载
 new XMLResource(new FileInputStream("wurfl.zip"), "wurfl.zip");
 
 // 从原始 XML 文件加载
-        new
-
-XMLResource(new FileInputStream("wurfl.xml"), "wurfl.xml");
+new XMLResource(new FileInputStream("wurfl.xml"), "wurfl.xml");
 ```
 
 ## 测试
