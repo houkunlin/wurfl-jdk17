@@ -128,6 +128,35 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         return this.virtualCapabilityHandler.getAllVirtualCapabilities(this);
     }
 
+    @Override
+    public VirtualCapabilityInfo getVirtualCapabilityInfo() {
+        return new VirtualCapabilityInfo(
+                getVirtualCapabilityAsBool("is_app_webview"),
+                getVirtualCapabilityAsBool("is_app"),
+                getVirtualCapabilityAsBool("is_mobile"),
+                getVirtualCapabilityAsBool("is_phone"),
+                getVirtualCapabilityAsBool("is_full_desktop"),
+                getVirtualCapabilityAsBool("is_smartphone"),
+                getVirtualCapabilityAsBool("is_robot"),
+                getVirtualCapabilityAsBool("is_largescreen"),
+                getVirtualCapabilityAsBool("is_android"),
+                getVirtualCapabilityAsBool("is_ios"),
+                getVirtualCapabilityAsBool("is_windows_phone"),
+                getVirtualCapabilityAsBool("is_touchscreen"),
+                getVirtualCapabilityAsBool("is_wml_preferred"),
+                getVirtualCapabilityAsBool("is_xhtmlmp_preferred"),
+                getVirtualCapabilityAsBool("is_html_preferred"),
+                getVirtualCapability("advertised_device_os"),
+                getVirtualCapability("advertised_device_os_version"),
+                getVirtualCapability("advertised_browser"),
+                getVirtualCapability("advertised_browser_version"),
+                getVirtualCapability("advertised_app_name"),
+                getVirtualCapability("complete_device_name"),
+                getVirtualCapability("device_name"),
+                getVirtualCapability("form_factor")
+        );
+    }
+
     /**
      * 获取指定名称的虚拟能力值。
      *

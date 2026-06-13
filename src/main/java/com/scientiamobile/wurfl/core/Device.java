@@ -50,6 +50,15 @@ public interface Device extends InternalDevice {
     Map<String, String> getVirtualCapabilities();
 
     /**
+     * 获取类型安全的虚拟能力信息对象。
+     * <p>包含所有虚拟能力的评估结果，使用确定的数据类型（boolean / String），
+     * 无需调用方自行解析字符串。</p>
+     *
+     * @return 虚拟能力信息对象
+     */
+    VirtualCapabilityInfo getVirtualCapabilityInfo();
+
+    /**
      * 获取设备支持的标记语言类型。
      *
      * @return 标记语言枚举
