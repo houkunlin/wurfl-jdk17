@@ -160,6 +160,7 @@ abstract class AbstractVirtualCapabilityEvaluator implements VirtualCapabilityEv
         NON_APP_BROWSER_KEYWORDS.add("YaBrowser");
         NON_APP_BROWSER_KEYWORDS.add("MiuiBrowser");
         NON_APP_BROWSER_KEYWORDS.add("MQQBrowser");
+        NON_APP_BROWSER_KEYWORDS.add("Quark");
         NON_APP_BROWSER_KEYWORDS.add("CriOS");
         NON_APP_BROWSER_KEYWORDS.add("Firefox");
     }

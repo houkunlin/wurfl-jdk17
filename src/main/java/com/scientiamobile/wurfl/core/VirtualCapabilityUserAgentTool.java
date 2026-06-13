@@ -111,6 +111,7 @@ public final class VirtualCapabilityUserAgentTool {
     private static final Pattern QQ_IOS_BUILTIN_VERSION_PATTERN = Pattern.compile("QQ/([\\d\\.]+)");
     private static final Pattern WECHAT_PATTERN = Pattern.compile("MicroMessenger/([\\d\\.]+)");
     private static final Pattern SOGOU_MOBILE_PATTERN = Pattern.compile("SogouMobileBrowser/([\\d\\.]+)");
+    private static final Pattern QUARK_PATTERN = Pattern.compile("Quark/([\\d\\.]+)");
     private static final Pattern BRAVE_PATTERN = Pattern.compile("Brave Chrome/([\\d\\.]+)");
     private static final Pattern ALIPAY_PATTERN = Pattern.compile("AliApp\\(AP/([\\d\\.]+)");
     private static final Pattern FIREFOX_FOCUS_VERSION_PATTERN = Pattern.compile("Focus/([\\d\\.]+)");
@@ -332,6 +333,7 @@ public final class VirtualCapabilityUserAgentTool {
         if (browserPair.matchAndSetGroup(QQ_BROWSER_PATTERN, browserUA, "QQ Browser", 1)) return;
         if (browserPair.matchAndSetGroup(WECHAT_PATTERN, browserUA, "WeChat Built-in", 1)) return;
         if (browserPair.matchAndSetGroup(SOGOU_MOBILE_PATTERN, browserUA, "Sogou Mobile", 1)) return;
+        if (browserPair.matchAndSetGroup(QUARK_PATTERN, browserUA, "Quark", 1)) return;
         if (browserPair.matchAndSetGroup(BRAVE_PATTERN, browserUA, "Brave", 1)) return;
         if (browserPair.matchAndSetGroup(ALIPAY_PATTERN, browserUA, "Alipay Built-in", 1)) return;
         if (browserPair.matchAndSetGroup(CHROMIUM_VERSION_PATTERN, browserUA, "Chromium", 1)) return;
@@ -398,6 +400,7 @@ public final class VirtualCapabilityUserAgentTool {
         if (browserPair.matchAndSetGroup(QQ_IOS_BUILTIN_VERSION_PATTERN, browserUA, "QQ Browser", 1)) return;
         if (browserPair.matchAndSetGroup(WECHAT_PATTERN, browserUA, "WeChat Built-in", 1)) return;
         if (browserPair.matchAndSetGroup(SOGOU_MOBILE_PATTERN, browserUA, "Sogou Mobile", 1)) return;
+        if (browserPair.matchAndSetGroup(QUARK_PATTERN, browserUA, "Quark", 1)) return;
         if (browserPair.matchAndSetGroup(ALIPAY_PATTERN, browserUA, "Alipay Built-in", 1)) return;
         if (browserPair.matchAndSetGroup(IOS_SAFARI_VERSION_PATTERN, browserUA, "Mobile Safari", 1)) return;
 

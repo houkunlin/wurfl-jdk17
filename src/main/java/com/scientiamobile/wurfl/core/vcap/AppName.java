@@ -115,6 +115,7 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
         APP_KEYWORDS.put("Pandora", "Pandora");
         APP_KEYWORDS.put("Pinterest", "Pinterest");
         APP_KEYWORDS.put("Puffin", "Puffin browser");
+        APP_KEYWORDS.put("Quark", "Quark browser");
         APP_KEYWORDS.put("Relay", "Relay");
         APP_KEYWORDS.put("Reddit", "Reddit");
         APP_KEYWORDS.put(" Silk/", "Silk browser");
