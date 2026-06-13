@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'com.houkunlin'
-version = '1.0.0'
+version = '1.1.0'
 description = """
 基于 ScientiaMobile WURFL 官方 1.9.1.0 版本改造的 Java 17 设备检测引擎。
 通过 User-Agent 字符串识别设备型号、操作系统、浏览器等属性，
