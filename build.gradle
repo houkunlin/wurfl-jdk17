@@ -12,7 +12,11 @@ plugins {
 group = 'com.houkunlin'
 version = '1.0-SNAPSHOT'
 description = """
-描述内容
+基于 ScientiaMobile WURFL 官方 1.9.1.0 版本改造的 Java 17 设备检测引擎。
+通过 User-Agent 字符串识别设备型号、操作系统、浏览器等属性，
+支持 Android / iOS / HarmonyOS / Windows Phone 等平台及
+60+ 设备匹配器（Chrome / Firefox / Safari / UC Browser / QQ 内置浏览器等）。
+包含完整的虚拟能力评估体系（is_mobile / form_factor / advertised_device_os 等）。
 """
 
 def gitRepo = "github.com/houkunlin/wurfl-jdk17.git"
@@ -130,6 +134,12 @@ publishing {
                 description = project.description
                 url = "https://${gitRepo}"
                 // properties = []
+                licenses {
+                    license {
+                        name = 'Mulan Permissive Software License，Version 2'
+                        url = 'https://license.coscl.org.cn/MulanPSL2'
+                    }
+                }
                 developers {
                     developer {
                         id = 'houkunlin'
