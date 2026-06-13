@@ -173,6 +173,8 @@ public final class VirtualCapabilityUserAgentTool {
 
         vcd.normalizeOS();
         vcd.normalizeBrowser();
+        // 捕获上游浏览器（Chrome/Chromium/WebKit）信息，供 browserCore 虚拟能力使用
+        captureUpstreamBrowser(vcd, browserUA);
         return vcd;
     }
 
