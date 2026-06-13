@@ -888,4 +888,45 @@ class Wurfl01Test {
         Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
+    String buildAssertions(VirtualCapabilityInfo info) {
+        StringBuilder stringBuilder = new StringBuilder();
+        append(stringBuilder, info.isAppWebview(), "info.isAppWebview()");
+        append(stringBuilder, info.isApp(), "info.isApp()");
+        append(stringBuilder, info.isMobile(), "info.isMobile()");
+        append(stringBuilder, info.isPhone(), "info.isPhone()");
+        append(stringBuilder, info.isFullDesktop(), "info.isFullDesktop()");
+        append(stringBuilder, info.getAdvertisedAppName(), "info.getAdvertisedAppName()");
+        append(stringBuilder, info.getAdvertisedBrowser(), "info.getAdvertisedBrowser()");
+        append(stringBuilder, info.isSmartphone(), "info.isSmartphone()");
+        append(stringBuilder, info.isRobot(), "info.isRobot()");
+        append(stringBuilder, info.getCompleteDeviceName(), "info.getCompleteDeviceName()");
+        append(stringBuilder, info.isLargescreen(), "info.isLargescreen()");
+        append(stringBuilder, info.getAdvertisedDeviceOs(), "info.getAdvertisedDeviceOs()");
+        append(stringBuilder, info.isAndroid(), "info.isAndroid()");
+        append(stringBuilder, info.isXhtmlmpPreferred(), "info.isXhtmlmpPreferred()");
+        append(stringBuilder, info.getDeviceName(), "info.getDeviceName()");
+        append(stringBuilder, info.isHtmlPreferred(), "info.isHtmlPreferred()");
+        append(stringBuilder, info.getAdvertisedBrowserVersion(), "info.getAdvertisedBrowserVersion()");
+        append(stringBuilder, info.isWindowsPhone(), "info.isWindowsPhone()");
+        append(stringBuilder, info.isIos(), "info.isIos()");
+        append(stringBuilder, info.isTouchscreen(), "info.isTouchscreen()");
+        append(stringBuilder, info.isWmlPreferred(), "info.isWmlPreferred()");
+        append(stringBuilder, info.getFormFactor(), "info.getFormFactor()");
+        append(stringBuilder, info.getAdvertisedDeviceOsVersion(), "info.getAdvertisedDeviceOsVersion()");
+        append(stringBuilder, info.getBrowserCore(), "info.getBrowserCore()");
+        append(stringBuilder, info.getBrowserCoreVersion(), "info.getBrowserCoreVersion()");
+        return stringBuilder.toString();
+    }
+
+    void append(StringBuilder stringBuilder, boolean isTrue, String value) {
+        if (isTrue) {
+            stringBuilder.append("Assertions.assertTrue(").append(value).append(");\n");
+        } else {
+            stringBuilder.append("Assertions.assertFalse(").append(value).append(");\n");
+        }
+    }
+
+    void append(StringBuilder stringBuilder, String eq, String value) {
+        stringBuilder.append("Assertions.assertEquals(\"").append(eq).append("\", ").append(value).append(");\n");
+    }
 }
