@@ -125,6 +125,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Desktop", info.getFormFactor());
         Assertions.assertEquals("10", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("电脑谷歌浏览器: 测试 VirtualCapabilityInfo 转换结果")
@@ -161,6 +163,8 @@ class Wurfl01Test {
         Assertions.assertEquals(device.getVirtualCapability("is_wml_preferred"), Boolean.toString(info.isWmlPreferred()));
         Assertions.assertEquals(device.getVirtualCapability("form_factor"), info.getFormFactor());
         Assertions.assertEquals(device.getVirtualCapability("advertised_device_os_version"), info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals(device.getVirtualCapability("browser_core"), info.getBrowserCore());
+        Assertions.assertEquals(device.getVirtualCapability("browser_core_version"), info.getBrowserCoreVersion());
     }
 
     /**
@@ -208,6 +212,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
 
@@ -257,6 +263,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("iPhone3")
@@ -290,6 +298,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("3.0", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("QQ 内置浏览器 UA: Android")
@@ -323,6 +333,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("11", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("89.0.4389.72", info.getBrowserCoreVersion());
     }
 
     @DisplayName("QQ 内置浏览器 UA: iPhone")
@@ -337,9 +349,9 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Stock Browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
-        Assertions.assertEquals("Mobile Safari", info.getAdvertisedBrowser());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
         Assertions.assertEquals("Apple iPhone", info.getCompleteDeviceName());
@@ -348,7 +360,7 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Apple iPhone", info.getDeviceName());
-        Assertions.assertEquals("15.1.1", info.getAdvertisedBrowserVersion());
+        Assertions.assertEquals("8.8.38.705", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertTrue(info.isIos());
@@ -356,6 +368,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("15.1.1", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("QQ 内置浏览器 UA: iPad")
@@ -389,6 +403,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Tablet", info.getFormFactor());
         Assertions.assertEquals("5.0", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("UC 浏览器 (Android)")
@@ -422,6 +438,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("14", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("120.0.0.0", info.getBrowserCoreVersion());
     }
 
     @DisplayName("Google Pixel 7")
@@ -455,6 +473,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("14", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("华为 Mate 30 Pro (HarmonyOS 4.0)")
@@ -488,6 +508,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("vivo X100 (Funtouch OS 14)")
@@ -521,6 +543,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("14", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("鸿蒙 HarmonyOS 平板")
@@ -554,6 +578,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Tablet", info.getFormFactor());
         Assertions.assertEquals("", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("HeyTapBrowser: OnePlus 8T (Android 14)")
@@ -587,6 +613,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("14", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("华为 Mate X5 (HarmonyOS)")
@@ -652,6 +680,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("17.1", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
     @DisplayName("百度浏览器 (Android)")
@@ -684,5 +714,7 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("14", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 }
