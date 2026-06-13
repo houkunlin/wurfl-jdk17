@@ -309,6 +309,10 @@ public final class VirtualCapabilityUserAgentTool {
             return;
         }
 
+        // 在具体浏览器覆盖之前，先捕获上游（Chrome/Chromium）版本信息
+        // 后续特定浏览器（QQ/WeChat/Edge 等）会在其版本号之上保留此上游信息
+        captureUpstreamBrowser(vcd, browserUA);
+
         // 各种桌面/移动浏览器
         if (browserPair.matchAndSetGroup(FIREFOX_VERSION_PATTERN, browserUA, "Firefox Mobile", 1)) return;
         if (browserPair.matchAndSetGroup(FIREFOX_FOCUS_VERSION_PATTERN, browserUA, "Firefox Focus", 1)) return;
@@ -362,6 +366,9 @@ public final class VirtualCapabilityUserAgentTool {
         if (osPair.matchAndSetGroup(IOS_UCWEB_OS_VERSION_PATTERN, deviceUA, "iOS", 1)) {
             osPair.setVersion(osPair.getVersion().replace("_", "."));
         }
+
+        // 在具体浏览器覆盖之前捕获上游信息
+        captureUpstreamBrowser(vcd, browserUA);
 
         // 知名浏览器
         if (browserPair.matchAndSetGroup(IOS_CHROME_CRIOS_VERSION_PATTERN, browserUA, "Chrome Mobile on iOS", 1))
@@ -713,6 +720,46 @@ public final class VirtualCapabilityUserAgentTool {
                     && (browserUA.contains("(X11; ") || browserUA.contains("Linux x86_64"))) {
                 osPair.setName("Linux");
             }
+        }
+    }
+
+    /**
+     * 捕获上游浏览器（Chrome/Chromium/WebKit）的版本信息。
+     * <p>当 UA 被识别为基于 Chrome 内核的二次开发浏览器（如 QQ Browser、WeChat、Edge 等）时，
+     * 将底层 Chrome 版本保存为上游信息，供 {@code upstream_browser} / {@code upstream_browser_version}
+     * 虚拟能力使用。</p>
+     */
+    private static void captureUpstreamBrowser(VirtualCapabilityDevice vcd, String browserUA) {
+        String upstreamName = null;
+        String upstreamVersion = null;
+
+        // 尝试匹配 Chrome 版本（优先）
+        java.util.regex.Matcher chromeMatcher = CHROME_VERSION_PATTERN.matcher(browserUA);
+        if (chromeMatcher.find()) {
+            upstreamName = "Chrome";
+            upstreamVersion = chromeMatcher.group(1);
+        }
+
+        // 尝试匹配 Chromium 版本（Chrome 未匹配时）
+        if (upstreamName == null) {
+            java.util.regex.Matcher chromiumMatcher = CHROMIUM_VERSION_PATTERN.matcher(browserUA);
+            if (chromiumMatcher.find()) {
+                upstreamName = "Chromium";
+                upstreamVersion = chromiumMatcher.group(1);
+            }
+        }
+
+        // 尝试匹配 Safari/WebKit 版本（兜底）
+        if (upstreamName == null) {
+            java.util.regex.Matcher safariMatcher = SAFARI_DESKTOP_VERSION_PATTERN.matcher(browserUA);
+            if (safariMatcher.find()) {
+                upstreamName = "WebKit";
+                upstreamVersion = safariMatcher.group(2);
+            }
+        }
+
+        if (upstreamName != null) {
+            vcd.setBrowserCore(upstreamName, upstreamVersion);
         }
     }
 }

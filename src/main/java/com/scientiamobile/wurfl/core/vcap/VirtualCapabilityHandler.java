@@ -51,6 +51,8 @@ public class VirtualCapabilityHandler {
         EVALUATORS_BY_NAME.put("is_smartphone", new IsSmartphone());
         EVALUATORS_BY_NAME.put("is_touchscreen", new IsTouchscreen());
         EVALUATORS_BY_NAME.put("advertised_app_name", new AppName());
+        EVALUATORS_BY_NAME.put("browser_core", new BrowserCore());
+        EVALUATORS_BY_NAME.put("browser_core_version", new BrowserCoreVersion());
 
         try {
             Class<?> evaluatorClass = Class.forName("com.scientiamobile.wurfl.core.vcap.OsManufacturer");
@@ -107,8 +109,9 @@ public class VirtualCapabilityHandler {
 
                 return overrideValue;
             }
-        } catch (CapabilityNotDefinedException e) {
-            throw new VirtualCapabilityNotDefinedException(virtualCapabilityName);
+        } catch (CapabilityNotDefinedException | VirtualCapabilityNotDefinedException e) {
+            // 控制能力未定义时忽略，返回原始计算值
+            // 适用于未在 WURFL XML 中注册 controlcap 的新增虚拟能力
         }
 
         return computedValue == null ? "" : computedValue;

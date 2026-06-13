@@ -153,7 +153,9 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
                 getVirtualCapability("advertised_app_name"),
                 getVirtualCapability("complete_device_name"),
                 getVirtualCapability("device_name"),
-                getVirtualCapability("form_factor")
+                getVirtualCapability("form_factor"),
+                getVirtualCapability("browser_core"),
+                getVirtualCapability("browser_core_version")
         );
     }
 

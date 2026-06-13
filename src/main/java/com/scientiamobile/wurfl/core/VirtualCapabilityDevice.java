@@ -311,6 +311,44 @@ public class VirtualCapabilityDevice implements Serializable {
     }
 
     /**
+     * 浏览器内核名称（如 QQ Browser 底层是 Chrome）
+     */
+    private String browserCore;
+    /**
+     * 浏览器内核版本号（如 QQ Browser 底层 Chrome 的版本）
+     */
+    private String browserCoreVersion;
+
+    /**
+     * 获取浏览器内核名称。
+     *
+     * @return 浏览器内核名称
+     */
+    public String getBrowserCore() {
+        return this.browserCore;
+    }
+
+    /**
+     * 获取浏览器内核版本号。
+     *
+     * @return 浏览器内核版本号
+     */
+    public String getBrowserCoreVersion() {
+        return this.browserCoreVersion;
+    }
+
+    /**
+     * 设置浏览器内核信息。
+     *
+     * @param browserCore        浏览器内核名称
+     * @param browserCoreVersion 浏览器内核版本
+     */
+    public void setBrowserCore(String browserCore, String browserCoreVersion) {
+        this.browserCore = browserCore;
+        this.browserCoreVersion = browserCoreVersion;
+    }
+
+    /**
      * 归一化浏览器名称和版本。
      * <p>针对 IE 浏览器，通过 Trident 版本号推断实际的 IE 版本号，
      * 如 Trident/7.0 → IE 11.0。如果检测到兼容性视图，会在版本后添加标记。</p>

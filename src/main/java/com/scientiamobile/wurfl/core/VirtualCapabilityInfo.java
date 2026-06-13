@@ -23,100 +23,38 @@ import java.util.Objects;
  */
 public final class VirtualCapabilityInfo implements Serializable {
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
-    /**
-     * 是否应用内 WebView（非独立浏览器）
-     */
+    // ========== boolean 字段 ==========
+
     private final boolean appWebview;
-    /**
-     * 是否原生应用（非浏览器）
-     */
     private final boolean app;
-    /**
-     * 是否移动设备
-     */
     private final boolean mobile;
-    /**
-     * 是否手机
-     */
     private final boolean phone;
-    /**
-     * 是否完整桌面端
-     */
     private final boolean fullDesktop;
-    /**
-     * 是否智能手机
-     */
     private final boolean smartphone;
-    /**
-     * 是否爬虫/机器人
-     */
     private final boolean robot;
-    /**
-     * 是否大屏设备
-     */
     private final boolean largescreen;
-    /**
-     * 是否 Android 系统
-     */
     private final boolean android;
-    /**
-     * 是否 iOS 系统
-     */
     private final boolean ios;
-    /**
-     * 是否 Windows Phone 系统
-     */
     private final boolean windowsPhone;
-    /**
-     * 是否触摸屏
-     */
     private final boolean touchscreen;
-    /**
-     * 是否偏好 WML 标记语言
-     */
     private final boolean wmlPreferred;
-    /**
-     * 是否偏好 XHTML MP 标记语言
-     */
     private final boolean xhtmlmpPreferred;
-    /**
-     * 是否偏好 HTML 标记语言
-     */
     private final boolean htmlPreferred;
-    /**
-     * 广告投放用操作系统名称
-     */
+
+    // ========== String 字段 ==========
+
     private final String advertisedDeviceOs;
-    /**
-     * 广告投放用操作系统版本
-     */
     private final String advertisedDeviceOsVersion;
-    /**
-     * 广告投放用浏览器名称
-     */
     private final String advertisedBrowser;
-    /**
-     * 广告投放用浏览器版本
-     */
     private final String advertisedBrowserVersion;
-    /**
-     * 广告投放用应用名称
-     */
     private final String advertisedAppName;
-    /**
-     * 完整设备名称（品牌 型号 (营销名)）
-     */
     private final String completeDeviceName;
-    /**
-     * 设备简称（品牌 营销名/型号）
-     */
     private final String deviceName;
-    /**
-     * 设备形态因子
-     */
     private final String formFactor;
+    private final String browserCore;
+    private final String browserCoreVersion;
 
     /**
      * 构造虚拟能力信息对象。
@@ -144,6 +82,8 @@ public final class VirtualCapabilityInfo implements Serializable {
      * @param completeDeviceName        完整设备名称（含品牌、型号、营销名）
      * @param deviceName                设备简称
      * @param formFactor                设备形态因子
+     * @param browserCore               浏览器内核名称
+     * @param browserCoreVersion        浏览器内核版本号
      */
     public VirtualCapabilityInfo(
             boolean isAppWebview, boolean isApp, boolean isMobile, boolean isPhone,
@@ -152,7 +92,8 @@ public final class VirtualCapabilityInfo implements Serializable {
             boolean isWmlPreferred, boolean isXhtmlmpPreferred, boolean isHtmlPreferred,
             String advertisedDeviceOs, String advertisedDeviceOsVersion,
             String advertisedBrowser, String advertisedBrowserVersion,
-            String advertisedAppName, String completeDeviceName, String deviceName, String formFactor) {
+            String advertisedAppName, String completeDeviceName, String deviceName, String formFactor,
+            String browserCore, String browserCoreVersion) {
         this.appWebview = isAppWebview;
         this.app = isApp;
         this.mobile = isMobile;
@@ -176,64 +117,42 @@ public final class VirtualCapabilityInfo implements Serializable {
         this.completeDeviceName = completeDeviceName;
         this.deviceName = deviceName;
         this.formFactor = formFactor;
+        this.browserCore = browserCore;
+        this.browserCoreVersion = browserCoreVersion;
     }
 
     // ========================================================================
     //  设备类型判定
     // ========================================================================
 
-    /**
-     * 请求是否来自应用内 WebView（而非独立浏览器）。
-     */
     public boolean isAppWebview() {
         return appWebview;
     }
 
-    /**
-     * 请求是否来自原生应用（而非浏览器）。
-     */
     public boolean isApp() {
         return app;
     }
 
-    /**
-     * 设备是否为移动设备（手机、平板等，与桌面电脑相对）。
-     */
     public boolean isMobile() {
         return mobile;
     }
 
-    /**
-     * 设备是否为手机（与平板、桌面设备相对）。
-     */
     public boolean isPhone() {
         return phone;
     }
 
-    /**
-     * 设备是否为完整桌面端。
-     */
     public boolean isFullDesktop() {
         return fullDesktop;
     }
 
-    /**
-     * 设备是否为智能手机。
-     */
     public boolean isSmartphone() {
         return smartphone;
     }
 
-    /**
-     * 请求是否来自网络爬虫或机器人程序。
-     */
     public boolean isRobot() {
         return robot;
     }
 
-    /**
-     * 设备是否具有大屏幕。
-     */
     public boolean isLargescreen() {
         return largescreen;
     }
@@ -242,23 +161,14 @@ public final class VirtualCapabilityInfo implements Serializable {
     //  操作系统判定
     // ========================================================================
 
-    /**
-     * 设备操作系统是否为 Android。
-     */
     public boolean isAndroid() {
         return android;
     }
 
-    /**
-     * 设备操作系统是否为 iOS。
-     */
     public boolean isIos() {
         return ios;
     }
 
-    /**
-     * 设备操作系统是否为 Windows Phone。
-     */
     public boolean isWindowsPhone() {
         return windowsPhone;
     }
@@ -267,9 +177,6 @@ public final class VirtualCapabilityInfo implements Serializable {
     //  交互与显示
     // ========================================================================
 
-    /**
-     * 设备是否支持触摸屏。
-     */
     public boolean isTouchscreen() {
         return touchscreen;
     }
@@ -278,23 +185,14 @@ public final class VirtualCapabilityInfo implements Serializable {
     //  标记语言偏好
     // ========================================================================
 
-    /**
-     * 设备是否偏好 WML 标记语言。
-     */
     public boolean isWmlPreferred() {
         return wmlPreferred;
     }
 
-    /**
-     * 设备是否偏好 XHTML MP 标记语言。
-     */
     public boolean isXhtmlmpPreferred() {
         return xhtmlmpPreferred;
     }
 
-    /**
-     * 设备是否偏好 HTML 标记语言。
-     */
     public boolean isHtmlPreferred() {
         return htmlPreferred;
     }
@@ -303,60 +201,44 @@ public final class VirtualCapabilityInfo implements Serializable {
     //  字符串信息
     // ========================================================================
 
-    /**
-     * @return 广告投放用操作系统名称，如 {@code "Android"}、{@code "iOS"}、{@code "Windows"}
-     */
     public String getAdvertisedDeviceOs() {
         return advertisedDeviceOs;
     }
 
-    /**
-     * @return 广告投放用操作系统版本，如 {@code "14"}、{@code "15.1.1"}
-     */
     public String getAdvertisedDeviceOsVersion() {
         return advertisedDeviceOsVersion;
     }
 
-    /**
-     * @return 广告投放用浏览器名称，如 {@code "Chrome Mobile"}、{@code "QQ Browser"}
-     */
     public String getAdvertisedBrowser() {
         return advertisedBrowser;
     }
 
-    /**
-     * @return 广告投放用浏览器版本
-     */
     public String getAdvertisedBrowserVersion() {
         return advertisedBrowserVersion;
     }
 
-    /**
-     * @return 广告投放用应用名称，如 {@code "Chrome browser"}、{@code "WeChat"}
-     */
     public String getAdvertisedAppName() {
         return advertisedAppName;
     }
 
-    /**
-     * @return 完整设备名称，如 {@code "Google Pixel 7"}、{@code "Huawei MRX-W09 (MatePad Pro)"}
-     */
     public String getCompleteDeviceName() {
         return completeDeviceName;
     }
 
-    /**
-     * @return 设备简称，如 {@code "Google Pixel 7"}、{@code "Xiaomi 14 Pro"}
-     */
     public String getDeviceName() {
         return deviceName;
     }
 
-    /**
-     * @return 设备形态因子，如 {@code "Desktop"}、{@code "Smartphone"}、{@code "Tablet"}
-     */
     public String getFormFactor() {
         return formFactor;
+    }
+
+    public String getBrowserCore() {
+        return browserCore;
+    }
+
+    public String getBrowserCoreVersion() {
+        return browserCoreVersion;
     }
 
     // ========================================================================
@@ -367,20 +249,13 @@ public final class VirtualCapabilityInfo implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof VirtualCapabilityInfo that)) return false;
-        return appWebview == that.appWebview
-                && app == that.app
-                && mobile == that.mobile
-                && phone == that.phone
-                && fullDesktop == that.fullDesktop
-                && smartphone == that.smartphone
-                && robot == that.robot
-                && largescreen == that.largescreen
-                && android == that.android
-                && ios == that.ios
-                && windowsPhone == that.windowsPhone
-                && touchscreen == that.touchscreen
-                && wmlPreferred == that.wmlPreferred
-                && xhtmlmpPreferred == that.xhtmlmpPreferred
+        return appWebview == that.appWebview && app == that.app
+                && mobile == that.mobile && phone == that.phone
+                && fullDesktop == that.fullDesktop && smartphone == that.smartphone
+                && robot == that.robot && largescreen == that.largescreen
+                && android == that.android && ios == that.ios
+                && windowsPhone == that.windowsPhone && touchscreen == that.touchscreen
+                && wmlPreferred == that.wmlPreferred && xhtmlmpPreferred == that.xhtmlmpPreferred
                 && htmlPreferred == that.htmlPreferred
                 && Objects.equals(advertisedDeviceOs, that.advertisedDeviceOs)
                 && Objects.equals(advertisedDeviceOsVersion, that.advertisedDeviceOsVersion)
@@ -389,7 +264,9 @@ public final class VirtualCapabilityInfo implements Serializable {
                 && Objects.equals(advertisedAppName, that.advertisedAppName)
                 && Objects.equals(completeDeviceName, that.completeDeviceName)
                 && Objects.equals(deviceName, that.deviceName)
-                && Objects.equals(formFactor, that.formFactor);
+                && Objects.equals(formFactor, that.formFactor)
+                && Objects.equals(browserCore, that.browserCore)
+                && Objects.equals(browserCoreVersion, that.browserCoreVersion);
     }
 
     @Override
@@ -399,7 +276,7 @@ public final class VirtualCapabilityInfo implements Serializable {
                 wmlPreferred, xhtmlmpPreferred, htmlPreferred,
                 advertisedDeviceOs, advertisedDeviceOsVersion, advertisedBrowser,
                 advertisedBrowserVersion, advertisedAppName, completeDeviceName,
-                deviceName, formFactor);
+                deviceName, formFactor, browserCore, browserCoreVersion);
     }
 
     @Override
@@ -421,6 +298,8 @@ public final class VirtualCapabilityInfo implements Serializable {
                 + ", completeDeviceName='" + completeDeviceName + '\''
                 + ", deviceName='" + deviceName + '\''
                 + ", formFactor='" + formFactor + '\''
+                + ", browserCore='" + browserCore + '\''
+                + ", browserCoreVersion='" + browserCoreVersion + '\''
                 + '}';
     }
 }
