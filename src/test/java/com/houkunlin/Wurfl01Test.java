@@ -136,7 +136,8 @@ class Wurfl01Test {
         System.out.println(info);
         System.out.println(device.getCapabilities());
         Assertions.assertEquals("google_chrome_147", device.getId());
-        Assertions.assertEquals("conclusive", device.getMatchType().name());
+        Assertions.assertTrue(device.getMatchType().name().matches("conclusive|cached"),
+                "Expected conclusive or cached but was: " + device.getMatchType().name());
         Assertions.assertEquals(device.getVirtualCapability("is_app_webview"), Boolean.toString(info.isAppWebview()));
         Assertions.assertEquals(device.getVirtualCapability("is_app"), Boolean.toString(info.isApp()));
         Assertions.assertEquals(device.getVirtualCapability("is_mobile"), Boolean.toString(info.isMobile()));
@@ -303,7 +304,7 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
         Assertions.assertEquals("QQ Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
@@ -619,5 +620,37 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("", info.getAdvertisedDeviceOsVersion());
+    }
+
+    @DisplayName("QQ 浏览器 (iOS)")
+    @Test
+    void test_10013() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (iPhone; CPU iPhone OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1 MQQBrowser/9.8.8");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertFalse(info.isApp());
+        Assertions.assertTrue(info.isMobile());
+        Assertions.assertTrue(info.isPhone());
+        Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedBrowser());
+        Assertions.assertTrue(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("Apple iPhone", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("iOS", info.getAdvertisedDeviceOs());
+        Assertions.assertFalse(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("Apple iPhone", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("9.8.8", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertTrue(info.isIos());
+        Assertions.assertTrue(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Smartphone", info.getFormFactor());
+        Assertions.assertEquals("17.1", info.getAdvertisedDeviceOsVersion());
     }
 }

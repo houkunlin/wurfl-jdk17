@@ -76,6 +76,7 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
         APP_INDICATOR_KEYWORDS.add("FBAV/");
         APP_INDICATOR_KEYWORDS.add("UCWEB");
         APP_INDICATOR_KEYWORDS.add("UCBrowser");
+        APP_INDICATOR_KEYWORDS.add("MQQBrowser");
         APP_INDICATOR_KEYWORDS.add(" Edge/");
         APP_INDICATOR_KEYWORDS.add(" EdgiOS/");
         APP_INDICATOR_KEYWORDS.add(" EdgA/");
@@ -165,6 +166,7 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
         APP_NAMES.add("Facebook");
         APP_NAMES.add("UCBrowser");
         APP_NAMES.add("UCBrowser");
+        APP_NAMES.add("QQ Browser");
         APP_NAMES.add("Edge Browser");
         APP_NAMES.add("Edge Browser");
         APP_NAMES.add("Edge Browser");
