@@ -804,9 +804,8 @@ public final class VirtualCapabilityUserAgentTool {
             }
         }
 
-        // 尝试匹配 Safari 版本（兜底，仅当无其他匹配且不含 Chrome 标记时）
-        if (upstreamName == null && !browserUA.contains("Chrome/") && browserUA.contains("Safari/")
-                && browserUA.contains("Version/")) {
+        // 尝试匹配 Safari 版本（最终兜底：任何含 AppleWebKit 的非 Chrome/Firefox UA）
+        if (upstreamName == null) {
             java.util.regex.Matcher webkitMatcher = APPLE_WEBKIT_VERSION_PATTERN.matcher(browserUA);
             if (webkitMatcher.find()) {
                 upstreamName = "Safari";
