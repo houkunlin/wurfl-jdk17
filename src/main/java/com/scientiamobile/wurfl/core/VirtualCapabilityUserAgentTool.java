@@ -106,6 +106,11 @@ public final class VirtualCapabilityUserAgentTool {
     private static final Pattern TIZEN_VERSION_PATTERN = Pattern.compile("Tizen ([\\d\\.]+)");
     private static final Pattern EDGE_ANDROID_VERSION_PATTERN = Pattern.compile("EdgA/([\\d\\.]+)");
     private static final Pattern EDGE_IOS_VERSION_PATTERN = Pattern.compile("EdgiOS/([\\d\\.]+)");
+    private static final Pattern QQ_BROWSER_PATTERN = Pattern.compile("MQQBrowser/([\\d\\.]+)");
+    private static final Pattern WECHAT_PATTERN = Pattern.compile("MicroMessenger/([\\d\\.]+)");
+    private static final Pattern SOGOU_MOBILE_PATTERN = Pattern.compile("SogouMobileBrowser/([\\d\\.]+)");
+    private static final Pattern BRAVE_PATTERN = Pattern.compile("Brave Chrome/([\\d\\.]+)");
+    private static final Pattern ALIPAY_PATTERN = Pattern.compile("AliApp\\(AP/([\\d\\.]+)");
     private static final Pattern FIREFOX_FOCUS_VERSION_PATTERN = Pattern.compile("Focus/([\\d\\.]+)");
     private static final Pattern IOS_FIREFOX_FOCUS_VERSION_PATTERN = Pattern.compile("^Mozilla/[45]\\.0.+?like Mac OS X.+?Focus/([\\d\\.]+) Mobile\\/[0-9A-Za-z]+");
     private static final Pattern WINDOWS_OS_NAME_PATTERN = Pattern.compile("(Windows [0-9A-Za-z \\.]+)");
@@ -317,6 +322,12 @@ public final class VirtualCapabilityUserAgentTool {
         if (browserPair.matchAndSetGroup(SAMSUNG_BROWSER_CHROME_VERSION_PATTERN, browserUA, "Samsung Browser", 1))
             return;
         if (browserPair.matchAndSetGroup(EDGE_ANDROID_VERSION_PATTERN, browserUA, "Edge", 1)) return;
+        // 中国常用浏览器识别（需在 Chrome 匹配之前，因为其 UA 含 Chrome 标识）
+        if (browserPair.matchAndSetGroup(QQ_BROWSER_PATTERN, browserUA, "QQ Browser", 1)) return;
+        if (browserPair.matchAndSetGroup(WECHAT_PATTERN, browserUA, "WeChat Built-in", 1)) return;
+        if (browserPair.matchAndSetGroup(SOGOU_MOBILE_PATTERN, browserUA, "Sogou Mobile", 1)) return;
+        if (browserPair.matchAndSetGroup(BRAVE_PATTERN, browserUA, "Brave", 1)) return;
+        if (browserPair.matchAndSetGroup(ALIPAY_PATTERN, browserUA, "Alipay Built-in", 1)) return;
         if (browserPair.matchAndSetGroup(CHROMIUM_VERSION_PATTERN, browserUA, "Chromium", 1)) return;
         if (browserPair.matchAndSetGroup(CHROME_VERSION_PATTERN, browserUA, "Chrome Mobile", 1)) return;
         if (browserPair.matchAndSet(ANDROID_WEBKIT_VERSION_MARKER_PATTERN, browserUA, "Android Webkit", osPair.getVersion()))
@@ -374,6 +385,10 @@ public final class VirtualCapabilityUserAgentTool {
         if (browserPair.matchAndSetGroup(IOS_GOOGLE_SEARCH_APP_GSA_VERSION_PATTERN, browserUA, "Google Search Application", 1))
             return;
         if (browserPair.matchAndSetGroup(EDGE_IOS_VERSION_PATTERN, browserUA, "Edge", 1)) return;
+        if (browserPair.matchAndSetGroup(QQ_BROWSER_PATTERN, browserUA, "QQ Browser", 1)) return;
+        if (browserPair.matchAndSetGroup(WECHAT_PATTERN, browserUA, "WeChat Built-in", 1)) return;
+        if (browserPair.matchAndSetGroup(SOGOU_MOBILE_PATTERN, browserUA, "Sogou Mobile", 1)) return;
+        if (browserPair.matchAndSetGroup(ALIPAY_PATTERN, browserUA, "Alipay Built-in", 1)) return;
         if (browserPair.matchAndSetGroup(IOS_SAFARI_VERSION_PATTERN, browserUA, "Mobile Safari", 1)) return;
 
         // 兜底

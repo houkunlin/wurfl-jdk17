@@ -266,7 +266,7 @@ class Wurfl01Test {
         Assertions.assertEquals("true", device.getVirtualCapability("is_phone"));
         Assertions.assertEquals("Chrome browser", device.getVirtualCapability("advertised_app_name"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
-        Assertions.assertEquals("Chromium", device.getVirtualCapability("advertised_browser"));
+        Assertions.assertEquals("QQ Browser", device.getVirtualCapability("advertised_browser"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
         Assertions.assertEquals("Xiaomi M2102J2SC (Redmi K40 5G Premium Edition)", device.getVirtualCapability("complete_device_name"));
@@ -275,7 +275,7 @@ class Wurfl01Test {
         Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
         Assertions.assertEquals("Xiaomi Redmi K40 5G Premium Edition", device.getVirtualCapability("device_name"));
-        Assertions.assertEquals("89.0.4389.72", device.getVirtualCapability("advertised_browser_version"));
+        Assertions.assertEquals("6.2", device.getVirtualCapability("advertised_browser_version"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_ios"));
