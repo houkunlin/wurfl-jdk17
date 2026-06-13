@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 判断设备是否偏好 WML（Wireless Markup Language）的虚拟能力评估器。
  * <p>通过检查 WURFL 设备数据库中的 {@code xhtml_support_level} 能力值：
- * 如果 XHTML 支持级别 <= 0，则表明设备更倾向于使用 WML。</p>
+ * 如果 XHTML 支持级别 &lt;= 0，则表明设备更倾向于使用 WML。</p>
  */
 
 public class IsWMLPreferred implements VirtualCapabilityEvaluator, Serializable {
