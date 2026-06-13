@@ -125,7 +125,18 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Desktop", info.getFormFactor());
         Assertions.assertEquals("10", info.getAdvertisedDeviceOsVersion());
+    }
 
+    @DisplayName("电脑谷歌浏览器: 测试 VirtualCapabilityInfo 转换结果")
+    @Test
+    void testGoogleBrowser1() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(device.getCapabilities());
+        Assertions.assertEquals("google_chrome_147", device.getId());
+        Assertions.assertEquals("conclusive", device.getMatchType().name());
         Assertions.assertEquals(device.getVirtualCapability("is_app_webview"), Boolean.toString(info.isAppWebview()));
         Assertions.assertEquals(device.getVirtualCapability("is_app"), Boolean.toString(info.isApp()));
         Assertions.assertEquals(device.getVirtualCapability("is_mobile"), Boolean.toString(info.isMobile()));
