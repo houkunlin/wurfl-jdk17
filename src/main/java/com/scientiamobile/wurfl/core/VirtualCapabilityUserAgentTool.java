@@ -98,6 +98,7 @@ public final class VirtualCapabilityUserAgentTool {
     private static final Pattern AMAZON_ANDROID_VERSION_PATTERN = Pattern.compile(":::Android_(\\d\\.\\d)");
     private static final Pattern AMAZON_SHOPPING_ANDROID_VERSION_PATTERN = Pattern.compile("^mShop:::Amazon_Android_([\\d\\.]+):::");
     private static final Pattern FIREFOX_SIMPLE_VERSION_PATTERN = Pattern.compile("Firefox/([\\d\\.]+)");
+    private static final Pattern APPLE_WEBKIT_VERSION_PATTERN = Pattern.compile("AppleWebKit/([\\d\\.]+)");
     private static final Pattern IOS_GOOGLE_SEARCH_APP_GSA_VERSION_PATTERN = Pattern.compile("^Mozilla/[45]\\.0.+?like Mac OS X.+?AppleWebKit.+?GSA/([\\d\\.]+) Mobile/");
     private static final Pattern NINTENDO_NETFRONT_NX_VERSION_PATTERN = Pattern.compile("Version/([\\d\\.A-Z]+)");
     private static final Pattern NINTENDO_NETFRONT_NX_VERSION_PATTERN_2 = Pattern.compile(" NX/([\\d\\.]+)");
@@ -791,6 +792,25 @@ public final class VirtualCapabilityUserAgentTool {
             if (safariMatcher.find()) {
                 upstreamName = "WebKit";
                 upstreamVersion = safariMatcher.group(2);
+            }
+        }
+
+        // 尝试匹配 Firefox 版本（Chrome/Chromium/Safari 未匹配时）
+        if (upstreamName == null) {
+            java.util.regex.Matcher firefoxMatcher = FIREFOX_SIMPLE_VERSION_PATTERN.matcher(browserUA);
+            if (firefoxMatcher.find()) {
+                upstreamName = "Firefox";
+                upstreamVersion = firefoxMatcher.group(1);
+            }
+        }
+
+        // 尝试匹配 Safari 版本（兜底，仅当无其他匹配且不含 Chrome 标记时）
+        if (upstreamName == null && !browserUA.contains("Chrome/") && browserUA.contains("Safari/")
+                && browserUA.contains("Version/")) {
+            java.util.regex.Matcher webkitMatcher = APPLE_WEBKIT_VERSION_PATTERN.matcher(browserUA);
+            if (webkitMatcher.find()) {
+                upstreamName = "Safari";
+                upstreamVersion = webkitMatcher.group(1);
             }
         }
 
