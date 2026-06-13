@@ -232,21 +232,21 @@ class Wurfl01Test {
      * </ul>
      * 该用例用于验证 WURFL 对第三方小众浏览器的兼容性及在 UA 伪装场景下的降级识别策略。
      */
-    @DisplayName("夸克浏览器：一加12")
+    @DisplayName("手机夸克浏览器：一加12")
     @Test
     void testOnePlus12Quark() {
         Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; U; Android 16; zh-CN; PJD110 Build/BP2A.250605.015) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/144.0.7559.86 Quark/10.10.0.1075 Mobile Safari/537.36");
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("Quark browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
-        Assertions.assertEquals("Chromium", info.getAdvertisedBrowser());
+        Assertions.assertEquals("Quark", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
         Assertions.assertEquals("OnePlus PJD110 (12)", info.getCompleteDeviceName());
@@ -255,7 +255,7 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("OnePlus 12", info.getDeviceName());
-        Assertions.assertEquals("144.0.7559.86", info.getAdvertisedBrowserVersion());
+        Assertions.assertEquals("10.10.0.1075", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
@@ -263,8 +263,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("144.0.7559.86", info.getBrowserCoreVersion());
     }
 
     @DisplayName("iPhone3")
@@ -1306,6 +1306,41 @@ class Wurfl01Test {
         Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
         Assertions.assertEquals("Chrome", info.getBrowserCore());
         Assertions.assertEquals("146.0.7680.178", info.getBrowserCoreVersion());
+    }
+
+    @DisplayName("手机夸克浏览器：一加12")
+    @Test
+    void test_10033() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; U; Android 16; zh-CN; PJD110 Build/BP2A.250605.015) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/144.0.7559.86 Quark/10.11.5.1090 Mobile Safari/537.36");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertFalse(info.isApp());
+        Assertions.assertTrue(info.isMobile());
+        Assertions.assertTrue(info.isPhone());
+        Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Quark browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("Quark", info.getAdvertisedBrowser());
+        Assertions.assertTrue(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("OnePlus PJD110 (12)", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("Android", info.getAdvertisedDeviceOs());
+        Assertions.assertTrue(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("OnePlus 12", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("10.11.5.1090", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertTrue(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Smartphone", info.getFormFactor());
+        Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("144.0.7559.86", info.getBrowserCoreVersion());
     }
 
     String buildAssertions(VirtualCapabilityInfo info) {
