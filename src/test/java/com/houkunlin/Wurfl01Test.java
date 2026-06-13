@@ -368,8 +368,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("15.1.1", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Safari", info.getBrowserCore());
+        Assertions.assertEquals("605.1.15", info.getBrowserCoreVersion());
     }
 
     @DisplayName("QQ 内置浏览器 UA: iPad")
@@ -1234,8 +1234,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("5.1", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Safari", info.getBrowserCore());
+        Assertions.assertEquals("534.46", info.getBrowserCoreVersion());
     }
 
     @DisplayName("电脑微信内置浏览器")
