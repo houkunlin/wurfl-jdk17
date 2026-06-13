@@ -298,8 +298,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("3.0", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Safari", info.getBrowserCore());
+        Assertions.assertEquals("420.1", info.getBrowserCoreVersion());
     }
 
     @DisplayName("QQ 内置浏览器 UA: Android")
@@ -403,8 +403,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Tablet", info.getFormFactor());
         Assertions.assertEquals("5.0", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Safari", info.getBrowserCore());
+        Assertions.assertEquals("534.46", info.getBrowserCoreVersion());
     }
 
     @DisplayName("UC 浏览器 (Android)")
@@ -680,8 +680,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("17.1", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Safari", info.getBrowserCore());
+        Assertions.assertEquals("605.1.15", info.getBrowserCoreVersion());
     }
 
     @DisplayName("百度浏览器 (Android)")
@@ -884,8 +884,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Desktop", info.getFormFactor());
         Assertions.assertEquals("10", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Firefox", info.getBrowserCore());
+        Assertions.assertEquals("148.0", info.getBrowserCoreVersion());
     }
 
     @DisplayName("三星 Galaxy Z Fold5")
@@ -989,8 +989,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Tablet", info.getFormFactor());
         Assertions.assertEquals("17.1", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Safari", info.getBrowserCore());
+        Assertions.assertEquals("605.1.15", info.getBrowserCoreVersion());
     }
 
     @DisplayName("Safari (iPhone)")
@@ -1024,8 +1024,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("17.1", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Safari", info.getBrowserCore());
+        Assertions.assertEquals("605.1.15", info.getBrowserCoreVersion());
     }
 
     @DisplayName("Safari macOS")
@@ -1059,8 +1059,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Desktop", info.getFormFactor());
         Assertions.assertEquals("10.15.7", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Safari", info.getBrowserCore());
+        Assertions.assertEquals("605.1.15", info.getBrowserCoreVersion());
     }
 
     @DisplayName("Microsoft Edge macOS")
@@ -1129,8 +1129,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Desktop", info.getFormFactor());
         Assertions.assertEquals("", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Firefox", info.getBrowserCore());
+        Assertions.assertEquals("120.0", info.getBrowserCoreVersion());
     }
 
     @DisplayName("Mozilla Firefox macOS")
@@ -1164,8 +1164,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Desktop", info.getFormFactor());
         Assertions.assertEquals("10.15", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Firefox", info.getBrowserCore());
+        Assertions.assertEquals("120.0", info.getBrowserCoreVersion());
     }
 
     @DisplayName("微信内置浏览器 UA：Android")
