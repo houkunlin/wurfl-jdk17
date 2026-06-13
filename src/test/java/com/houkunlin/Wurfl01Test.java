@@ -552,8 +552,8 @@ class Wurfl01Test {
         Assertions.assertEquals("false", device.getVirtualCapability("is_app"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_mobile"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_phone"));
-        Assertions.assertEquals("Chrome browser", device.getVirtualCapability("advertised_app_name"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_full_desktop"));
+        Assertions.assertEquals("Chrome browser", device.getVirtualCapability("advertised_app_name"));
         Assertions.assertEquals("Chrome Mobile", device.getVirtualCapability("advertised_browser"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_smartphone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_robot"));
@@ -563,8 +563,8 @@ class Wurfl01Test {
         Assertions.assertEquals("true", device.getVirtualCapability("is_android"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_xhtmlmp_preferred"));
         Assertions.assertEquals("Huawei Mate X2", device.getVirtualCapability("device_name"));
-        Assertions.assertEquals("120.0.0.0", device.getVirtualCapability("advertised_browser_version"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_html_preferred"));
+        Assertions.assertEquals("120.0.0.0", device.getVirtualCapability("advertised_browser_version"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_windows_phone"));
         Assertions.assertEquals("false", device.getVirtualCapability("is_ios"));
         Assertions.assertEquals("true", device.getVirtualCapability("is_touchscreen"));
