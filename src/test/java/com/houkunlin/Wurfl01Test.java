@@ -1098,6 +1098,41 @@ class Wurfl01Test {
         Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
+    @DisplayName("Mozilla Firefox Linux")
+    @Test
+    void test_10027() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (X11; Linux x86_64; rv:120.0) Gecko/20100101 Firefox/120.0");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertFalse(info.isApp());
+        Assertions.assertFalse(info.isMobile());
+        Assertions.assertFalse(info.isPhone());
+        Assertions.assertTrue(info.isFullDesktop());
+        Assertions.assertEquals("Firefox browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("Firefox", info.getAdvertisedBrowser());
+        Assertions.assertFalse(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("Mozilla Firefox", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("Linux", info.getAdvertisedDeviceOs());
+        Assertions.assertFalse(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("Mozilla Firefox", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("120.0", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertFalse(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Desktop", info.getFormFactor());
+        Assertions.assertEquals("", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
+    }
+
     String buildAssertions(VirtualCapabilityInfo info) {
         StringBuilder stringBuilder = new StringBuilder();
         append(stringBuilder, info.isAppWebview(), "info.isAppWebview()");
