@@ -35,6 +35,7 @@ final class AndroidMatcher extends AbstractMatcher {
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver2_1");
         SUPPORTED_MOBILE_DEVICE_IDS.add(GENERIC_ANDROID_VER2_2);
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver2_3");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver2_4");
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver3_0");
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver3_1");
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver3_2");
@@ -56,7 +57,24 @@ final class AndroidMatcher extends AbstractMatcher {
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver7_2");
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver8_0");
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver8_1");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver8_2");
         SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver9_0");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver9_1");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver9_2");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver10_0");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver10_1");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver11_0");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver11_1");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver12_0");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver12_1");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver13_0");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver13_1");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver14_0");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver14_1");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver15_0");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver15_1");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver16_0");
+        SUPPORTED_MOBILE_DEVICE_IDS.add("generic_android_ver17_0");
         SUPPORTED_TABLET_DEVICE_IDS.add(GENERIC_ANDROID_VER1_5_TABLET);
         SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver1_6_tablet");
         SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver2_tablet");
@@ -80,7 +98,24 @@ final class AndroidMatcher extends AbstractMatcher {
         SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver7_2_tablet");
         SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver8_0_tablet");
         SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver8_1_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver8_2_tablet");
         SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver9_0_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver9_1_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver9_2_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver10_0_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver10_1_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver11_0_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver11_1_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver12_0_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver12_1_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver13_0_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver13_1_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver14_0_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver14_1_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver15_0_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver15_1_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver16_0_tablet");
+        SUPPORTED_TABLET_DEVICE_IDS.add("generic_android_ver17_0_tablet");
     }
 
     public AndroidMatcher(UserAgentNormalizer normalizer, WURFLModel wurflModel) {
@@ -154,6 +189,15 @@ final class AndroidMatcher extends AbstractMatcher {
         String normalizedDeviceUserAgent = request.getNormalizedDeviceUserAgent();
         String androidVersion = UserAgentUtils.getAndroidVersion(normalizedDeviceUserAgent, true).replaceAll("\\.", "_");
         String candidateDeviceId = "generic_android_ver" + androidVersion;
+
+        // 处理整数版本号（Android 10+），WURFL 中使用 "10_0" 而非 "10" 作为版本标识
+        if (candidateDeviceId.endsWith("_10") || candidateDeviceId.endsWith("_11")
+                || candidateDeviceId.endsWith("_12") || candidateDeviceId.endsWith("_13")
+                || candidateDeviceId.endsWith("_14") || candidateDeviceId.endsWith("_15")
+                || candidateDeviceId.endsWith("_16") || candidateDeviceId.endsWith("_17")) {
+            candidateDeviceId = candidateDeviceId + "_0";
+        }
+
         if (candidateDeviceId.endsWith("2_0") || candidateDeviceId.endsWith("4_0")) {
             candidateDeviceId = candidateDeviceId.substring(0, candidateDeviceId.length() - 2);
         }
