@@ -74,6 +74,7 @@ public class AppName implements VirtualCapabilityEvaluator, Serializable {
         APP_KEYWORDS.put("FBAV/", "Facebook");
         APP_KEYWORDS.put("UCWEB", "UCBrowser");
         APP_KEYWORDS.put("UCBrowser", "UCBrowser");
+        APP_KEYWORDS.put("QQBrowser", "QQ Browser");
         APP_KEYWORDS.put("MQQBrowser", "QQ Browser");
         APP_KEYWORDS.put(" QQ/", "QQ Browser");
         APP_KEYWORDS.put(" Edge/", "Edge Browser");

@@ -107,6 +107,7 @@ public final class VirtualCapabilityUserAgentTool {
     private static final Pattern EDGE_ANDROID_VERSION_PATTERN = Pattern.compile("EdgA/([\\d\\.]+)");
     private static final Pattern EDGE_IOS_VERSION_PATTERN = Pattern.compile("EdgiOS/([\\d\\.]+)");
     private static final Pattern QQ_BROWSER_PATTERN = Pattern.compile("MQQBrowser/([\\d\\.]+)");
+    private static final Pattern QQ_BROWSER_DESKTOP_PATTERN = Pattern.compile("QQBrowser/([\\d\\.]+)");
     private static final Pattern QQ_IOS_BUILTIN_VERSION_PATTERN = Pattern.compile("QQ/([\\d\\.]+)");
     private static final Pattern WECHAT_PATTERN = Pattern.compile("MicroMessenger/([\\d\\.]+)");
     private static final Pattern SOGOU_MOBILE_PATTERN = Pattern.compile("SogouMobileBrowser/([\\d\\.]+)");
@@ -637,6 +638,19 @@ public final class VirtualCapabilityUserAgentTool {
                 if (browserPair.matchAndSetGroup(SAMSUNG_BROWSER_VERSION_PATTERN, deviceUA, "DeX Samsung Browser", 1)) {
                     return;
                 }
+            }
+
+            // --- QQ Browser (Desktop) ---
+            if (StringMatchUtils.indexOf(deviceUA, "QQBrowser") >= 0) {
+                if (osPair.matchAndSetNameFromGroup(CHROME_MAC_VERSION_PATTERN, deviceUA, 1)) {
+                    // OS parsed from Mac Chrome pattern
+                } else if (osPair.matchAndSetNameFromGroup(CHROME_WINDOWS_VERSION_PATTERN, deviceUA, 1)) {
+                    // OS parsed from Windows Chrome pattern
+                }
+                browserPair.setName("QQ Browser");
+                browserPair.matchAndSetGroup(QQ_BROWSER_DESKTOP_PATTERN, deviceUA, null, 1);
+                captureUpstreamBrowser(vcd, browserUA);
+                return;
             }
 
             // --- Chrome (Mac / Windows) ---
