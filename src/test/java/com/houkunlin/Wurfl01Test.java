@@ -594,9 +594,9 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("HeyTap Browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
-        Assertions.assertEquals("Chromium", info.getAdvertisedBrowser());
+        Assertions.assertEquals("HeyTap Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
         Assertions.assertEquals("OnePlus KB2000 (8T)", info.getCompleteDeviceName());
@@ -605,7 +605,7 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("OnePlus 8T", info.getDeviceName());
-        Assertions.assertEquals("115.0.5790.168", info.getAdvertisedBrowserVersion());
+        Assertions.assertEquals("40.10.17.1", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
@@ -613,8 +613,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("14", info.getAdvertisedDeviceOsVersion());
-        Assertions.assertEquals("", info.getBrowserCore());
-        Assertions.assertEquals("", info.getBrowserCoreVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("115.0.5790.168", info.getBrowserCoreVersion());
     }
 
     @DisplayName("华为 Mate X5 (HarmonyOS)")
@@ -1411,6 +1411,41 @@ class Wurfl01Test {
         Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
         Assertions.assertEquals("Chrome", info.getBrowserCore());
         Assertions.assertEquals("123.0.6312.80", info.getBrowserCoreVersion());
+    }
+
+    @DisplayName("手机欢太浏览器：一加12")
+    @Test
+    void test_10036() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; U; Android 16; zh-cn; PJD110 Build/BP2A.250605.015) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/115.0.5790.168 Mobile Safari/537.36 HeyTapBrowser/40.10.17.10");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertTrue(info.isAppWebview());
+        Assertions.assertTrue(info.isApp());
+        Assertions.assertTrue(info.isMobile());
+        Assertions.assertTrue(info.isPhone());
+        Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("HeyTap Browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("HeyTap Browser", info.getAdvertisedBrowser());
+        Assertions.assertTrue(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("OnePlus PJD110 (12)", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("Android", info.getAdvertisedDeviceOs());
+        Assertions.assertTrue(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("OnePlus 12", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("40.10.17.10", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertTrue(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Smartphone", info.getFormFactor());
+        Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("115.0.5790.168", info.getBrowserCoreVersion());
     }
 
     String buildAssertions(VirtualCapabilityInfo info) {
