@@ -10,8 +10,12 @@ import java.util.Set;
 /**
  * Skyfire 浏览器匹配器。
  * <p>通过检查 User-Agent 是否包含 Skyfire 来识别 Skyfire 移动浏览器。支持 Skyfire v1 和 v2 的恢复匹配。</p>
+ *
+ * @deprecated 当前 WURFL 数据文件中已无 Skyfire 设备（对应设备数为 0），
+ * 该匹配器已不再参与实际设备匹配，保留仅用于兼容旧版 WURFL 数据。
+ * 计划在后续主要版本中移除。
  */
-
+@Deprecated
 final class SkyfireMatcher extends MatcherBase {
     private static final String GENERIC_SKYFIRE_VERSION2 = "generic_skyfire_version2";
     private static final String GENERIC_SKYFIRE_VERSION1 = "generic_skyfire_version1";

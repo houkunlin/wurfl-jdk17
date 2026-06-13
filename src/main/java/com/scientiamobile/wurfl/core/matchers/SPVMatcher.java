@@ -7,8 +7,12 @@ import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 /**
  * SPV（Orange 旗下品牌）设备匹配器。
  * <p>通过检查 User-Agent 是否包含 SPV 来识别 SPV 品牌的移动设备。</p>
+ *
+ * @deprecated 当前 WURFL 数据文件中已无 SPV 品牌设备（对应设备数为 0），
+ * 该匹配器已不再参与实际设备匹配，保留仅用于兼容旧版 WURFL 数据。
+ * 计划在后续主要版本中移除。
  */
-
+@Deprecated
 final class SPVMatcher extends MatcherBase {
     public SPVMatcher(WURFLModel wurflModel) {
         super(wurflModel);

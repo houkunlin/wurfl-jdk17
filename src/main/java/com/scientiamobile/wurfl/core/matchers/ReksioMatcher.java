@@ -9,8 +9,12 @@ import java.util.Set;
 /**
  * Reksio 品牌设备匹配器。
  * <p>通过检查 User-Agent 是否以 Reksio 开头来识别 Reksio 品牌的移动设备。确定匹配直接返回 generic_reksio。</p>
+ *
+ * @deprecated 当前 WURFL 数据文件中已无 Reksio 品牌设备（对应设备数为 0），
+ * 该匹配器已不再参与实际设备匹配，保留仅用于兼容旧版 WURFL 数据。
+ * 计划在后续主要版本中移除。
  */
-
+@Deprecated
 final class ReksioMatcher extends MatcherBase {
     private static final String REKSIO_DEVICE_ID = "generic_reksio";
 
