@@ -120,7 +120,6 @@ public class VirtualCapabilityHandler {
      * @return 虚拟能力名称的不可变集合
      */
     public static Set<String> getAllVirtualCapabilities() {
-        new VirtualCapabilityHandler();
         return EVALUATORS_BY_NAME.keySet();
     }
 
@@ -184,11 +183,11 @@ public class VirtualCapabilityHandler {
      * @return 虚拟能力名称到值的映射
      */
     public Map<String, String> getAllVirtualCapabilities(Device device) {
-        HashMap<String, String> virtualCapabilities = new HashMap<>();
-        HashSet<VirtualCapabilityEvaluator> evaluators = new HashSet<>(EVALUATORS_BY_NAME.values());
+        Map<String, String> virtualCapabilities = new HashMap<>(EVALUATORS_BY_NAME.size());
 
-        for (VirtualCapabilityEvaluator evaluator : evaluators) {
-            String virtualCapabilityName = evaluator.getHandledVirtualCapabilityName();
+        for (Map.Entry<String, VirtualCapabilityEvaluator> entry : EVALUATORS_BY_NAME.entrySet()) {
+            VirtualCapabilityEvaluator evaluator = entry.getValue();
+            String virtualCapabilityName = entry.getKey();
             virtualCapabilities.put(virtualCapabilityName, applyControlCapOverride(virtualCapabilityName, evaluator.eval(device, this.request), device));
         }
 
