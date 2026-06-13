@@ -116,6 +116,7 @@ public final class VirtualCapabilityUserAgentTool {
     private static final Pattern ALIPAY_PATTERN = Pattern.compile("AliApp\\(AP/([\\d\\.]+)");
     private static final Pattern FIREFOX_FOCUS_VERSION_PATTERN = Pattern.compile("Focus/([\\d\\.]+)");
     private static final Pattern IOS_FIREFOX_FOCUS_VERSION_PATTERN = Pattern.compile("^Mozilla/[45]\\.0.+?like Mac OS X.+?Focus/([\\d\\.]+) Mobile\\/[0-9A-Za-z]+");
+    private static final Pattern HEYTAP_BROWSER_PATTERN = Pattern.compile("HeyTapBrowser/([\\d\\.]+)");
     private static final Pattern WINDOWS_OS_NAME_PATTERN = Pattern.compile("(Windows [0-9A-Za-z \\.]+)");
     private static final Pattern MAC_OS_NAME_PATTERN = Pattern.compile("Macintosh;(?: U;)?([a-zA-Z_ \\.0-9]+)(?:;)?");
     private static final VirtualCapabilityUserAgentTool INSTANCE = new VirtualCapabilityUserAgentTool();
@@ -336,6 +337,7 @@ public final class VirtualCapabilityUserAgentTool {
         if (browserPair.matchAndSetGroup(QUARK_PATTERN, browserUA, "Quark", 1)) return;
         if (browserPair.matchAndSetGroup(BRAVE_PATTERN, browserUA, "Brave", 1)) return;
         if (browserPair.matchAndSetGroup(ALIPAY_PATTERN, browserUA, "Alipay Built-in", 1)) return;
+        if (browserPair.matchAndSetGroup(HEYTAP_BROWSER_PATTERN, browserUA, "HeyTap Browser", 1)) return;
         if (browserPair.matchAndSetGroup(CHROMIUM_VERSION_PATTERN, browserUA, "Chromium", 1)) return;
         if (browserPair.matchAndSetGroup(CHROME_VERSION_PATTERN, browserUA, "Chrome Mobile", 1)) return;
         if (browserPair.matchAndSet(ANDROID_WEBKIT_VERSION_MARKER_PATTERN, browserUA, "Android Webkit", osPair.getVersion()))
