@@ -653,6 +653,19 @@ public final class VirtualCapabilityUserAgentTool {
                 return;
             }
 
+            // --- WeChat Built-in (Desktop) ---
+            if (StringMatchUtils.indexOf(deviceUA, "MicroMessenger") >= 0) {
+                if (osPair.matchAndSetNameFromGroup(CHROME_MAC_VERSION_PATTERN, deviceUA, 1)) {
+                    // OS parsed from Mac Chrome pattern
+                } else if (osPair.matchAndSetNameFromGroup(CHROME_WINDOWS_VERSION_PATTERN, deviceUA, 1)) {
+                    // OS parsed from Windows Chrome pattern
+                }
+                browserPair.setName("WeChat Built-in");
+                browserPair.matchAndSetGroup(WECHAT_PATTERN, deviceUA, null, 1);
+                captureUpstreamBrowser(vcd, browserUA);
+                return;
+            }
+
             // --- Chrome (Mac / Windows) ---
             if (StringMatchUtils.indexOf(deviceUA, "Chrome") >= 0) {
                 if (osPair.matchAndSetNameFromGroup(CHROME_MAC_VERSION_PATTERN, deviceUA, 1)) {

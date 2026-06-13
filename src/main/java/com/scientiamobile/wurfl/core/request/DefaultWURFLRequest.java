@@ -272,7 +272,8 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
      * @return 截断后的 User-Agent 字符串，若原始值为 null 则返回 null
      */
     private static String truncateUserAgent(String userAgent) {
-        return userAgent != null && userAgent.length() > 255 ? userAgent.substring(0, 255) : userAgent;
+        // 手机版微信内置浏览器UA出现过超300+长度的UA字符串
+        return userAgent != null && userAgent.length() > 512 ? userAgent.substring(0, 512) : userAgent;
     }
 
     /**
