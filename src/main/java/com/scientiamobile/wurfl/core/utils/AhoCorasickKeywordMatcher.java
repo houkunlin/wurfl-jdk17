@@ -55,7 +55,7 @@ public final class AhoCorasickKeywordMatcher {
         this.transitionCharsByState = new char[size][];
         this.transitionTargetsByState = new int[size][];
 
-        // 建立节点对象到索引的映射，同时将 Trie 树序列化为并行数组结构
+        // 建立节点对象到索引的映射（第二遍循环需要此映射来解析引用）
         Map<AcTrieNode, Integer> nodeIndex = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
             AcTrieNode node = nodes.get(i);
@@ -64,6 +64,7 @@ public final class AhoCorasickKeywordMatcher {
             this.terminalByState[i] = node.isKeywordEnd();
         }
 
+        // 将 Trie 树序列化为紧凑的并行数组结构
         for (int i = 0; i < size; i++) {
             AcTrieNode node = nodes.get(i);
             this.failStateByState[i] = nodeIndex.get(node.getFail());
