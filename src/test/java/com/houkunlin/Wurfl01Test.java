@@ -1168,6 +1168,76 @@ class Wurfl01Test {
         Assertions.assertEquals("", info.getBrowserCoreVersion());
     }
 
+    @DisplayName("微信内置浏览器 UA：Android")
+    @Test
+    void test_10029() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; Android 11; M2102J2SC Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/89.0.4389.72 MQQBrowser/6.2 TBS/045811 Mobile Safari/537.36 MMWEBID/3950 MicroMessenger/8.0.11.1980(0x28000B5B) Process/tools WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertFalse(info.isApp());
+        Assertions.assertTrue(info.isMobile());
+        Assertions.assertTrue(info.isPhone());
+        Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedBrowser());
+        Assertions.assertTrue(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("Xiaomi M2102J2SC (Redmi K40 5G Premium Edition)", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("Android", info.getAdvertisedDeviceOs());
+        Assertions.assertTrue(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("Xiaomi Redmi K40 5G Premium Edition", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("6.2", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertTrue(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Smartphone", info.getFormFactor());
+        Assertions.assertEquals("11", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("89.0.4389.72", info.getBrowserCoreVersion());
+    }
+
+    @DisplayName("微信内置浏览器 UA：iPhone")
+    @Test
+    void test_10090() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B176 MicroMessenger/6.1");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertTrue(info.isAppWebview());
+        Assertions.assertTrue(info.isApp());
+        Assertions.assertTrue(info.isMobile());
+        Assertions.assertTrue(info.isPhone());
+        Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("WeChat", info.getAdvertisedAppName());
+        Assertions.assertEquals("WeChat Built-in", info.getAdvertisedBrowser());
+        Assertions.assertTrue(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("Apple iPhone", info.getCompleteDeviceName());
+        Assertions.assertFalse(info.isLargescreen());
+        Assertions.assertEquals("iOS", info.getAdvertisedDeviceOs());
+        Assertions.assertFalse(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("Apple iPhone", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("6.1", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertTrue(info.isIos());
+        Assertions.assertTrue(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Smartphone", info.getFormFactor());
+        Assertions.assertEquals("5.1", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
+    }
+
     String buildAssertions(VirtualCapabilityInfo info) {
         StringBuilder stringBuilder = new StringBuilder();
         append(stringBuilder, info.isAppWebview(), "info.isAppWebview()");
