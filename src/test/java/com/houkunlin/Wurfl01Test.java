@@ -1205,7 +1205,7 @@ class Wurfl01Test {
 
     @DisplayName("微信内置浏览器 UA：iPhone")
     @Test
-    void test_10090() {
+    void test_10030() {
         Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B176 MicroMessenger/6.1");
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
@@ -1236,6 +1236,76 @@ class Wurfl01Test {
         Assertions.assertEquals("5.1", info.getAdvertisedDeviceOsVersion());
         Assertions.assertEquals("", info.getBrowserCore());
         Assertions.assertEquals("", info.getBrowserCoreVersion());
+    }
+
+    @DisplayName("电脑微信内置浏览器")
+    @Test
+    void test_10031() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 NetType/WIFI MicroMessenger/7.0.20.1781(0x6700143B) WindowsWechat(0x63090a13) UnifiedPCWindowsWechat(0xf2541a1f) XWEB/25030 Flue");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertFalse(info.isApp());
+        Assertions.assertFalse(info.isMobile());
+        Assertions.assertFalse(info.isPhone());
+        Assertions.assertTrue(info.isFullDesktop());
+        Assertions.assertEquals("WeChat", info.getAdvertisedAppName());
+        Assertions.assertEquals("WeChat Built-in", info.getAdvertisedBrowser());
+        Assertions.assertFalse(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("Google Chrome", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("Windows", info.getAdvertisedDeviceOs());
+        Assertions.assertFalse(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("Google Chrome", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("7.0.20.1781", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertFalse(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Desktop", info.getFormFactor());
+        Assertions.assertEquals("10", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("144.0.0.0", info.getBrowserCoreVersion());
+    }
+
+    @DisplayName("手机微信内置浏览器：一加12")
+    @Test
+    void test_10032() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; Android 16; PJD110 Build/BP2A.250605.015; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/146.0.7680.178 Mobile Safari/537.36 XWEB/1460205 MMWEBSDK/20260502 MMWEBID/7317 REV/67359f4ed01be2f482ec1f36b7b0474c71acc749 MicroMessenger/8.0.74.3120(0x28004A36) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertTrue(info.isAppWebview());
+        Assertions.assertTrue(info.isApp());
+        Assertions.assertTrue(info.isMobile());
+        Assertions.assertTrue(info.isPhone());
+        Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("WeChat", info.getAdvertisedAppName());
+        Assertions.assertEquals("WeChat Built-in", info.getAdvertisedBrowser());
+        Assertions.assertTrue(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("OnePlus PJD110 (12)", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("Android", info.getAdvertisedDeviceOs());
+        Assertions.assertTrue(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("OnePlus 12", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("8.0.74.3120", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertTrue(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Smartphone", info.getFormFactor());
+        Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("146.0.7680.178", info.getBrowserCoreVersion());
     }
 
     String buildAssertions(VirtualCapabilityInfo info) {
