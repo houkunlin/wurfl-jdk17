@@ -653,4 +653,36 @@ class Wurfl01Test {
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("17.1", info.getAdvertisedDeviceOsVersion());
     }
+
+    @DisplayName("百度浏览器 (Android)")
+    @Test
+    void test_10014() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; Android 14; SM-G998B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 T7/14.3 baidubrowser/13.23.5.10");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertTrue(info.isApp());
+        Assertions.assertTrue(info.isMobile());
+        Assertions.assertTrue(info.isPhone());
+        Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("Chrome Mobile", info.getAdvertisedBrowser());
+        Assertions.assertTrue(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("Samsung SM-G998B (Galaxy S21 Ultra 5G)", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("Android", info.getAdvertisedDeviceOs());
+        Assertions.assertTrue(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("Samsung Galaxy S21 Ultra 5G", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertTrue(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Smartphone", info.getFormFactor());
+        Assertions.assertEquals("14", info.getAdvertisedDeviceOsVersion());
+    }
 }
