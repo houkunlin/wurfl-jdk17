@@ -107,6 +107,7 @@ public final class VirtualCapabilityUserAgentTool {
     private static final Pattern EDGE_ANDROID_VERSION_PATTERN = Pattern.compile("EdgA/([\\d\\.]+)");
     private static final Pattern EDGE_IOS_VERSION_PATTERN = Pattern.compile("EdgiOS/([\\d\\.]+)");
     private static final Pattern QQ_BROWSER_PATTERN = Pattern.compile("MQQBrowser/([\\d\\.]+)");
+    private static final Pattern QQ_IOS_BUILTIN_VERSION_PATTERN = Pattern.compile("QQ/([\\d\\.]+)");
     private static final Pattern WECHAT_PATTERN = Pattern.compile("MicroMessenger/([\\d\\.]+)");
     private static final Pattern SOGOU_MOBILE_PATTERN = Pattern.compile("SogouMobileBrowser/([\\d\\.]+)");
     private static final Pattern BRAVE_PATTERN = Pattern.compile("Brave Chrome/([\\d\\.]+)");
@@ -393,6 +394,7 @@ public final class VirtualCapabilityUserAgentTool {
             return;
         if (browserPair.matchAndSetGroup(EDGE_IOS_VERSION_PATTERN, browserUA, "Edge", 1)) return;
         if (browserPair.matchAndSetGroup(QQ_BROWSER_PATTERN, browserUA, "QQ Browser", 1)) return;
+        if (browserPair.matchAndSetGroup(QQ_IOS_BUILTIN_VERSION_PATTERN, browserUA, "QQ Browser", 1)) return;
         if (browserPair.matchAndSetGroup(WECHAT_PATTERN, browserUA, "WeChat Built-in", 1)) return;
         if (browserPair.matchAndSetGroup(SOGOU_MOBILE_PATTERN, browserUA, "Sogou Mobile", 1)) return;
         if (browserPair.matchAndSetGroup(ALIPAY_PATTERN, browserUA, "Alipay Built-in", 1)) return;
