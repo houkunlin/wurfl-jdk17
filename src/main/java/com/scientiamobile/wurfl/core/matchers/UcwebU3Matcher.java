@@ -1,17 +1,16 @@
 package com.scientiamobile.wurfl.core.matchers;
 
+import com.scientiamobile.wurfl.core.Constants;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.request.normalizer.specific.UcwebU3Normalizer;
+import com.scientiamobile.wurfl.core.resource.ModelDevice;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,8 +26,15 @@ final class UcwebU3Matcher extends MatcherBase {
     private static final String APPLE_IPAD_VER1_SUBUAWCWEB = "apple_ipad_ver1_subuaucweb";
     private static final Pattern IPHONE_IOS_VERSION = Pattern.compile("iPhone OS (\\d+)(?:_\\d+)?.+ like");
     private static final Pattern IPAD_IOS_VERSION = Pattern.compile("CPU OS (\\d+)(?:_\\d+)?.+like Mac");
-    private static final Pattern ANDROID_VERSION_U3_PATTERN = Pattern.compile("Android (\\d+)(?:\\.\\d+)?");
+    private static final Pattern ANDROID_VERSION_U3_PATTERN = Pattern.compile("\\bAndroid (\\d+)(?:\\.\\d+)?");
     private static final List<String> SUPPORTED_DEVICE_IDS;
+
+    /**
+     * 型号名称到设备 ID 的索引映射，构造时从 WURFL 模型中自动构建。
+     * <p>key 为小写的 model_name 值，value 为该设备 ID。
+     * 用于在恢复匹配中按设备型号查找具体设备，不依赖任何硬编码的品牌前缀。</p>
+     */
+    private final Map<String, String> modelNameToDeviceId;
 
     static {
         SUPPORTED_DEVICE_IDS = new ArrayList<>();
@@ -77,6 +83,36 @@ final class UcwebU3Matcher extends MatcherBase {
 
     public UcwebU3Matcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
         super(userAgentNormalizer, wurflModel);
+        this.modelNameToDeviceId = buildModelNameIndex(wurflModel);
+    }
+
+    /**
+     * 遍历 WURFL 模型中所有定义了 model_name 的设备，构建型号→设备 ID 索引。
+     * <p>仅索引 actual_device_root 设备，排除通用/父设备。</p>
+     *
+     * @param model WURFL 设备模型
+     * @return 型号名称到设备 ID 的映射
+     */
+    private static Map<String, String> buildModelNameIndex(WURFLModel model) {
+        Map<String, String> index = new HashMap<>();
+        if (model == null) {
+            return index;
+        }
+        for (String deviceId : model.getAllDevicesId()) {
+            try {
+                ModelDevice device = model.getDeviceById(deviceId);
+                if (!device.defineCapability("model_name")) {
+                    continue;
+                }
+                String modelName = device.getCapability("model_name");
+                if (modelName != null && !modelName.isEmpty()) {
+                    index.putIfAbsent(modelName.toLowerCase(Locale.ENGLISH), deviceId);
+                }
+            } catch (Exception ignored) {
+                // 跳过异常的设备条目
+            }
+        }
+        return index;
     }
 
     /**
@@ -97,7 +133,67 @@ final class UcwebU3Matcher extends MatcherBase {
     }
 
     /**
-     * 执行 RIS 匹配.
+     * 执行确定匹配，覆盖父类方法以使用原始 User-Agent 进行 RIS 匹配。
+     * <p>先通过规范化 UA 验证 UC 浏览器版本和平台信息有效后，
+     * 提取设备型号，以其在原始 UA 中的位置作为匹配长度阈值，
+     * 在 UC 浏览器设备索引中查找最匹配的设备。</p>
+     *
+     * @param request WURFL 请求对象
+     * @return 匹配到的设备 ID，未匹配返回 "generic"
+     */
+    @Override
+    protected String applyConclusiveMatch(WURFLRequest request) {
+        // 通过规范化 UA 验证 UC 浏览器版本和平台有效性
+        String normalizedUa = request.getNormalizedDeviceUserAgent();
+        if (UserAgentUtils.getUcBrowserVersion(normalizedUa, false) == null) {
+            return Constants.GENERIC;
+        }
+        if (!isValidUcwebPlatform(normalizedUa)) {
+            return Constants.GENERIC;
+        }
+
+        // 使用原始 UA 进行 RIS 匹配（索引中存储的是原始 UA）
+        String originalUa = request.getOriginalUserAgent();
+        int matchLength = calculateMatchLength(originalUa);
+
+        String matchedUa = StringMatchUtils.risMatch(
+                this.getFilter().getIndex().getUserAgents(), originalUa, matchLength);
+
+        String deviceId = Constants.GENERIC;
+        if (matchedUa != null) {
+            deviceId = this.getFilter().getIndex().getDeviceIdByUserAgent(matchedUa);
+        }
+        if (deviceId == null) {
+            deviceId = Constants.GENERIC;
+        }
+        return deviceId;
+    }
+
+    /**
+     * 根据设备型号在原始 UA 中的位置计算 RIS 匹配长度。
+     * <p>优先以设备型号名称所在位置+型号长度为匹配边界，
+     * 确保模型名必须完整匹配；若无法提取型号则回退到
+     * Build/ 或 AppleWebKit 边界。</p>
+     */
+    private static int calculateMatchLength(String originalUa) {
+        String androidModel = UserAgentUtils.getAndroidModel(originalUa);
+        if (androidModel != null && !androidModel.isEmpty()) {
+            String trimmed = androidModel.trim();
+            if (trimmed.length() >= 3) {
+                int modelPos = originalUa.indexOf(trimmed);
+                if (modelPos >= 0) {
+                    return modelPos + trimmed.length();
+                }
+            }
+        }
+        return Math.min(
+                StringMatchUtils.indexOfOrLength(originalUa, " Build/"),
+                StringMatchUtils.indexOfOrLength(originalUa, " AppleWebKit")
+        );
+    }
+
+    /**
+     * 执行 RIS 匹配（保留供父类或其他途径调用）。
      */
     @Override
     protected String risMatch(String userAgent) {
@@ -151,6 +247,11 @@ final class UcwebU3Matcher extends MatcherBase {
             return resolveDeviceId(buildWindowsPhoneDeviceId(ua), GENERIC_MS_PHONE_OS8_SUBUAWCWEB);
         }
         if (ua.contains("Android")) {
+            // 优先尝试按设备型号查找具体设备
+            String modelBasedDeviceId = lookupAndroidDeviceByModel(request.getOriginalUserAgent());
+            if (modelBasedDeviceId != null) {
+                return modelBasedDeviceId;
+            }
             return resolveDeviceId(buildAndroidDeviceId(ua), GENERIC_UCWEB_ANDROID_VER1);
         }
         if (ua.contains("iPhone")) {
@@ -160,6 +261,27 @@ final class UcwebU3Matcher extends MatcherBase {
             return resolveDeviceId(buildIpadDeviceId(ua), APPLE_IPAD_VER1_SUBUAWCWEB);
         }
         return "generic_ucweb";
+    }
+
+    /**
+     * 从原始 UA 中提取设备型号，尝试在 WURFL 模型中查找对应的具体设备。
+     * <p>优先使用已知品牌前缀（如 oneplus_）构建设备 ID 候选，若存在则直接返回。</p>
+     *
+     * @param originalUa 原始的 User-Agent 字符串
+     * @return 查找到的设备 ID，未找到返回 null
+     */
+    private String lookupAndroidDeviceByModel(String originalUa) {
+        String model = UserAgentUtils.getAndroidModel(originalUa);
+        if (model == null || model.trim().length() < 3) {
+            return null;
+        }
+        String modelLower = model.trim().toLowerCase(Locale.ENGLISH);
+        String deviceId = modelNameToDeviceId.get(modelLower);
+        if (deviceId != null) {
+            LOG.debug("Recovery match found device by model: {} -> {}", model.trim(), deviceId);
+            return deviceId;
+        }
+        return null;
     }
 
     private static String buildWindowsPhoneDeviceId(String ua) {

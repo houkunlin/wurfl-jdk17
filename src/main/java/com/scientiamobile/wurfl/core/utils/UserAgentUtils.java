@@ -354,7 +354,7 @@ public final class UserAgentUtils {
         OPERA_ON_ANDROID_MAJOR_VERSION_PATTERN = Pattern.compile("Version/(\\d+)\\.\\d+");
         ANDROID_MODEL_LINUX_ANDROID_RELEASE_PATTERN = Pattern.compile("(^[A-Za-z0-9_\\-\\+ ]+)[/ ]?(?:[A-Za-z0-9_\\-\\+\\.]+)? +Linux/[0-9\\.\\+]+ +Android[ /][0-9\\.]+ +Release/[0-9\\.]+");
         ANDROID_MODEL_ANDROID_LINUX_PATTERN = Pattern.compile("(^[A-Za-z0-9_\\-\\+ ]+)[/ ]?(?:[A-Za-z0-9_\\-\\+\\.]+)? Android/[0-9\\.]+ \\(Linux;");
-        ANDROID_MODEL_BUILD_PATTERN = Pattern.compile("Android [^;]+;(?>(?: xx-xx[ ;]+)?)(.+?)(?:Build/|MIUI/|\\))");
+        ANDROID_MODEL_BUILD_PATTERN = Pattern.compile("Android [^;]+;(?>(?:[ ;][a-zA-Z]{2}-[a-zA-Z]{2}[ ;]+)?)(.+?)(?:Build/|MIUI/|\\))");
         ANDROID_MODEL_AMAZON_APP_PATTERN = Pattern.compile("^(?:AmazonWebView|Appstore|Amazon\\.com)/.+Android[/ ][\\d\\.]+/(?:[\\d]+/)?([A-Za-z0-9_\\- ]+)\\b");
         GIONEE_MODEL_PATTERN = Pattern.compile("Mobile Safari/[\\d\\.]+ (GiONEE-[A-Za-z0-9]+)/");
         SEMICOLON_WITHOUT_SPACE_PATTERN = Pattern.compile(";(?! )");
