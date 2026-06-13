@@ -54,18 +54,17 @@ final class AcTrieNode {
      */
     public void addPattern(String pattern) {
         AcTrieNode current = this;
-        while (true) {
-            char firstChar = pattern.charAt(0);
-            AcTrieNode next = current.transitions.get(firstChar);
+        for (int i = 0; i < pattern.length(); i++) {
+            char c = pattern.charAt(i);
+            boolean isLast = i == pattern.length() - 1;
+            AcTrieNode next = current.transitions.get(c);
             if (next == null) {
-                boolean isEnd = pattern.length() == 1;
-                next = new AcTrieNode(isEnd);
-                current.transitions.put(firstChar, next);
-                if (isEnd) return;
-            } else if (pattern.length() == 1) {
+                next = new AcTrieNode(isLast);
+                current.transitions.put(c, next);
+                if (isLast) return;
+            } else if (isLast) {
                 return;
             }
-            pattern = pattern.substring(1);
             current = next;
         }
     }

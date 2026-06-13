@@ -55,17 +55,18 @@ public final class AhoCorasickKeywordMatcher {
         this.transitionCharsByState = new char[size][];
         this.transitionTargetsByState = new int[size][];
 
-        // 建立节点对象到索引的映射，用于后续将引用转为数组下标
+        // 建立节点对象到索引的映射，同时将 Trie 树序列化为并行数组结构
         Map<AcTrieNode, Integer> nodeIndex = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
-            nodeIndex.put(nodes.get(i), i);
+            AcTrieNode node = nodes.get(i);
+            nodeIndex.put(node, i);
+            this.failStateByState[i] = 0;
+            this.terminalByState[i] = node.isKeywordEnd();
         }
 
-        // 将 Trie 树序列化为并行数组结构
         for (int i = 0; i < size; i++) {
             AcTrieNode node = nodes.get(i);
             this.failStateByState[i] = nodeIndex.get(node.getFail());
-            this.terminalByState[i] = node.isKeywordEnd();
             Set<Map.Entry<Character, AcTrieNode>> entries = node.getOutgoingMap().entrySet();
             this.transitionCharsByState[i] = new char[entries.size()];
             this.transitionTargetsByState[i] = new int[entries.size()];
@@ -135,11 +136,11 @@ public final class AhoCorasickKeywordMatcher {
      * @return 如果包含任意已注册的关键词则返回 {@code true}
      */
     public boolean matchesAny(String input) {
-        char[] chars = input.toLowerCase(Locale.ENGLISH).toCharArray();
+        String lower = input.toLowerCase(Locale.ENGLISH);
         int state = 0;
 
-        for (char c : chars) {
-            state = advanceState(c, state);
+        for (int i = 0; i < lower.length(); i++) {
+            state = advanceState(lower.charAt(i), state);
             if (state == KEYWORD_FOUND) {
                 return true;
             }
