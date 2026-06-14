@@ -17,6 +17,17 @@ import java.io.InputStream;
 
 public class XmlFileLoader {
     private static final Logger logger = LoggerFactory.getLogger(XmlFileLoader.class);
+    private static final SAXParserFactory SAX_PARSER_FACTORY;
+
+    static {
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        setXxeFeature(factory, "http://apache.org/xml/features/disallow-doctype-decl", true);
+        setXxeFeature(factory, "http://xml.org/sax/features/external-general-entities", false);
+        setXxeFeature(factory, "http://xml.org/sax/features/external-parameter-entities", false);
+        setXxeFeature(factory, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        SAX_PARSER_FACTORY = factory;
+    }
+
     /**
      * 资源输入源
      */
@@ -50,13 +61,7 @@ public class XmlFileLoader {
         InputStream inputStream = this.resourceInput.openInputStream();
 
         try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            // 安全: 逐个设置 XXE 防护特性，任一失败都记录警告
-            setXxeFeature(factory, "http://apache.org/xml/features/disallow-doctype-decl", true);
-            setXxeFeature(factory, "http://xml.org/sax/features/external-general-entities", false);
-            setXxeFeature(factory, "http://xml.org/sax/features/external-parameter-entities", false);
-            setXxeFeature(factory, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            factory.newSAXParser().parse(inputStream, this.handler);
+            SAX_PARSER_FACTORY.newSAXParser().parse(inputStream, this.handler);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
