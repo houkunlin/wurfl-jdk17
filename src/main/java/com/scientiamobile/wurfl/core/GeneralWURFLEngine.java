@@ -14,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -296,20 +299,35 @@ public class GeneralWURFLEngine implements WURFLEngine {
                 log.error("Engine root at {} is not writable, cannot replace it", this.rootPath);
                 return false;
             } else {
+                // 1. 验证新数据文件能正常加载（仅内存操作，不影响旧引擎）
                 GeneralWURFLEngine newEngine;
                 if (this.patchResources != null && this.patchResources.size() != 0) {
                     newEngine = new GeneralWURFLEngine(new XMLResource(newRootPath), this.patchResources);
                 } else {
                     newEngine = new GeneralWURFLEngine(newRootPath);
                 }
-
                 newEngine.load();
-                java.nio.file.Files.copy(new File(newRootPath).toPath(), new File(this.rootPath).toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+                // 2. 先复制到临时文件，再用原子 move 替换原文件
+                //    ATOMIC_MOVE 在同一文件系统上是原子操作：要么完全成功，要么原文件不受影响
+                Path rootPathFile = new File(this.rootPath).toPath();
+                Path newRootPathFile = new File(newRootPath).toPath();
+                Path tmpPath = Files.createTempFile(rootPathFile.getParent(), "wurfl-replace-", ".tmp");
+                try {
+                    Files.copy(newRootPathFile, tmpPath, StandardCopyOption.REPLACE_EXISTING);
+                    Files.move(tmpPath, rootPathFile, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    // 清理临时文件
+                    Files.deleteIfExists(tmpPath);
+                    throw e;
+                }
+
+                // 3. 文件已原子替换，重载引擎使用新数据
                 this.reload(this.rootPath);
                 return true;
             }
         } catch (Exception e) {
-            log.error("An error has occurred replacing {}root with {}", this.rootPath, newRootPath, e);
+            log.error("An error has occurred replacing {} root with {}", this.rootPath, newRootPath, e);
             return false;
         }
     }
