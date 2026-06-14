@@ -6,7 +6,6 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.Validate;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -254,19 +253,13 @@ public class WURFLUtils {
 
     /**
      * 获取模型中所有设备的实例集合。
+     * <p>直接使用 {@link WURFLModel#getAllDevices()} 返回轻量级 {@link ModelDevice} 集合，
+     * 避免为每个设备创建完整的 {@link Device} 对象（含虚拟能力处理器、标记解析器等），
+     * 在模型包含数万设备时性能差异显著。</p>
      *
-     * @return 设备实例集合
+     * @return 模型设备实例集合
      */
-
-    public Set<Device> getAllDevices() {
-        Set<String> allDeviceIds = this.getAllDevicesId();
-        HashSet<Device> devices = new HashSet<>(allDeviceIds.size());
-
-        for (String deviceId : allDeviceIds) {
-            Device device = this.getDeviceById(deviceId);
-            devices.add(device);
-        }
-
-        return devices;
+    public Set<ModelDevice> getAllDevices() {
+        return this.wurflModel.getAllDevices();
     }
 }
