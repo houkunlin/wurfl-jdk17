@@ -2,6 +2,8 @@ package com.scientiamobile.wurfl.core.resource;
 
 import com.scientiamobile.wurfl.core.resource.exc.WURFLResourceException;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -21,18 +23,34 @@ import java.util.Set;
  */
 
 public class XMLResource implements WURFLResource {
+    private static final Logger LOGGER = LoggerFactory.getLogger(XMLResource.class);
     private static final SAXParserFactory SAX_PARSER_FACTORY;
 
     static {
         SAXParserFactory factory = SAXParserFactory.newInstance();
-        try {
-            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-        } catch (Exception ignored) {
-            // 部分 SAX 实现不支持这些特性，忽略
-        }
+        // 安全: 逐个设置 XXE 防护特性，任一失败都记录警告
+        setXxeFeature(factory, "http://apache.org/xml/features/disallow-doctype-decl", true);
+        setXxeFeature(factory, "http://xml.org/sax/features/external-general-entities", false);
+        setXxeFeature(factory, "http://xml.org/sax/features/external-parameter-entities", false);
         SAX_PARSER_FACTORY = factory;
+    }
+
+    /**
+     * 安全设置 SAX 解析器特性，失败时记录警告而非静默忽略。
+     * <p>不同的 SAX 实现支持的特性集合不同，逐个设置确保一个特性失败不影响其他特性。
+     * 若特性设置失败，记录 warn 级别日志以便运维人员发现 XXE 防护缺失。</p>
+     *
+     * @param factory SAXParserFactory 实例
+     * @param feature 特性名称（完全限定 URI）
+     * @param enabled 特性值
+     */
+    private static void setXxeFeature(SAXParserFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setFeature(feature, enabled);
+        } catch (Exception e) {
+            LOGGER.warn("XXE protection feature not supported by this SAX parser: {} = {}; XML parsing may be vulnerable: {}",
+                    feature, enabled, e.getMessage());
+        }
     }
 
     /**
