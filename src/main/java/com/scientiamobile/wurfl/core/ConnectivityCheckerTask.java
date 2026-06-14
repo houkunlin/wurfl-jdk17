@@ -67,7 +67,7 @@ final class ConnectivityCheckerTask implements Runnable {
         connection.setUseCaches(false);
         connection.setDoOutput(true);
         connection.setConnectTimeout(10000);
-        connection.setReadTimeout(120000);
+        connection.setReadTimeout(30000);
         connection.setRequestProperty("charset", "UTF-8");
         connection.setRequestProperty("Content-Type", "application/json");
         return connection;
