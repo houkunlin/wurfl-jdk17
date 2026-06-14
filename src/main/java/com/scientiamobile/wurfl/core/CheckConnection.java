@@ -208,7 +208,7 @@ public class CheckConnection {
      * @return JSON 格式的负载数据
      */
     final String getPayloadJson() {
-        return this.payloadJson;
+        return this.payloadJson != null ? this.payloadJson : "{}";
     }
 
     /**
