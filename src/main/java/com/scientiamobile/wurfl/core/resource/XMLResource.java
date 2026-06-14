@@ -127,7 +127,13 @@ public class XMLResource implements WURFLResource {
         try {
             return this.parseSnapshot(this.resourceInput.openInputStream());
         } finally {
-            this.resourceInput.reset();
+            // 确保流被关闭/释放；reset() 内部已处理 IOException，
+            // 额外包裹 try-catch 防御意外 RuntimeException
+            try {
+                this.resourceInput.reset();
+            } catch (Exception e) {
+                LOGGER.warn("Failed to reset resource input after parsing", e);
+            }
         }
     }
 
@@ -186,6 +192,12 @@ public class XMLResource implements WURFLResource {
             parser.getXMLReader().setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             parser.parse(inputStream, handler);
         } catch (Exception e) {
+            // 解析失败时直接关闭流，防止异常路径泄漏
+            try {
+                inputStream.close();
+            } catch (Exception ignored) {
+                // 关闭失败不影响原始异常传播
+            }
             throw new WURFLResourceException(this, e);
         }
 

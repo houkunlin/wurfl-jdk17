@@ -38,12 +38,13 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
      * @param context 管线执行上下文 Map
      */
     public void execute(Map<String, Object> context) {
+        HttpsURLConnection connection = null;
         try {
-            String tempWurflPath = (String) context.get("original_wurfl_path") + ".wtmp";
+            String tempWurflPath = context.get("original_wurfl_path") + ".wtmp";
             Integer connectionTimeoutMs = UpdatePipeline.getConnectionTimeoutMsOrDefault(context);
             URL newWurflUrl = URI.create((String) context.get("new_wurfl_url")).toURL();
             Validate.isTrue(newWurflUrl.getHost() != null && (newWurflUrl.getHost().endsWith(".scientiamobile.com") || newWurflUrl.getHost().equals("localhost") || newWurflUrl.getHost().equals("127.0.0.1")), "Invalid URL host: " + newWurflUrl.getHost());
-            HttpsURLConnection connection = this.proxySettings != null ? (HttpsURLConnection) newWurflUrl.openConnection(this.proxySettings.getProxy()) : (HttpsURLConnection) newWurflUrl.openConnection();
+            connection = this.proxySettings != null ? (HttpsURLConnection) newWurflUrl.openConnection(this.proxySettings.getProxy()) : (HttpsURLConnection) newWurflUrl.openConnection();
             connection.setRequestMethod("GET");
             connection.setUseCaches(false);
             connection.setConnectTimeout(connectionTimeoutMs);
@@ -71,6 +72,10 @@ public class NewWurflFileDownloadTask implements UpdatePipelineTask {
         } catch (Exception e) {
             context.put("task_error_message", "Error trying to check if a new WURFL file is available: " + ExceptionUtils.getFirstAvailableMessage(e));
             context.put("task_result_status", UpdateResultStatus.PIPELINE_TASK_FAILED.value());
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 }
