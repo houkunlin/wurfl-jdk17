@@ -233,6 +233,7 @@ final class ResourceInput {
      */
 
     private void closeStream() {
+        if (this.stream == null) return;
         try {
             LOG.info("closing input stream: {}", this.stream.getClass().getSimpleName());
             this.stream.close();
