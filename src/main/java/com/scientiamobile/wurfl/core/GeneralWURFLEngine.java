@@ -731,7 +731,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.lock.readLock().lock();
         try {
             if (this.wurflService != null) {
-                this.engineTarget = this.wurflService.getEngineTarget();
+                return this.wurflService.getEngineTarget();
             }
 
             return this.engineTarget;
@@ -769,9 +769,9 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.lock.readLock().lock();
         try {
             if (this.wurflService != null) {
-                this.userAgentPriority = this.wurflService.getUserAgentPriority();
+                return this.wurflService.getUserAgentPriority();
             } else if (this.requestFactory != null) {
-                this.userAgentPriority = this.requestFactory.getUserAgentPriority();
+                return this.requestFactory.getUserAgentPriority();
             }
 
             return this.userAgentPriority;
