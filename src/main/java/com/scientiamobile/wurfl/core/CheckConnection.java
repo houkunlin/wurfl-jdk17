@@ -73,7 +73,11 @@ public class CheckConnection {
         if (StringUtils.isNotEmpty(System.getProperty("oracle.j2ee.home"))) {
             return "OC4j/Oracle AS";
         }
-        String classPathLowerCase = System.getProperty("java.class.path").toLowerCase(Locale.ENGLISH);
+        String classPath = System.getProperty("java.class.path");
+        if (classPath == null) {
+            return "Command line";
+        }
+        String classPathLowerCase = classPath.toLowerCase(Locale.ENGLISH);
         if (classPathLowerCase.contains("websphere") || classPathLowerCase.contains("web sphere")) {
             return "IBM WebSphere";
         }
