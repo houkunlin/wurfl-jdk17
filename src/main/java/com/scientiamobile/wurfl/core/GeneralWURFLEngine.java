@@ -515,6 +515,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
             VirtualCapabilityUserAgentTool.getInstance()
                     .assignProperties(this.requestFactory.createRequest("", this.engineTarget),
                             this.deviceProvider.getInternalDevice("generic"));
+            initCheckConnection();
             this.initialized = true;
         } catch (WURFLRuntimeException e) {
             log.error("cannot initialize: {}", e.getMessage(), e);
@@ -527,7 +528,6 @@ public class GeneralWURFLEngine implements WURFLEngine {
         } finally {
             this.lock.writeLock().unlock();
         }
-        initCheckConnection();
     }
 
     /**
