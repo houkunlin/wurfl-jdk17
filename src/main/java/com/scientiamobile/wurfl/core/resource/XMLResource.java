@@ -124,9 +124,11 @@ public class XMLResource implements WURFLResource {
                 ? new HashSet<>(Arrays.asList(includedCapabilities))
                 : new HashSet<>(0);
 
-        ModelDevicesSnapshot snapshot = this.parseSnapshot(this.resourceInput.openInputStream());
-        this.resourceInput.reset();
-        return snapshot;
+        try {
+            return this.parseSnapshot(this.resourceInput.openInputStream());
+        } finally {
+            this.resourceInput.reset();
+        }
     }
 
     /**
