@@ -38,7 +38,11 @@ final class ConnectivityCheckerTask implements Runnable {
     public void run() {
         try {
             HttpsURLConnection connection = createConnection();
-            byte[] payloadBytes = this.checkConnection.getPayloadJson().getBytes(StandardCharsets.UTF_8);
+            String payload = this.checkConnection.getPayloadJson();
+            if (payload == null) {
+                payload = "{}";
+            }
+            byte[] payloadBytes = payload.getBytes(StandardCharsets.UTF_8);
             try {
                 sendPayload(connection, payloadBytes);
                 Integer responseCode = connection.getResponseCode();
