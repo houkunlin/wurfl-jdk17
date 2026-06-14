@@ -93,12 +93,14 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
 
     @Override
     public void putDevice(String userAgent, InternalDevice device) {
-        try {
-            // 同时更新两个缓存层
-            this.deviceById.put(device.getId(), device);
-            this.deviceIdByUserAgent.put(userAgent, device.getId());
-        } catch (RuntimeException e) {
-            log.error("Could not cache {}", userAgent, e);
+        synchronized (this.cacheLock) {
+            try {
+                // 同时更新两个缓存层
+                this.deviceById.put(device.getId(), device);
+                this.deviceIdByUserAgent.put(userAgent, device.getId());
+            } catch (RuntimeException e) {
+                log.error("Could not cache {}", userAgent, e);
+            }
         }
     }
 
