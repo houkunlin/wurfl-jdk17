@@ -480,7 +480,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     @Override
     public Device getDeviceById(String deviceId, HttpServletRequest request) {
         this.ensureInitialized();
-        return this.getWURFLUtils().getDeviceById(deviceId, (new DefaultWURFLRequestFactory(this.userAgentResolver, this.wurflService.getUserAgentPriority())).createRequest(request, this.wurflService.getEngineTarget()));
+        return this.getWURFLUtils().getDeviceById(deviceId, this.requestFactory.createRequest(request, this.wurflService.getEngineTarget()));
     }
 
     /**
