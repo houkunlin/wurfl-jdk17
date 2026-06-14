@@ -107,7 +107,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertEquals("google_chrome_147", device.getId());
         Assertions.assertEquals("conclusive", device.getMatchType().name());
         Assertions.assertFalse(info.isAppWebview());
@@ -144,7 +144,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertEquals("google_chrome_147", device.getId());
         Assertions.assertTrue(device.getMatchType().name().matches("conclusive|cached"),
                 "Expected conclusive or cached but was: " + device.getMatchType().name());
@@ -196,7 +196,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertTrue(info.isAppWebview());
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -282,7 +282,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -317,7 +317,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -352,7 +352,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertTrue(info.isAppWebview());
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -387,7 +387,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -422,7 +422,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -457,7 +457,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -492,7 +492,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -527,7 +527,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -562,7 +562,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -597,7 +597,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertTrue(info.isAppWebview());
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -632,7 +632,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
-        System.out.println(device.getCapabilities());
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -665,6 +665,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -699,6 +700,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
@@ -733,6 +735,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertFalse(info.isMobile());
@@ -767,6 +770,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertFalse(info.isMobile());
@@ -801,6 +805,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertFalse(info.isMobile());
@@ -835,6 +840,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertFalse(info.isMobile());
@@ -869,6 +875,7 @@ class Wurfl01Test {
         System.out.println(device);
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
+        System.out.println(buildAssertions(info));
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertFalse(info.isMobile());
