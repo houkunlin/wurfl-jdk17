@@ -491,14 +491,30 @@ public class GeneralWURFLEngine implements WURFLEngine {
             this.initialized = true;
         } catch (WURFLRuntimeException e) {
             log.error("cannot initialize: {}", e.getMessage(), e);
+            resetPartialInit();
             throw e;
         } catch (Exception e) {
             log.error("cannot initialize: {}", e.getMessage(), e);
+            resetPartialInit();
             throw new WURFLRuntimeException(e);
         } finally {
             this.lock.writeLock().unlock();
         }
         initCheckConnection();
+    }
+
+    /**
+     * 重置部分初始化状态，使引擎可重试初始化。
+     * <p>当 {@link #initModel()} 或 {@link #initService()} 等步骤失败时，
+     * 它们可能已经给部分字段赋值（如 {@link #wurflModel}），
+     * 导致下次重试时因非 null 检查而跳过。重置这些字段为 null
+     * 可确保下一次 {@link #ensureInitialized()} 能从干净状态开始。</p>
+     */
+    private void resetPartialInit() {
+        this.wurflModel = null;
+        this.wurflService = null;
+        this.deviceProvider = null;
+        this.requestFactory = null;
     }
 
     /**
