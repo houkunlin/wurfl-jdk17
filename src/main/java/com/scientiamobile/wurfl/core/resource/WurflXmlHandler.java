@@ -34,6 +34,12 @@ final class WurflXmlHandler extends DefaultHandler {
     private String wurflVersion;
     private String wurflLastUpdated;
     private String wurflSmid;
+    /**
+     * SAX characters() 累积缓冲区 — 防止文本被拆分为多次回调时丢失
+     */
+    private final StringBuilder wurflVersionBuf = new StringBuilder();
+    private final StringBuilder wurflLastUpdatedBuf = new StringBuilder();
+    private final StringBuilder wurflSmidBuf = new StringBuilder();
     private boolean patch;
     private final Set<String> includedCapabilities;
 
@@ -86,10 +92,13 @@ final class WurflXmlHandler extends DefaultHandler {
                 break;
             case WurflXmlParseState.VERSION:
                 if ("ver".equals(qName)) {
+                    this.wurflVersionBuf.setLength(0);
                     this.parseState = WurflXmlParseState.VERSION_VER;
                 } else if ("last_updated".equals(qName)) {
+                    this.wurflLastUpdatedBuf.setLength(0);
                     this.parseState = WurflXmlParseState.VERSION_LAST_UPDATED;
                 } else if ("smid".equals(qName)) {
+                    this.wurflSmidBuf.setLength(0);
                     this.parseState = WurflXmlParseState.VERSION_SMID;
                 }
                 break;
@@ -154,16 +163,22 @@ final class WurflXmlHandler extends DefaultHandler {
                 break;
             case WurflXmlParseState.VERSION_VER:
                 if ("ver".equals(qName)) {
+                    this.wurflVersion = this.wurflVersionBuf.toString();
+                    this.wurflVersionBuf.setLength(0);
                     this.parseState = WurflXmlParseState.VERSION;
                 }
                 break;
             case WurflXmlParseState.VERSION_LAST_UPDATED:
                 if ("last_updated".equals(qName)) {
+                    this.wurflLastUpdated = this.wurflLastUpdatedBuf.toString();
+                    this.wurflLastUpdatedBuf.setLength(0);
                     this.parseState = WurflXmlParseState.VERSION;
                 }
                 break;
             case WurflXmlParseState.VERSION_SMID:
                 if ("smid".equals(qName)) {
+                    this.wurflSmid = this.wurflSmidBuf.toString();
+                    this.wurflSmidBuf.setLength(0);
                     this.parseState = WurflXmlParseState.VERSION;
                 }
                 break;
@@ -275,13 +290,13 @@ final class WurflXmlHandler extends DefaultHandler {
     public final void characters(char[] ch, int start, int length) {
         switch (this.parseState) {
             case WurflXmlParseState.VERSION_VER:
-                this.wurflVersion = new String(ch, start, length);
+                this.wurflVersionBuf.append(ch, start, length);
                 return;
             case WurflXmlParseState.VERSION_LAST_UPDATED:
-                this.wurflLastUpdated = new String(ch, start, length);
+                this.wurflLastUpdatedBuf.append(ch, start, length);
                 return;
             case WurflXmlParseState.VERSION_SMID:
-                this.wurflSmid = new String(ch, start, length);
+                this.wurflSmidBuf.append(ch, start, length);
                 break;
             default:
         }
