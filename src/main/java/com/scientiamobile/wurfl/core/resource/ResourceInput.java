@@ -125,7 +125,14 @@ final class ResourceInput {
             uriString = "file:///" + StringUtils.stripStart(uriString, "/");
         }
 
-        return URI.create(uriString);
+        URI uri = URI.create(uriString);
+        // 防御路径遍历（禁止 '..' 父目录跳转）
+        String rawPath = uri.getPath();
+        if (rawPath != null && rawPath.contains("..")) {
+            throw new IllegalArgumentException("Path traversal is not allowed: " + path);
+        }
+
+        return uri;
     }
 
     /**
@@ -180,6 +187,14 @@ final class ResourceInput {
                 // 限制 HTTP(S) 来源，仅允许可信域名
                 if ("http".equals(uri.getScheme()) || "https".equals(uri.getScheme())) {
                     Validate.isTrue(uri.getHost() != null && (uri.getHost().endsWith(".scientiamobile.com") || uri.getHost().equals("localhost") || uri.getHost().equals("127.0.0.1")), "Invalid URL host: " + uri.getHost());
+                }
+
+                // 限制 file 来源：禁止路径遍历，且文件扩展名必须为 WURFL 数据格式
+                if ("file".equals(uri.getScheme())) {
+                    String filePath = uri.getPath();
+                    if (filePath != null && filePath.contains("..")) {
+                        throw new WURFLRuntimeException("Path traversal detected in file URI: " + uri);
+                    }
                 }
 
                 inputStream = uri.toURL().openConnection().getInputStream();
