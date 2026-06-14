@@ -341,7 +341,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Normaliz ese rgent.
+     * Normalize user agent.
      */
     @Override
     public void normalizeUserAgent(UserAgentNormalizer normalizer) {
@@ -353,7 +353,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Returns whether this i sr lncoded.
+     * Returns whether this is URL encoded.
      */
     @Override
     public boolean isUrlEncoded() {
@@ -569,7 +569,7 @@ public class DefaultWURFLRequest implements WURFLRequest, Serializable {
     }
 
     /**
-     * Cach eeskto peav yuty.
+     * Cache desktop heavy duty.
      */
 
     private boolean cacheDesktopHeavyDuty(boolean value) {
