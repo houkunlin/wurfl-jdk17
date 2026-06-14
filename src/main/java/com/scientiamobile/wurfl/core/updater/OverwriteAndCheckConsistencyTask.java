@@ -2,13 +2,15 @@ package com.scientiamobile.wurfl.core.updater;
 
 import com.scientiamobile.wurfl.core.GeneralWURFLEngine;
 import com.scientiamobile.wurfl.core.utils.ExceptionUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 /**
@@ -34,7 +36,9 @@ public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
 
     /**
      * 执行文件覆盖和一致性检查。
-     * <p>从上下文中获取临时文件路径和原始文件路径，先删除原始文件再复制临时文件覆盖。
+     * <p>从上下文中获取临时文件路径和原始文件路径，使用原子替换策略：
+     * 先将新文件复制到原文件同目录的临时文件，再通过 {@link java.nio.file.Files#move}
+     * 配合 {@link StandardCopyOption#ATOMIC_MOVE} 原子替换原文件。
      * 然后使用新文件创建引擎并调用 {@code load()} 方法验证文件有效性。</p>
      *
      * @param context 管线执行上下文 Map
@@ -46,10 +50,17 @@ public class OverwriteAndCheckConsistencyTask implements UpdatePipelineTask {
         String originalWurflPath = (String) context.get("original_wurfl_path");
 
         try {
-            if (!(new File(originalWurflPath).getCanonicalFile()).delete()) {
-                log.warn("Failed to delete original WURFL file before overwriting");
+            // 原子替换：先在原文件同目录创建临时文件，再用 ATOMIC_MOVE 替换原文件
+            // 确保在同一文件系统上，Files.move 的 ATOMIC_MOVE 是原子操作
+            Path originalPath = new File(originalWurflPath).getCanonicalFile().toPath();
+            Path tempPath = Files.createTempFile(originalPath.getParent(), "wurfl-overwrite-", ".tmp");
+            try {
+                Files.copy(new File(newWurflTempPath).getCanonicalFile().toPath(), tempPath, StandardCopyOption.REPLACE_EXISTING);
+                Files.move(tempPath, originalPath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            } catch (Exception e) {
+                Files.deleteIfExists(tempPath);
+                throw e;
             }
-            FileUtils.copyFile(new File(newWurflTempPath).getCanonicalFile(), new File(originalWurflPath).getCanonicalFile(), true);
             context.put("original_wurfl_overwritten", "true");
             GeneralWURFLEngine newEngine;
             if (ArrayUtils.isEmpty(this.patchPaths)) {
