@@ -1,5 +1,7 @@
 package com.scientiamobile.wurfl.core.resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParserFactory;
@@ -14,6 +16,7 @@ import java.io.InputStream;
  */
 
 public class XmlFileLoader {
+    private static final Logger logger = LoggerFactory.getLogger(XmlFileLoader.class);
     /**
      * 资源输入源
      */
@@ -53,7 +56,7 @@ public class XmlFileLoader {
                 factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
                 factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             } catch (Exception ignored) {
-                // 部分 SAX 实现不支持这些特性，忽略
+                logger.debug("SAX features not supported by this parser, continuing: {}", ignored.getMessage());
             }
             factory.newSAXParser().parse(inputStream, this.handler);
         } catch (RuntimeException e) {

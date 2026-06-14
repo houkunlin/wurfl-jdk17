@@ -591,7 +591,8 @@ public class GeneralWURFLEngine implements WURFLEngine {
             CheckConnection checkConnection = new CheckConnection();
             checkConnection.setup(this, this.wurflModel);
             checkConnection.check();
-        } catch (RuntimeException ignore) {
+        } catch (RuntimeException e) {
+            log.warn("CheckConnection failed to initialize or execute, skipping", e);
         }
     }
 

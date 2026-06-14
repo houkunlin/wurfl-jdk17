@@ -137,8 +137,8 @@ final class UcwebU3Matcher extends MatcherBase {
                 if (modelName != null && !modelName.isEmpty()) {
                     index.putIfAbsent(modelName.toLowerCase(Locale.ENGLISH), deviceId);
                 }
-            } catch (Exception ignored) {
-                // 跳过异常的设备条目
+            } catch (Exception e) {
+                LOG.debug("Skipping device {} while building model index: {}", deviceId, e.getMessage());
             }
         }
         return index;
