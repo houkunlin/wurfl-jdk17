@@ -6,8 +6,6 @@ import com.scientiamobile.wurfl.core.matchers.MatchType;
 import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityHandler;
 import org.apache.commons.lang3.Validate;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -18,10 +16,7 @@ import java.util.Map;
  * <p>获取能力时采用两阶段策略：先尝试从内部设备获取物理能力，如果未定义则回退到虚拟能力。</p>
  */
 
-public class DefaultDevice implements EnrichedDevice, Serializable {
-    @Serial
-    private static final long serialVersionUID = 11L;
-
+public class DefaultDevice implements EnrichedDevice {
     /**
      * 匹配类型（如精确匹配、缓存匹配等）
      */
@@ -41,19 +36,19 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
     /**
      * 标记语言解析器（暂态，不参与序列化）
      */
-    private transient MarkupResolver markupResolver;
+    private final MarkupResolver markupResolver;
     /**
      * 内部设备实例，提供物理能力数据
      */
-    private transient InternalDevice internalDevice;
+    private final InternalDevice internalDevice;
     /**
      * 计算出的标记语言类型
      */
-    private transient MarkUp markUp;
+    private MarkUp markUp;
     /**
      * 虚拟能力处理器（暂态，不参与序列化）
      */
-    private transient VirtualCapabilityHandler virtualCapabilityHandler;
+    private final VirtualCapabilityHandler virtualCapabilityHandler;
 
     /**
      * 构造函数，创建默认设备实例。
@@ -99,18 +94,6 @@ public class DefaultDevice implements EnrichedDevice, Serializable {
         this.bucketMatcherName = bucketMatcherName;
         this.normalizedUserAgent = normalizedUserAgent;
         this.virtualCapabilityHandler = virtualCapabilityHandler;
-    }
-
-    /**
-     * 反序列化后恢复对象，将 transient 字段置为 null。
-     * 这些字段包含运行时状态，无法也不应通过序列化恢复。
-     */
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        this.internalDevice = null;
-        this.markupResolver = null;
-        this.markUp = null;
-        this.virtualCapabilityHandler = null;
     }
 
     /**
