@@ -45,10 +45,6 @@ public class GeneralWURFLEngine implements WURFLEngine {
      */
     private final ReadWriteLock lock;
     /**
-     * 初始化锁，防止并发初始化
-     */
-    private final Object initLock;
-    /**
      * 能力过滤器，用于限制引擎加载的能力集合
      */
     private String[] capabilityFilter;
@@ -134,7 +130,6 @@ public class GeneralWURFLEngine implements WURFLEngine {
     public GeneralWURFLEngine(WURFLResource rootResource, WURFLResources patchResources) {
         this.capabilityFilter = null;
         this.lock = new ReentrantReadWriteLock();
-        this.initLock = new Object();
         this.initialized = false;
         this.userAgentPriority = UserAgentPriority.OverrideSideloadedBrowserUserAgent;
         Validate.notNull(rootResource, "The root resource is null");
