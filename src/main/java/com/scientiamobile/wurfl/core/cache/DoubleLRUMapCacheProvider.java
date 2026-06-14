@@ -22,6 +22,10 @@ import java.util.Map;
 public class DoubleLRUMapCacheProvider implements CacheProvider {
     private static final Logger log = LoggerFactory.getLogger(DoubleLRUMapCacheProvider.class);
     /**
+     * 缓存操作锁，保证 getDevice 与 clear 之间的原子性
+     */
+    private final Object cacheLock = new Object();
+    /**
      * 缓存 User-Agent 到设备 ID 的映射关系
      */
     private final Map<String, String> deviceIdByUserAgent;
@@ -63,24 +67,28 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
 
     @Override
     public void clear() {
-        log.info("UA cache: size {}", this.deviceIdByUserAgent.size());
-        this.deviceIdByUserAgent.clear();
-        log.info("UA cache cleared: size {}", this.deviceIdByUserAgent.size());
-        log.info("device cache: size {}", this.deviceById.size());
-        this.deviceById.clear();
-        log.info("device cache cleared: size {}", this.deviceById.size());
+        synchronized (this.cacheLock) {
+            log.info("UA cache: size {}", this.deviceIdByUserAgent.size());
+            this.deviceIdByUserAgent.clear();
+            log.info("UA cache cleared: size {}", this.deviceIdByUserAgent.size());
+            log.info("device cache: size {}", this.deviceById.size());
+            this.deviceById.clear();
+            log.info("device cache cleared: size {}", this.deviceById.size());
+        }
     }
 
     @Override
     public InternalDevice getDevice(String userAgent) {
-        // 先通过 User-Agent 查找设备 ID
-        String deviceId = this.deviceIdByUserAgent.get(userAgent);
-        if (deviceId == null) {
-            return null;
+        synchronized (this.cacheLock) {
+            // 先通过 User-Agent 查找设备 ID
+            String deviceId = this.deviceIdByUserAgent.get(userAgent);
+            if (deviceId == null) {
+                return null;
+            }
+            // 再通过设备 ID 获取设备对象
+            InternalDevice device = this.deviceById.get(deviceId);
+            return device;
         }
-        // 再通过设备 ID 获取设备对象
-        InternalDevice device = this.deviceById.get(deviceId);
-        return device;
     }
 
     @Override
