@@ -196,6 +196,7 @@ public final class NameVersionPair implements Serializable {
 
     /**
      * 使用正则模式在输入字符串中查找匹配，并保存所有分组结果。
+     * <p>复用 {@link #lastRegexGroups} 数组（当大小匹配时），避免每次匹配都创建新数组。</p>
      *
      * @param pattern 正则模式
      * @param input   输入字符串
@@ -209,9 +210,12 @@ public final class NameVersionPair implements Serializable {
             this.lastRegexGroups = null;
             return null;
         } else {
-            this.lastRegexGroups = new String[matcher.groupCount() + 1];
+            int groupCount = matcher.groupCount() + 1;
+            if (this.lastRegexGroups == null || this.lastRegexGroups.length != groupCount) {
+                this.lastRegexGroups = new String[groupCount];
+            }
 
-            for (int i = 0; i < this.lastRegexGroups.length; ++i) {
+            for (int i = 0; i < groupCount; ++i) {
                 this.lastRegexGroups[i] = matcher.group(i);
             }
 
