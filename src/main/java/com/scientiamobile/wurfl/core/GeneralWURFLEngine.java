@@ -308,22 +308,47 @@ public class GeneralWURFLEngine implements WURFLEngine {
                 }
                 newEngine.load();
 
-                // 2. 先复制到临时文件，再用原子 move 替换原文件
-                //    ATOMIC_MOVE 在同一文件系统上是原子操作：要么完全成功，要么原文件不受影响
-                Path rootPathFile = new File(this.rootPath).toPath();
-                Path newRootPathFile = new File(newRootPath).toPath();
-                Path tmpPath = Files.createTempFile(rootPathFile.getParent(), "wurfl-replace-", ".tmp");
+                Path rootPathFile = new File(this.rootPath).getCanonicalFile().toPath();
+                Path newRootPathFile = new File(newRootPath).getCanonicalFile().toPath();
+
+                // 2a. 备份原文件（用于 reload 失败时回滚）
+                Path backupPath = Files.createTempFile(rootPathFile.getParent(), "wurfl-backup-", ".tmp");
                 try {
-                    Files.copy(newRootPathFile, tmpPath, StandardCopyOption.REPLACE_EXISTING);
-                    Files.move(tmpPath, rootPathFile, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(rootPathFile, backupPath, StandardCopyOption.REPLACE_EXISTING);
                 } catch (Exception e) {
-                    // 清理临时文件
-                    Files.deleteIfExists(tmpPath);
+                    Files.deleteIfExists(backupPath);
                     throw e;
                 }
 
-                // 3. 文件已原子替换，重载引擎使用新数据
-                this.reload(this.rootPath);
+                try {
+                    // 2b. 先复制到临时文件，再用原子 move 替换原文件
+                    //     ATOMIC_MOVE 在同一文件系统上是原子操作：要么完全成功，要么原文件不受影响
+                    Path tmpPath = Files.createTempFile(rootPathFile.getParent(), "wurfl-replace-", ".tmp");
+                    try {
+                        Files.copy(newRootPathFile, tmpPath, StandardCopyOption.REPLACE_EXISTING);
+                        Files.move(tmpPath, rootPathFile, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+                    } catch (Exception e) {
+                        Files.deleteIfExists(tmpPath);
+                        throw e;
+                    }
+
+                    // 3. 文件已原子替换，重载引擎使用新数据
+                    this.reload(this.rootPath);
+                } catch (Exception e) {
+                    // reload 失败：磁盘文件已替换为新版本但引擎无法加载，回滚备份
+                    log.error("Failed to reload engine after file replacement, restoring backup", e);
+                    try {
+                        Files.move(backupPath, rootPathFile, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+                        this.reload(this.rootPath);
+                        log.info("Successfully restored original file and reloaded engine");
+                    } catch (Exception restoreEx) {
+                        log.error("CRITICAL: Engine is in an inconsistent state - failed to restore original file after reload error!", restoreEx);
+                    }
+                    throw e;
+                } finally {
+                    Files.deleteIfExists(backupPath);
+                }
+
                 return true;
             }
         } catch (Exception e) {
