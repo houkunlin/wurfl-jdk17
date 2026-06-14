@@ -8,7 +8,8 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -32,6 +33,10 @@ public class UpdatePipeline {
      * classpath 资源前缀标识
      */
     public static final String CLASSPATH_PREFIX = "classpath:";
+    /**
+     * 日期时间格式化器（线程安全）
+     */
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     /**
      * 按顺序执行的更新任务列表
      */
@@ -253,7 +258,7 @@ public class UpdatePipeline {
             String taskResultStatus;
             do {
                 if (!taskIterator.hasNext()) {
-                    return new UpdateResult(UpdateResultStatus.UPDATED, "Wurfl file update completed on " + (new SimpleDateFormat("yyyy/MM/dd hh:mm:ss")).format(Calendar.getInstance().getTime()));
+                    return new UpdateResult(UpdateResultStatus.UPDATED, "Wurfl file update completed on " + LocalDateTime.now().format(DATE_TIME_FORMATTER));
                 }
 
                 taskIterator.next().execute(this.context);
