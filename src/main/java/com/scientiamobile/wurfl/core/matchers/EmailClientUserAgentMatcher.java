@@ -6,7 +6,10 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import com.scientiamobile.wurfl.core.utils.UserAgentUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -15,7 +18,7 @@ import java.util.regex.Pattern;
  */
 
 public class EmailClientUserAgentMatcher extends MatcherBase {
-    public static final List<String> EMAIL_CLIENTS;
+    public static final String[] EMAIL_CLIENTS = new String[]{"Thunderbird", "Outlook", "Lotus-Notes", "Eudora/", "Evolution/", "PocoMail/", "The Bat!", "Postbox/", "Airmail"};
     private static final String MOZILLA_THUNDERBIRD = "mozilla_thunderbird";
     private static final String MS_OUTLOOK = "ms_outlook";
     private static final Pattern MICROSOFT_OUTLOOK_PATTERN = Pattern.compile("Microsoft Outlook ([0-9]+).");
@@ -45,7 +48,6 @@ public class EmailClientUserAgentMatcher extends MatcherBase {
         REQUIRED_DEVICE_IDS.add("airmail_ver1");
         REQUIRED_DEVICE_IDS.add("airmail_ios_ver1");
         REQUIRED_DEVICE_IDS.add("spark_ios_ver1");
-        EMAIL_CLIENTS = Collections.unmodifiableList(Arrays.asList("Thunderbird", "Outlook", "Lotus-Notes", "Eudora/", "Evolution/", "PocoMail/", "The Bat!", "Postbox/", "Airmail"));
     }
 
     public EmailClientUserAgentMatcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
