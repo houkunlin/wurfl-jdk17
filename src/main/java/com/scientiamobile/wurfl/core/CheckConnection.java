@@ -11,9 +11,9 @@ import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * WURFL 连通性检查器，用于定期向 ScientiaMobile 后台发送使用情况统计信息。
@@ -34,7 +34,7 @@ public class CheckConnection {
     /**
      * 连通性检查观察者列表
      */
-    private final List<CheckConnectionObserver> observers = new ArrayList<>();
+    private final List<CheckConnectionObserver> observers = new CopyOnWriteArrayList<>();
     /**
      * 发送给服务端的 JSON 负载字符串
      */
@@ -184,7 +184,7 @@ public class CheckConnection {
      * @param observer 观察者实例
      */
 
-    public synchronized void addObserver(CheckConnectionObserver observer) {
+    public void addObserver(CheckConnectionObserver observer) {
         this.observers.add(observer);
     }
 
@@ -193,7 +193,7 @@ public class CheckConnection {
      *
      * @param argument 通知参数
      */
-    public synchronized void notifyObservers(Object argument) {
+    public void notifyObservers(Object argument) {
 
         for (CheckConnectionObserver observer : this.observers) {
             observer.update(this, argument);
