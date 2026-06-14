@@ -1448,6 +1448,41 @@ class Wurfl01Test {
         Assertions.assertEquals("115.0.5790.168", info.getBrowserCoreVersion());
     }
 
+    @DisplayName("IE10")
+    @Test
+    void test_10037() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (MSIE 10.0; Windows NT 6.1; Trident/5.0)");
+        System.out.println(device);
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertFalse(info.isApp());
+        Assertions.assertFalse(info.isMobile());
+        Assertions.assertFalse(info.isPhone());
+        Assertions.assertTrue(info.isFullDesktop());
+        Assertions.assertEquals("Internet Explorer", info.getAdvertisedAppName());
+        Assertions.assertEquals("", info.getAdvertisedBrowser());
+        Assertions.assertFalse(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("Windows", info.getAdvertisedDeviceOs());
+        Assertions.assertFalse(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertFalse(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Desktop", info.getFormFactor());
+        Assertions.assertEquals("7", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("", info.getBrowserCore());
+        Assertions.assertEquals("", info.getBrowserCoreVersion());
+    }
+
     String buildAssertions(VirtualCapabilityInfo info) {
         StringBuilder stringBuilder = new StringBuilder();
         append(stringBuilder, info.isAppWebview(), "info.isAppWebview()");
