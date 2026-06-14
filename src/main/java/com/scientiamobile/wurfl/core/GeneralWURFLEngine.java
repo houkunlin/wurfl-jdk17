@@ -31,6 +31,11 @@ public class GeneralWURFLEngine implements WURFLEngine {
     /**
      * 始终包含的能力列表，即使设置了能力过滤器也不会被排除
      */
+    /**
+     * 始终包含的必备能力名称列表。
+     * <p>这些能力是虚拟能力评估器所必需的，无论用户是否通过
+     * {@link #setCapabilityFilter(String...)} 指定了过滤器，都会被自动加入能力过滤器。</p>
+     */
     private static final List<String> ALWAYS_INCLUDED_CAPABILITIES = Arrays.asList("device_os", "device_os_version", "is_tablet", "is_wireless_device", "pointing_method", "preferred_markup", "resolution_height", "resolution_width", "ux_full_desktop", "xhtml_support_level", "is_smarttv", "can_assign_phone_number", "brand_name", "model_name", "marketing_name", "mobile_browser_version");
     /**
      * 读写锁，用于保证重载和查询操作的线程安全
@@ -712,9 +717,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
     /**
      * 设置能力过滤器，限制引擎加载的能力集合。
-     * <p>传入的能力名列表会自动补充始终包含的必备能力。</p>
+     * <p>传入的能力名数组会自动补充始终包含的必备能力。</p>
      *
      * @param capabilityFilter 需要包含的能力名称数组
+     * @see #ALWAYS_INCLUDED_CAPABILITIES
      */
     @Override
     public void setCapabilityFilter(String... capabilityFilter) {
@@ -726,6 +732,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
      * <p>传入的能力名集合会自动补充始终包含的必备能力。</p>
      *
      * @param capabilityFilter 需要包含的能力名称集合
+     * @see #ALWAYS_INCLUDED_CAPABILITIES
      */
     @Override
     public void setCapabilityFilter(Collection<String> capabilityFilter) {
@@ -736,19 +743,17 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
     /**
      * 构建能力过滤器，确保始终包含必备的能力。
-     * <p>在用户指定的能力列表基础上，补充 {@link #ALWAYS_INCLUDED_CAPABILITIES} 中定义的能力。</p>
+     * <p>在用户指定的能力列表基础上，补充 {@link #ALWAYS_INCLUDED_CAPABILITIES} 中定义的能力。
+     * 使用 {@link LinkedHashSet} 去重同时保持输入顺序，
+     * 将 {@code contains} 检查从 {@code O(n&times;m)}（ArrayList 线性扫描）降为 {@code O(1)} 哈希查找。</p>
      *
      * @param input 用户指定的能力名称集合
      * @return 完整的能力过滤器数组
      */
 
     private static String[] buildCapabilityFilter(Collection<String> input) {
-        ArrayList<String> capabilities = new ArrayList<>(input);
-        for (String capability : ALWAYS_INCLUDED_CAPABILITIES) {
-            if (!capabilities.contains(capability)) {
-                capabilities.add(capability);
-            }
-        }
+        LinkedHashSet<String> capabilities = new LinkedHashSet<>(input);
+        capabilities.addAll(ALWAYS_INCLUDED_CAPABILITIES);
         return capabilities.toArray(new String[0]);
     }
 
