@@ -8,8 +8,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -76,7 +76,7 @@ public class WURFLUpdater {
     }
 
     public List<UpdateResult> getLastPeriodicUpdateResults() {
-        return this.periodicUpdateTask != null ? this.periodicUpdateTask.getLastResults() : new ArrayList<>(0);
+        return this.periodicUpdateTask != null ? this.periodicUpdateTask.getLastResults() : Collections.emptyList();
     }
 
     /**

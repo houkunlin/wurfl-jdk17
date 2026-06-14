@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,6 +85,6 @@ public class PeriodicUpdateTask implements Runnable {
      * @return 最近更新结果的只读列表（最多 10 条）
      */
     public List<UpdateResult> getLastResults() {
-        return this.lastResults;
+        return Collections.unmodifiableList(this.lastResults);
     }
 }
