@@ -6,6 +6,8 @@ import com.scientiamobile.wurfl.core.resource.WURFLModel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -83,27 +85,6 @@ public class CheckConnection {
     }
 
     /**
-     * 向 JSON 构建器追加一个键值对字段。
-     *
-     * @param builder       JSON 字符串构建器
-     * @param key           字段名
-     * @param value         字段值
-     * @param hasMoreFields 是否还有后续字段（添加逗号分隔符）
-     * @return 构建器实例
-     */
-
-    private static StringBuilder appendJsonField(StringBuilder builder, String key, String value, boolean hasMoreFields) {
-        builder.append("\"").append(key).append("\": \"").append(value).append("\"");
-        if (hasMoreFields) {
-            builder.append(", ");
-        } else {
-            builder.append(" ");
-        }
-
-        return builder;
-    }
-
-    /**
      * 获取本机主机名，获取失败时返回 "unknown"。
      *
      * @return 主机名字符串
@@ -153,7 +134,7 @@ public class CheckConnection {
 
     /**
      * 构建发送给连通性检查服务端的 JSON 负载字符串。
-     * <p>包含 API 标识、WURFL 标识、API 名称和版本、WURFL 版本、主机名、操作系统和平台信息。</p>
+     * <p>使用 Jackson {@link ObjectMapper} 构建 JSON，替代手动字符串拼接。</p>
      *
      * @param wurflSmid    WURFL 数据的 SMID
      * @param wurflVersion WURFL 版本字符串
@@ -161,29 +142,22 @@ public class CheckConnection {
      */
 
     private String buildPayload(String wurflSmid, String wurflVersion) {
-        StringBuilder payloadBuilder = appendJsonField(
-                appendJsonField(
-                        appendJsonField(
-                                appendJsonField(
-                                        appendJsonField(
-                                                appendJsonField(
-                                                        appendJsonField(
-                                                                appendJsonField(new StringBuilder("{ "), "api-smid", ResourceUtils.getBuildId(), true),
-                                                                "wurfl-smid", wurflSmid, true
-                                                        ),
-                                                        "api", this.getApiName(), true
-                                                ),
-                                                "api_ver", "1.9.1.0", true
-                                        ),
-                                        "wurfl", wurflVersion, true
-                                ),
-                                "host", getHostNameOrUnknown(), true
-                        ),
-                        "os", this.osNameAndVersion, true
-                ),
-                "platform", this.platformName, false
-        ).append(" }");
-        return payloadBuilder.toString();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode root = mapper.createObjectNode();
+            root.put("api-smid", ResourceUtils.getBuildId());
+            root.put("wurfl-smid", wurflSmid);
+            root.put("api", this.getApiName());
+            root.put("api_ver", "1.9.1.0");
+            root.put("wurfl", wurflVersion);
+            root.put("host", getHostNameOrUnknown());
+            root.put("os", this.osNameAndVersion);
+            root.put("platform", this.platformName);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+        } catch (Exception e) {
+            logger.warn("Failed to build payload JSON", e);
+            return "{}";
+        }
     }
 
     /**
