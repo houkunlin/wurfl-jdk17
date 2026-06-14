@@ -85,6 +85,10 @@ public final class NameVersionPair implements Serializable {
         }
     }
 
+    final boolean matchAndSet(LazyPattern pattern, String input, String matchedName, String matchedVersion) {
+        return matchAndSet(pattern.pattern(), input, matchedName, matchedVersion);
+    }
+
     /**
      * 使用正则表达式匹配输入字符串，从指定分组中提取名称。
      *
@@ -106,6 +110,10 @@ public final class NameVersionPair implements Serializable {
         }
     }
 
+    final boolean matchAndSetNameFromGroup(LazyPattern pattern, String input, int nameGroupIndex) {
+        return matchAndSetNameFromGroup(pattern.pattern(), input, nameGroupIndex);
+    }
+
     /**
      * 使用正则表达式匹配输入字符串，从指定分组中提取版本。
      *
@@ -125,6 +133,10 @@ public final class NameVersionPair implements Serializable {
             this.lastRegexGroups = null;
             return false;
         }
+    }
+
+    final boolean matchAndSetVersionFromGroup(LazyPattern pattern, String input, int versionGroupIndex) {
+        return matchAndSetVersionFromGroup(pattern.pattern(), input, versionGroupIndex);
     }
 
     /**
@@ -154,6 +166,10 @@ public final class NameVersionPair implements Serializable {
         }
     }
 
+    final boolean matchAndSetGroup(LazyPattern pattern, String input, String matchedName, int versionGroupIndex) {
+        return matchAndSetGroup(pattern.pattern(), input, matchedName, versionGroupIndex);
+    }
+
     /**
      * 使用正则表达式匹配输入字符串，从分组 1 提取名称，从指定分组提取版本。
      *
@@ -174,6 +190,10 @@ public final class NameVersionPair implements Serializable {
             this.lastRegexGroups = null;
             return false;
         }
+    }
+
+    final boolean matchAndSetNameAndGroup(LazyPattern pattern, String input, int nameGroupIndex) {
+        return matchAndSetNameAndGroup(pattern.pattern(), input, nameGroupIndex);
     }
 
     /**
