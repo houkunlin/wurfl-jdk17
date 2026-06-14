@@ -307,7 +307,12 @@ class WURFLServiceImpl implements WURFLService {
         if (!userAgentFromModel.startsWith("DO_NOT_MATCH")) {
             return userAgentFromModel;
         }
-        ModelDevice ancestor = ((InternalDeviceImpl) internalDevice).getAncestorModelDevice();
+        ModelDevice ancestor;
+        if (internalDevice instanceof InternalDeviceImpl device) {
+            ancestor = device.getAncestorModelDevice();
+        } else {
+            return userAgentFromModel;
+        }
         while (ancestor != null && ancestor.getUserAgent() != null && ancestor.getUserAgent().contains("DO_NOT_MATCH")) {
             ancestor = ancestor.getAncestor();
         }
