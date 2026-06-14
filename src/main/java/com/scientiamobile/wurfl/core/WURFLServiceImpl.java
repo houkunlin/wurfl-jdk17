@@ -36,6 +36,10 @@ class WURFLServiceImpl implements WURFLService {
      */
     private volatile CacheProvider cacheProvider;
     /**
+     * 缓存提供者初始化锁（专用锁对象，避免与实例级 synchronized(this) 产生竞争）
+     */
+    private final Object cacheLock = new Object();
+    /**
      * 匹配器管理器
      */
     private final MatcherManager matcherManager;
@@ -194,12 +198,15 @@ class WURFLServiceImpl implements WURFLService {
 
     /**
      * 确保缓存提供者已初始化。
-     * <p>如果未设置缓存提供者，则使用默认的 {@link DoubleLRUMapCacheProvider}。</p>
+     * <p>如果未设置缓存提供者，则使用默认的 {@link DoubleLRUMapCacheProvider}。
+     * 使用双重检查锁定（DCL）模式 + 专用锁对象 {@link #cacheLock}，
+     * 避免与 {@link #modelLock}（{@code getDevice} 持有读锁、{@code reload} 持有写锁）
+     * 产生无关的锁竞争。</p>
      */
 
     private void ensureCacheProvider() {
         if (this.cacheProvider == null) {
-            synchronized (this) {
+            synchronized (cacheLock) {
                 if (this.cacheProvider == null) {
                     log.info("no Cache Provider, using default (DoubleLRUMapCacheProvider)");
                     this.cacheProvider = new DoubleLRUMapCacheProvider();
