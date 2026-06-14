@@ -271,16 +271,22 @@ public class VirtualCapabilityDevice implements Serializable {
 
     /**
      * 判断是否为 macOS 10.12 或更高版本。
-     * <p>用于区分旧版 Mac OS X 和 macOS 命名。</p>
+     * <p>macOS 10.12 (Sierra) 起系统名称从 "Mac OS X" 更名为 "macOS"。
+     * macOS 11.0 (Big Sur) 起主版本号变为 11，minor 可能为 0。
+     * 正确的判断逻辑：major > 10 或 (major == 10 && minor >= 12)。</p>
      *
      * @return 如果是 macOS 10.12+ 返回 {@code true}
      */
 
     private boolean isMacOS10OrLater() {
         String[] majorMinor = DOT_SPLIT_PATTERN.split(this.osPair.getVersion());
-        return majorMinor != null && majorMinor.length > 1
-                && StringUtils.isNumeric(majorMinor[0]) && StringUtils.isNumeric(majorMinor[1])
-                && Integer.parseInt(majorMinor[0]) >= 10 && Integer.parseInt(majorMinor[1]) >= 12;
+        if (majorMinor == null || majorMinor.length <= 1
+                || !StringUtils.isNumeric(majorMinor[0]) || !StringUtils.isNumeric(majorMinor[1])) {
+            return false;
+        }
+        int major = Integer.parseInt(majorMinor[0]);
+        int minor = Integer.parseInt(majorMinor[1]);
+        return major > 10 || (major == 10 && minor >= 12);
     }
 
     /**
