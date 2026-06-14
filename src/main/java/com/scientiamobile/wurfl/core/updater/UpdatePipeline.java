@@ -7,6 +7,7 @@ import org.apache.commons.lang3.Validate;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -137,7 +138,11 @@ public class UpdatePipeline {
             if (resourceUrl == null) {
                 throw new IllegalArgumentException("Classpath resource not found: " + classpathResourcePath);
             }
-            return resourceUrl.getFile();
+            try {
+                return Paths.get(resourceUrl.toURI()).toString();
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Failed to decode classpath resource URL: " + resourceUrl, e);
+            }
         } else {
             return path;
         }
