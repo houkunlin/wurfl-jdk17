@@ -211,7 +211,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
     /**
      * 应用指定集合中的补丁资源。
-     * <p>在写锁保护下执行补丁应用操作，确保线程安全。</p>
+     * <p>先确保引擎已初始化（外部无锁），再在写锁保护下执行补丁应用操作。</p>
      *
      * @param patchResources 补丁资源集合
      */
@@ -220,10 +220,10 @@ public class GeneralWURFLEngine implements WURFLEngine {
         if (patchResources == null) {
             log.warn("null patches, do nothing...");
         } else {
+            this.ensureInitialized();
             this.lock.writeLock().lock();
 
             try {
-                this.ensureInitialized();
                 this.wurflService.applyPatches(patchResources, this.capabilityFilter);
             } finally {
                 this.lock.writeLock().unlock();
@@ -258,7 +258,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
     /**
      * 使用新的根资源和补丁资源集合重新加载引擎。
-     * <p>在写锁保护下执行重载操作，确保线程安全。</p>
+     * <p>先确保引擎已初始化（外部无锁），再在写锁保护下执行重载操作。</p>
      *
      * @param rootResource   新的根资源
      * @param patchResources 新的补丁资源集合
