@@ -5,8 +5,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,11 +49,13 @@ public class PeriodicUpdateTask implements Runnable {
 
         try {
             UpdateResult updateResult = this.updatePipeline.execute();
-            if (this.lastResults.size() >= 10) {
-                this.lastResults.poll();
-            }
+            synchronized (this.lastResults) {
+                if (this.lastResults.size() >= 10) {
+                    this.lastResults.poll();
+                }
 
-            this.lastResults.add(updateResult);
+                this.lastResults.add(updateResult);
+            }
             if (!updateResult.isUpdateProcessSuccessful()) {
                 log.error("Update process failed. Reason: {}", updateResult.getMessage());
                 if (this.lastSuccessfulUpdate != null) {
@@ -85,6 +87,8 @@ public class PeriodicUpdateTask implements Runnable {
      * @return 最近更新结果的只读列表（最多 10 条）
      */
     public List<UpdateResult> getLastResults() {
-        return Collections.unmodifiableList(this.lastResults);
+        synchronized (this.lastResults) {
+            return new ArrayList<>(this.lastResults);
+        }
     }
 }
