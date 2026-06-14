@@ -1,5 +1,6 @@
 package com.scientiamobile.wurfl.core;
 
+import com.scientiamobile.wurfl.core.utils.RegexUtils;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
 import java.io.Serial;
@@ -224,23 +225,21 @@ public final class NameVersionPair implements Serializable {
      */
 
     private Matcher find(Pattern pattern, String input) {
-        Matcher matcher;
-        matcher = pattern.matcher(input);
-        if (!matcher.find()) {
+        Matcher matcher = RegexUtils.findMatcherWithTimeout(pattern, input);
+        if (matcher == null) {
             this.lastRegexGroups = null;
             return null;
-        } else {
-            int groupCount = matcher.groupCount() + 1;
-            if (this.lastRegexGroups == null || this.lastRegexGroups.length != groupCount) {
-                this.lastRegexGroups = new String[groupCount];
-            }
-
-            for (int i = 0; i < groupCount; ++i) {
-                this.lastRegexGroups[i] = matcher.group(i);
-            }
-
-            return matcher;
         }
+        int groupCount = matcher.groupCount() + 1;
+        if (this.lastRegexGroups == null || this.lastRegexGroups.length != groupCount) {
+            this.lastRegexGroups = new String[groupCount];
+        }
+
+        for (int i = 0; i < groupCount; ++i) {
+            this.lastRegexGroups[i] = matcher.group(i);
+        }
+
+        return matcher;
     }
 
     /**
