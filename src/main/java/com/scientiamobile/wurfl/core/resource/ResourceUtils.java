@@ -47,9 +47,7 @@ public class ResourceUtils {
         String buildId = "unknown";
         InputStream inputStream = ResourceUtils.class.getResourceAsStream("/ca");
         if (inputStream != null) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-
-            try {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String line = reader.readLine();
                 if (line != null) {
                     buildId = line;
@@ -57,18 +55,8 @@ public class ResourceUtils {
                 return buildId;
             } catch (IOException e) {
                 // 文件读取失败不影响核心业务逻辑，静默忽略
-            } finally {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // 关闭流失败无实际影响，忽略
-                }
-
             }
-
-            return buildId;
-        } else {
-            return buildId;
         }
+        return buildId;
     }
 }
