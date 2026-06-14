@@ -85,7 +85,7 @@ final class ResourceInput {
                     this.stream = stream;
                 }
             } catch (IOException e) {
-                LOG.error("failure to read data files", e);
+                throw new WURFLRuntimeException("Failed to decompress data file: " + fileName, e);
             }
         } else {
             this.stream = stream;
