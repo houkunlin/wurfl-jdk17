@@ -390,13 +390,15 @@ public class GeneralWURFLEngine implements WURFLEngine {
         if (!(requestFactory instanceof WURFLRequestFactoryWithPriority)) {
             throw new UnsupportedOperationException("User-Agent priority is not supported if the custom request factory does not implement WURFLRequestFactoryWithPriority");
         } else {
-            synchronized (this.initLock) {
+            this.lock.writeLock().lock();
+            try {
                 this.requestFactory = (WURFLRequestFactoryWithPriority) requestFactory;
                 this.userAgentPriority = this.requestFactory.getUserAgentPriority();
                 if (this.wurflService != null) {
                     this.wurflService.setRequestFactory(this.requestFactory);
                 }
-
+            } finally {
+                this.lock.writeLock().unlock();
             }
         }
     }
@@ -726,12 +728,15 @@ public class GeneralWURFLEngine implements WURFLEngine {
      */
     @Override
     public EngineTarget getEngineTarget() {
-        synchronized (this.initLock) {
+        this.lock.readLock().lock();
+        try {
             if (this.wurflService != null) {
                 this.engineTarget = this.wurflService.getEngineTarget();
             }
 
             return this.engineTarget;
+        } finally {
+            this.lock.readLock().unlock();
         }
     }
 
@@ -743,12 +748,14 @@ public class GeneralWURFLEngine implements WURFLEngine {
      */
     @Override
     public void setEngineTarget(EngineTarget engineTarget) {
-        synchronized (this.initLock) {
+        this.lock.writeLock().lock();
+        try {
             this.engineTarget = engineTarget;
             if (this.wurflService != null) {
                 this.wurflService.setEngineTarget(engineTarget);
             }
-
+        } finally {
+            this.lock.writeLock().unlock();
         }
     }
 
@@ -759,7 +766,8 @@ public class GeneralWURFLEngine implements WURFLEngine {
      */
     @Override
     public UserAgentPriority getUserAgentPriority() {
-        synchronized (this.initLock) {
+        this.lock.readLock().lock();
+        try {
             if (this.wurflService != null) {
                 this.userAgentPriority = this.wurflService.getUserAgentPriority();
             } else if (this.requestFactory != null) {
@@ -767,6 +775,8 @@ public class GeneralWURFLEngine implements WURFLEngine {
             }
 
             return this.userAgentPriority;
+        } finally {
+            this.lock.readLock().unlock();
         }
     }
 
@@ -779,14 +789,16 @@ public class GeneralWURFLEngine implements WURFLEngine {
      */
     @Override
     public void setUserAgentPriority(UserAgentPriority userAgentPriority) {
-        synchronized (this.initLock) {
+        this.lock.writeLock().lock();
+        try {
             this.userAgentPriority = userAgentPriority;
             if (this.wurflService != null) {
                 this.wurflService.setUserAgentPriority(userAgentPriority);
             } else if (this.requestFactory != null) {
                 this.requestFactory.setUserAgentPriority(userAgentPriority);
             }
-
+        } finally {
+            this.lock.writeLock().unlock();
         }
     }
 
