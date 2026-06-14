@@ -316,10 +316,6 @@ public final class VirtualCapabilityUserAgentTool {
             return;
         }
 
-        // 在具体浏览器覆盖之前，先捕获上游（Chrome/Chromium）版本信息
-        // 后续特定浏览器（QQ/WeChat/Edge 等）会在其版本号之上保留此上游信息
-        captureUpstreamBrowser(vcd, browserUA);
-
         // 各种桌面/移动浏览器
         if (browserPair.matchAndSetGroup(FIREFOX_VERSION_PATTERN, browserUA, "Firefox Mobile", 1)) return;
         if (browserPair.matchAndSetGroup(FIREFOX_FOCUS_VERSION_PATTERN, browserUA, "Firefox Focus", 1)) return;
@@ -375,9 +371,6 @@ public final class VirtualCapabilityUserAgentTool {
         if (osPair.matchAndSetGroup(IOS_UCWEB_OS_VERSION_PATTERN, deviceUA, "iOS", 1)) {
             osPair.setVersion(osPair.getVersion().replace("_", "."));
         }
-
-        // 在具体浏览器覆盖之前捕获上游信息
-        captureUpstreamBrowser(vcd, browserUA);
 
         // 知名浏览器
         if (browserPair.matchAndSetGroup(IOS_CHROME_CRIOS_VERSION_PATTERN, browserUA, "Chrome Mobile on iOS", 1))
