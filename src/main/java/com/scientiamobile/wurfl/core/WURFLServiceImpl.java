@@ -161,13 +161,18 @@ class WURFLServiceImpl implements WURFLService {
             return this.deviceProvider.buildDevice(internalDevice, request, MatchType.fastDesktopBrowser, "", "");
         }
         DeviceInfo deviceInfo = this.matcherManager.matchRequest(request);
+        if (deviceInfo == null) {
+            throw new WURFLRuntimeException(
+                    "MatcherManager returned null for request: " + request.getOriginalUserAgent());
+        }
         InternalDevice internalDevice = this.cacheProvider.getInternalDeviceFromDeviceId(deviceInfo.getId());
         if (internalDevice == null) {
             internalDevice = this.deviceProvider.getInternalDevice(deviceInfo.getId());
         }
         this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
         if (internalDevice == null) {
-            throw new WURFLRuntimeException("Device not found for ID: " + (deviceInfo != null ? deviceInfo.getId() : "unknown"));
+            throw new WURFLRuntimeException(
+                    "Device not found for ID: " + deviceInfo.getId());
         }
         return this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(),
                 deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
