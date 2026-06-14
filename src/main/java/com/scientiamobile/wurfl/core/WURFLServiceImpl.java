@@ -169,11 +169,11 @@ class WURFLServiceImpl implements WURFLService {
         if (internalDevice == null) {
             internalDevice = this.deviceProvider.getInternalDevice(deviceInfo.getId());
         }
-        this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
         if (internalDevice == null) {
             throw new WURFLRuntimeException(
                     "Device not found for ID: " + deviceInfo.getId());
         }
+        this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
         return this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(),
                 deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
     }
