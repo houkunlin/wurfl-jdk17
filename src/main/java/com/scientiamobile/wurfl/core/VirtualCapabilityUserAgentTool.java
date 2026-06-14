@@ -3,6 +3,8 @@ package com.scientiamobile.wurfl.core;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 
+import java.util.regex.Matcher;
+
 /**
  * 虚拟能力 User-Agent 工具类，负责从 User-Agent 中解析设备属性和浏览器信息。
  * <p>单例类，维护了大量正则表达式模式，用于识别各种操作系统（Android、iOS、Windows Phone、
@@ -124,6 +126,11 @@ public final class VirtualCapabilityUserAgentTool {
      */
     private static final ThreadLocal<Object> VCD_CACHE_KEY = new ThreadLocal<>();
     private static final ThreadLocal<VirtualCapabilityDevice> VCD_CACHE_VAL = new ThreadLocal<>();
+    /**
+     * 线程本地 Matcher，避免热路径上重复创建 Matcher 对象
+     */
+    private static final ThreadLocal<Matcher> UA_MATCHER =
+            ThreadLocal.withInitial(() -> CHROME_VERSION_PATTERN.matcher(""));
 
     private VirtualCapabilityUserAgentTool() {
     }
@@ -770,47 +777,53 @@ public final class VirtualCapabilityUserAgentTool {
     private static void captureUpstreamBrowser(VirtualCapabilityDevice vcd, String browserUA) {
         String upstreamName = null;
         String upstreamVersion = null;
+        Matcher matcher = UA_MATCHER.get();
 
         // 尝试匹配 Chrome 版本（优先）
-        java.util.regex.Matcher chromeMatcher = CHROME_VERSION_PATTERN.matcher(browserUA);
-        if (chromeMatcher.find()) {
+        matcher.reset(browserUA);
+        matcher.usePattern(CHROME_VERSION_PATTERN.pattern());
+        if (matcher.find()) {
             upstreamName = "Chrome";
-            upstreamVersion = chromeMatcher.group(1);
+            upstreamVersion = matcher.group(1);
         }
 
         // 尝试匹配 Chromium 版本（Chrome 未匹配时）
         if (upstreamName == null) {
-            java.util.regex.Matcher chromiumMatcher = CHROMIUM_VERSION_PATTERN.matcher(browserUA);
-            if (chromiumMatcher.find()) {
+            matcher.reset(browserUA);
+            matcher.usePattern(CHROMIUM_VERSION_PATTERN.pattern());
+            if (matcher.find()) {
                 upstreamName = "Chromium";
-                upstreamVersion = chromiumMatcher.group(1);
+                upstreamVersion = matcher.group(1);
             }
         }
 
         // 尝试匹配 Safari/WebKit 版本（兜底）
         if (upstreamName == null) {
-            java.util.regex.Matcher safariMatcher = SAFARI_DESKTOP_VERSION_PATTERN.matcher(browserUA);
-            if (safariMatcher.find()) {
+            matcher.reset(browserUA);
+            matcher.usePattern(SAFARI_DESKTOP_VERSION_PATTERN.pattern());
+            if (matcher.find()) {
                 upstreamName = "WebKit";
-                upstreamVersion = safariMatcher.group(2);
+                upstreamVersion = matcher.group(2);
             }
         }
 
         // 尝试匹配 Firefox 版本（Chrome/Chromium/Safari 未匹配时）
         if (upstreamName == null) {
-            java.util.regex.Matcher firefoxMatcher = FIREFOX_SIMPLE_VERSION_PATTERN.matcher(browserUA);
-            if (firefoxMatcher.find()) {
+            matcher.reset(browserUA);
+            matcher.usePattern(FIREFOX_SIMPLE_VERSION_PATTERN.pattern());
+            if (matcher.find()) {
                 upstreamName = "Firefox";
-                upstreamVersion = firefoxMatcher.group(1);
+                upstreamVersion = matcher.group(1);
             }
         }
 
         // 尝试匹配 Safari 版本（最终兜底：任何含 AppleWebKit 的非 Chrome/Firefox UA）
         if (upstreamName == null) {
-            java.util.regex.Matcher webkitMatcher = APPLE_WEBKIT_VERSION_PATTERN.matcher(browserUA);
-            if (webkitMatcher.find()) {
+            matcher.reset(browserUA);
+            matcher.usePattern(APPLE_WEBKIT_VERSION_PATTERN.pattern());
+            if (matcher.find()) {
                 upstreamName = "Safari";
-                upstreamVersion = webkitMatcher.group(1);
+                upstreamVersion = matcher.group(1);
             }
         }
 
