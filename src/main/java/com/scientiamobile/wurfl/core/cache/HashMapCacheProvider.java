@@ -70,10 +70,6 @@ public class HashMapCacheProvider implements CacheProvider {
      * @param concurrentWrites 并发写入的预估线程数
      */
     public HashMapCacheProvider(int initialCapacity, float loadFactor, int concurrentWrites) {
-        this.initialCapacity = 6000;
-        this.loadFactor = 0.75F;
-        this.concurrentWrites = 16;
-
         this.initialCapacity = initialCapacity;
         this.loadFactor = loadFactor;
         this.concurrentWrites = concurrentWrites;
