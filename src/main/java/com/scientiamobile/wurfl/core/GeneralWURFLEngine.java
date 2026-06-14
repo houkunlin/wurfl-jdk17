@@ -668,7 +668,12 @@ public class GeneralWURFLEngine implements WURFLEngine {
     @Override
     public Device getDeviceForRequest(HttpServletRequest request) {
         this.ensureInitialized();
-        return this.wurflService.getDevice(request);
+        this.lock.readLock().lock();
+        try {
+            return this.wurflService.getDevice(request);
+        } finally {
+            this.lock.readLock().unlock();
+        }
     }
 
     /**
@@ -680,7 +685,12 @@ public class GeneralWURFLEngine implements WURFLEngine {
     @Override
     public Device getDeviceForRequest(WURFLRequest request) {
         this.ensureInitialized();
-        return this.wurflService.getDevice(request);
+        this.lock.readLock().lock();
+        try {
+            return this.wurflService.getDevice(request);
+        } finally {
+            this.lock.readLock().unlock();
+        }
     }
 
     /**
@@ -692,7 +702,12 @@ public class GeneralWURFLEngine implements WURFLEngine {
     @Override
     public Device getDeviceForRequest(String userAgent) {
         this.ensureInitialized();
-        return this.wurflService.getDevice(userAgent);
+        this.lock.readLock().lock();
+        try {
+            return this.wurflService.getDevice(userAgent);
+        } finally {
+            this.lock.readLock().unlock();
+        }
     }
 
     /**
