@@ -111,7 +111,7 @@ final class WurflXmlHandler extends DefaultHandler {
             case WurflXmlParseState.DEVICE:
                 if ("group".equals(qName)) {
                     this.parseState = WurflXmlParseState.GROUP;
-                    this.currentGroupId = attributes.getValue("id").intern();
+                    this.currentGroupId = attributes.getValue("id");
                 }
                 break;
             case WurflXmlParseState.GROUP:
@@ -265,7 +265,7 @@ final class WurflXmlHandler extends DefaultHandler {
             throw new WURFLParsingException("The device with id " + this.currentDeviceId + " defines capability " + currentCapabilityName + "more than once");
         }
 
-        String internedCapabilityName = currentCapabilityName.intern();
+        String capabilityNameKey = currentCapabilityName;
         if (!"experimental".equals(this.currentGroupId)) {
             String capabilityValue = currentCapabilityValue;
             if (StringUtils.isNotEmpty(capabilityValue) && capabilityValue.length() > 255) {
@@ -274,8 +274,8 @@ final class WurflXmlHandler extends DefaultHandler {
             currentCapabilityValue = capabilityValue;
         }
 
-        this.currentCapabilities.put(internedCapabilityName, currentCapabilityValue);
-        this.currentCapabilitiesByGroup.put(internedCapabilityName, this.currentGroupId);
+        this.currentCapabilities.put(capabilityNameKey, currentCapabilityValue);
+        this.currentCapabilitiesByGroup.put(capabilityNameKey, this.currentGroupId);
     }
 
     /**
