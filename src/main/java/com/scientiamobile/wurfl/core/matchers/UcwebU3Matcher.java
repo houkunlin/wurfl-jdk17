@@ -27,7 +27,49 @@ final class UcwebU3Matcher extends MatcherBase {
     private static final Pattern IPHONE_IOS_VERSION = Pattern.compile("iPhone OS (\\d+)(?:_\\d+)?.+ like");
     private static final Pattern IPAD_IOS_VERSION = Pattern.compile("CPU OS (\\d+)(?:_\\d+)?.+like Mac");
     private static final Pattern ANDROID_VERSION_U3_PATTERN = Pattern.compile("\\bAndroid (\\d+)(?:\\.\\d+)?");
-    private static final List<String> SUPPORTED_DEVICE_IDS;
+    private static final List<String> SUPPORTED_DEVICE_IDS = List.of(
+            "generic_ucweb",
+            GENERIC_UCWEB_ANDROID_VER1,
+            "generic_ucweb_android_ver2",
+            "generic_ucweb_android_ver3",
+            "generic_ucweb_android_ver4",
+            "generic_ucweb_android_ver5",
+            "generic_ucweb_android_ver6",
+            "generic_ucweb_android_ver7",
+            "generic_ucweb_android_ver8",
+            "generic_ucweb_android_ver9",
+            "generic_ucweb_android_ver10",
+            "generic_ucweb_android_ver11",
+            "generic_ucweb_android_ver12",
+            "generic_ucweb_android_ver13",
+            "generic_ucweb_android_ver14",
+            "generic_ucweb_android_ver15",
+            "generic_ucweb_android_ver16",
+            "generic_ucweb_android_ver17",
+            APPLE_IPHONE_VER1_SUBUAWCWEB,
+            "apple_iphone_ver2_subuaucweb",
+            "apple_iphone_ver3_subuaucweb",
+            "apple_iphone_ver4_subuaucweb",
+            "apple_iphone_ver5_subuaucweb",
+            "apple_iphone_ver6_subuaucweb",
+            "apple_iphone_ver7_subuaucweb",
+            "apple_iphone_ver8_subuaucweb",
+            "apple_iphone_ver9_subuaucweb",
+            "apple_iphone_ver10_subuaucweb",
+            "apple_iphone_ver11_subuaucweb",
+            APPLE_IPAD_VER1_SUBUAWCWEB,
+            "apple_ipad_ver1_sub4_subuaucweb",
+            "apple_ipad_ver1_sub5_subuaucweb",
+            "apple_ipad_ver1_sub6_subuaucweb",
+            "apple_ipad_ver1_sub7_subuaucweb",
+            "apple_ipad_ver1_sub8_subuaucweb",
+            "apple_ipad_ver1_sub9_subuaucweb",
+            "apple_ipad_ver1_sub10_subuaucweb",
+            "apple_ipad_ver1_sub11_subuaucweb",
+            GENERIC_MS_PHONE_OS8_SUBUAWCWEB,
+            "generic_ms_phone_os8_1_subuaucweb",
+            "generic_ms_phone_os10_subuaucweb"
+    );
 
     /**
      * 型号名称到设备 ID 的索引映射（实例级懒加载）。
@@ -42,50 +84,6 @@ final class UcwebU3Matcher extends MatcherBase {
      */
     private final WURFLModel wurflModel;
 
-    static {
-        SUPPORTED_DEVICE_IDS = new ArrayList<>();
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb");
-        SUPPORTED_DEVICE_IDS.add(GENERIC_UCWEB_ANDROID_VER1);
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver2");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver3");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver4");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver5");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver6");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver7");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver8");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver9");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver10");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver11");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver12");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver13");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver14");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver15");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver16");
-        SUPPORTED_DEVICE_IDS.add("generic_ucweb_android_ver17");
-        SUPPORTED_DEVICE_IDS.add(APPLE_IPHONE_VER1_SUBUAWCWEB);
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver2_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver3_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver4_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver5_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver6_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver7_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver8_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver9_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver10_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_iphone_ver11_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add(APPLE_IPAD_VER1_SUBUAWCWEB);
-        SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub4_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub5_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub6_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub7_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub8_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub9_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub10_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("apple_ipad_ver1_sub11_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add(GENERIC_MS_PHONE_OS8_SUBUAWCWEB);
-        SUPPORTED_DEVICE_IDS.add("generic_ms_phone_os8_1_subuaucweb");
-        SUPPORTED_DEVICE_IDS.add("generic_ms_phone_os10_subuaucweb");
-    }
 
     public UcwebU3Matcher(UserAgentNormalizer userAgentNormalizer, WURFLModel wurflModel) {
         super(userAgentNormalizer, wurflModel);
