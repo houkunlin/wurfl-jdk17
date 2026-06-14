@@ -24,6 +24,11 @@ public final class AhoCorasickKeywordMatcher {
     private final boolean[] terminalByState;
 
     /**
+     * 每个终止状态对应的关键词（仅当 {@link #terminalByState} 对应位为 {@code true} 时有值）
+     */
+    private final String[] keywordByState;
+
+    /**
      * 每个状态的可用转移字符列表（字符数组）
      */
     private final char[][] transitionCharsByState;
@@ -52,6 +57,7 @@ public final class AhoCorasickKeywordMatcher {
 
         this.failStateByState = new int[size];
         this.terminalByState = new boolean[size];
+        this.keywordByState = new String[size];
         this.transitionCharsByState = new char[size][];
         this.transitionTargetsByState = new int[size][];
 
@@ -62,6 +68,7 @@ public final class AhoCorasickKeywordMatcher {
             nodeIndex.put(node, i);
             this.failStateByState[i] = 0;
             this.terminalByState[i] = node.isKeywordEnd();
+            this.keywordByState[i] = node.isKeywordEnd() ? node.getKeyword() : null;
         }
 
         // 将 Trie 树序列化为紧凑的并行数组结构
@@ -127,6 +134,82 @@ public final class AhoCorasickKeywordMatcher {
      * 标记状态：表示已找到关键词（匹配终止）
      */
     private static final int KEYWORD_FOUND = -1;
+
+    /**
+     * 检查输入文本中是否包含任意已注册的关键词。
+     * <p>先将输入转换为小写（关键词匹配不区分大小写），
+     * 然后逐字符驱动自动机转移，一旦进入终止状态即返回对应的关键词。</p>
+     *
+     * @param input 待检查的输入字符串
+     * @return 第一个匹配到的完整关键词，若无匹配返回 {@code null}
+     */
+    public String matchKeyword(String input) {
+        String lower = input.toLowerCase(Locale.ENGLISH);
+        int state = 0;
+
+        for (int i = 0; i < lower.length(); i++) {
+            state = advanceState(lower.charAt(i), state);
+            if (state == KEYWORD_FOUND) {
+                // 回退到上一个字符的状态，找到实际匹配的终止状态
+                return findMatchedKeyword(lower, i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 从当前位置回退查找匹配的具体关键词。
+     * <p>在 {@link #advanceState} 返回 {@link #KEYWORD_FOUND} 后调用，
+     * 从当前位置向前逐字符回溯，确定哪个关键词实际匹配。</p>
+     */
+    private String findMatchedKeyword(String input, int endPos) {
+        int state = 0;
+        for (int i = 0; i <= endPos; i++) {
+            char c = input.charAt(i);
+            int[] targets = this.transitionTargetsByState[state];
+            char[] chars = this.transitionCharsByState[state];
+            int nextState = -1;
+            for (int j = 0; j < chars.length; j++) {
+                if (chars[j] == c) {
+                    nextState = targets[j];
+                    break;
+                }
+            }
+            if (nextState < 0) {
+                // 回退到失败链接
+                int fs = this.failStateByState[state];
+                while (fs != 0) {
+                    int[] ft = this.transitionTargetsByState[fs];
+                    char[] fc = this.transitionCharsByState[fs];
+                    for (int j = 0; j < fc.length; j++) {
+                        if (fc[j] == c) {
+                            nextState = ft[j];
+                            break;
+                        }
+                    }
+                    if (nextState >= 0) break;
+                    fs = this.failStateByState[fs];
+                }
+                if (nextState < 0) {
+                    state = 0;
+                    continue;
+                }
+            }
+            state = nextState;
+            if (this.terminalByState[state]) {
+                return this.keywordByState[state];
+            }
+            // 也检查失败链接上的终止状态
+            int fs = this.failStateByState[state];
+            while (fs != 0) {
+                if (this.terminalByState[fs]) {
+                    return this.keywordByState[fs];
+                }
+                fs = this.failStateByState[fs];
+            }
+        }
+        return null;
+    }
 
     /**
      * 检查输入文本中是否包含任意已注册的关键词。

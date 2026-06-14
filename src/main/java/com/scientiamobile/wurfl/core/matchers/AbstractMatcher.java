@@ -5,15 +5,13 @@ import com.scientiamobile.wurfl.core.DeviceInfo;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.normalizer.UserAgentNormalizer;
 import com.scientiamobile.wurfl.core.resource.WURFLModel;
+import com.scientiamobile.wurfl.core.utils.AhoCorasickKeywordMatcher;
 import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 抽象匹配器基类，提供了 User-Agent 匹配流程的骨架实现。
@@ -39,6 +37,16 @@ abstract class AbstractMatcher implements Matcher {
      */
     private static final List<UserAgentFallbackRule> CATCH_ALL_FALLBACKS;
     /**
+     * Catch-All 回退规则关键字 → 设备 ID 的映射，用于运行时快速查找。
+     */
+    private static final Map<String, String> FALLBACK_KEYWORD_TO_DEVICE;
+    /**
+     * Catch-All 回退规则的 Aho-Corasick 多模式匹配器。
+     * <p>一次性扫描 UA 即可判断是否匹配任意关键字，并将匹配到的关键字索引映射到设备 ID。
+     * 相比逐条 {@code String.contains()} 的 O(n×m) 扫描，降为 O(n) 扫描 + O(1) 映射查找。</p>
+     */
+    private static final AhoCorasickKeywordMatcher FALLBACK_KEYWORD_MATCHER;
+    /**
      * 断言校验状态标记，指示 JVM 是否禁用了断言功能。
      * <p>用于在开发/测试环境下触发断言检查，生产环境通常禁用断言。</p>
      */
@@ -47,27 +55,36 @@ abstract class AbstractMatcher implements Matcher {
     // 初始化 Catch-All 回退规则，按关键字匹配 User-Agent 并映射到通用设备 ID
     static {
         CATCH_ALL_FALLBACKS = new ArrayList<>();
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("CoreMedia", "apple_iphone_coremedia_ver1"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("Windows CE", "generic_ms_mobile"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/7.2", "opwv_v72_generic"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/7", "opwv_v7_generic"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/6.2", "opwv_v62_generic"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/6", "opwv_v6_generic"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/5", "upgui_generic"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/4", "uptext_generic"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("UP.Browser/3", "uptext_generic"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("Series60", "nokia_generic_series60"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("NetFront/3.0", "generic_netfront_ver3"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("ACS-NF/3.0", "generic_netfront_ver3"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("NetFront/3.1", "generic_netfront_ver3_1"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("ACS-NF/3.1", "generic_netfront_ver3_1"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("NetFront/3.2", "generic_netfront_ver3_2"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("ACS-NF/3.2", "generic_netfront_ver3_2"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("NetFront/3.3", "generic_netfront_ver3_3"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("ACS-NF/3.3", "generic_netfront_ver3_3"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("NetFront/3.4", "generic_netfront_ver3_4"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("NetFront/3.5", "generic_netfront_ver3_5"));
-        CATCH_ALL_FALLBACKS.add(new UserAgentFallbackRule("NetFront/4.0", "generic_netfront_ver4_0"));
+        Map<String, String> keywordToDevice = new LinkedHashMap<>();
+        UserAgentFallbackRule[] rules = {
+                new UserAgentFallbackRule("CoreMedia", "apple_iphone_coremedia_ver1"),
+                new UserAgentFallbackRule("Windows CE", "generic_ms_mobile"),
+                new UserAgentFallbackRule("UP.Browser/7.2", "opwv_v72_generic"),
+                new UserAgentFallbackRule("UP.Browser/7", "opwv_v7_generic"),
+                new UserAgentFallbackRule("UP.Browser/6.2", "opwv_v62_generic"),
+                new UserAgentFallbackRule("UP.Browser/6", "opwv_v6_generic"),
+                new UserAgentFallbackRule("UP.Browser/5", "upgui_generic"),
+                new UserAgentFallbackRule("UP.Browser/4", "uptext_generic"),
+                new UserAgentFallbackRule("UP.Browser/3", "uptext_generic"),
+                new UserAgentFallbackRule("Series60", "nokia_generic_series60"),
+                new UserAgentFallbackRule("NetFront/3.0", "generic_netfront_ver3"),
+                new UserAgentFallbackRule("ACS-NF/3.0", "generic_netfront_ver3"),
+                new UserAgentFallbackRule("NetFront/3.1", "generic_netfront_ver3_1"),
+                new UserAgentFallbackRule("ACS-NF/3.1", "generic_netfront_ver3_1"),
+                new UserAgentFallbackRule("NetFront/3.2", "generic_netfront_ver3_2"),
+                new UserAgentFallbackRule("ACS-NF/3.2", "generic_netfront_ver3_2"),
+                new UserAgentFallbackRule("NetFront/3.3", "generic_netfront_ver3_3"),
+                new UserAgentFallbackRule("ACS-NF/3.3", "generic_netfront_ver3_3"),
+                new UserAgentFallbackRule("NetFront/3.4", "generic_netfront_ver3_4"),
+                new UserAgentFallbackRule("NetFront/3.5", "generic_netfront_ver3_5"),
+                new UserAgentFallbackRule("NetFront/4.0", "generic_netfront_ver4_0"),
+        };
+        for (UserAgentFallbackRule rule : rules) {
+            CATCH_ALL_FALLBACKS.add(rule);
+            keywordToDevice.put(rule.keyword, rule.deviceId);
+        }
+        FALLBACK_KEYWORD_TO_DEVICE = Collections.unmodifiableMap(keywordToDevice);
+        FALLBACK_KEYWORD_MATCHER = new AhoCorasickKeywordMatcher(new ArrayList<>(keywordToDevice.keySet()));
     }
 
     /**
@@ -269,11 +286,11 @@ abstract class AbstractMatcher implements Matcher {
             return "generic_web_browser";
         }
         String cleanedUa = request.getCleanedDeviceUserAgent();
-        // 遍历 Catch-All 规则，匹配关键字则返回对应通用设备
-        for (UserAgentFallbackRule fallbackRule : CATCH_ALL_FALLBACKS) {
-            if (cleanedUa.contains(fallbackRule.keyword)) {
-                return fallbackRule.deviceId;
-            }
+        // 使用 Aho-Corasick 多模式匹配器一次性扫描 UA（O(n)），
+        // 替代逐条 String.contains() 线性扫描（O(n×m)）
+        String matchedKeyword = FALLBACK_KEYWORD_MATCHER.matchKeyword(cleanedUa);
+        if (matchedKeyword != null) {
+            return FALLBACK_KEYWORD_TO_DEVICE.get(matchedKeyword);
         }
         // 非 Mozilla 且不含 Obigo 等浏览器标记的，判断为功能机或通用移动端
         if (cleanedUa.indexOf("Mozilla/") <= 0 && !StringMatchUtils.containsAnyOf(cleanedUa, "Obigo", "AU-MIC/2", "AU-MIC-", "AU-OBIGO/", "Teleca Q03B1")) {

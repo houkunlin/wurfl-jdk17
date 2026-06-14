@@ -24,6 +24,11 @@ final class AcTrieNode {
     private final boolean keywordEnd;
 
     /**
+     * 当前节点对应的完整关键词（仅当 {@link #keywordEnd} 为 {@code true} 时有值）
+     */
+    private String keyword;
+
+    /**
      * 子节点映射表，键为转移字符，值为对应的子节点
      */
     private final TreeMap<Character, AcTrieNode> transitions;
@@ -61,8 +66,12 @@ final class AcTrieNode {
             if (next == null) {
                 next = new AcTrieNode(isLast);
                 current.transitions.put(c, next);
-                if (isLast) return;
+                if (isLast) {
+                    next.keyword = pattern;
+                    return;
+                }
             } else if (isLast) {
+                next.keyword = pattern;
                 return;
             }
             current = next;
@@ -85,6 +94,15 @@ final class AcTrieNode {
      */
     public boolean isKeywordEnd() {
         return this.keywordEnd;
+    }
+
+    /**
+     * 获取当前节点对应的完整关键词。
+     *
+     * @return 关键词字符串，若非终端节点则返回 {@code null}
+     */
+    public String getKeyword() {
+        return this.keyword;
     }
 
     /**
