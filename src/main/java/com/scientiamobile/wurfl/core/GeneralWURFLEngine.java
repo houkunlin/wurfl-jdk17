@@ -265,7 +265,6 @@ public class GeneralWURFLEngine implements WURFLEngine {
      */
     @Override
     public void reload(WURFLResource rootResource, WURFLResources patchResources) {
-        this.rootPath = rootResource.getOriginalPath();
         this.ensureInitialized();
         if (patchResources == null) {
             patchResources = new WURFLResources();
@@ -274,6 +273,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
         this.lock.writeLock().lock();
 
         try {
+            this.rootPath = rootResource.getOriginalPath();
             this.wurflService.reload(rootResource, patchResources, this.capabilityFilter);
         } finally {
             this.lock.writeLock().unlock();
