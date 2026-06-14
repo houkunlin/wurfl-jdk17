@@ -32,6 +32,7 @@ public class XMLResource implements WURFLResource {
         setXxeFeature(factory, "http://apache.org/xml/features/disallow-doctype-decl", true);
         setXxeFeature(factory, "http://xml.org/sax/features/external-general-entities", false);
         setXxeFeature(factory, "http://xml.org/sax/features/external-parameter-entities", false);
+        setXxeFeature(factory, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
         SAX_PARSER_FACTORY = factory;
     }
 
@@ -187,9 +188,6 @@ public class XMLResource implements WURFLResource {
 
         try {
             SAXParser parser = SAX_PARSER_FACTORY.newSAXParser();
-            parser.getXMLReader().setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            parser.getXMLReader().setFeature("http://xml.org/sax/features/external-general-entities", false);
-            parser.getXMLReader().setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             parser.parse(inputStream, handler);
         } catch (Exception e) {
             // 解析失败时直接关闭流，防止异常路径泄漏

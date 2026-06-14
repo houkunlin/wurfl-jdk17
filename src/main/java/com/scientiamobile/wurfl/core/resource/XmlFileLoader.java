@@ -55,6 +55,7 @@ public class XmlFileLoader {
             setXxeFeature(factory, "http://apache.org/xml/features/disallow-doctype-decl", true);
             setXxeFeature(factory, "http://xml.org/sax/features/external-general-entities", false);
             setXxeFeature(factory, "http://xml.org/sax/features/external-parameter-entities", false);
+            setXxeFeature(factory, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             factory.newSAXParser().parse(inputStream, this.handler);
         } catch (RuntimeException e) {
             throw e;
