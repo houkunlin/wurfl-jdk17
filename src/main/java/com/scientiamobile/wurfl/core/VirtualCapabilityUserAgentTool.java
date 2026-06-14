@@ -650,7 +650,6 @@ public final class VirtualCapabilityUserAgentTool {
                 }
                 browserPair.setName("QQ Browser");
                 browserPair.matchAndSetGroup(QQ_BROWSER_DESKTOP_PATTERN, deviceUA, null, 1);
-                captureUpstreamBrowser(vcd, browserUA);
                 return;
             }
 
@@ -663,7 +662,6 @@ public final class VirtualCapabilityUserAgentTool {
                 }
                 browserPair.setName("WeChat Built-in");
                 browserPair.matchAndSetGroup(WECHAT_PATTERN, deviceUA, null, 1);
-                captureUpstreamBrowser(vcd, browserUA);
                 return;
             }
 
