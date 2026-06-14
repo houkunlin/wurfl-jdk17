@@ -119,6 +119,11 @@ public final class VirtualCapabilityUserAgentTool {
     private static final LazyPattern WINDOWS_OS_NAME_PATTERN = new LazyPattern("(Windows [0-9A-Za-z \\.]+)");
     private static final LazyPattern MAC_OS_NAME_PATTERN = new LazyPattern("Macintosh;(?: U;)?([a-zA-Z_ \\.0-9]+)(?:;)?");
     private static final VirtualCapabilityUserAgentTool INSTANCE = new VirtualCapabilityUserAgentTool();
+    /**
+     * 线程本地缓存 — 同一请求在同一线程上多次调用时复用 VirtualCapabilityDevice
+     */
+    private static final ThreadLocal<Object> VCD_CACHE_KEY = new ThreadLocal<>();
+    private static final ThreadLocal<VirtualCapabilityDevice> VCD_CACHE_VAL = new ThreadLocal<>();
 
     private VirtualCapabilityUserAgentTool() {
     }
@@ -144,6 +149,11 @@ public final class VirtualCapabilityUserAgentTool {
      */
 
     public VirtualCapabilityDevice assignProperties(WURFLRequest request, InternalDevice internalDevice) {
+        // 同一请求在同一线程上多次调用时返回缓存结果，避免重复正则匹配
+        if (VCD_CACHE_KEY.get() == request) {
+            return VCD_CACHE_VAL.get();
+        }
+
         VirtualCapabilityDevice vcd = new VirtualCapabilityDevice(request);
         NameVersionPair osPair = vcd.getOsPair();
         NameVersionPair browserPair = vcd.getBrowserPair();
@@ -174,6 +184,8 @@ public final class VirtualCapabilityUserAgentTool {
         vcd.normalizeBrowser();
         // 捕获上游浏览器（Chrome/Chromium/WebKit）信息，供 browserCore 虚拟能力使用
         captureUpstreamBrowser(vcd, browserUA);
+        VCD_CACHE_KEY.set(request);
+        VCD_CACHE_VAL.set(vcd);
         return vcd;
     }
 
