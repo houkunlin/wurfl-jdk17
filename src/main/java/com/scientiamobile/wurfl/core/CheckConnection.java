@@ -14,8 +14,6 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * WURFL 连通性检查器，用于定期向 ScientiaMobile 后台发送使用情况统计信息。
@@ -170,14 +168,9 @@ public class CheckConnection {
 
     public void check() {
         if (this.enabled) {
-            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-
-            try {
-                executorService.execute(new ConnectivityCheckerTask(this));
-            } finally {
-                executorService.shutdown();
-            }
-
+            Thread thread = new Thread(new ConnectivityCheckerTask(this), "wurfl-connectivity-check");
+            thread.setDaemon(true);
+            thread.start();
         }
     }
 
