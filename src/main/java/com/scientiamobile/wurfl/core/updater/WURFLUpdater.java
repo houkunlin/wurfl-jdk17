@@ -141,7 +141,11 @@ public class WURFLUpdater {
                 updatePipeline = this.usesProxy() ? new UpdatePipeline(this.resolvedWurflPath, this.updateUrl, this.proxySettings) : new UpdatePipeline(this.resolvedWurflPath, this.updateUrl);
                 updatePipeline.setApiUserAgent(UserAgentUtils.createApiUserAgent(this.wurflEngine));
                 updatePipeline.setConnectionTimeoutMs(this.connectionTimeoutMs);
-                this.scheduler = Executors.newScheduledThreadPool(1);
+                this.scheduler = Executors.newScheduledThreadPool(1, r -> {
+                    Thread t = new Thread(r, "wurfl-periodic-update");
+                    t.setDaemon(true);
+                    return t;
+                });
                 this.periodicUpdateTask = new PeriodicUpdateTask(this.wurflEngine, updatePipeline, this.resolvedWurflPath);
                 this.scheduler.scheduleAtFixedRate(this.periodicUpdateTask, this.firstExecution != null ? this.firstExecution.getTimeInMillis() - Calendar.getInstance().getTimeInMillis() : 100L, this.frequency.value(), TimeUnit.MILLISECONDS);
             } catch (BadWurflExtensionException e) {
