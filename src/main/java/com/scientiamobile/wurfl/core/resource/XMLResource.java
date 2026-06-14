@@ -2,7 +2,6 @@ package com.scientiamobile.wurfl.core.resource;
 
 import com.scientiamobile.wurfl.core.resource.exc.WURFLResourceException;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.LoggerFactory;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -25,7 +24,6 @@ public class XMLResource implements WURFLResource {
     private static final SAXParserFactory SAX_PARSER_FACTORY;
 
     static {
-        LoggerFactory.getLogger(XMLResource.class);
         SAXParserFactory factory = SAXParserFactory.newInstance();
         try {
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);

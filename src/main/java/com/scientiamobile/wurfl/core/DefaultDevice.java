@@ -5,7 +5,6 @@ import com.scientiamobile.wurfl.core.exc.VirtualCapabilityNotDefinedException;
 import com.scientiamobile.wurfl.core.matchers.MatchType;
 import com.scientiamobile.wurfl.core.vcap.VirtualCapabilityHandler;
 import org.apache.commons.lang3.Validate;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,10 +21,6 @@ import java.util.Map;
 public class DefaultDevice implements EnrichedDevice, Serializable {
     @Serial
     private static final long serialVersionUID = 11L;
-
-    static {
-        LoggerFactory.getLogger(DefaultDevice.class);
-    }
 
     /**
      * 匹配类型（如精确匹配、缓存匹配等）
