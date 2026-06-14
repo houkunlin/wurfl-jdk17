@@ -24,7 +24,7 @@ import java.util.zip.ZipInputStream;
 
 final class ResourceInput {
     private static final Logger LOG = LoggerFactory.getLogger(ResourceInput.class);
-    private static boolean ASSERTIONS_DISABLED = !ResourceInput.class.desiredAssertionStatus();
+    private static final boolean ASSERTIONS_DISABLED = !ResourceInput.class.desiredAssertionStatus();
     /**
      * 资源的 URI（可为 null，当直接使用输入流时）
      */
