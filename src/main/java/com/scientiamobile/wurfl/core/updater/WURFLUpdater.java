@@ -164,7 +164,7 @@ public class WURFLUpdater {
         return this.scheduler != null && !this.scheduler.isTerminated();
     }
 
-    public void stopPeriodicUpdate() {
+    public synchronized void stopPeriodicUpdate() {
         if (this.isPeriodicUpdateRunning()) {
             this.scheduler.shutdown();
             this.scheduler = null;
