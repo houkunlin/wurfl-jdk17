@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +28,7 @@ import java.io.FileNotFoundException;
  * @author HouKunLin
  */
 class Wurfl01Test {
+    private static final Logger log = LoggerFactory.getLogger(Wurfl01Test.class);
     /**
      * WURFL 设备数据文件路径，包含压缩后的设备描述 XML。
      * 文件位于项目 {@code libs/} 目录下，版本为 1.9.1.0 时期的 wurfl.zip 版本。
@@ -45,7 +48,10 @@ class Wurfl01Test {
      */
     static {
         try {
+            long startTime = System.nanoTime();
             wurfl = new GeneralWURFLEngine(new XMLResource(new FileInputStream(file), file.getName()));
+            log.info("Loaded WURFL engine: {}", wurfl.getClass().getName());
+            log.info("初始化引擎耗时：{} ms", String.format("%.3f", (System.nanoTime() - startTime) / 1000000.0));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -59,7 +65,9 @@ class Wurfl01Test {
      */
     @BeforeAll
     static void setup() {
+        long startTime = System.nanoTime();
         wurfl.load();
+        log.info("加载数据文件耗时：{} ms", String.format("%.3f", (System.nanoTime() - startTime) / 1000000.0));
     }
 
     /**
