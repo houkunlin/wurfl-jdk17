@@ -133,7 +133,11 @@ public class UpdatePipeline {
             }
 
             String classpathResourcePath = path.replaceFirst("classpath:", "");
-            return UpdatePipeline.class.getResource(classpathResourcePath).getFile();
+            URL resourceUrl = UpdatePipeline.class.getResource(classpathResourcePath);
+            if (resourceUrl == null) {
+                throw new IllegalArgumentException("Classpath resource not found: " + classpathResourcePath);
+            }
+            return resourceUrl.getFile();
         } else {
             return path;
         }
