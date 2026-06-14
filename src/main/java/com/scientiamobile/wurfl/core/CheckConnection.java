@@ -30,6 +30,10 @@ public class CheckConnection {
      */
     private static final Logger logger = LoggerFactory.getLogger(CheckConnection.class);
     /**
+     * Jackson ObjectMapper — 线程安全，复用实例避免重复创建开销
+     */
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    /**
      * 连通性检查观察者列表
      */
     private final List<CheckConnectionObserver> observers = new ArrayList<>();
@@ -143,8 +147,7 @@ public class CheckConnection {
 
     private String buildPayload(String wurflSmid, String wurflVersion) {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode root = mapper.createObjectNode();
+            ObjectNode root = MAPPER.createObjectNode();
             root.put("api-smid", ResourceUtils.getBuildId());
             root.put("wurfl-smid", wurflSmid);
             root.put("api", this.getApiName());
@@ -153,7 +156,7 @@ public class CheckConnection {
             root.put("host", getHostNameOrUnknown());
             root.put("os", this.osNameAndVersion);
             root.put("platform", this.platformName);
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+            return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(root);
         } catch (Exception e) {
             logger.warn("Failed to build payload JSON", e);
             return "{}";
