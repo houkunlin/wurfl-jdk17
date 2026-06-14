@@ -2,6 +2,7 @@ package com.scientiamobile.wurfl.core;
 
 import com.scientiamobile.wurfl.core.cache.CacheProvider;
 import com.scientiamobile.wurfl.core.cache.DoubleLRUMapCacheProvider;
+import com.scientiamobile.wurfl.core.exc.WURFLRuntimeException;
 import com.scientiamobile.wurfl.core.matchers.MatchType;
 import com.scientiamobile.wurfl.core.matchers.MatcherManager;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
@@ -165,7 +166,9 @@ class WURFLServiceImpl implements WURFLService {
             internalDevice = this.deviceProvider.getInternalDevice(deviceInfo.getId());
         }
         this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
-        assert internalDevice != null;
+        if (internalDevice == null) {
+            throw new WURFLRuntimeException("Device not found for ID: " + (deviceInfo != null ? deviceInfo.getId() : "unknown"));
+        }
         return this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(),
                 deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
     }
