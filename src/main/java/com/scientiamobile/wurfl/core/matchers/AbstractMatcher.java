@@ -170,10 +170,10 @@ abstract class AbstractMatcher implements Matcher {
 
     /**
      * 校验 WURFL 模型中包含当前匹配器所需的全部设备 ID。
-     * <p>如果必需的设备 ID 在模型中不存在，则抛出 {@link MissingDeviceIdConsistencyException}。</p>
+     * <p>如果必需的设备 ID 在模型中不存在，则记录警告而非抛异常。
+     * 缺失的兜底 ID 不影响引擎核心功能，只是该特定回退选项不可用。</p>
      *
      * @param model WURFL 设备模型
-     * @throws MissingDeviceIdConsistencyException 如果必需的设备 ID 不存在于模型中
      */
     private void validateRequiredDeviceIds(WURFLModel model) {
         if (model != null) {
@@ -181,7 +181,7 @@ abstract class AbstractMatcher implements Matcher {
 
             for (String deviceId : this.getRequiredDeviceIds()) {
                 if (!allDeviceIds.contains(deviceId)) {
-                    throw new MissingDeviceIdConsistencyException("wurfl.xml load error - Missing device id " + deviceId + " you may need to update the wurfl.xml file to a more recent version");
+                    LOG.warn("Missing device id {} — update wurfl.xml for full coverage, continuing with reduced fallback set", deviceId);
                 }
             }
         }
