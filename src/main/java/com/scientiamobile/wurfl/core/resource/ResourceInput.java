@@ -126,10 +126,17 @@ final class ResourceInput {
         }
 
         URI uri = URI.create(uriString);
-        // 防御路径遍历（禁止 '..' 父目录跳转）
-        String rawPath = uri.getPath();
-        if (rawPath != null && rawPath.contains("..")) {
-            throw new IllegalArgumentException("Path traversal is not allowed: " + path);
+        // 防御路径遍历：规范化路径并检查是否被篡改
+        if ("file".equals(uri.getScheme())) {
+            try {
+                String canonicalPath = new File(uri.getPath()).getCanonicalPath();
+                String rawPath = new File(uri.getPath()).getPath();
+                if (!canonicalPath.equals(rawPath)) {
+                    throw new IllegalArgumentException("Path traversal is not allowed: " + path);
+                }
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Failed to resolve path: " + path, e);
+            }
         }
 
         return uri;
@@ -189,11 +196,19 @@ final class ResourceInput {
                     Validate.isTrue(uri.getHost() != null && (uri.getHost().endsWith(".scientiamobile.com") || uri.getHost().equals("localhost") || uri.getHost().equals("127.0.0.1")), "Invalid URL host: " + uri.getHost());
                 }
 
-                // 限制 file 来源：禁止路径遍历，且文件扩展名必须为 WURFL 数据格式
+                // 限制 file 来源：禁止路径遍历
                 if ("file".equals(uri.getScheme())) {
                     String filePath = uri.getPath();
-                    if (filePath != null && filePath.contains("..")) {
-                        throw new WURFLRuntimeException("Path traversal detected in file URI: " + uri);
+                    if (filePath != null) {
+                        try {
+                            String canonical = new File(filePath).getCanonicalPath();
+                            String raw = new File(filePath).getPath();
+                            if (!canonical.equals(raw)) {
+                                throw new WURFLRuntimeException("Path traversal detected in file URI: " + uri);
+                            }
+                        } catch (IOException e) {
+                            throw new WURFLRuntimeException("Failed to resolve file URI: " + uri, e);
+                        }
                     }
                 }
 
