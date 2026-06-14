@@ -471,34 +471,34 @@ public class GeneralWURFLEngine implements WURFLEngine {
 
     /**
      * 确保引擎已初始化，如果未初始化则执行初始化流程。
-     * <p>包括加载模型、初始化服务、初始化工具类和虚拟能力工具。
-     * 使用双重检查锁定模式避免重复初始化。</p>
+     * <p>在写锁保护下执行完整的初始化流程，包括加载模型、初始化服务、
+     * 初始化工具类和虚拟能力工具。使用双重检查锁定模式避免重复初始化。</p>
+     * <p>不再嵌套 {@link #initLock}，统一使用 {@link #lock} 的写锁，
+     * 消除与 {@code reload()} 之间锁顺序不一致的风险。</p>
      */
 
     private void ensureInitialized() {
         if (this.initialized) return;
-        synchronized (this.initLock) {
+        this.lock.writeLock().lock();
+        try {
             if (this.initialized) return;
-            this.lock.writeLock().lock();
-            try {
-                initModel();
-                initService();
-                initUtils();
-                VirtualCapabilityUserAgentTool.getInstance()
-                        .assignProperties(this.requestFactory.createRequest("", this.engineTarget),
-                                this.deviceProvider.getInternalDevice("generic"));
-                this.initialized = true;
-            } catch (WURFLRuntimeException e) {
-                log.error("cannot initialize: {}", e.getMessage(), e);
-                throw e;
-            } catch (Exception e) {
-                log.error("cannot initialize: {}", e.getMessage(), e);
-                throw new WURFLRuntimeException(e);
-            } finally {
-                this.lock.writeLock().unlock();
-            }
-            initCheckConnection();
+            initModel();
+            initService();
+            initUtils();
+            VirtualCapabilityUserAgentTool.getInstance()
+                    .assignProperties(this.requestFactory.createRequest("", this.engineTarget),
+                            this.deviceProvider.getInternalDevice("generic"));
+            this.initialized = true;
+        } catch (WURFLRuntimeException e) {
+            log.error("cannot initialize: {}", e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("cannot initialize: {}", e.getMessage(), e);
+            throw new WURFLRuntimeException(e);
+        } finally {
+            this.lock.writeLock().unlock();
         }
+        initCheckConnection();
     }
 
     /**
