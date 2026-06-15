@@ -22,6 +22,11 @@ public class OsName implements VirtualCapabilityEvaluator, Serializable {
 
     @Override
     public String eval(Device device, WURFLRequest request) {
+        String deviceOs = device.getCapability("device_os");
+        // HarmonyOS 设备即使 UA 包含 Android 关键字，也应识别为 HarmonyOS
+        if ("HarmonyOS".equals(deviceOs)) {
+            return VirtualCapabilityHandler.applyControlCapOverride("advertised_device_os", "HarmonyOS", device);
+        }
         VirtualCapabilityDevice virtualCapabilityDevice = VirtualCapabilityUserAgentTool.getInstance().assignProperties(request, device);
         return VirtualCapabilityHandler.applyControlCapOverride("advertised_device_os", virtualCapabilityDevice.getOsPairName(), device);
     }
