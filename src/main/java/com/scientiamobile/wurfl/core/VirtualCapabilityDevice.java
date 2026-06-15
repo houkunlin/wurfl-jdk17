@@ -46,7 +46,7 @@ public class VirtualCapabilityDevice implements Serializable {
     private static final Set<String> knownOsNames = Set.of(
             "Windows CE", "Windows Mobile", "Windows Phone", "Nintendo",
             "Android", "iOS", "Tizen", "Nokia Series 40", "Symbian",
-            "BlackBerry", "RIM Tablet OS", "Bada", "webOS", LINUX,
+            "BlackBerry", "RIM Tablet OS", "Bada", "webOS", "HarmonyOS", LINUX,
             "X11", "Ubuntu", "Fedora", MAC_OS_X, "Fire OS"
     );
 

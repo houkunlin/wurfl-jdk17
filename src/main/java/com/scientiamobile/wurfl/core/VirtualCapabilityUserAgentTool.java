@@ -292,9 +292,14 @@ public final class VirtualCapabilityUserAgentTool {
         String browserUA = vcd.getBrowserUserAgent();
 
         osPair.setName("Android");
-        osPair.matchAndSetGroup(ANDROID_VERSION_PATTERN, deviceUA, "Android", 1);
-        osPair.matchAndSetGroup(AMAZON_ANDROID_VERSION_PATTERN, deviceUA, "Android", 1);
-        osPair.matchAndSetGroup(ADR_ANDROID_VERSION_PATTERN, deviceUA, "Android", 1);
+        osPair.matchAndSetGroup(ANDROID_VERSION_PATTERN, deviceUA, null, 1);
+        osPair.matchAndSetGroup(AMAZON_ANDROID_VERSION_PATTERN, deviceUA, null, 1);
+        osPair.matchAndSetGroup(ADR_ANDROID_VERSION_PATTERN, deviceUA, null, 1);
+
+        // HarmonyOS 覆盖：UA 含 HarmonyOS 时识别为鸿蒙系统
+        if (deviceUA.contains("HarmonyOS")) {
+            osPair.setName("HarmonyOS");
+        }
 
         // Fire OS 覆盖
         String deviceOs = device.getCapability("device_os");
