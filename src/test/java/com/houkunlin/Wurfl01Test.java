@@ -505,7 +505,7 @@ class Wurfl01Test {
         Assertions.assertEquals("Huawei LIO-AL00 (Mate 30 Pro)", info.getCompleteDeviceName());
         Assertions.assertTrue(info.isLargescreen());
         Assertions.assertEquals("HarmonyOS", info.getAdvertisedDeviceOs());
-        Assertions.assertTrue(info.isAndroid());
+        Assertions.assertFalse(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Huawei Mate 30 Pro", info.getDeviceName());
         Assertions.assertTrue(info.isHtmlPreferred());
@@ -575,7 +575,7 @@ class Wurfl01Test {
         Assertions.assertEquals("Huawei MRX-W09 (MatePad Pro)", info.getCompleteDeviceName());
         Assertions.assertTrue(info.isLargescreen());
         Assertions.assertEquals("HarmonyOS", info.getAdvertisedDeviceOs());
-        Assertions.assertTrue(info.isAndroid());
+        Assertions.assertFalse(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Huawei MatePad Pro", info.getDeviceName());
         Assertions.assertTrue(info.isHtmlPreferred());
@@ -645,7 +645,7 @@ class Wurfl01Test {
         Assertions.assertEquals("Huawei TET-AN00 (Mate X2)", info.getCompleteDeviceName());
         Assertions.assertTrue(info.isLargescreen());
         Assertions.assertEquals("HarmonyOS", info.getAdvertisedDeviceOs());
-        Assertions.assertTrue(info.isAndroid());
+        Assertions.assertFalse(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Huawei Mate X2", info.getDeviceName());
         Assertions.assertTrue(info.isHtmlPreferred());
@@ -1499,6 +1499,42 @@ class Wurfl01Test {
         Assertions.assertEquals("7", info.getAdvertisedDeviceOsVersion());
         Assertions.assertEquals("", info.getBrowserCore());
         Assertions.assertEquals("", info.getBrowserCoreVersion());
+    }
+
+    @DisplayName("Huawei MediaPad M3 Lite 10")
+    @Test
+    void test_10038() {
+        Device device = wurfl.getDeviceForRequest("Mozilla/5.0 (Linux; Android 11; BAH-L09) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.88 Mobile Safari/537.36");
+        System.out.println(device);
+        System.out.println(device.getCapabilities());
+        VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
+        System.out.println(info);
+        System.out.println(buildAssertions(info));
+        Assertions.assertFalse(info.isAppWebview());
+        Assertions.assertFalse(info.isApp());
+        Assertions.assertTrue(info.isMobile());
+        Assertions.assertFalse(info.isPhone());
+        Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
+        Assertions.assertEquals("Chrome Mobile", info.getAdvertisedBrowser());
+        Assertions.assertFalse(info.isSmartphone());
+        Assertions.assertFalse(info.isRobot());
+        Assertions.assertEquals("Huawei BAH-L09 (MediaPad M3 Lite 10)", info.getCompleteDeviceName());
+        Assertions.assertTrue(info.isLargescreen());
+        Assertions.assertEquals("HarmonyOS", info.getAdvertisedDeviceOs());
+        Assertions.assertFalse(info.isAndroid());
+        Assertions.assertFalse(info.isXhtmlmpPreferred());
+        Assertions.assertEquals("Huawei MediaPad M3 Lite 10", info.getDeviceName());
+        Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("91.0.4472.88", info.getAdvertisedBrowserVersion());
+        Assertions.assertFalse(info.isWindowsPhone());
+        Assertions.assertFalse(info.isIos());
+        Assertions.assertTrue(info.isTouchscreen());
+        Assertions.assertFalse(info.isWmlPreferred());
+        Assertions.assertEquals("Tablet", info.getFormFactor());
+        Assertions.assertEquals("11", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("91.0.4472.88", info.getBrowserCoreVersion());
     }
 
     String buildAssertions(VirtualCapabilityInfo info) {
