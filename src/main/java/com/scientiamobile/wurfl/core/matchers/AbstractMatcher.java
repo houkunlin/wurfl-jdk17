@@ -97,7 +97,7 @@ abstract class AbstractMatcher implements Matcher {
      * 匹配器过滤器，维护该匹配器能处理的 User-Agent 索引。
      * <p>首次调用 {@link #getFilter()} 时延迟初始化，默认为 {@link DefaultMatcherFilter}。</p>
      */
-    private MatcherFilter filter;
+    private volatile MatcherFilter filter;
 
     /**
      * 无参构造方法，不绑定 WURFL 模型和规范化器。
@@ -196,7 +196,11 @@ abstract class AbstractMatcher implements Matcher {
      */
     public final MatcherFilter getFilter() {
         if (this.filter == null) {
-            this.filter = new DefaultMatcherFilter(this);
+            synchronized (this) {
+                if (this.filter == null) {
+                    this.filter = new DefaultMatcherFilter(this);
+                }
+            }
         }
 
         return this.filter;

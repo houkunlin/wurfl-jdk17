@@ -47,7 +47,7 @@ public class GeneralWURFLEngine implements WURFLEngine {
     /**
      * 能力过滤器，用于限制引擎加载的能力集合
      */
-    private String[] capabilityFilter;
+    private volatile String[] capabilityFilter;
     /**
      * WURFL 根资源（数据文件）
      */
