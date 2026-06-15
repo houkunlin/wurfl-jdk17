@@ -114,8 +114,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertFalse(info.isMobile());
         Assertions.assertFalse(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertTrue(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertEquals("Chrome", info.getAdvertisedBrowser());
         Assertions.assertFalse(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -125,8 +125,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Google Chrome", info.getDeviceName());
-        Assertions.assertEquals("147.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("147.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertFalse(info.isTouchscreen());
@@ -201,8 +201,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertEquals("Chromium", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -212,8 +212,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("OnePlus Turbo 6", info.getDeviceName());
-        Assertions.assertEquals("138.0.7204.179", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("138.0.7204.179", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -252,8 +252,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Quark browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Quark browser", info.getAdvertisedAppName());
         Assertions.assertEquals("Quark", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -263,8 +263,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("OnePlus 12", info.getDeviceName());
-        Assertions.assertEquals("10.10.0.1075", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("10.10.0.1075", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -322,8 +322,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("QQ Browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedAppName());
         Assertions.assertEquals("QQ Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -333,8 +333,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Xiaomi Redmi K40 5G Premium Edition", info.getDeviceName());
-        Assertions.assertEquals("6.2", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("6.2", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -357,8 +357,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("QQ Browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("QQ Browser", info.getAdvertisedAppName());
         Assertions.assertEquals("QQ Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -368,8 +368,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Apple iPhone", info.getDeviceName());
-        Assertions.assertEquals("8.8.38.705", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("8.8.38.705", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertTrue(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -427,8 +427,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("UC Browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("UC Browser", info.getAdvertisedAppName());
         Assertions.assertEquals("UC Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -438,8 +438,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Xiaomi 14 Pro", info.getDeviceName());
-        Assertions.assertEquals("13.6.0.1306", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("13.6.0.1306", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -462,8 +462,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertEquals("Chrome Mobile", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -473,8 +473,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Google Pixel 7", info.getDeviceName());
-        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -497,8 +497,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertEquals("Chrome Mobile", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -508,8 +508,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Huawei Mate 30 Pro", info.getDeviceName());
-        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -532,8 +532,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertEquals("Chrome Mobile", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -543,8 +543,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Vivo X100 Pro", info.getDeviceName());
-        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -567,8 +567,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertFalse(info.isPhone());
-        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("Chrome browser", info.getAdvertisedAppName());
         Assertions.assertEquals("Chromium", info.getAdvertisedBrowser());
         Assertions.assertFalse(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -578,8 +578,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Huawei MatePad Pro", info.getDeviceName());
-        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("120.0.0.0", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
@@ -602,8 +602,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("HeyTap Browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
+        Assertions.assertEquals("HeyTap Browser", info.getAdvertisedAppName());
         Assertions.assertEquals("HeyTap Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
@@ -613,8 +613,8 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("OnePlus 8T", info.getDeviceName());
-        Assertions.assertEquals("40.10.17.1", info.getAdvertisedBrowserVersion());
         Assertions.assertTrue(info.isHtmlPreferred());
+        Assertions.assertEquals("40.10.17.1", info.getAdvertisedBrowserVersion());
         Assertions.assertFalse(info.isWindowsPhone());
         Assertions.assertFalse(info.isIos());
         Assertions.assertTrue(info.isTouchscreen());
