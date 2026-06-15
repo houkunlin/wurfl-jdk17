@@ -25,13 +25,15 @@ public class CompleteDeviceName implements VirtualCapabilityEvaluator, Serializa
 
     @Override
     public String eval(Device device, WURFLRequest request) {
+        VirtualCapabilityDevice vcd = null;
         String brandName = device.getCapability("brand_name");
         StringBuilder builder = new StringBuilder(brandName);
         String modelName = device.getCapability("model_name");
         if (!modelName.isEmpty()) {
             // 对于 Generic 通用设备，用实际 UA 解析的 OS 版本替换名称中的老旧版本号
             if (brandName.startsWith("Generic")) {
-                modelName = replaceStaleVersion(modelName, device, request);
+                vcd = VirtualCapabilityUserAgentTool.getInstance().assignProperties(request, device);
+                modelName = replaceStaleVersion(modelName, vcd);
             }
             builder.append(" ").append(modelName);
         }
@@ -41,15 +43,25 @@ public class CompleteDeviceName implements VirtualCapabilityEvaluator, Serializa
             builder.append(" (").append(marketingName).append(")");
         }
 
-        return builder.toString();
+        String result = builder.toString().trim();
+        // 品牌和型号都为空时，以 "浏览器 on OS" 作为兜底名称（浏览器不为空时）
+        if (result.isEmpty()) {
+            if (vcd == null) {
+                vcd = VirtualCapabilityUserAgentTool.getInstance().assignProperties(request, device);
+            }
+            String browserName = vcd.getBrowserPairName();
+            if (browserName != null && !browserName.isEmpty()) {
+                result = browserName + " on " + vcd.getOsPairName();
+            }
+        }
+        return result;
     }
 
     /**
      * 将通用设备名称中的老旧版本号替换为实际 OS 版本。
      * <p>仅替换 OS 名称之后的版本号，如 "Android 1.5 Tablet" → "Android 14 Tablet"。</p>
      */
-    private static String replaceStaleVersion(String namePart, Device device, WURFLRequest request) {
-        VirtualCapabilityDevice vcd = VirtualCapabilityUserAgentTool.getInstance().assignProperties(request, device);
+    private static String replaceStaleVersion(String namePart, VirtualCapabilityDevice vcd) {
         String actualOsVersion = vcd.getOsPairVersion();
         if (actualOsVersion != null && !actualOsVersion.isEmpty()) {
             return VERSION_PREFIX.matcher(namePart).replaceFirst("$1 " + actualOsVersion);
