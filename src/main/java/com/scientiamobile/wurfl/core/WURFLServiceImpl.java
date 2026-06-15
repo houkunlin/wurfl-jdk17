@@ -9,6 +9,7 @@ import com.scientiamobile.wurfl.core.matchers.MatcherManager;
 import com.scientiamobile.wurfl.core.request.WURFLRequest;
 import com.scientiamobile.wurfl.core.request.WURFLRequestFactoryWithPriority;
 import com.scientiamobile.wurfl.core.resource.*;
+import com.scientiamobile.wurfl.core.utils.StringMatchUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -163,7 +164,7 @@ class WURFLServiceImpl implements WURFLService {
         }
         DeviceInfo deviceInfo = this.matcherManager.matchRequest(request);
         if (deviceInfo == null) {
-            String sanitizedUa = sanitizeForLog(request.getOriginalUserAgent());
+            String sanitizedUa = StringMatchUtils.sanitizeForLog(request.getOriginalUserAgent());
             throw new WURFLRuntimeException(
                     "MatcherManager returned null for request: " + sanitizedUa);
         }
@@ -183,15 +184,6 @@ class WURFLServiceImpl implements WURFLService {
         this.cacheProvider.putDevice(request.getOriginalUserAgent(), internalDevice);
         return this.deviceProvider.buildDevice(internalDevice, request, deviceInfo.getMatchType(),
                 deviceInfo.getMatcherName(), deviceInfo.getBucketMatcherName());
-    }
-
-    /**
-     * 消毒用户可控字符串，防止 CRLF 日志注入。
-     * <p>替换 \\r、\\n 和换行符为安全占位符，确保日志行格式不被破坏。</p>
-     */
-    private static String sanitizeForLog(String input) {
-        if (input == null) return "";
-        return input.replace('\r', '␍').replace('\n', '␊');
     }
 
     /**

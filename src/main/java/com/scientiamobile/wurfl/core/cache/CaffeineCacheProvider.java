@@ -103,7 +103,7 @@ public class CaffeineCacheProvider implements CacheProvider {
             this.deviceIdCache.put(deviceId, device);
             this.userAgentToDeviceIdCache.put(userAgent, deviceId);
         } catch (RuntimeException e) {
-            log.error("Could not cache " + userAgent, e);
+            log.error("Could not cache {}", com.scientiamobile.wurfl.core.utils.StringMatchUtils.sanitizeForLog(userAgent), e);
         }
     }
 

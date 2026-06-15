@@ -35,6 +35,15 @@ public final class StringMatchUtils {
     }
 
     /**
+     * 消毒用户可控字符串，防止 CRLF 日志注入。
+     * <p>替换 \\r、\\n 为安全占位符，确保日志行格式不被破坏。</p>
+     */
+    public static String sanitizeForLog(String input) {
+        if (input == null) return "";
+        return input.replace('\r', '␍').replace('\n', '␊');
+    }
+
+    /**
      * 获取字符串中第一个斜杠（'/'）之后的索引位置。
      *
      * @param value 输入字符串

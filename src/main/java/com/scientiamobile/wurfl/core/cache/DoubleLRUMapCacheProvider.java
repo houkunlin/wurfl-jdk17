@@ -99,7 +99,7 @@ public class DoubleLRUMapCacheProvider implements CacheProvider {
                 this.deviceById.put(device.getId(), device);
                 this.deviceIdByUserAgent.put(userAgent, device.getId());
             } catch (RuntimeException e) {
-                log.error("Could not cache {}", userAgent, e);
+                log.error("Could not cache {}", com.scientiamobile.wurfl.core.utils.StringMatchUtils.sanitizeForLog(userAgent), e);
             }
         }
     }

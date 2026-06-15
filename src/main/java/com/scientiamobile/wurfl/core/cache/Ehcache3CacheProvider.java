@@ -106,7 +106,7 @@ public class Ehcache3CacheProvider implements CacheProvider {
             this.deviceIdCache.put(deviceId, device);
             this.userAgentToIdCache.put(userAgent, deviceId);
         } catch (RuntimeException e) {
-            log.error("Could not cache {}: {}", userAgent, e.getMessage());
+            log.error("Could not cache {}: {}", com.scientiamobile.wurfl.core.utils.StringMatchUtils.sanitizeForLog(userAgent), e.getMessage());
         }
     }
 

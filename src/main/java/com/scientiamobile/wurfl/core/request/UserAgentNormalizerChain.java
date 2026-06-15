@@ -132,7 +132,7 @@ public class UserAgentNormalizerChain implements UserAgentNormalizer {
                 request.setUrlEncoded(true);
             }
         } catch (RuntimeException e) {
-            log.warn("rawdecoding for user agent {} failed", userAgent, e);
+            log.warn("rawdecoding for user agent {} failed", com.scientiamobile.wurfl.core.utils.StringMatchUtils.sanitizeForLog(userAgent), e);
         }
 
         return userAgent;
