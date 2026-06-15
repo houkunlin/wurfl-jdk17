@@ -5,12 +5,12 @@ plugins {
     id 'java-library'
     id 'signing'
     id 'maven-publish'
-    id 'org.jreleaser' version '1.24.0'
+    id 'moe.karla.maven-publishing' version "1.4.0"
     id 'com.github.spotbugs' version '6.5.6'
 }
 
 group = 'com.houkunlin'
-version = '1.1.1'
+version = '1.2.0'
 description = """
 基于 ScientiaMobile WURFL 官方 1.9.1.0 版本改造的 Java 17 设备检测引擎。
 通过 User-Agent 字符串识别设备型号、操作系统、浏览器等属性，
@@ -158,9 +158,12 @@ publishing {
     }
     repositories {
         maven {
-            name = 'buildDir'
-            // 发布到本地路径，在发布到正式仓库时会用到这个步骤的输出内容
-            url = layout.buildDirectory.dir('staging-deploy')
+            name = "snapshot"
+            credentials {
+                username = GETGPGKEY("sonatype_username")
+                password = GETGPGKEY("sonatype_password")
+            }
+            url = 'https://central.sonatype.com/repository/maven-snapshots/'
         }
     }
 }
@@ -176,55 +179,7 @@ signing {
     sign publishing.publications
 }
 
-jreleaser {
-    signing {
-        active = 'ALWAYS'
-        armored = true
-        mode = 'MEMORY'
-        publicKey = GETGPGKEY("gpg_public_key")
-        secretKey = GETGPGKEY("gpg_private_key")
-        passphrase = GETENV("gpg_password")
-    }
-    deploy {
-        maven {
-            mavenCentral {
-                releaseDeployToCentral {
-                    active = 'RELEASE'
-                    applyMavenCentralRules = true
-                    username = GETENV("sonatype_username")
-                    password = GETENV("sonatype_password")
-                    url = 'https://central.sonatype.com/api/v1/publisher'
-                    stagingRepository('build/staging-deploy')
-                }
-            }
-            nexus2 {
-                snapshotDeployToCentral {
-                    // 发布快照版本
-                    // 快照仓库地址：https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/
-                    active = 'SNAPSHOT'
-                    url = 'https://central.sonatype.com/repository/maven-snapshots/'
-                    snapshotUrl = 'https://central.sonatype.com/repository/maven-snapshots/'
-                    snapshotSupported = true
-                    username = GETENV("sonatype_username")
-                    password = GETENV("sonatype_password")
-                    stagingRepository('build/staging-deploy')
-                    verifyUrl = "https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/{{path}}/{{filename}}"
-                }
-            }
-        }
-    }
-    release {
-        github {
-            repoOwner = "houkunlin"
-            skipTag = true
-            overwrite = true
-            skipRelease = isSnapshot
-            username = "houkunlin"
-            token = GETENV("GITHUB_TOKEN")
-            commitAuthor {
-                name = "houkunlin"
-                email = "houkunlin@aliyun.com"
-            }
-        }
-    }
+mavenPublishing {
+    publishingType = moe.karla.maven.publishing.MavenPublishingExtension.PublishingType.USER_MANAGED
+    manuallyPomSetup = true
 }
