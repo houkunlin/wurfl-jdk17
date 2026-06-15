@@ -517,11 +517,11 @@ public final class UserAgentUtils {
         Validate.notNull(request, "The HttpServletRequest is null");
         String userAgent;
         userAgent = request.getHeader("Device-Stock-UA");
-        if (userAgent == null || "".equals(userAgent)) {
+        if (userAgent == null || userAgent.isEmpty()) {
             userAgent = request.getHeader("X-OperaMini-Phone-UA");
         }
 
-        if (userAgent == null || "".equals(userAgent)) {
+        if (userAgent == null || userAgent.isEmpty()) {
             userAgent = request.getHeader("User-Agent");
         }
 
@@ -557,7 +557,7 @@ public final class UserAgentUtils {
             headerName = "Profile";
         }
 
-        if (headerName != null && !headerName.trim().isEmpty()) {
+        if (headerName != null) {
             uaProfile = headerProvider.getHeader(headerName);
         }
 
@@ -579,7 +579,7 @@ public final class UserAgentUtils {
         Validate.notNull(request, "HttpRequest is null");
         String accept;
         accept = request.getHeader("accept");
-        return accept != null && (accept.indexOf("application/vnd.wap.xhtml+xml") != -1 || accept.indexOf("text/vnd.wap.wml") != -1);
+        return accept != null && (accept.contains("application/vnd.wap.xhtml+xml") || accept.contains("text/vnd.wap.wml"));
     }
 
     /**
@@ -855,7 +855,7 @@ public final class UserAgentUtils {
      * @param userAgent User-Agent 字符串
      * @return 标准化的 Windows Phone 版本号，如 "8.1"；如果无法匹配则返回 null
      */
-    public static final String getWindowsPhoneVersion(String userAgent) {
+    public static String getWindowsPhoneVersion(String userAgent) {
         Matcher matcher = WINDOWS_PHONE_VERSION_PATTERN.matcher(userAgent);
         if (!matcher.find()) {
             return null;
@@ -877,7 +877,7 @@ public final class UserAgentUtils {
      * @param userAgent User-Agent 字符串
      * @return 清洗后的设备型号，如果无法匹配则返回 null
      */
-    public static final String getWindowsPhoneModel(String userAgent) {
+    public static String getWindowsPhoneModel(String userAgent) {
         return cleanAndReplaceWindowsPhoneModel(userAgent, WINDOWS_PHONE_MODEL_PATTERN, WINDOWS_PHONE_EDGE_MODEL_PATTERN);
     }
 
@@ -887,16 +887,16 @@ public final class UserAgentUtils {
      * @param userAgent User-Agent 字符串
      * @return Windows NT 版本号，如 "10.0"；如果无法匹配则返回 null
      */
-    public static final String getWindowsPhoneDesktopVersion(String userAgent) {
+    public static String getWindowsPhoneDesktopVersion(String userAgent) {
         Matcher matcher;
         matcher = WINDOWS_NT_VERSION_PATTERN.matcher(userAgent);
         if (matcher.find()) {
             String windowsNtVersion;
             windowsNtVersion = matcher.group(1);
-            if (windowsNtVersion.indexOf("10.0") >= 0) {
+            if (windowsNtVersion.contains("10.0")) {
                 return "10.0";
             } else {
-                return windowsNtVersion.indexOf("6.3") < 0 && windowsNtVersion.indexOf("8.1") < 0 ? "8.0" : "8.1";
+                return !windowsNtVersion.contains("6.3") && !windowsNtVersion.contains("8.1") ? "8.0" : "8.1";
             }
         } else {
             return null;
@@ -909,7 +909,7 @@ public final class UserAgentUtils {
      * @param userAgent User-Agent 字符串
      * @return 清洗后的设备型号，如果无法匹配则返回 null
      */
-    public static final String getWindowsPhoneDesktopModel(String userAgent) {
+    public static String getWindowsPhoneDesktopModel(String userAgent) {
         return cleanAndReplaceWindowsPhoneModel(userAgent, WINDOWS_PHONE_DESKTOP_MODEL_PATTERN, WINDOWS_PHONE_ARM_EDGE_MODEL_PATTERN);
     }
 
@@ -922,15 +922,14 @@ public final class UserAgentUtils {
      * @param patterns  待尝试的正则匹配模式列表
      * @return 清洗后的设备型号，如果所有模式都未匹配则返回 null
      */
-    public static final String cleanAndReplaceWindowsPhoneModel(String userAgent, Pattern... patterns) {
+    public static String cleanAndReplaceWindowsPhoneModel(String userAgent, Pattern... patterns) {
         userAgent = SEMICOLON_WITHOUT_SPACE_PATTERN.matcher(userAgent).replaceAll("; ");
         Matcher matcher = null;
         Pattern[] patternArray;
         patternArray = patterns;
-        int patternCount = patternArray.length;
 
-        for (int i = 0; i < patternCount; ++i) {
-            matcher = patternArray[i].matcher(userAgent);
+        for (Pattern pattern : patternArray) {
+            matcher = pattern.matcher(userAgent);
             if (matcher.find()) {
                 break;
             }
@@ -1054,7 +1053,7 @@ public final class UserAgentUtils {
             }
         }
 
-        return (new StringBuilder(ResourceUtils.getBuildId())).append("/WURFL_JAVA_API/1.9.1.0 WURFL/").append(snapshotVersion).append(" Java/").append(JAVA_VERSION).append(" ").append(OS_NAME).append("/").append(OS_VERSION).toString();
+        return ResourceUtils.getBuildId() + "/WURFL_JAVA_API/1.9.1.0 WURFL/" + snapshotVersion + " Java/" + JAVA_VERSION + " " + OS_NAME + "/" + OS_VERSION;
     }
 
     /**
