@@ -504,7 +504,7 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isRobot());
         Assertions.assertEquals("Huawei LIO-AL00 (Mate 30 Pro)", info.getCompleteDeviceName());
         Assertions.assertTrue(info.isLargescreen());
-        Assertions.assertEquals("Android", info.getAdvertisedDeviceOs());
+        Assertions.assertEquals("HarmonyOS", info.getAdvertisedDeviceOs());
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Huawei Mate 30 Pro", info.getDeviceName());
@@ -574,7 +574,7 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isRobot());
         Assertions.assertEquals("Huawei MRX-W09 (MatePad Pro)", info.getCompleteDeviceName());
         Assertions.assertTrue(info.isLargescreen());
-        Assertions.assertEquals("Android", info.getAdvertisedDeviceOs());
+        Assertions.assertEquals("HarmonyOS", info.getAdvertisedDeviceOs());
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Huawei MatePad Pro", info.getDeviceName());
@@ -644,7 +644,7 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isRobot());
         Assertions.assertEquals("Huawei TET-AN00 (Mate X2)", info.getCompleteDeviceName());
         Assertions.assertTrue(info.isLargescreen());
-        Assertions.assertEquals("Android", info.getAdvertisedDeviceOs());
+        Assertions.assertEquals("HarmonyOS", info.getAdvertisedDeviceOs());
         Assertions.assertTrue(info.isAndroid());
         Assertions.assertFalse(info.isXhtmlmpPreferred());
         Assertions.assertEquals("Huawei Mate X2", info.getDeviceName());
