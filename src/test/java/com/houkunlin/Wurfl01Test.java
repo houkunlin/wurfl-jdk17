@@ -427,7 +427,7 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
-        Assertions.assertEquals("UCBrowser", info.getAdvertisedAppName());
+        Assertions.assertEquals("UC Browser", info.getAdvertisedAppName());
         Assertions.assertFalse(info.isFullDesktop());
         Assertions.assertEquals("UC Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
@@ -1406,7 +1406,7 @@ class Wurfl01Test {
         Assertions.assertTrue(info.isMobile());
         Assertions.assertTrue(info.isPhone());
         Assertions.assertFalse(info.isFullDesktop());
-        Assertions.assertEquals("UCBrowser", info.getAdvertisedAppName());
+        Assertions.assertEquals("UC Browser", info.getAdvertisedAppName());
         Assertions.assertEquals("UC Browser", info.getAdvertisedBrowser());
         Assertions.assertTrue(info.isSmartphone());
         Assertions.assertFalse(info.isRobot());
