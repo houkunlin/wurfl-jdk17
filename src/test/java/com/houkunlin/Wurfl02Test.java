@@ -273,7 +273,6 @@ class Wurfl02Test {
         Assertions.assertEquals("16", info.getAdvertisedDeviceOsVersion());
         Assertions.assertEquals("Chrome", info.getBrowserCore());
         Assertions.assertEquals("144.0.7559.86", info.getBrowserCoreVersion());
-
     }
 
     @DisplayName("iPhone3")

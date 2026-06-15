@@ -656,6 +656,8 @@ class Wurfl01Test {
         Assertions.assertFalse(info.isWmlPreferred());
         Assertions.assertEquals("Smartphone", info.getFormFactor());
         Assertions.assertEquals("", info.getAdvertisedDeviceOsVersion());
+        Assertions.assertEquals("Chrome", info.getBrowserCore());
+        Assertions.assertEquals("120.0.0.0", info.getBrowserCoreVersion());
     }
 
     @DisplayName("QQ 浏览器 (iOS)")
@@ -946,6 +948,7 @@ class Wurfl01Test {
         VirtualCapabilityInfo info = device.getVirtualCapabilityInfo();
         System.out.println(info);
         System.out.println(buildAssertions(info));
+        System.out.println(device.getCapabilities());
         Assertions.assertFalse(info.isAppWebview());
         Assertions.assertFalse(info.isApp());
         Assertions.assertTrue(info.isMobile());
